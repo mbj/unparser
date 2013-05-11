@@ -56,5 +56,13 @@ describe Unparser, 'spike' do
       assert_round_trip %q("foo#{1}bar")
       assert_round_trip %q("foo\n")
     end
+
+    context 'irange' do
+      assert_round_trip %q(1..2)
+    end
+
+    context 'erange' do
+      assert_round_trip %q(1...2)
+    end
   end
 end
