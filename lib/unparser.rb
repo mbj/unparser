@@ -22,3 +22,5 @@ end # Unparser
 
 require 'unparser/buffer'
 require 'unparser/emitter'
+
+Unparser::Emitter::REGISTRY.freeze
