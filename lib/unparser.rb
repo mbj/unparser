@@ -5,23 +5,104 @@ require 'parser/all'
 # Library namespace
 module Unparser
 
+  # Unparse ast into string
+  #
+  # @param [Parser::Node] node
+  #
+  # @return [String]
+  #
+  # @api private
+  #
+  def self.unparse(node)
+    buffer = Buffer.new
+    Emitter.visit(node, buffer)
+    buffer.content
+  end
+
   class Buffer
+
+    # Initialize object
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def initialize
       @content = ''
     end
 
+    # Append string
+    #
+    # @param [String] string
+    #
+    # @return [self]
+    #
+    # @api private
+    #
     def append(string)
       @content << string
+      self
     end
-
+    
+    # Return content of buffer
+    #
+    # @return [String]
+    #
+    # @api private
+    #
     def content
       @content.dup.freeze
     end
-  end
 
+  end # Buffer
+
+  # Emitter base class
   class Emitter
     include AbstractType
 
+    # Registry of node emitters
+    REGISTRY = {}
+
+    # Register emitter for type
+    #
+    # @param [Symbol] type
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def self.handle(type)
+      REGISTRY[type] = self
+    end
+    private_class_method :handle
+
+    # Visit node
+    #
+    # @param [Parser::AST::Node] node
+    # @param [Buffer] buffer
+    #
+    # @return [Emitter]
+    #
+    # @api private
+    #
+    def self.visit(node, buffer)
+      type = node.type
+      klass = REGISTRY.fetch(type) do 
+        raise ArgumentError, "No emitter for node: #{type.inspect}"
+      end
+
+      klass.new(node, buffer)
+    end
+
+    # Initialize emitter
+    #
+    # @param [Parser::AST::Node] node
+    # @param [Buffer] buffer
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def initialize(node, buffer)
       @node, @buffer = node, buffer
       dispatch
@@ -31,72 +112,68 @@ module Unparser
 
     abstract_method :dispatch
 
+    # Return node
+    #
+    # @return [Parser::AST::Node]
+    #
+    # @api private
+    #
     attr_reader :node
     private :node
+
+    # Return buffer
+    #
+    # @return [Buffer]
+    #
+    # @api private
+    #
     attr_reader :buffer
     private :buffer
 
+    # Emit string
+    #
+    # @param [String] string
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def emit(string)
       buffer.append(string)
     end
 
-    def self.visit(node, buffer)
-      type = node.type
-      handler = REGISTRY.fetch(type) do 
-        raise ArgumentError, "No emitter for node: #{type.inspect}"
-      end
-
-      handler.new(node, buffer)
+    # Visit node
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [Emitter]
+    #
+    # @api private
+    #
+    def visit(node)
+      self.class.visit(node, buffer)
     end
 
-    REGISTRY = {}
+    class SourceMappedNode < self
 
-    def self.handle(type)
-      REGISTRY[type] = self
-    end
+      handle :str
+      handle :int
+      handle :irange
+      handle :erange
+      handle :dstr
 
-    class Literal < self
-      def value
-        node.children[0]
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        emit(node.source_map.expression.to_source)
       end
 
-      class Inspect < self
-        handle :str
-        handle :int
-
-      private
-
-        def dispatch
-          emit(value.inspect)
-        end
-      end
-
-      class Dynamic < self
-        class String < self
-          handle :dstr
-
-        private
-
-          def dispatch
-            p node
-          end
-        end
-      end
-    end
-  end
-
-  # Unparse ast into string
-  #
-  # @param [Parser::Node] node
-  #
-  # @return [String]
-  #
-  # @api private
-  #
-  def self.unparse(ast)
-    buffer = Buffer.new
-    Emitter.visit(ast, buffer)
-    buffer.content
-  end
-
-end
+    end # SourceMappedNode
+  end # Emitter
+end # Unparser
