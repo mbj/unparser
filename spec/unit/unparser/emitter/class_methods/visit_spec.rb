@@ -7,9 +7,11 @@ describe Unparser::Emitter, '.visit' do
   let(:node)   { mock('Node', :type => type) }
   let(:buffer) { Unparser::Buffer.new        }
 
-  class Dummy < Unparser::Emitter
-    handle :dummy
+  before do
+    stub_const('Unparser::Emitter::REGISTRY', { :dummy => Dummy })
+  end
 
+  class Dummy < Unparser::Emitter
     def self.emit(node, buffer)
       buffer.append('foo')
     end
