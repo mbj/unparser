@@ -2,7 +2,7 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include AbstractType
+    include AbstractType, Equalizer.new(:node, :buffer)
 
     # Registry of node emitters
     REGISTRY = {}
@@ -63,7 +63,7 @@ module Unparser
     # @api private
     #
     attr_reader :node
-    private :node
+    protected :node
 
     # Return buffer
     #
@@ -72,7 +72,7 @@ module Unparser
     # @api private
     #
     attr_reader :buffer
-    private :buffer
+    protected :buffer
 
     # Emit string
     #
@@ -98,8 +98,8 @@ module Unparser
       self.class.visit(node, buffer)
     end
 
-    # Emitter that can fully rely in parsers source maps
-    class SourceMappedNode < self
+    # Emitter that fully relies in parser source maps
+    class SourceMap < self
 
       handle :str
       handle :int
