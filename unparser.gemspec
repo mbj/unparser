@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.authors  = ['Markus Schirp']
   s.email    = 'mbj@seonic.net'
-  s.summary  = 'Generate equivalent source for rubies ast'
+  s.summary  = 'Generate equivalent source for parser gem AST nodes'
   s.homepage = 'http://github.com/mbj/unparser'
 
   s.files            = `git ls-files`.split("\n")
