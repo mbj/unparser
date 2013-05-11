@@ -31,83 +31,24 @@ module Unparser
     #
     def self.visit(node, buffer)
       type = node.type
-      klass = REGISTRY.fetch(type) do 
+      emitter = REGISTRY.fetch(type) do 
         raise ArgumentError, "No emitter for node: #{type.inspect}"
       end
-
-      klass.new(node, buffer)
+      emitter.emit(node, buffer)
+      self
     end
 
-    # Initialize emitter
-    #
-    # @param [Parser::AST::Node] node
-    # @param [Buffer] buffer
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def initialize(node, buffer)
-      @node, @buffer = node, buffer
-      dispatch
-    end
+    abstract_singleton_method :emit
 
-  private
-
-    abstract_method :dispatch
-
-    # Return node
-    #
-    # @return [Parser::AST::Node]
-    #
-    # @api private
-    #
-    attr_reader :node
-    protected :node
-
-    # Return buffer
-    #
-    # @return [Buffer]
-    #
-    # @api private
-    #
-    attr_reader :buffer
-    protected :buffer
-
-    # Emit string
-    #
-    # @param [String] string
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit(string)
-      buffer.append(string)
-    end
-
-    # Visit node
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [Emitter]
-    #
-    # @api private
-    #
-    def visit(node)
-      self.class.visit(node, buffer)
-    end
-
-    # Emitter that fully relies in parser source maps
+    # Emitter that fully relies on parser source maps
     class SourceMap < self
 
+      handle :float
       handle :str
       handle :int
       handle :irange
       handle :erange
       handle :dstr
-
-    private
 
       # Perform dispatch
       #
@@ -115,10 +56,10 @@ module Unparser
       #
       # @api private
       #
-      def dispatch
-        emit(node.source_map.expression.to_source)
+      def self.emit(node, buffer)
+        buffer.append(node.source_map.expression.to_source)
       end
 
-    end # SourceMappedNode
+    end # SourceMap
   end # Emitter
 end # Unparser

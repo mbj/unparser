@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Unparser::Emitter, '.visit' do
-  subject { described_class.visit(node, buffer) }
+  subject { object.visit(node, buffer) }
+  let(:object) { described_class }
 
   let(:node)   { mock('Node', :type => type) }
   let(:buffer) { Unparser::Buffer.new        }
@@ -9,15 +10,19 @@ describe Unparser::Emitter, '.visit' do
   class Dummy < Unparser::Emitter
     handle :dummy
 
-    def dispatch
-      emit('foo')
+    def self.emit(node, buffer)
+      buffer.append('foo')
     end
   end
 
   context 'when handler for type is registred' do
     let(:type) { :dummy }
+    it_should_behave_like 'a command method'
 
-    it { should eql(Dummy.new(node, buffer)) }
+    it 'should call emitter' do
+      subject
+      buffer.content.should eql('foo')
+    end
   end
 
   context 'when handler for type is NOT registred' do
