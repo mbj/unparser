@@ -19,6 +19,7 @@ module Unparser
     buffer.content
   end
 
+  # Buffer used to emit into
   class Buffer
 
     # Initialize object
@@ -154,6 +155,7 @@ module Unparser
       self.class.visit(node, buffer)
     end
 
+    # Emitter that can fully rely in parsers source maps
     class SourceMappedNode < self
 
       handle :str
