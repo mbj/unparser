@@ -48,6 +48,9 @@ describe Unparser, 'spike' do
       assert_round_trip  '1'
       assert_round_trip '-1'
       assert_round_trip  '0'
+      assert_round_trip  '0x1'
+      assert_round_trip  '1_000'
+      assert_round_trip  '1e0'
     end
 
     context 'string' do
@@ -55,6 +58,12 @@ describe Unparser, 'spike' do
       assert_round_trip %q("foo" "bar")
       assert_round_trip %q("foo#{1}bar")
       assert_round_trip %q("foo\n")
+      assert_round_trip   '?c'
+    end
+
+    context 'symbol' do
+      assert_round_trip ':foo'
+      assert_round_trip ':"foo"'
     end
 
     context 'irange' do
@@ -63,6 +72,11 @@ describe Unparser, 'spike' do
 
     context 'erange' do
       assert_round_trip %q(1...2)
+    end
+
+    context 'float' do
+      assert_round_trip '-0.1'
+      assert_round_trip '1.0'
     end
   end
 end

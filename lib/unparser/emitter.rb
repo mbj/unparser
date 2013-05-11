@@ -49,6 +49,7 @@ module Unparser
       handle :irange
       handle :erange
       handle :dstr
+      handle :sym
 
       # Perform dispatch
       #
