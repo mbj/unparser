@@ -109,6 +109,7 @@ describe Unparser, 'spike' do
     assert_round_trip 'a = 1'
     assert_round_trip '@a = 1'
     assert_round_trip '@@a = 1'
+    assert_round_trip '$a = 1'
     assert_round_trip 'CONST = 1'
   end
 

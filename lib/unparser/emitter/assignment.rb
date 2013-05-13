@@ -33,7 +33,7 @@ module Unparser
 
       class Variable < self 
 
-        handle :lvasgn, :ivasgn, :cvasgn
+        handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
 
       private
 
