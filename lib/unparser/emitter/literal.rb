@@ -1,37 +1,6 @@
 module Unparser
   class Emitter
     class Literal < self
-      class Primitive < self
-
-      private
-
-        def dispatch
-          if node.source_map
-            emit_source_map
-          else
-            dispatch_value
-          end
-        end
-
-        abstract_method :disaptch_value
-
-        def value
-          node.children.first
-        end
-
-        class Inspect < self
-
-          handle :int, :str, :float, :sym
-
-        private
-
-          def dispatch_value
-            buffer.append(value.inspect)
-          end
-
-        end
-      end
-
       class Range < self
 
       private
