@@ -7,6 +7,12 @@ module Unparser
 
       private
 
+        # Dispatch node
+        #
+        # @return [undefined]
+        #
+        # @api private
+        # 
         def dispatch
           if node.source_map
             emit_source_map
@@ -17,6 +23,12 @@ module Unparser
 
         abstract_method :disaptch_value
 
+        # Return value
+        #
+        # @return [Object]
+        #
+        # @api private
+        #
         def value
           node.children.first
         end
@@ -28,6 +40,12 @@ module Unparser
 
         private
 
+          # Dispatch value
+          #
+          # @return [undefined]
+          #
+          # @api private
+          # 
           def dispatch_value
             buffer.append(value.inspect)
           end

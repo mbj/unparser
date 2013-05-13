@@ -83,10 +83,6 @@ module Unparser
     #
     attr_reader :buffer
 
-    def emit_source_map
-      SourceMap.emit(node, buffer)
-    end
-
   private
 
     # Emit contents of block within parentheses
@@ -99,6 +95,16 @@ module Unparser
       write(open)
       yield
       write(close)
+    end
+
+    # Emit nodes source map
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_source_map
+      SourceMap.emit(node, buffer)
     end
 
     # Dispatch helper
@@ -156,10 +162,17 @@ module Unparser
 
   private
 
+    # Dummy begin node implementation
     class Begin < self
 
       handle :begin
 
+      # Dispatch node
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def dispatch
         visit(node.children.first)
       end
