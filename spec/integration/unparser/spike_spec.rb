@@ -73,7 +73,8 @@ describe Unparser, 'spike' do
     context 'execute string' do
       assert_round_trip '`foo`'
       assert_round_trip '`foo#{@bar}`'
-     #assert_generates  '%x(\())', '`)`'
+      assert_generates  '%x(\))', '`)`'
+      assert_generates  '%x(`)', '`\``'
       assert_round_trip '`"`'
     end
 
