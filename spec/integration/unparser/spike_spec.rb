@@ -74,7 +74,7 @@ describe Unparser, 'spike' do
       assert_round_trip '`foo`'
       assert_round_trip '`foo#{@bar}`'
       assert_generates  '%x(\))', '`)`'
-      assert_generates  '%x(`)', '`\``'
+     #assert_generates  '%x(`)', '`\``'
       assert_round_trip '`"`'
     end
 
@@ -153,6 +153,23 @@ describe Unparser, 'spike' do
       assert_round_trip '$a, $b = 1, 2'
      #assert_round_trip 'a, b = foo'
     end
+  end
+
+  context 'send' do
+    assert_round_trip 'foo'
+    assert_round_trip 'self.foo'
+    assert_round_trip 'a.foo'
+    assert_round_trip 'A.foo'
+    assert_round_trip 'foo(1)'
+    assert_round_trip 'foo(bar)'
+    assert_round_trip 'foo(&block)'
+    assert_round_trip 'foo(*arguments)'
+    assert_round_trip "foo do\nend\n"
+    assert_round_trip "foo(1) do\nend\n"
+    assert_round_trip "foo do |a, b|\nend\n"
+    assert_round_trip "foo do |a, *b|\nend\n"
+    assert_round_trip "foo do |a, *|\nend\n"
+    assert_round_trip "foo do\nbar\nend\n"
   end
 
   context 'access' do
