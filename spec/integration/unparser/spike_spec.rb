@@ -25,7 +25,7 @@ describe Unparser, 'spike' do
     end
   end
 
-  def assert_round_trip(input, versions = %w(1.8 1.9 2.0))
+  def assert_round_trip(input, versions = RUBIES)
     with_versions(input, versions) do |version, parser|
       ast = parser.parse(input)
       Unparser.unparse(ast).should eql(input)
@@ -38,8 +38,8 @@ describe Unparser, 'spike' do
     end
   end
 
-  def self.assert_round_trip(input, versions = %w(1.8))
-    it "should round trip #{input.inspect}" do
+  def self.assert_round_trip(input, versions = RUBIES)
+    it "should round trip #{input.inspect} under #{versions}" do
       assert_round_trip(input, versions)
     end
   end
