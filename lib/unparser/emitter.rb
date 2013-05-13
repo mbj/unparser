@@ -195,8 +195,28 @@ module Unparser
       #
       def self.emit(node, buffer)
         buffer.append(node.children.first.to_s)
+        self
       end
 
+    end
+
+    class NthRef < self
+
+      PREFIX = '$'.freeze
+
+      handle :nth_ref
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def self.emit(node, buffer)
+        buffer.append(PREFIX)
+        buffer.append(node.children.first.to_s)
+        self
+      end
     end
 
     class CBase < self

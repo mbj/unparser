@@ -116,6 +116,7 @@ describe Unparser, 'spike' do
     assert_round_trip '@a'
     assert_round_trip '@@a'
     assert_round_trip '$a'
+    assert_round_trip '$1'
   end
 
   context 'singletons' do
