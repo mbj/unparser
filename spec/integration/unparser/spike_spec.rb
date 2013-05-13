@@ -105,7 +105,7 @@ describe Unparser, 'spike' do
     end
 
     context 'erange' do
-      assert_generates s(:erange, s(:int, 1), s(:int, 2)), %q((1...2))
+      assert_generates '1...2', %q((1...2))
     end
 
     context 'float' do
@@ -151,7 +151,7 @@ describe Unparser, 'spike' do
      #assert_round_trip 'a[*foo], a[1] = 1, 2'
       assert_round_trip '@@a, @@b = 1, 2'
       assert_round_trip '$a, $b = 1, 2'
-     # assert_round_trip 'a, b = foo'
+     #assert_round_trip 'a, b = foo'
     end
   end
 
