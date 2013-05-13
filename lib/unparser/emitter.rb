@@ -185,7 +185,7 @@ module Unparser
 
     class Access < self
 
-      handle :ivar, :lvar, :cvar
+      handle :ivar, :lvar, :cvar, :gvar
 
       # Perform dispatch
       #
