@@ -32,5 +32,6 @@ require 'unparser/emitter/assignment'
 require 'unparser/emitter/variable'
 require 'unparser/emitter/singleton'
 require 'unparser/emitter/splat'
+require 'unparser/emitter/cbase'
 
 Unparser::Emitter::REGISTRY.freeze

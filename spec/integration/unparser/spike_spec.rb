@@ -135,6 +135,10 @@ describe Unparser, 'spike' do
     assert_round_trip '$a'
     assert_round_trip '$1'
     assert_round_trip '$`'
+    assert_round_trip 'CONST'
+    assert_round_trip 'SCOPED::CONST'
+    assert_round_trip '::TOPLEVEL'
+    assert_round_trip '::TOPLEVEL::CONST'
   end
 
   context 'singletons' do
