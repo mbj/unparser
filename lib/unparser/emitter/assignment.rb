@@ -1,8 +1,6 @@
 module Unparser
   class Emitter
     class Assignment < self
-      include InstanceEmitter
-
       OPERATOR = ' = '.freeze
 
     private
@@ -15,25 +13,97 @@ module Unparser
       #
       def dispatch
         emit_left
-        write(OPERATOR)
         emit_right
       end
 
-      # Emit right
-      #
-      # @return [undefined]
-      # 
-      # @api private
-      #
-      def emit_right
-        visit(children.last)
-      end
+      class Single < self
 
-      abstract_method :emit_left
+        # Emit right
+        #
+        # @return [undefined]
+        # 
+        # @api private
+        #
+        def emit_right
+          right = right_node
+          if right
+            write(OPERATOR)
+            visit(right) 
+          end
+        end
 
-      class Variable < self 
+        abstract_method :emit_left
 
-        handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
+        class Variable < self 
+
+          handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
+
+        private
+
+          # Emit left
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_left
+            write(children.first.to_s)
+          end
+
+          # Return right node
+          #
+          # @return [Parser::AST::Node]
+          #
+          # @api private
+          #
+          def right_node
+            children[1]
+          end
+        end
+
+        class Constant < self
+
+          handle :casgn
+
+        private
+
+          # Return right node
+          #
+          # @return [Parser::AST::Node]
+          #
+          # @api private
+          #
+          def right_node
+            children[2]
+          end
+
+          # Emit left
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_left
+            emit_base
+            write(children[1].to_s)
+          end
+
+          # Emit base
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_base
+            base = children.first
+            visit(base) if base
+          end
+        end # Constant
+      end # Single
+
+      class Multiple < self
+
+        handle :masgn
 
       private
 
@@ -44,38 +114,44 @@ module Unparser
         # @api private
         #
         def emit_left
-          write(children.first.to_s)
+          visit(children.first)
         end
-      end
 
-      class Constant < self
+        # Emit right
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_right
+          write(OPERATOR)
+          right = children.last
+          case right.type
+          when :array
+            delimited(right.children)
+          else
+            visit(right)
+          end
+        end
 
-        handle :casgn
+      end # Multiple
+
+      # Emitter for multiple assignment left hand side
+      class MLHS < Emitter
+        handle :mlhs
 
       private
 
-        # Emit left
+        # Perform dispatch
         #
         # @return [undefined]
         #
         # @api private
         #
-        def emit_left
-          emit_base
-          write(children[1].to_s)
+        def dispatch
+          delimited(children)
         end
-
-        # Emit base
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_base
-          base = children.first
-          visit(base) if base
-        end
-      end
+      end # MultipleLeftHandSide
 
     end # Assignment
   end # Emitter

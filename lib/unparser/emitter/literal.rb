@@ -1,8 +1,6 @@
 module Unparser
   class Emitter
     class Literal < self
-      include InstanceEmitter
-
       class Primitive < self
 
       private

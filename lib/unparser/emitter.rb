@@ -22,6 +22,36 @@ module Unparser
     end
     private_class_method :handle
 
+    # Emit node into buffer
+    #
+    # @param [Parser::AST::Node] node
+    # @param [Buffer] buffer
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def self.emit(node, buffer)
+      new(node, buffer)
+      self
+    end
+
+    # Initialize object
+    #
+    # @param [Parser::AST::Node] node
+    # @param [Buffer] buffer
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def initialize(node, buffer)
+      @node, @buffer = node, buffer
+      dispatch
+    end
+
+    private_class_method :new
+
     # Visit node
     #
     # @param [Parser::AST::Node] node
@@ -40,203 +70,94 @@ module Unparser
       self
     end
 
-    abstract_singleton_method :emit
+    # Return node
+    #
+    # @return [Parser::AST::Node] node
+    #
+    # @api private
+    #
+    attr_reader :node
 
-    module InstanceEmitter
-      module ClassMethods
+    # Return buffer
+    #
+    # @return [Buffer] buffer
+    #
+    # @api private
+    #
+    attr_reader :buffer
 
-        # Emit node into buffer
-        #
-        # @param [Parser::AST::Node] node
-        # @param [Buffer] buffer
-        #
-        # @return [self]
-        #
-        # @api private
-        #
-        def emit(node, buffer)
-          new(node, buffer)
-          self
-        end
-
-      end
-
-
-      module InstanceMethods
-
-        # Initialize object
-        #
-        # @param [Parser::AST::Node] node
-        # @param [Buffer] buffer
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def initialize(node, buffer)
-          @node, @buffer = node, buffer
-          dispatch
-        end
-
-        # Return node
-        #
-        # @return [Parser::AST::Node] node
-        #
-        # @api private
-        #
-        attr_reader :node
-
-        # Return buffer
-        #
-        # @return [Buffer] buffer
-        #
-        # @api private
-        #
-        attr_reader :buffer
-
-        def emit_source_map
-          SourceMap.emit(node, buffer)
-        end
-
-      private
-
-        # Emit contents of block within parentheses
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def parentheses(open='(', close=')')
-          write(open)
-          yield
-          write(close)
-        end
-
-        # Dispatch helper
-        #
-        # @param [Parser::AST::Node] node
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def visit(node)
-          self.class.visit(node, buffer)
-        end
-
-        # Emit delimited body
-        #
-        # @param [Enumerable<Parser::AST::Node>] nodes
-        # @param [String] delimiter
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def delimited(nodes, delimiter)
-          max = nodes.length - 1
-          nodes.each_with_index do |node, index|
-            visit(node)
-            write(delimiter) if index < max
-          end
-        end
-
-        # Return children of node
-        #
-        # @return [Array<Parser::AST::Node>]
-        #
-        # @api private
-        #
-        def children
-          node.children
-        end
-
-        # Write string into buffer
-        #
-        # @param [String] string
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def write(string)
-          buffer.append(string)
-        end
-
-      end
-
-      # Hook called when module is included
-      #
-      # @param [Module,Class] descendant
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def self.included(descendant)
-        descendant.instance_eval do
-          include InstanceMethods
-          extend ClassMethods
-        end
-      end
+    def emit_source_map
+      SourceMap.emit(node, buffer)
     end
 
   private
 
-    class Access < self
-
-      handle :ivar, :lvar, :cvar, :gvar
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def self.emit(node, buffer)
-        buffer.append(node.children.first.to_s)
-        self
-      end
-
+    # Emit contents of block within parentheses
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def parentheses(open='(', close=')')
+      write(open)
+      yield
+      write(close)
     end
 
-    class NthRef < self
+    # Dispatch helper
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def visit(node)
+      self.class.visit(node, buffer)
+    end
 
-      PREFIX = '$'.freeze
+    DEFAULT_DELIMITER = ', '.freeze
 
-      handle :nth_ref
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def self.emit(node, buffer)
-        buffer.append(PREFIX)
-        buffer.append(node.children.first.to_s)
-        self
+    # Emit delimited body
+    #
+    # @param [Enumerable<Parser::AST::Node>] nodes
+    # @param [String] delimiter
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def delimited(nodes, delimiter = DEFAULT_DELIMITER)
+      max = nodes.length - 1
+      nodes.each_with_index do |node, index|
+        visit(node)
+        write(delimiter) if index < max
       end
     end
 
-    class CBase < self
-      BASE = '::'.freeze
-
-      handle :cbase
-
-      # Perform dispatch
-      #
-      # @param [Parser::AST::Node] node
-      # @param [Buffer] buffer
-      #
-      # @return [self]
-      #
-      # @api private
-      #
-      def self.emit(node, buffer)
-        buffer.append(BASE)
-      end
+    # Return children of node
+    #
+    # @return [Array<Parser::AST::Node>]
+    #
+    # @api private
+    #
+    def children
+      node.children
     end
+
+    # Write string into buffer
+    #
+    # @param [String] string
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def write(string)
+      buffer.append(string)
+    end
+
+  private
 
     # Emitter that fully relies on parser source maps
     class SourceMap < self

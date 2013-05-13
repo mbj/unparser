@@ -29,6 +29,8 @@ require 'unparser/emitter/literal/dynamic'
 require 'unparser/emitter/literal/regexp'
 require 'unparser/emitter/literal/dynamic_body'
 require 'unparser/emitter/assignment'
+require 'unparser/emitter/variable'
 require 'unparser/emitter/singleton'
+require 'unparser/emitter/splat'
 
 Unparser::Emitter::REGISTRY.freeze

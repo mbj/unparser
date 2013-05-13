@@ -106,11 +106,27 @@ describe Unparser, 'spike' do
   end
 
   context 'assignment' do
-    assert_round_trip 'a = 1'
-    assert_round_trip '@a = 1'
-    assert_round_trip '@@a = 1'
-    assert_round_trip '$a = 1'
-    assert_round_trip 'CONST = 1'
+    context 'single' do
+      assert_round_trip 'a = 1'
+      assert_round_trip '@a = 1'
+      assert_round_trip '@@a = 1'
+      assert_round_trip '$a = 1'
+      assert_round_trip 'CONST = 1'
+    end
+
+    context 'multiple' do
+      assert_round_trip 'a, b = 1, 2'
+      assert_round_trip 'a, *foo = 1, 2'
+      assert_round_trip 'a, * = 1, 2'
+      assert_round_trip '*foo = 1, 2'
+      assert_round_trip '@a, @b = 1, 2'
+     #assert_round_trip 'a.foo, a.bar = 1, 2'
+     #assert_round_trip 'a[0], a[1] = 1, 2'
+     #assert_round_trip 'a[*foo], a[1] = 1, 2'
+      assert_round_trip '@@a, @@b = 1, 2'
+      assert_round_trip '$a, $b = 1, 2'
+     # assert_round_trip 'a, b = foo'
+    end
   end
 
   context 'access' do

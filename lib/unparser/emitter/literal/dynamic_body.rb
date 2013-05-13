@@ -4,7 +4,6 @@ module Unparser
 
       # Emitter for dynamic bodies
       class DynamicBody < self
-        include InstanceEmitter
 
         # Artificial intermediary node to cleanup 
         # dynamic literal generation
