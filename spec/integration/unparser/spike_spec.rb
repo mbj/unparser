@@ -2,15 +2,18 @@ require 'spec_helper'
 
 describe Unparser, 'spike' do
 
+
+  PARSERS = IceNine.deep_freeze(
+    '1.8' => Parser::Ruby18,
+    '1.9' => Parser::Ruby19,
+    '2.0' => Parser::Ruby20
+   # '2.1' => Parser::Ruby21
+  )
+
+  RUBIES = PARSERS.keys.freeze
+
   def parser_for_ruby_version(version)
-    case version
-    when '1.8'
-      Parser::Ruby18.new
-    when '1.9' 
-      Parser::Ruby19.new 
-    when '2.0'
-      Parser::Ruby20.new
-    else 
+    PARSERS.fetch(version) do
       raise "Unrecognized Ruby version #{version}"
     end
   end
@@ -22,11 +25,9 @@ describe Unparser, 'spike' do
     end
   end
 
-  def assert_round_trip(input, versions = %w(1.8))
+  def assert_round_trip(input, versions = %w(1.8 1.9 2.0))
     with_versions(input, versions) do |version, parser|
-      source = Parser::Source::Buffer.new('(unparser)')
-      source.source = input
-      ast = parser.parse(source)
+      ast = parser.parse(input)
       Unparser.unparse(ast).should eql(input)
     end
   end
@@ -101,6 +102,9 @@ describe Unparser, 'spike' do
       assert_round_trip '[1, 2]'
       assert_round_trip '[1]'
       assert_round_trip '[]'
+      assert_round_trip '[1, *@foo]'
+      assert_round_trip '[*@foo, 1]',     RUBIES - %w(1.8)
+      assert_round_trip '[*@foo, *@baz]', RUBIES - %w(1.8)
     end
 
     context 'hash' do
