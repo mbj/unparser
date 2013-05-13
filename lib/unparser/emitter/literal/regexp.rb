@@ -2,7 +2,7 @@ module Unparser
   class Emitter
     class Literal
       class Regexp < self
-        OPEN = CLOSE = '/'.freeze
+        DELIMITER = '/'.freeze
 
         handle :regexp
 
@@ -15,7 +15,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          parentheses(OPEN, CLOSE) do
+          parentheses(DELIMITER, DELIMITER) do
             visit(dynamic_body)
           end
           visit(children.last)
@@ -28,8 +28,45 @@ module Unparser
         # @api private
         #
         def dynamic_body
-          Parser::AST::Node.new(:dynbody, children[0..-2])
+          Parser::AST::Node.new(:dyn_regexp_body, dynamic_body_children)
         end
+
+        # Return dynamic body children
+        #
+        # @return [Enumerable<Parser::AST::Node>]
+        #
+        # @api private
+        #
+        def dynamic_body_children
+          children[0..-2].map do |child|
+            escape(child)
+          end
+        end
+
+        # Return escaped child
+        #
+        # @return [Parser::AST::Node]
+        #
+        # @api private
+        #
+        def escape(child)
+          return child unless child.type == :str
+          source = child.children.first
+          Parser::AST::Node.new(:str, [Unparser.transquote(source, delimiter, DELIMITER)])
+        end
+
+        # Return closing delimiter 
+        #
+        # @return [String]
+        #
+        # @api private
+        #
+        def delimiter
+          source_map = node.source_map
+          return DELIMITER unless source_map
+          source_map.expression.to_source[-1]
+        end
+        memoize :delimiter
 
       end # Regexp
 

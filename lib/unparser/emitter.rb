@@ -2,9 +2,9 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include AbstractType, Equalizer.new(:node, :buffer)
+    include Adamantium, AbstractType, Equalizer.new(:node, :buffer)
 
-    # Registry of node emitters
+    # Registry for node emitters
     REGISTRY = {}
 
     # Register emitter for type
@@ -24,15 +24,12 @@ module Unparser
 
     # Emit node into buffer
     #
-    # @param [Parser::AST::Node] node
-    # @param [Buffer] buffer
-    #
     # @return [self]
     #
     # @api private
     #
-    def self.emit(node, buffer)
-      new(node, buffer)
+    def self.emit(*arguments)
+      new(*arguments)
       self
     end
 
@@ -159,10 +156,22 @@ module Unparser
 
   private
 
+    class Begin < self
+
+      handle :begin
+
+      def dispatch
+        visit(node.children.first)
+      end
+    end
+
     # Emitter that fully relies on parser source maps
     class SourceMap < self
 
       # Perform dispatch
+      #
+      # @param [Node] node
+      # @param [Buffer] buffer
       #
       # @return [self]
       #

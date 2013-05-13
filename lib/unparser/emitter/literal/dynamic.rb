@@ -25,16 +25,18 @@ module Unparser
         # @api private
         #
         def dynamic_body
-          Parser::AST::Node.new(:dynbody, children)
+          Parser::AST::Node.new(:dyn_str_body, children)
         end
 
         class String < self
 
           OPEN = CLOSE = '"'.freeze
-
           handle :dstr
 
         end # String
+
+        class Execute < self
+        end
 
       end
     end # Literal

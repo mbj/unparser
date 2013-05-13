@@ -29,7 +29,7 @@ module Unparser
         # @api private
         #
         def dynamic_body
-          Parser::AST::Node.new(:dynbody, children)
+          Parser::AST::Node.new(:dyn_xstr_body, children)
         end
 
       end # ExecuteString

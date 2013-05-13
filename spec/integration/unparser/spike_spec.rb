@@ -7,46 +7,53 @@ describe Unparser, 'spike' do
     '1.8' => Parser::Ruby18,
     '1.9' => Parser::Ruby19,
     '2.0' => Parser::Ruby20
-   # '2.1' => Parser::Ruby21
   )
 
   RUBIES = PARSERS.keys.freeze
 
-  def parser_for_ruby_version(version)
+  def self.parser_for_ruby_version(version)
     PARSERS.fetch(version) do
       raise "Unrecognized Ruby version #{version}"
     end
   end
 
-  def with_versions(code, versions)
+  def self.with_versions(versions)
     versions.each do |version|
       parser = parser_for_ruby_version(version)
       yield version, parser
     end
   end
 
-  def assert_round_trip(input, versions = RUBIES)
-    with_versions(input, versions) do |version, parser|
-      ast = parser.parse(input)
-      Unparser.unparse(ast).should eql(input)
-    end
+  def assert_round_trip(input, parser)
+    ast = parser.parse(input)
+    Unparser.unparse(ast).should eql(input)
   end
 
-  def self.assert_generates(ast, source)
-    it "should generate #{ast} as #{source.inspect}" do
-      Unparser.unparse(ast).should eql(source)
+  def self.assert_generates(ast, expected, versions = RUBIES)
+    with_versions(versions) do |version, parser|
+      it "should generate #{ast.inspect} as #{expected} under #{version}" do
+        unless ast.kind_of?(Parser::AST::Node)
+          ast = parser.parse(ast)
+        end
+        generated = Unparser.unparse(ast)
+        generated.should eql(expected)
+        ast = parser.parse(generated)
+        Unparser.unparse(ast).should eql(expected)
+      end
     end
   end
 
   def self.assert_round_trip(input, versions = RUBIES)
-    it "should round trip #{input.inspect} under #{versions}" do
-      assert_round_trip(input, versions)
+    with_versions(versions) do |version, parser|
+      it "should round trip #{input.inspect} under #{version}" do
+        assert_round_trip(input, parser)
+      end
     end
   end
 
   context 'literal' do
     context 'fixnum' do
-      assert_generates s(:int,  1), '1'
+      assert_generates s(:int,  1),  '1'
       assert_generates s(:int, -1), '-1'
       assert_round_trip '1'
       assert_round_trip '0x1'
@@ -56,14 +63,18 @@ describe Unparser, 'spike' do
     end
 
     context 'string' do
-      assert_generates s(:str, 'foo'), %q("foo")
-      assert_generates s(:dstr, s(:str, "foo"), s(:str, "bar")), %q("foobar")
+      assert_generates %q("foo" "bar"), %q("foobar")
+      assert_generates %q(%Q(foo"#{@bar})), %q("foo\"#{@bar}")
+      assert_round_trip %q("\"")
       assert_round_trip %q("foo#{1}bar")
+      assert_round_trip %q("\"#{@a}")
     end
 
     context 'execute string' do
       assert_round_trip '`foo`'
       assert_round_trip '`foo#{@bar}`'
+     #assert_generates  '%x(\())', '`)`'
+      assert_round_trip '`"`'
     end
 
     context 'symbol' do
@@ -71,12 +82,17 @@ describe Unparser, 'spike' do
       assert_generates s(:sym, :"A B"), ':"A B"'
       assert_round_trip ':foo'
       assert_round_trip ':"A B"'
+      assert_round_trip ':"A\"B"'
     end
 
     context 'regexp' do
       assert_round_trip '/foo/'
+      assert_round_trip %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
       assert_round_trip '/foo#{@bar}/'
       assert_round_trip '/foo#{@bar}/im'
+      assert_generates '%r(/)', '/\//'
+      assert_generates '%r(\))', '/)/'
+      assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
     end
 
     context 'dynamic string' do
@@ -84,7 +100,7 @@ describe Unparser, 'spike' do
     end
 
     context 'irange' do
-      assert_generates s(:irange, s(:int, 1), s(:int, 2)), %q((1..2))
+      assert_generates '1..2', %q((1..2))
     end
 
     context 'erange' do

@@ -11,6 +11,7 @@ module Unparser
     #
     def initialize
       @content = ''
+      freeze
     end
 
     # Append string
@@ -25,7 +26,7 @@ module Unparser
       @content << string
       self
     end
-    
+
     # Return content of buffer
     #
     # @return [String]

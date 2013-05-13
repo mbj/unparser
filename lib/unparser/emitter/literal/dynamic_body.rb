@@ -5,9 +5,8 @@ module Unparser
       # Emitter for dynamic bodies
       class DynamicBody < self
 
-        # Artificial intermediary node to cleanup 
-        # dynamic literal generation
-        handle :dynbody
+        OPEN = '#{'.freeze
+        CLOSE = '}'.freeze
 
       private
 
@@ -33,15 +32,24 @@ module Unparser
         # 
         def emit_segment(node)
           if node.type == :str
-            emit_string_segment(node)
+            emit_str_segment(node)
             return
           end
-
           emit_interpolated_segment(node)
         end
 
-        OPEN = '#{'.freeze
-        CLOSE = '}'.freeze
+        # Emit str segment
+        #
+        # @param [Parser::Node] node
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_str_segment(node)
+          util = self.class
+          write(node.children.first.gsub(util::DELIMITER, util::REPLACEMENT))
+        end
 
         # Emit interpolated segment
         #
@@ -52,24 +60,39 @@ module Unparser
         # @api private
         #
         def emit_interpolated_segment(node)
-          parentheses(OPEN, CLOSE) do
-            visit(node)
-          end
+          parentheses(OPEN, CLOSE) { visit(node) }
         end
 
-        STRING_SEGMENT_RANGE = (1..-2).freeze
+        # Dynamic string body
+        class String < self
 
-        # Emit string segment
-        #
-        # @param [Parser::Node] node
-        #
-        # @return [undefined]
-        #
-        # @api rpivate
-        #
-        def emit_string_segment(node)
-          write(node.children.first.inspect[STRING_SEGMENT_RANGE])
-        end
+          handle :dyn_str_body
+
+          DELIMITER   = '"'.freeze
+          REPLACEMENT = '\"'.freeze
+
+        end # String
+
+        # Dynamic regexp body
+        class Regexp < self
+
+          handle :dyn_regexp_body
+
+          DELIMITER   = '/'.freeze
+          REPLACEMENT = '/'.freeze
+
+        end # Regexp
+
+        # Dynamic regexp body
+        class ExecuteString < self
+
+          handle :dyn_xstr_body
+
+          DELIMITER   = '`'.freeze
+          REPLACEMENT = '\`'.freeze
+
+        end # ExecuteString
+
       end # DynamicBody
     end # Literal
   end # Emitter
