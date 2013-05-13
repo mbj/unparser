@@ -19,6 +19,7 @@ module Unparser
         end
       end # HashPair
 
+      # Base class for compound literal emitters
       class Compound < self
 
       private
@@ -36,6 +37,7 @@ module Unparser
           end
         end
 
+        # Hash literal emitter
         class Hash < self
           OPEN      = '{'.freeze
           CLOSE     = '}'.freeze
@@ -44,6 +46,7 @@ module Unparser
           handle :hash
         end # Hash
 
+        # Array literal emitter
         class Array < self
           OPEN = '['.freeze
           CLOSE = ']'.freeze

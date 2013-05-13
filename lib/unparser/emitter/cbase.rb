@@ -8,14 +8,14 @@ module Unparser
 
       # Perform dispatch
       #
-      # @param [Parser::AST::Node] node
+      # @param [Parser::AST::Node] _node
       # @param [Buffer] buffer
       #
       # @return [self]
       #
       # @api private
       #
-      def self.emit(node, buffer)
+      def self.emit(_node, buffer)
         buffer.append(BASE)
       end
 

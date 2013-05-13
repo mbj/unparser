@@ -1,6 +1,8 @@
 module Unparser
   class Emitter
     class Literal
+
+      # Emitter for regexp literals
       class Regexp < self
         DELIMITER = '/'.freeze
 
@@ -70,6 +72,7 @@ module Unparser
 
       end # Regexp
 
+      # Emitter for regexp options
       class Regopt < self
 
         handle :regopt

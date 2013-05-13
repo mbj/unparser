@@ -1,6 +1,8 @@
 module Unparser
   class Emitter
     class Literal
+
+      # Base class for dynamic literal emitters
       class Dynamic < self
 
       private
@@ -28,15 +30,13 @@ module Unparser
           Parser::AST::Node.new(:dyn_str_body, children)
         end
 
+        # Dynamic string literal emitters
         class String < self
 
           OPEN = CLOSE = '"'.freeze
           handle :dstr
 
         end # String
-
-        class Execute < self
-        end
 
       end
     end # Literal

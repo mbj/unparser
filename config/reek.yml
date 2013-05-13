@@ -27,11 +27,13 @@ UncommunicativeMethodName:
   - !ruby/regexp /[A-Z]/
 LongParameterList:
   max_params: 2
-  exclude: []
+  exclude: 
+  - Unparser#self.transquote
   enabled: true
   overrides: {}
 FeatureEnvy:
-  exclude: []
+  exclude:
+  - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
   enabled: true
 ClassVariable:
   exclude: []

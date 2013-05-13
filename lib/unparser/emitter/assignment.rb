@@ -1,5 +1,7 @@
 module Unparser
   class Emitter
+
+    # Base class for assignment emitters
     class Assignment < self
       OPERATOR = ' = '.freeze
 
@@ -16,6 +18,7 @@ module Unparser
         emit_right
       end
 
+      # Single assignment emitter
       class Single < self
 
         # Emit right
@@ -34,6 +37,7 @@ module Unparser
 
         abstract_method :emit_left
 
+        # Variable assignment emitter
         class Variable < self 
 
           handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
@@ -61,6 +65,7 @@ module Unparser
           end
         end
 
+        # Constant assignment emitter
         class Constant < self
 
           handle :casgn
@@ -101,6 +106,7 @@ module Unparser
         end # Constant
       end # Single
 
+      # Multiple assignment
       class Multiple < self
 
         handle :masgn
