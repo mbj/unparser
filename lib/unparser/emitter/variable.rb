@@ -3,7 +3,9 @@ module Unparser
     # Emitter for various variable accesses
     class Variable < self
 
-      handle :ivar, :lvar, :cvar, :gvar
+      handle :ivar, :lvar, :cvar, :gvar, :back_ref
+
+    private
      
       # Perform dispatch
       #
@@ -11,19 +13,20 @@ module Unparser
       #
       # @api private
       #
-      def self.emit(node, buffer)
-        buffer.append(node.children.first.to_s)
-        self
+      def dispatch
+        write(children.first.to_s)
       end
 
     end # Access
 
-    # Emitter for nth ref variable access
+    # Emitter for nth_ref nodes (regexp captures)
     class NthRef < self
 
       PREFIX = '$'.freeze
 
       handle :nth_ref
+
+    private
 
       # Perform dispatch
       #
@@ -31,12 +34,12 @@ module Unparser
       #
       # @api private
       #
-      def self.emit(node, buffer)
-        buffer.append(PREFIX)
-        buffer.append(node.children.first.to_s)
-        self
+      def dispatch
+        write(PREFIX)
+        write(children.first.to_s)
       end
 
     end # NthRef
+
   end # Emitter
 end # Unparser
