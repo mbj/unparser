@@ -60,6 +60,11 @@ describe Unparser, 'spike' do
       assert_round_trip %q("foo#{1}bar")
     end
 
+    context 'execute string' do
+      assert_round_trip '`foo`'
+      assert_round_trip '`foo#{@bar}`'
+    end
+
     context 'symbol' do
       assert_generates s(:sym, :foo), ':foo'
       assert_generates s(:sym, :"A B"), ':"A B"'
