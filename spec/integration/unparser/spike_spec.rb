@@ -23,6 +23,16 @@ describe Unparser, 'spike' do
       yield version, parser
     end
   end
+  
+  def self.strip(ruby)
+    lines = ruby.lines
+    line = lines.first
+    match = /\A[ ]*/.match(line)
+    length = match[0].length
+    lines.map do |line|
+      line[(length..-1)]
+    end.join[0..-2]
+  end
 
   def assert_round_trip(input, parser)
     ast = parser.parse(input)
@@ -101,11 +111,11 @@ describe Unparser, 'spike' do
     end
 
     context 'irange' do
-      assert_generates '1..2', %q((1..2))
+      assert_generates '1..2', %q(1..2)
     end
 
     context 'erange' do
-      assert_generates '1...2', %q((1...2))
+      assert_generates '1...2', %q(1...2)
     end
 
     context 'float' do
@@ -170,6 +180,24 @@ describe Unparser, 'spike' do
     assert_round_trip "foo do |a, *b|\nend\n"
     assert_round_trip "foo do |a, *|\nend\n"
     assert_round_trip "foo do\nbar\nend\n"
+  end
+
+  context 'block' do
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+        bar
+      end
+    RUBY
+  end
+
+  context 'begin; end' do
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+        bar
+      end.blah
+    RUBY
   end
 
   context 'access' do

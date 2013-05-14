@@ -13,11 +13,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          parentheses do
-            visit(begin_node)
-            write(self.class::TOKEN)
-            visit(end_node)
-          end
+          visit(begin_node)
+          write(self.class::TOKEN)
+          visit(end_node)
         end
 
         # Return range begin node

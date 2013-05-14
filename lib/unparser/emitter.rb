@@ -97,6 +97,26 @@ module Unparser
       write(close)
     end
 
+    # Increase indent
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def indent
+      buffer.indent
+    end
+
+    # Decrease indent
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def unindent
+      buffer.unindent
+    end
+
     # Emit nodes source map
     #
     # @return [undefined]
@@ -148,6 +168,16 @@ module Unparser
       node.children
     end
 
+    # Write newline
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def nl
+      buffer.nl
+    end
+
     # Write string into buffer
     #
     # @param [String] string
@@ -174,7 +204,14 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit(node.children.first)
+        write("begin\n")
+        indent
+        node.children.each do |child|
+          visit(child)
+          nl
+        end
+        unindent
+        write("end")
       end
     end
 

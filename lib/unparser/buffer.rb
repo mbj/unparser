@@ -11,7 +11,13 @@ module Unparser
     #
     def initialize
       @content = ''
-      freeze
+      @indent = 0
+    end
+
+    def frozen?; true; end
+
+    def freeze
+      self
     end
 
     # Append string
@@ -23,8 +29,52 @@ module Unparser
     # @api private
     #
     def append(string)
+      prefix
       @content << string
       self
+    end
+
+    # Write newline
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def nl
+      @content << "\n"
+      self
+    end
+
+    # Write prefix
+    #
+    # @return [String]
+    #
+    # @api private
+    #
+    def prefix
+      @content << "  "*@indent
+      self
+    end
+
+    # Increase indent
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def indent
+      @indent+=1
+      self
+    end
+
+    # Decrease indent
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def unindent
+      @indent-=1
     end
 
     # Return content of buffer
