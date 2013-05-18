@@ -196,6 +196,16 @@ describe Unparser, 'spike' do
     end
   end
 
+  context 'return' do
+    assert_source <<-RUBY
+      return
+    RUBY
+
+    assert_source <<-RUBY
+      return(1)
+    RUBY
+  end
+
   context 'send' do
     assert_round_trip 'foo'
     assert_round_trip 'self.foo'
@@ -233,11 +243,9 @@ describe Unparser, 'spike' do
   context 'begin / rescue / ensure' do
     assert_source <<-RUBY
       begin
-        begin
-          foo
-        ensure
-          baz
-        end
+        foo
+      ensure
+        baz
       end
     RUBY
 
@@ -246,16 +254,6 @@ describe Unparser, 'spike' do
         foo
       rescue
         baz
-      end
-    RUBY
-
-    assert_source <<-RUBY
-      begin
-        begin
-          foo
-        ensure
-          bar
-        end
       end
     RUBY
 

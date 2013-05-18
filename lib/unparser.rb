@@ -57,5 +57,6 @@ require 'unparser/emitter/splat'
 require 'unparser/emitter/cbase'
 require 'unparser/emitter/argument'
 require 'unparser/emitter/begin'
+require 'unparser/emitter/return'
 
 Unparser::Emitter::REGISTRY.freeze

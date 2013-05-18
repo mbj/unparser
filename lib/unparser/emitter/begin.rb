@@ -144,8 +144,6 @@ module Unparser
         k_end
       end
 
-      SINGLE_NODES = [:rescue, :ensure].freeze
-
       # Test for flat emit
       #
       # @return [true]
@@ -157,7 +155,7 @@ module Unparser
       # @api private
       #
       def flat?
-        children.one? && SINGLE_NODES.include?(first_child.type)
+        children.one?
       end
 
       # Emit inner nodes

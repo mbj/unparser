@@ -25,7 +25,9 @@ module Unparser
     # @api private
     #
     def append(string)
-      prefix
+      if @content[-1] == NL
+        prefix
+      end
       @content << string
       self
     end
