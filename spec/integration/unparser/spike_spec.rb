@@ -165,6 +165,12 @@ describe Unparser, 'spike' do
     assert_round_trip 'nil'
   end
 
+  context 'magic keywords' do
+    assert_generates  '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
+    assert_round_trip '__FILE__'
+    assert_round_trip '__LINE__'
+  end
+
   context 'assignment' do
     context 'single' do
       assert_round_trip 'a = 1'
