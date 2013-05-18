@@ -142,6 +142,25 @@ describe Unparser, 'spike' do
     end
   end
 
+  context 'access' do
+    assert_round_trip '@a'
+    assert_round_trip '@@a'
+    assert_round_trip '$a'
+    assert_round_trip '$1'
+    assert_round_trip '$`'
+    assert_round_trip 'CONST'
+    assert_round_trip 'SCOPED::CONST'
+    assert_round_trip '::TOPLEVEL'
+    assert_round_trip '::TOPLEVEL::CONST'
+  end
+
+  context 'singletons' do
+    assert_round_trip 'self'
+    assert_round_trip 'true'
+    assert_round_trip 'false'
+    assert_round_trip 'nil'
+  end
+
   context 'assignment' do
     context 'single' do
       assert_round_trip 'a = 1'
@@ -157,7 +176,7 @@ describe Unparser, 'spike' do
       assert_round_trip 'a, * = 1, 2'
       assert_round_trip '*foo = 1, 2'
       assert_round_trip '@a, @b = 1, 2'
-     #assert_round_trip 'a.foo, a.bar = 1, 2'
+      assert_round_trip 'a.foo, a.bar = 1, 2'
      #assert_round_trip 'a[0], a[1] = 1, 2'
      #assert_round_trip 'a[*foo], a[1] = 1, 2'
       assert_round_trip '@@a, @@b = 1, 2'
@@ -270,24 +289,5 @@ describe Unparser, 'spike' do
         bar
       end
     RUBY
-  end
-
-  context 'access' do
-    assert_round_trip '@a'
-    assert_round_trip '@@a'
-    assert_round_trip '$a'
-    assert_round_trip '$1'
-    assert_round_trip '$`'
-    assert_round_trip 'CONST'
-    assert_round_trip 'SCOPED::CONST'
-    assert_round_trip '::TOPLEVEL'
-    assert_round_trip '::TOPLEVEL::CONST'
-  end
-
-  context 'singletons' do
-    assert_round_trip 'self'
-    assert_round_trip 'true'
-    assert_round_trip 'false'
-    assert_round_trip 'nil'
   end
 end

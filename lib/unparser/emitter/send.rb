@@ -118,6 +118,7 @@ module Unparser
       end
 
     end
+
     # Block pass node emitter
     class BlockPass < self
 
@@ -166,7 +167,36 @@ module Unparser
       # @api private
       #
       def emit_selector
-        write(children[1].to_s)
+        selector = children[1].to_s
+        # Check for mlhs
+        if selector[-1] == '=' && !arguments?
+          selector = selector[0..-2]
+        end
+        write(selector)
+      end
+
+      # Test for empty arguments
+      #
+      # @return [true]
+      #   if arguments are empty
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def arguments?
+        arguments.any?
+      end
+
+      # Return argument nodes
+      #
+      # @return [Array<Parser::AST::Node>]
+      #
+      # @api private
+      #
+      def arguments
+        children[2..-1]
       end
 
       # Return arguments
@@ -176,8 +206,7 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        arguments = children[2..-1]
-        return if arguments.empty?
+        return unless arguments?
         parentheses do
           delimited(arguments)
         end
