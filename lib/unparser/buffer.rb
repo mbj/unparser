@@ -14,12 +14,6 @@ module Unparser
       @indent = 0
     end
 
-    def frozen?; true; end
-
-    def freeze
-      self
-    end
-
     # Append string
     #
     # @param [String] string

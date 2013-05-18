@@ -2,7 +2,7 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include Adamantium, AbstractType, Equalizer.new(:node, :buffer)
+    include Adamantium::Flat, AbstractType, Equalizer.new(:node, :buffer)
 
     # Registry for node emitters
     REGISTRY = {}
