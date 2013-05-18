@@ -3,6 +3,8 @@ module Unparser
   # Buffer used to emit into
   class Buffer
 
+    NL = "\n".freeze
+
     # Initialize object
     #
     # @return [undefined]
@@ -28,28 +30,6 @@ module Unparser
       self
     end
 
-    # Write newline
-    #
-    # @return [self]
-    #
-    # @api private
-    #
-    def nl
-      @content << "\n"
-      self
-    end
-
-    # Write prefix
-    #
-    # @return [String]
-    #
-    # @api private
-    #
-    def prefix
-      @content << "  "*@indent
-      self
-    end
-
     # Increase indent
     #
     # @return [self]
@@ -57,6 +37,7 @@ module Unparser
     # @api private
     #
     def indent
+      nl
       @indent+=1
       self
     end
@@ -68,7 +49,18 @@ module Unparser
     # @api private
     #
     def unindent
+      nl
       @indent-=1
+    end
+
+    # Write newline
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def nl
+      @content << NL
     end
 
     # Return content of buffer
@@ -79,6 +71,19 @@ module Unparser
     #
     def content
       @content.dup.freeze
+    end
+
+  private
+
+    # Write prefix
+    #
+    # @return [String]
+    #
+    # @api private
+    #
+    def prefix
+      @content << '  '*@indent
+      self
     end
 
   end # Buffer

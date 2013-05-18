@@ -1,99 +1,155 @@
 module Unparser
   class Emitter
 
+    # Emitter for rescue nodes
     class Rescue < self
 
       handle :rescue
 
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def dispatch
-        write('begin')
-        indent
-        nl
-        visit(children.first)
-        nl
-        unindent
+        k_begin
+        indented { visit(first_child) }
         children[1..-2].each do |child|
           visit(child)
         end
-        write('end')
+        k_end
       end
-    end
+    end # Rescue
 
+    # Emitter for enusre nodes
     class Ensure < self
+
       handle :ensure
 
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def dispatch
         write('begin')
-        nl
         indented { visit(children[0]) }
-        nl
         write('ensure')
-        nl
         indented { visit(children[1]) }
-        nl
         write('end')
       end
-    end
+    end # Ensure
 
     class Resbody < self
+
       handle :resbody
 
+      RESCUE = 'rescue'.freeze
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def dispatch
-        write('rescue')
+        write(RESCUE)
         emit_exception
         emit_assignment
-        nl
-        indent
-        visit(children[2])
-        nl
-        unindent
+        indented { visit(children[2]) }
       end
 
+      # Emit exception
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def emit_exception
-        exception = children[0]
+        exception = first_child
         return unless exception
-        write(' ')
+        ws
         delimited(exception.children)
       end
 
+      ASSIGN_OP = ' => '.freeze
+
+      # Emit assignment
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def emit_assignment
         assignment = children[1]
         return unless assignment
-        write(' => ')
+        write(ASSIGN_OP)
         visit(assignment)
       end
-    end
 
+    end # Resbody
 
     # Emitter for begin nodes
-    class Body < self
+    class Begin < self
 
       handle :begin
 
-      def begin_single?
-        children.length == 1 && [:rescue, :ensure].include?(children.first.type)
-      end
+    private
 
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def dispatch
-        if begin_single?
-          visit(children.first)
+        if flat?
+          visit(first_child)
           return
         end
-        write('begin')
-        nl
-        indent
-        emit_inner
-        unindent
-        write('end')
+        k_begin
+        indented { emit_inner }
+        k_end
       end
 
+      SINGLE_NODES = [:rescue, :ensure].freeze
+
+      # Test for flat emit
+      #
+      # @return [true]
+      #   if flat emit is possible
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def flat?
+        children.one? && SINGLE_NODES.include?(first_child.type)
+      end
+
+      # Emit inner nodes
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def emit_inner
-        max = children.length
+        max = children.length - 1
         children.each_with_index do |child, index|
           visit(child)
           nl if index < max
         end
       end
-    end
+
+    end # Body
   end # Emitter
 end # Unparser

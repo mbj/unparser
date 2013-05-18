@@ -7,6 +7,10 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {}
 
+    WS      = ' '.freeze
+    K_END   = 'end'.freeze
+    K_BEGIN = 'begin'.freeze
+
     # Register emitter for type
     #
     # @param [Symbol] type
@@ -75,6 +79,8 @@ module Unparser
     #
     attr_reader :node
 
+  private
+
     # Return buffer
     #
     # @return [Buffer] buffer
@@ -82,8 +88,7 @@ module Unparser
     # @api private
     #
     attr_reader :buffer
-
-  private
+    protected :buffer
 
     # Emit contents of block within parentheses
     #
@@ -95,26 +100,6 @@ module Unparser
       write(open)
       yield
       write(close)
-    end
-
-    # Increase indent
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def indent
-      buffer.indent
-    end
-
-    # Decrease indent
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def unindent
-      buffer.unindent
     end
 
     # Emit nodes source map
@@ -190,17 +175,48 @@ module Unparser
       buffer.append(string)
     end
 
-    # Write string to buffer followed by nl
-    #
-    # @param [String] string
+    # Write begin keyword
     #
     # @return [undefined]
     #
     # @api private
     #
-    def write_nl(string)
-      write(string)
-      nl
+    def k_begin
+      write(K_BEGIN)
+    end
+
+    # Write end keyword
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def k_end
+      write(K_END)
+    end
+
+    # Return first child
+    #
+    # @return [Parser::AST::Node]
+    #   if present
+    #
+    # @return [nil]
+    #   otherwise
+    #
+    # @api private
+    #
+    def first_child
+      children.first
+    end
+
+    # Write whitespace
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def ws
+      write(WS)
     end
 
     # Call emit contents of block indented
@@ -210,9 +226,10 @@ module Unparser
     # @api private
     #
     def indented
-      indent
+      buffer = self.buffer
+      buffer.indent
       yield
-      unindent
+      buffer.unindent
     end
 
     # Emitter that fully relies on parser source maps
