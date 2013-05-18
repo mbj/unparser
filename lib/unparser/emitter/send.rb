@@ -1,144 +1,5 @@
 module Unparser
   class Emitter
-    # Rest argument emitter
-    class Restarg < self
-      SPLAT = '*'.freeze
-
-      handle :restarg
-
-      def dispatch
-        write(SPLAT)
-        write(children.first.to_s)
-      end
-
-    end # Restarg
-
-    # Arguments emitter
-    class Arguments < self
-
-      handle :args
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        delimited(children)
-      end
-
-    end # Arguments
-
-    # Argument emitter
-    class Argument < self
-
-      handle :arg
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(children.first.to_s)
-      end
-
-    end # Argument
-
-
-
-    # Block emitter
-    class Block < self
-
-      handle :block
-
-      DO = ' do'.freeze
-      END_NL = "end\n".freeze
-      NL = "\n".freeze
-      PIPE_OPEN = ' |'.freeze
-      PIPE_CLOSE = '|'.freeze
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        emit_send
-        write(DO)
-        emit_block_arguments
-        emit_body
-        write(END_NL)
-      end
-
-      # Emit send 
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_send
-        visit(children.first)
-      end
-
-      # Emit arguments
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_block_arguments
-        arguments = children[1]
-        parentheses(PIPE_OPEN, PIPE_CLOSE) do
-          visit(arguments)
-        end unless arguments.children.empty?
-        write(NL)
-      end
-
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        body = children[2]
-        return if body.type == :nil
-        visit(body)
-        write(NL)
-      end
-
-    end
-
-    # Block pass node emitter
-    class BlockPass < self
-
-      PASS = '&'.freeze
-
-      handle :block_pass
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(PASS)
-        visit(children.first)
-      end
-
-    end # BlockPass
-
     # Emitter for send
     class Send < self
 
@@ -160,6 +21,30 @@ module Unparser
         emit_arguments
       end
 
+      INDEX_SELECTOR = '[]'.freeze
+      INDEX_ASSIGN   = '[]='.freeze
+
+      ASSIGN_SUFFIX = '='.freeze
+
+      INDEX_SELECTORS = [
+        INDEX_SELECTOR,
+        INDEX_ASSIGN
+      ].freeze
+
+      # Test for index operation
+      #
+      # @return [true]
+      #   if send is an index operation
+      #
+      # @return [false]
+      #
+      # @api private
+      #
+      def index?
+        INDEX_SELECTORS.include?(selector)
+      end
+
+
       # Return selector
       #
       # @return [undefined]
@@ -167,13 +52,53 @@ module Unparser
       # @api private
       #
       def emit_selector
-        selector = children[1].to_s
-        # Check for mlhs
-        if selector[-1] == '=' && !arguments?
+        return if index?
+        selector = self.selector
+        if mlhs?
           selector = selector[0..-2]
         end
         write(selector)
       end
+
+      # Test for mlhs
+      #
+      # @return [true]
+      #   if node is within an mlhs
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def mlhs?
+        assignment? && !arguments?
+      end
+
+      # Test for assigment
+      #
+      # @return [true]
+      #   if node represents attribute / element assignment
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def assignment?
+        selector[-1] == ASSIGN_SUFFIX
+      end
+
+      # Return selector
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def selector
+        children[1].to_s
+      end
+      memoize :selector
+      protected :selector
 
       # Test for empty arguments
       #
@@ -198,8 +123,12 @@ module Unparser
       def arguments
         children[2..-1]
       end
+      memoize :arguments
 
-      # Return arguments
+      INDEXED_PARENS = IceNine.deep_freeze(%w([ ]))
+      NORMAL_PARENS = IceNine.deep_freeze(%w[( )])
+
+      # Emit arguments
       #
       # @return [undefined]
       #
@@ -207,7 +136,8 @@ module Unparser
       #
       def emit_arguments
         return unless arguments?
-        parentheses do
+        parens = index? ? INDEXED_PARENS : NORMAL_PARENS
+        parentheses(*parens) do
           delimited(arguments)
         end
       end
@@ -222,7 +152,7 @@ module Unparser
         receiver = children.first
         return unless receiver
         visit(receiver)
-        write(DOT)
+        write(DOT) unless index?
       end
 
     end # Send

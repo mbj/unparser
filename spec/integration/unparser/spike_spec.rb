@@ -177,11 +177,12 @@ describe Unparser, 'spike' do
       assert_round_trip '*foo = 1, 2'
       assert_round_trip '@a, @b = 1, 2'
       assert_round_trip 'a.foo, a.bar = 1, 2'
-     #assert_round_trip 'a[0], a[1] = 1, 2'
-     #assert_round_trip 'a[*foo], a[1] = 1, 2'
+      assert_round_trip 'a[0, 2]'
+      assert_round_trip 'a[0], a[1] = 1, 2'
+      assert_round_trip 'a[*foo], a[1] = 1, 2'
       assert_round_trip '@@a, @@b = 1, 2'
       assert_round_trip '$a, $b = 1, 2'
-     #assert_round_trip 'a, b = foo'
+      assert_round_trip 'a, b = foo'
     end
   end
 
@@ -190,6 +191,7 @@ describe Unparser, 'spike' do
     assert_round_trip 'self.foo'
     assert_round_trip 'a.foo'
     assert_round_trip 'A.foo'
+    assert_round_trip 'foo[1]'
     assert_round_trip 'foo(1)'
     assert_round_trip 'foo(bar)'
     assert_round_trip 'foo(&block)'

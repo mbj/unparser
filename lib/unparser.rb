@@ -50,10 +50,12 @@ require 'unparser/emitter/literal/range'
 require 'unparser/emitter/literal/dynamic_body'
 require 'unparser/emitter/literal/execute_string'
 require 'unparser/emitter/send'
+require 'unparser/emitter/block'
 require 'unparser/emitter/assignment'
 require 'unparser/emitter/variable'
 require 'unparser/emitter/splat'
 require 'unparser/emitter/cbase'
+require 'unparser/emitter/argument'
 require 'unparser/emitter/begin'
 
 Unparser::Emitter::REGISTRY.freeze
