@@ -190,29 +190,29 @@ module Unparser
       buffer.append(string)
     end
 
-  private
+    # Write string to buffer followed by nl
+    #
+    # @param [String] string
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def write_nl(string)
+      write(string)
+      nl
+    end
 
-    # Dummy begin node implementation
-    class Begin < self
-
-      handle :begin
-
-      # Dispatch node
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write("begin\n")
-        indent
-        node.children.each do |child|
-          visit(child)
-          nl
-        end
-        unindent
-        write("end")
-      end
+    # Call emit contents of block indented
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def indented
+      indent
+      yield
+      unindent
     end
 
     # Emitter that fully relies on parser source maps

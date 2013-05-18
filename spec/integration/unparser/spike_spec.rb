@@ -36,7 +36,8 @@ describe Unparser, 'spike' do
 
   def assert_round_trip(input, parser)
     ast = parser.parse(input)
-    Unparser.unparse(ast).should eql(input)
+    generated = Unparser.unparse(ast)
+    generated.should eql(input)
   end
 
   def self.assert_generates(ast, expected, versions = RUBIES)
@@ -182,21 +183,92 @@ describe Unparser, 'spike' do
     assert_round_trip "foo do\nbar\nend\n"
   end
 
-  context 'block' do
+  context 'begin; end' do
     assert_round_trip strip(<<-RUBY)
       begin
         foo
         bar
       end
     RUBY
-  end
 
-  context 'begin; end' do
     assert_round_trip strip(<<-RUBY)
       begin
         foo
         bar
       end.blah
+    RUBY
+  end
+
+  context 'begin / rescue / ensure' do
+    assert_round_trip strip(<<-RUBY)
+      begin
+        begin
+          foo
+        ensure
+          baz
+        end
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+      rescue
+        baz
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        begin
+          foo
+        ensure
+          bar
+        end
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        begin
+          foo
+          bar
+        end
+      rescue
+        baz
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+      rescue Exception
+        bar
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+      rescue => bar
+        bar
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+      rescue Exception, Other => bar
+        bar
+      end
+    RUBY
+
+    assert_round_trip strip(<<-RUBY)
+      begin
+        foo
+      rescue Exception => bar
+        bar
+      end
     RUBY
   end
 

@@ -1,5 +1,43 @@
 module Unparser
   class Emitter
+
+    class Cdecl < self
+
+      handle :cdecl
+
+      def dispatch
+        write(children[1].to_s)
+        value = children[2]
+        if value
+          write(' = ')
+          visit(value)
+        end
+      end
+    end
+
+    # Emitter for cvdecl nodes that will go away soon
+    class Cvdecl < self
+
+      handle :cvdecl
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(children.first.to_s)
+        value = children[1]
+        if value
+          write(' = ')
+          visit(value)
+        end
+      end
+    end
+
     # Emitter for various variable accesses
     class Variable < self
 
