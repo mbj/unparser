@@ -448,5 +448,87 @@ describe Unparser, 'spike' do
       RUBY
 
     end
+
+    context 'class' do
+      assert_source <<-RUBY
+        class TestClass
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class << some_object
+          the_body
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class SomeNameSpace::TestClass
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class Some::Name::Space::TestClass
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class TestClass < Object
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class TestClass < SomeNameSpace::Object
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class TestClass
+          def foo
+            :bar
+          end
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class ::TestClass
+
+        end
+      RUBY
+    end
+
+    context 'module' do
+
+      assert_source <<-RUBY 
+        module TestModule
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        module SomeNameSpace::TestModule
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        module Some::Name::Space::TestModule
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        module TestModule
+          def foo
+            :bar
+          end
+        end
+      RUBY
+
+    end
   end
 end

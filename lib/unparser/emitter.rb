@@ -10,6 +10,7 @@ module Unparser
     WS      = ' '.freeze
     K_END   = 'end'.freeze
     K_BEGIN = 'begin'.freeze
+    K_CLASS = 'class'.freeze
 
     # Register emitter for type
     #
