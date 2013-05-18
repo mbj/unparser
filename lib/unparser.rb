@@ -59,5 +59,7 @@ require 'unparser/emitter/argument'
 require 'unparser/emitter/begin'
 require 'unparser/emitter/return'
 require 'unparser/emitter/undef'
+require 'unparser/emitter/def'
+require 'unparser/emitter/defs'
 
 Unparser::Emitter::REGISTRY.freeze

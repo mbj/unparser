@@ -60,11 +60,14 @@ NestedIterators:
 TooManyStatements:
   max_statements: 5
   exclude: 
-    - Unparser::Emitter::Block#dispatch # 6 statements
+  - Unparser::Emitter::Block#dispatch # 6 statements
+  - Unparser::Emitter::Def#dispatch # 6 statements
   enabled: true
 DuplicateMethodCall:
   allow_calls: []
-  exclude: []
+  exclude:
+  - Unparser::Emitter::Def#dispatch # two calls to Emitter#ws okay
+  - Unparser::Emitter::Optarg#dispatch # two calls to Emitter#ws okay
   enabled: true
   max_calls: 1
 UtilityFunction:
@@ -84,7 +87,7 @@ UncommunicativeVariableName:
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
   exclude: 
-    - Unparser::Emitter::Send
+  - Unparser::Emitter::Send
   enabled: true
   max_ifs: 1
 DataClump:

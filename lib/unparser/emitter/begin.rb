@@ -144,7 +144,7 @@ module Unparser
         k_end
       end
 
-      # Test for flat emit
+      # Test for flat emit without keywords
       #
       # @return [true]
       #   if flat emit is possible
@@ -155,7 +155,7 @@ module Unparser
       # @api private
       #
       def flat?
-        children.one?
+        children.one? 
       end
 
       # Emit inner nodes

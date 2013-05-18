@@ -1,27 +1,6 @@
 module Unparser
   class Emitter
 
-    # Rest argument emitter
-    class Restarg < self
-      SPLAT = '*'.freeze
-
-      handle :restarg
-
-    protected
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(SPLAT)
-        write(first_child.to_s)
-      end
-
-    end # Restarg
-
     # Arguments emitter
     class Arguments < self
 
@@ -40,6 +19,70 @@ module Unparser
       end
 
     end # Arguments
+
+    # Emitter for block arguments
+    class Blockarg < self
+
+      handle :blockarg
+
+      O_BLOCK_PASS = '&'.freeze
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(O_BLOCK_PASS)
+        write(first_child.to_s)
+      end
+    end # Blockarg
+
+    # Optional argument emitter
+    class Optarg < self
+
+      handle :optarg
+
+      O_ASSIGN = '='.freeze
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(first_child.to_s)
+        ws
+        write(O_ASSIGN)
+        ws
+        visit(children[1])
+      end
+    end
+
+    # Rest argument emitter
+    class Restarg < self
+      SPLAT = '*'.freeze
+
+      handle :restarg
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(SPLAT)
+        write(first_child.to_s)
+      end
+
+    end # Restarg
 
     # Argument emitter
     class Argument < self
@@ -79,5 +122,6 @@ module Unparser
       end
 
     end # BlockPass
+
   end # Emitter
 end # Unparser

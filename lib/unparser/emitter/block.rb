@@ -22,9 +22,8 @@ module Unparser
         emit_send
         write(K_DO)
         emit_block_arguments
-        emit_body
+        indented { emit_body }
         k_end
-        nl
       end
 
       # Emit send 
@@ -45,10 +44,10 @@ module Unparser
       #
       def emit_block_arguments
         arguments = children[1]
+        return if arguments.children.empty?
         parentheses(PIPE_OPEN, PIPE_CLOSE) do
           visit(arguments)
-        end unless arguments.children.empty?
-        nl
+        end 
       end
 
       # Emit body
@@ -61,7 +60,6 @@ module Unparser
         body = children[2]
         return if body.type == :nil
         visit(body)
-        nl
       end
 
     end # Block

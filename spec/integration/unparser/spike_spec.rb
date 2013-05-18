@@ -29,9 +29,10 @@ describe Unparser, 'spike' do
     line = lines.first
     match = /\A[ ]*/.match(line)
     length = match[0].length
-    lines.map do |line|
+    source = lines.map do |line|
       line[(length..-1)]
-    end.join[0..-2]
+    end.join
+    source.chomp
   end
 
   def assert_round_trip(input, parser)
@@ -216,12 +217,12 @@ describe Unparser, 'spike' do
     assert_round_trip 'foo(bar)'
     assert_round_trip 'foo(&block)'
     assert_round_trip 'foo(*arguments)'
-    assert_round_trip "foo do\nend\n"
-    assert_round_trip "foo(1) do\nend\n"
-    assert_round_trip "foo do |a, b|\nend\n"
-    assert_round_trip "foo do |a, *b|\nend\n"
-    assert_round_trip "foo do |a, *|\nend\n"
-    assert_round_trip "foo do\nbar\nend\n"
+    assert_round_trip "foo do\n\nend"
+    assert_round_trip "foo(1) do\n\nend"
+    assert_round_trip "foo do |a, b|\n\nend"
+    assert_round_trip "foo do |a, *b|\n\nend"
+    assert_round_trip "foo do |a, *|\n\nend"
+    assert_round_trip "foo do\n  bar\nend"
   end
 
   context 'begin; end' do
@@ -331,5 +332,121 @@ describe Unparser, 'spike' do
         baz
       end
     RUBY
+  end
+
+  context 'undef' do
+    assert_source 'undef :foo'
+  end
+
+  context 'define' do
+    context 'on instance' do
+
+      assert_source <<-RUBY
+        def foo
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar, baz)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar = true)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar, baz = true)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(*)
+          bar
+        end
+      RUBY
+      
+      assert_source <<-RUBY
+        def foo(*bar)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar, *baz)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(baz = true, *bor)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(baz = true, *bor, &block)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar, baz = true, *bor)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(&block)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo(bar, &block)
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def initialize(attributes, options)
+          begin
+            @attributes = freeze_object(attributes)
+            @options = freeze_object(options)
+            @attribute_for = Hash[@attributes.map do |attribute|
+              attribute.name
+            end.zip(@attributes)]
+            @keys = coerce_keys
+          end
+        end
+      RUBY
+    end
+
+    context 'on singleton' do
+
+      assert_source <<-RUBY
+        def self.foo
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def Foo.bar
+          bar
+        end
+      RUBY
+
+    end
   end
 end
