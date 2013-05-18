@@ -62,6 +62,10 @@ describe Unparser, 'spike' do
     end
   end
 
+  def self.assert_source(input, versions = RUBIES)
+    assert_round_trip(strip(input), versions)
+  end
+
   context 'literal' do
     context 'fixnum' do
       assert_generates s(:int,  1),  '1'
@@ -205,14 +209,14 @@ describe Unparser, 'spike' do
   end
 
   context 'begin; end' do
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
         bar
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
         bar
@@ -221,7 +225,7 @@ describe Unparser, 'spike' do
   end
 
   context 'begin / rescue / ensure' do
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         begin
           foo
@@ -231,7 +235,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
       rescue
@@ -239,7 +243,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         begin
           foo
@@ -249,7 +253,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         begin
           foo
@@ -260,7 +264,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
       rescue Exception
@@ -268,7 +272,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
       rescue => bar
@@ -276,7 +280,7 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
       rescue Exception, Other => bar
@@ -284,11 +288,43 @@ describe Unparser, 'spike' do
       end
     RUBY
 
-    assert_round_trip strip(<<-RUBY)
+    assert_source <<-RUBY
       begin
         foo
       rescue Exception => bar
         bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        bar
+      rescue SomeError, *bar
+        baz
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        bar
+      rescue SomeError, *bar => exception
+        baz
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        bar
+      rescue *bar
+        baz
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        bar
+      rescue *bar => exception
+        baz
       end
     RUBY
   end
