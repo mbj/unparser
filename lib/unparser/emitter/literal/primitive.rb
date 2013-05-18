@@ -30,7 +30,7 @@ module Unparser
         # @api private
         #
         def value
-          node.children.first
+          first_child
         end
 
         # Emitter for primitives based on Object#inspect

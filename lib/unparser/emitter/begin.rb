@@ -29,6 +29,8 @@ module Unparser
 
       handle :ensure
 
+      K_ENSURE = 'ensure'.freeze
+
     private
 
       # Perform dispatch
@@ -38,14 +40,36 @@ module Unparser
       # @api private
       #
       def dispatch
-        write('begin')
-        indented { visit(children[0]) }
-        write('ensure')
-        indented { visit(children[1]) }
-        write('end')
+        k_begin
+        emit_body
+        write(K_ENSURE)
+        emit_ensure_body
+        k_end
       end
+
+      # Emit body
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_body
+        indented { visit(first_child) }
+      end
+
+      # Emit ensure body
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_ensure_body
+        indented { visit(children[1]) }
+      end
+
     end # Ensure
 
+    # Emitter for rescue body nodes
     class Resbody < self
 
       handle :resbody
@@ -143,8 +167,9 @@ module Unparser
       # @api private
       #
       def emit_inner
-        max = children.length - 1
-        children.each_with_index do |child, index|
+        childs = children
+        max = childs.length - 1
+        childs.each_with_index do |child, index|
           visit(child)
           nl if index < max
         end

@@ -1,11 +1,12 @@
 module Unparser
   class Emitter
+
     # Block emitter
     class Block < self
 
       handle :block
 
-      DO = ' do'.freeze
+      K_DO = ' do'.freeze
       PIPE_OPEN = ' |'.freeze
       PIPE_CLOSE = '|'.freeze
 
@@ -19,10 +20,10 @@ module Unparser
       #
       def dispatch
         emit_send
-        write(DO)
+        write(K_DO)
         emit_block_arguments
         emit_body
-        write('end')
+        k_end
         nl
       end
 
@@ -33,7 +34,7 @@ module Unparser
       # @api private
       #
       def emit_send
-        visit(children.first)
+        visit(first_child)
       end
 
       # Emit arguments

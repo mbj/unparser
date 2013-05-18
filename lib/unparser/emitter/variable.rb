@@ -15,8 +15,8 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(children[1].to_s)
-        value = children[2]
+        name, value = children[1, 2]
+        write(name.to_s)
         if value
           write(' = ')
           visit(value)
@@ -38,7 +38,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(children.first.to_s)
+        write(first_child.to_s)
         value = children[1]
         if value
           write(' = ')
@@ -61,7 +61,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(children.first.to_s)
+        write(first_child.to_s)
       end
 
     end # Access
@@ -91,7 +91,7 @@ module Unparser
       # @api private
       #
       def emit_parent
-        parent = children.first
+        parent = first_child
         return unless parent
         visit(parent)
         if parent.type != :cbase
@@ -102,9 +102,7 @@ module Unparser
 
     # Emitter for nth_ref nodes (regexp captures)
     class NthRef < self
-
       PREFIX = '$'.freeze
-
       handle :nth_ref
 
     private
@@ -117,7 +115,7 @@ module Unparser
       #
       def dispatch
         write(PREFIX)
-        write(children.first.to_s)
+        write(first_child.to_s)
       end
 
     end # NthRef

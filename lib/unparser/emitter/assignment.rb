@@ -51,7 +51,7 @@ module Unparser
           # @api private
           #
           def emit_left
-            write(children.first.to_s)
+            write(first_child.to_s)
           end
 
           # Return right node
@@ -100,7 +100,7 @@ module Unparser
           # @api private
           #
           def emit_base
-            base = children.first
+            base = first_child
             visit(base) if base
           end
         end # Constant
@@ -120,7 +120,7 @@ module Unparser
         # @api private
         #
         def emit_left
-          visit(children.first)
+          visit(first_child)
         end
 
         # Emit right

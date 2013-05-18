@@ -44,7 +44,6 @@ module Unparser
         INDEX_SELECTORS.include?(selector)
       end
 
-
       # Return selector
       #
       # @return [undefined]
@@ -149,7 +148,7 @@ module Unparser
       # @api private
       #
       def emit_receiver
-        receiver = children.first
+        receiver = first_child
         return unless receiver
         visit(receiver)
         write(DOT) unless index?

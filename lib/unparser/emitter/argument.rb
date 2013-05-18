@@ -17,7 +17,7 @@ module Unparser
       #
       def dispatch
         write(SPLAT)
-        write(children.first.to_s)
+        write(first_child.to_s)
       end
 
     end # Restarg
@@ -55,7 +55,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(children.first.to_s)
+        write(first_child.to_s)
       end
 
     end # Argument
@@ -75,7 +75,7 @@ module Unparser
       #
       def dispatch
         write(PASS)
-        visit(children.first)
+        visit(first_child)
       end
 
     end # BlockPass

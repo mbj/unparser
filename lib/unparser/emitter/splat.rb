@@ -16,7 +16,7 @@ module Unparser
       #
       def dispatch
         write(SPLAT)
-        child = children.first
+        child = first_child
         visit(child) if child
       end
     end
