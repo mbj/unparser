@@ -3,7 +3,6 @@ module Unparser
 
     # Base class for assignment emitters
     class Assignment < self
-      OPERATOR = ' = '.freeze
 
     private
 
@@ -30,7 +29,7 @@ module Unparser
         def emit_right
           right = right_node
           if right
-            write(OPERATOR)
+            write(WS, O_ASN, WS)
             visit(right) 
           end
         end
@@ -130,7 +129,7 @@ module Unparser
         # @api private
         #
         def emit_right
-          write(OPERATOR)
+          write(WS, O_ASN, WS)
           right = children.last
           case right.type
           when :array
@@ -144,6 +143,7 @@ module Unparser
 
       # Emitter for multiple assignment left hand side
       class MLHS < Emitter
+
         handle :mlhs
 
       private

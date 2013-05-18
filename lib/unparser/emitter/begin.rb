@@ -74,7 +74,7 @@ module Unparser
 
       handle :resbody
 
-      RESCUE = 'rescue'.freeze
+      K_RESCUE = 'rescue'.freeze
 
     private
 
@@ -85,7 +85,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(RESCUE)
+        write(K_RESCUE)
         emit_exception
         emit_assignment
         indented { visit(children[2]) }
@@ -104,8 +104,6 @@ module Unparser
         delimited(exception.children)
       end
 
-      ASSIGN_OP = ' => '.freeze
-
       # Emit assignment
       #
       # @return [undefined]
@@ -115,7 +113,7 @@ module Unparser
       def emit_assignment
         assignment = children[1]
         return unless assignment
-        write(ASSIGN_OP)
+        write(WS, O_ASR, WS)
         visit(assignment)
       end
 

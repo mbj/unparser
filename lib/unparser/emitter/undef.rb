@@ -5,8 +5,6 @@ module Unparser
 
       handle :undef
 
-      K_UNDEF = 'undef'.freeze
-
     private
 
       # Perform dispatch
@@ -16,8 +14,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_UNDEF)
-        ws
+        write(K_UNDEF, WS)
         visit(first_child)
       end
 

@@ -2,7 +2,6 @@ module Unparser
   class Emitter
     # Emitter for splats
     class Splat < self
-      SPLAT = '*'.freeze
 
       handle :splat
 
@@ -15,7 +14,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(SPLAT)
+        write(O_SPLAT)
         child = first_child
         visit(child) if child
       end

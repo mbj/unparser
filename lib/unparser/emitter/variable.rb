@@ -18,7 +18,7 @@ module Unparser
         name, value = children[1, 2]
         write(name.to_s)
         if value
-          write(' = ')
+          write(WS, O_ASN, WS)
           visit(value)
         end
       end
@@ -41,7 +41,7 @@ module Unparser
         write(first_child.to_s)
         value = children[1]
         if value
-          write(' = ')
+          write(WS, O_ASN, WS)
           visit(value)
         end
       end
@@ -95,7 +95,7 @@ module Unparser
         return unless parent
         visit(parent)
         if parent.type != :cbase
-          write(CBase::BASE)
+          write(O_DCL)
         end
       end
     end

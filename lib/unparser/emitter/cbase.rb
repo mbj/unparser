@@ -2,21 +2,19 @@ module Unparser
   class Emitter
     # Emitter for toplevel constant reference nodes
     class CBase < self
-      BASE = '::'.freeze
 
       handle :cbase
 
+    private
+
       # Perform dispatch
       #
-      # @param [Parser::AST::Node] _node
-      # @param [Buffer] buffer
-      #
-      # @return [self]
+      # @return [undefined]
       #
       # @api private
       #
-      def self.emit(_node, buffer)
-        buffer.append(BASE)
+      def dispatch
+        write(O_DCL)
       end
 
     end # CBase

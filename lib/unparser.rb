@@ -60,7 +60,7 @@ require 'unparser/emitter/begin'
 require 'unparser/emitter/return'
 require 'unparser/emitter/undef'
 require 'unparser/emitter/def'
-require 'unparser/emitter/defs'
 require 'unparser/emitter/class'
+require 'unparser/emitter/module'
 
 Unparser::Emitter::REGISTRY.freeze

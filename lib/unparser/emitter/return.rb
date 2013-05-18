@@ -3,8 +3,6 @@ module Unparser
     # Emitter for return nodes
     class Return < self
 
-      K_RETURN = 'return'.freeze
-
       handle :return
 
     private
@@ -34,6 +32,6 @@ module Unparser
         end
       end
 
-    end
+    end # Return
   end # Emitter
 end # Unparser

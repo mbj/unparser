@@ -3,8 +3,6 @@ module Unparser
     # Emitter for send
     class Send < self
 
-      DOT = '.'.freeze
-
       handle :send
 
     private
@@ -151,7 +149,7 @@ module Unparser
         receiver = first_child
         return unless receiver
         visit(receiver)
-        write(DOT) unless index?
+        write(O_DOT) unless index?
       end
 
     end # Send

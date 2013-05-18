@@ -7,10 +7,31 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {}
 
+    DEFAULT_DELIMITER = ', '.freeze
+
     WS      = ' '.freeze
-    K_END   = 'end'.freeze
-    K_BEGIN = 'begin'.freeze
-    K_CLASS = 'class'.freeze
+    O_DOT   = '.'.freeze
+    O_LT    = '<'.freeze
+    O_DLT   = '<<'.freeze
+    O_AMP   = '&'.freeze
+    O_ASN   = '='.freeze
+    O_SPLAT = '*'.freeze
+    O_ASR   = '=>'.freeze
+    O_PIPE  = '|'.freeze
+    O_DCL   = '::'.freeze
+
+    M_PO  = '('.freeze
+    M_PC  = ')'.freeze
+
+    K_DO     = 'do'.freeze
+    K_DEF    = 'def'.freeze
+    K_END    = 'end'.freeze
+    K_BEGIN  = 'begin'.freeze
+    K_CLASS  = 'class'.freeze
+    K_MODULE = 'module'.freeze
+    K_RESCUE = 'rescue'.freeze
+    K_RETURN = 'return'.freeze
+    K_UNDEF  = 'undef'.freeze
 
     # Register emitter for type
     #
@@ -97,7 +118,7 @@ module Unparser
     #
     # @api private
     #
-    def parentheses(open='(', close=')')
+    def parentheses(open=M_PO, close=M_PC)
       write(open)
       yield
       write(close)
@@ -125,7 +146,6 @@ module Unparser
       self.class.visit(node, buffer)
     end
 
-    DEFAULT_DELIMITER = ', '.freeze
 
     # Emit delimited body
     #
@@ -164,16 +184,16 @@ module Unparser
       buffer.nl
     end
 
-    # Write string into buffer
-    #
-    # @param [String] string
+    # Write strings into buffer
     #
     # @return [undefined]
     #
     # @api private
     #
-    def write(string)
-      buffer.append(string)
+    def write(*strings)
+      strings.each do |string|
+        buffer.append(string)
+      end
     end
 
     # Write begin keyword
@@ -231,6 +251,22 @@ module Unparser
       buffer.indent
       yield
       buffer.unindent
+    end
+
+    # Emit non nil body
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_non_nil_body(node)
+      if node.type == :nil
+        nl
+        return
+      end
+      indented { visit(node) }
     end
 
     # Emitter that fully relies on parser source maps

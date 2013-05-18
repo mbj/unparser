@@ -62,6 +62,7 @@ TooManyStatements:
   exclude: 
   - Unparser::Emitter::Block#dispatch # 6 statements
   - Unparser::Emitter::Def#dispatch # 6 statements
+  - Unparser::Emitter::Class#dispatch # 6 statements
   enabled: true
 DuplicateMethodCall:
   allow_calls: []

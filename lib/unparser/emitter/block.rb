@@ -6,10 +6,6 @@ module Unparser
 
       handle :block
 
-      K_DO = ' do'.freeze
-      PIPE_OPEN = ' |'.freeze
-      PIPE_CLOSE = '|'.freeze
-
     private
 
       # Perform dispatch
@@ -20,7 +16,7 @@ module Unparser
       #
       def dispatch
         emit_send
-        write(K_DO)
+        write(WS, K_DO)
         emit_block_arguments
         indented { emit_body }
         k_end
@@ -45,7 +41,8 @@ module Unparser
       def emit_block_arguments
         arguments = children[1]
         return if arguments.children.empty?
-        parentheses(PIPE_OPEN, PIPE_CLOSE) do
+        ws
+        parentheses(O_PIPE, O_PIPE) do
           visit(arguments)
         end 
       end

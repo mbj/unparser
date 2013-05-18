@@ -458,6 +458,12 @@ describe Unparser, 'spike' do
 
       assert_source <<-RUBY
         class << some_object
+
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        class << some_object
           the_body
         end
       RUBY

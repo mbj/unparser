@@ -50,8 +50,8 @@ module Unparser
             buffer.append(value.inspect)
           end
 
-        end
-      end
-    end
-  end
-end
+        end # Inspect
+      end # Primitive
+    end # Literal
+  end # Emitter
+end # Unparser

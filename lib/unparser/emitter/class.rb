@@ -14,8 +14,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_CLASS)
-        ws
+        write(K_CLASS, WS)
         visit(first_child)
         emit_superclass
         emit_body
@@ -31,7 +30,7 @@ module Unparser
       def emit_superclass
         superclass = children[1]
         return unless superclass
-        write(' < ')
+        write(WS, O_LT, WS)
         visit(superclass)
       end
 
@@ -42,12 +41,7 @@ module Unparser
       # @api private
       #
       def emit_body
-        body = children[2]
-        if body.type == :nil
-          nl
-          return
-        end
-        indented { visit(body) }
+        emit_non_nil_body(children[2])
       end
 
     end # Class
@@ -57,8 +51,6 @@ module Unparser
 
       handle :sclass
 
-      O_SINGLETON = '<<'.freeze
-
       # Perform dispatch
       #
       # @return [undefined]
@@ -66,12 +58,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_CLASS)
-        ws
-        write(O_SINGLETON)
-        ws
+        write(K_CLASS, WS, O_DLT, WS) 
         visit(first_child)
-        indented { visit(children[1]) }
+        emit_non_nil_body(children[1])
         k_end
       end
 

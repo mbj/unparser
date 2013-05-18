@@ -25,8 +25,6 @@ module Unparser
 
       handle :blockarg
 
-      O_BLOCK_PASS = '&'.freeze
-
     private
 
       # Perform dispatch
@@ -36,17 +34,15 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_BLOCK_PASS)
-        write(first_child.to_s)
+        write(O_AMP, first_child.to_s)
       end
+
     end # Blockarg
 
     # Optional argument emitter
     class Optarg < self
 
       handle :optarg
-
-      O_ASSIGN = '='.freeze
 
       # Perform dispatch
       #
@@ -55,18 +51,13 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(first_child.to_s)
-        ws
-        write(O_ASSIGN)
-        ws
+        write(first_child.to_s, WS, O_ASN, WS)
         visit(children[1])
       end
     end
 
     # Rest argument emitter
     class Restarg < self
-      SPLAT = '*'.freeze
-
       handle :restarg
 
     private
@@ -78,8 +69,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(SPLAT)
-        write(first_child.to_s)
+        write(O_SPLAT, first_child.to_s)
       end
 
     end # Restarg
@@ -106,9 +96,9 @@ module Unparser
     # Block pass node emitter
     class BlockPass < self
 
-      PASS = '&'.freeze
-
       handle :block_pass
+
+    private
 
       # Perform dispatch
       #
@@ -117,7 +107,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(PASS)
+        write(O_AMP)
         visit(first_child)
       end
 
