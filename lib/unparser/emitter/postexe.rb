@@ -15,7 +15,7 @@ module Unparser
       #
       def dispatch
         write(K_PREEXE, WS)
-        parentheses(*ANGLE_BRACKETS) do
+        parentheses(*CURLY_BRACKETS) do
           indented { visit(first_child) }
         end
       end
@@ -39,7 +39,7 @@ module Unparser
       #
       def dispatch
         write(K_POSTEXE, WS)
-        parentheses(*ANGLE_BRACKETS) do
+        parentheses(*CURLY_BRACKETS) do
           indented { visit(first_child) }
         end
       end

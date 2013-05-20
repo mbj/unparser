@@ -9,7 +9,7 @@ module Unparser
 
     DEFAULT_DELIMITER = ', '.freeze
     
-    ANGLE_BRACKETS = IceNine.deep_freeze(%w({ }))
+    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     WS      = ' '.freeze
     NL      = "\n".freeze
