@@ -81,9 +81,9 @@ describe Unparser, 'spike' do
     context 'string' do
       assert_generates %q("foo" "bar"), %q("foobar")
       assert_generates %q(%Q(foo"#{@bar})), %q("foo\"#{@bar}")
-      assert_round_trip %q("\"")
-      assert_round_trip %q("foo#{1}bar")
-      assert_round_trip %q("\"#{@a}")
+      assert_source %q("\"")
+      assert_source %q("foo#{1}bar")
+      assert_source %q("\"#{@a}")
     end
 
     context 'execute string' do
@@ -113,7 +113,8 @@ describe Unparser, 'spike' do
     end
 
     context 'dynamic string' do
-      assert_round_trip %q("foo#{@bar}")
+      assert_source %q("foo#{@bar}")
+      assert_source     %q("fo\no#{bar}b\naz")
     end
 
     context 'irange' do

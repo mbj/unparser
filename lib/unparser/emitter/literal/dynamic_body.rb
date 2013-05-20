@@ -38,6 +38,12 @@ module Unparser
           emit_interpolated_segment(node)
         end
 
+        ESCAPES = IceNine.deep_freeze(
+          "\n" => '\n'
+        )
+
+        REPLACEMENTS = ::Regexp.union(ESCAPES.keys)
+
         # Emit str segment
         #
         # @param [Parser::Node] node
@@ -48,7 +54,11 @@ module Unparser
         #
         def emit_str_segment(node)
           util = self.class
-          write(node.children.first.gsub(util::DELIMITER, util::REPLACEMENT))
+          str = node.children.first
+          str = str.
+            gsub(util::DELIMITER, util::REPLACEMENT).
+            gsub(REPLACEMENTS, ESCAPES)
+          write(str)
         end
 
         # Emit interpolated segment
