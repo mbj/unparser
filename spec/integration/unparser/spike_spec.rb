@@ -172,6 +172,10 @@ describe Unparser, 'spike' do
     assert_source 'break(a)'
   end
 
+  context 'next' do
+    assert_source 'next'
+  end
+
   context 'retry' do
     assert_source 'retry'
   end

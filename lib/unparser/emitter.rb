@@ -42,6 +42,7 @@ module Unparser
     K_BREAK   = 'break'.freeze
     K_RETRY   = 'retry'.freeze
     K_REDO    = 'redo'.freeze
+    K_NEXT    = 'next'.freeze
 
     # Register emitter for type
     #
