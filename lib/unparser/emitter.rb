@@ -43,6 +43,10 @@ module Unparser
     K_RETRY   = 'retry'.freeze
     K_REDO    = 'redo'.freeze
     K_NEXT    = 'next'.freeze
+    K_IF      = 'if'.freeze
+    K_ALIAS   = 'alias'.freeze
+    K_ELSE    = 'else'.freeze
+    K_UNLESS  = 'unless'.freeze
 
     # Register emitter for type
     #

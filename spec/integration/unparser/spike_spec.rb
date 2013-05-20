@@ -545,6 +545,34 @@ describe Unparser, 'spike' do
       RUBY
     end
 
+    context 'if statement' do
+      assert_source <<-RUBY
+        if /foo/
+          bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        if 3
+          9
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        if 4
+          5
+        else
+          6
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        unless 3
+          9
+        end
+      RUBY
+    end
+
     context 'on singleton' do
 
       assert_source <<-RUBY
@@ -654,7 +682,6 @@ describe Unparser, 'spike' do
         assert_source "self.foo #{op} bar"
         assert_source "foo[key] #{op} bar"
       end
-
     end
 
     context 'element assignment' do
@@ -670,7 +697,457 @@ describe Unparser, 'spike' do
     end
 
     context 'defined?' do
-      context 'with instance varialbe' do
+      assert_source <<-RUBY
+        defined?(@foo)
+      RUBY
+
+      assert_source <<-RUBY
+        defined?(Foo)
+      RUBY
+    end
+  end
+
+  context 'lambda' do
+    assert_source <<-RUBY
+      lambda do |a, b|
+        a
+      end
+    RUBY
+  end
+
+  context 'match operators' do
+    assert_source <<-RUBY
+      /bar/.=~(foo)
+    RUBY
+
+    assert_source <<-RUBY
+      foo.=~(/bar/)
+    RUBY
+  end
+
+ #context 'flip flops' do
+ #  context 'flip2' do
+ #    assert_source <<-RUBY
+ #      if (((i) == (4)))..(((i) == (4)))
+ #        foo
+ #      end
+ #    RUBY
+ #  end
+
+ #  context 'flip3' do
+ #    assert_source <<-RUBY
+ #      if (((i) == (4)))...(((i) == (4)))
+ #        foo
+ #      end
+ #    RUBY
+ #  end
+ #end
+
+  context 'valias' do
+    assert_source <<-RUBY
+      alias $foo $bar
+    RUBY
+  end
+
+  context 'alias' do
+    assert_source <<-RUBY
+      alias foo bar
+    RUBY
+  end
+
+  context 'yield' do
+    context 'without arguments' do
+      assert_source 'yield'
+    end
+
+    context 'with argument' do
+      assert_source 'yield(a)'
+    end
+
+    context 'with arguments' do
+      assert_source 'yield(a, b)'
+    end
+  end
+
+  context 'binary operators methods' do
+    %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
+      context "on literals #{operator}" do
+        assert_source "((1) #{operator} (2))"
+      end
+
+      context "#{operator} with splat args" do
+        assert_source "((left).#{operator}(*foo))"
+      end
+
+      context "on self #{operator}" do
+        assert_source "((self) #{operator} (b))"
+      end
+
+      context "on send #{operator}" do
+        assert_source "((a) #{operator} (b))"
+      end
+    end
+  end
+
+   context 'binary operator' do
+     context 'and keywords' do
+       assert_source '((a) || (break(foo)))'
+     end
+
+     context 'sending methods to result' do
+       assert_source '((a) || (b)).foo'
+     end
+
+     context 'nested' do
+       assert_source '((a) || (((b) || (c))))'
+     end
+   end
+
+  { :or => :'||', :and => :'&&' }.each do |word, symbol|
+    context "word form form equivalency of #{word} and #{symbol}" do
+      assert_generates "((a) #{symbol} (break(foo)))", "a #{word} break foo"
+    end
+  end
+
+  context 'expansion of shortcuts' do
+    context 'on += operator' do
+      assert_generates 'a = ((a) + (2))', 'a += 2'
+    end
+
+    context 'on -= operator' do
+      assert_generates 'a = ((a) - (2))', 'a -= 2'
+    end
+
+    context 'on **= operator' do
+      assert_generates 'a = ((a) ** (2))', 'a **= 2'
+    end
+
+    context 'on *= operator' do
+      assert_generates 'a = ((a) * (2))', 'a *= 2'
+    end
+
+    context 'on /= operator' do
+      assert_generates 'a = ((a) / (2))', 'a /= 2'
+    end
+  end
+
+  context 'shortcuts' do
+    context 'on &&= operator' do
+      assert_source '(a &&= (b))'
+    end
+
+    context 'on ||= operator' do
+      assert_source '(a ||= (2))'
+    end
+
+    context 'calling methods on shortcuts' do
+      assert_source '(a ||= (2)).bar'
+    end
+  end
+
+  context 'unary operators' do
+    context 'negation' do
+      assert_source '!1'
+    end
+
+    context 'double negation' do
+      assert_source '!!1'
+    end
+
+    context 'unary match' do
+      assert_source '~a'
+    end
+
+    context 'unary minus' do
+      assert_source '-a'
+    end
+
+    context 'unary plus' do
+      assert_source '+a'
+    end
+  end
+
+  context 'case statement' do
+    context 'without else branch' do
+      assert_source <<-RUBY
+        case 
+        when bar
+          baz
+        when baz
+          bar
+        end
+      RUBY
+    end
+  end
+
+  context 'receiver case statement' do
+    context 'without else branch' do
+      assert_source <<-RUBY
+        case foo
+        when bar
+          baz
+        when baz
+          bar
+        end
+      RUBY
+    end
+
+    context 'with multivalued conditions' do
+      assert_source <<-RUBY
+        case foo
+        when bar, baz
+          :other
+        end
+      RUBY
+    end
+
+    context 'with splat operator' do
+      assert_source <<-RUBY
+        case foo
+        when *bar
+          :value
+        end
+      RUBY
+    end
+
+    context 'with else branch' do
+      assert_source <<-RUBY
+        case foo
+        when bar
+          baz
+        else
+          :foo
+        end
+      RUBY
+    end
+  end
+
+  context 'for' do
+    context 'single assignment' do
+      assert_source <<-RUBY
+        for a in bar do
+          baz
+        end
+      RUBY
+    end
+
+    context 'splat assignment' do
+      assert_source <<-RUBY
+        for a, *b in bar do
+          baz
+        end
+      RUBY
+    end
+
+    context 'multiple assignment' do
+      assert_source <<-RUBY
+        for a, b in bar do
+          baz
+        end
+      RUBY
+    end
+  end
+
+  context 'loop' do
+    assert_source <<-RUBY
+      loop do
+        foo
+      end
+    RUBY
+  end
+
+  context 'while' do
+    context 'single statement in body' do
+      assert_source <<-RUBY
+        while false
+          3
+        end
+      RUBY
+    end
+
+    context 'multiple expressions in body' do
+      assert_source <<-RUBY
+        while false
+          3
+          5
+        end
+      RUBY
+    end
+  end
+
+  context 'until' do
+    context 'with single expression in body' do
+      assert_source <<-RUBY
+        until false
+          3
+        end
+      RUBY
+    end
+
+    context 'with multiple expressions in body' do
+      assert_source <<-RUBY 
+        while false
+          3
+          5
+        end
+      RUBY
+    end
+  end
+
+  # Note:
+  #
+  # Do not remove method_call from
+  #
+  # begin
+  #   stuff
+  # end.method_call 
+  #
+  # As 19mode would optimize begin end blocks away
+  #
+  context 'begin' do
+    context 'simple' do
+      assert_source <<-RUBY
+        begin
+          foo
+          bar
+        end.some_method
+      RUBY
+    end
+
+    context 'with rescue condition' do
+      assert_source <<-RUBY
+        x = begin
+          foo
+        rescue
+          bar
+        end.some_method
+      RUBY
+    end
+
+    context 'with with ensure' do
+      assert_source <<-RUBY
+        begin
+          foo
+        ensure
+          bar
+        end.some_method
+      RUBY
+    end
+  end
+
+  context 'rescue' do
+    context 'as block' do
+      assert_source <<-RUBY
+        begin
+          foo
+          foo
+        rescue
+          bar
+        end
+      RUBY
+    end
+    context 'without rescue condition' do
+      assert_source <<-RUBY
+        begin
+          bar
+        rescue
+          baz
+        end
+      RUBY
+    end
+
+    context 'within a block' do
+      assert_source <<-RUBY
+        foo do
+          begin
+            bar
+          rescue
+            baz
+          end
+        end
+      RUBY
+    end
+
+    context 'with rescue condition' do
+      context 'without assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError
+            baz
+          end
+        RUBY
+      end
+
+      context 'with assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError => exception
+            baz
+          end
+        RUBY
+      end
+    end
+
+    context 'with multivalued rescue condition' do
+      context 'without assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError, SomeOtherError
+            baz
+          end
+        RUBY
+      end
+
+      context 'with assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError, SomeOther => exception
+            baz
+          end
+        RUBY
+      end
+    end
+
+    context 'with multiple rescue conditions' do
+      assert_source <<-RUBY
+        begin
+          foo
+        rescue SomeError
+          bar
+        rescue
+          baz
+        end
+      RUBY
+    end
+
+    context 'with normal and splat condition' do
+      context 'without assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError, *bar
+            baz
+          end
+        RUBY
+      end
+
+      context 'with assignment' do
+        assert_source <<-RUBY
+          begin
+            bar
+          rescue SomeError, *bar => exception
+            baz
+          end
+        RUBY
+      end
+    end
+
+    context 'with splat condition' do
+      context 'without assignment' do
         assert_source <<-RUBY
           defined?(@foo)
         RUBY
