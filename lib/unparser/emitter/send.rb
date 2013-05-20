@@ -12,6 +12,8 @@ module Unparser
       INDEX_ASSIGN    = '[]='.freeze
       ASSIGN_SUFFIX   = '='.freeze
 
+      AMBIGOUS = [:irange, :erange].to_set.freeze
+
     private
 
       # Perform dispatch
@@ -29,6 +31,25 @@ module Unparser
         else
           non_index_dispatch
         end
+      end
+
+      # Emit unambigous receiver
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_unambigous_receiver
+        receiver = first_child
+        if receiver.type == :begin && receiver.children.length == 1
+          receiver = receiver.children.first
+        end
+        if AMBIGOUS.include?(receiver.type)
+          parentheses { visit(receiver) }
+          return
+        end
+
+        visit(receiver)
       end
 
       # Delegate to emitter
@@ -62,9 +83,8 @@ module Unparser
       # @api private
       #
       def emit_receiver
-        receiver = first_child
-        return unless receiver
-        visit(receiver)
+        return unless first_child
+        emit_unambigous_receiver
         write(O_DOT) 
       end
 

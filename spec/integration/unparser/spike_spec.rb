@@ -117,6 +117,13 @@ describe Unparser, 'spike' do
       assert_source     %q("fo\no#{bar}b\naz")
     end
 
+    context 'dynamic symbol' do
+      assert_source ':"foo#{bar}baz"'
+      assert_source ':"fo\no#{bar}b\naz"'
+      assert_source ':"#{bar}foo"'
+      assert_source ':"foo#{bar}"'
+    end
+
     context 'irange' do
       assert_generates '1..2', %q(1..2)
     end

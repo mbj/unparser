@@ -30,13 +30,23 @@ module Unparser
           Parser::AST::Node.new(:dyn_str_body, children)
         end
 
-        # Dynamic string literal emitters
+        # Dynamic string literal emitter
         class String < self
 
           OPEN = CLOSE = '"'.freeze
           handle :dstr
 
         end # String
+
+        # Dynamic symbol literal emitter
+        class Symbol < self
+
+          OPEN = ':"'.freeze
+          CLOSE = '"'.freeze
+
+          handle :dsym
+
+        end # Symbol
 
       end
     end # Literal
