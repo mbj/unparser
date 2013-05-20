@@ -47,6 +47,7 @@ module Unparser
     K_ALIAS   = 'alias'.freeze
     K_ELSE    = 'else'.freeze
     K_UNLESS  = 'unless'.freeze
+    K_YIELD   = 'yield'.freeze
 
     # Register emitter for type
     #

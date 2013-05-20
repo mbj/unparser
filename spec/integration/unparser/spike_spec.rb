@@ -460,6 +460,20 @@ describe Unparser, 'spike' do
     RUBY
   end
 
+  context 'yield' do
+    context 'without arguments' do
+      assert_source 'yield'
+    end
+
+    context 'with argument' do
+      assert_source 'yield(a)'
+    end
+
+    context 'with arguments' do
+      assert_source 'yield(a, b)'
+    end
+  end
+
   context 'if statement' do
     assert_source <<-RUBY
       if /foo/
@@ -752,20 +766,6 @@ describe Unparser, 'spike' do
  #    RUBY
  #  end
  #end
-
-  context 'yield' do
-    context 'without arguments' do
-      assert_source 'yield'
-    end
-
-    context 'with argument' do
-      assert_source 'yield(a)'
-    end
-
-    context 'with arguments' do
-      assert_source 'yield(a, b)'
-    end
-  end
 
   context 'binary operators methods' do
     %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|

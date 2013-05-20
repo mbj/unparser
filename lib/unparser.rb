@@ -72,5 +72,6 @@ require 'unparser/emitter/redo'
 require 'unparser/emitter/next'
 require 'unparser/emitter/if'
 require 'unparser/emitter/alias'
+require 'unparser/emitter/yield'
 
 Unparser::Emitter::REGISTRY.freeze
