@@ -557,5 +557,17 @@ describe Unparser, 'spike' do
         end
       end
     end
+
+    context 'defined?' do
+      context 'with instance varialbe' do
+        assert_source <<-RUBY
+          defined?(@foo)
+        RUBY
+
+        assert_source <<-RUBY
+          defined?(Foo)
+        RUBY
+      end
+    end
   end
 end

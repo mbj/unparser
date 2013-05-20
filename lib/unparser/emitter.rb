@@ -23,15 +23,16 @@ module Unparser
     M_PO  = '('.freeze
     M_PC  = ')'.freeze
 
-    K_DO     = 'do'.freeze
-    K_DEF    = 'def'.freeze
-    K_END    = 'end'.freeze
-    K_BEGIN  = 'begin'.freeze
-    K_CLASS  = 'class'.freeze
-    K_MODULE = 'module'.freeze
-    K_RESCUE = 'rescue'.freeze
-    K_RETURN = 'return'.freeze
-    K_UNDEF  = 'undef'.freeze
+    K_DO      = 'do'.freeze
+    K_DEF     = 'def'.freeze
+    K_END     = 'end'.freeze
+    K_BEGIN   = 'begin'.freeze
+    K_CLASS   = 'class'.freeze
+    K_MODULE  = 'module'.freeze
+    K_RESCUE  = 'rescue'.freeze
+    K_RETURN  = 'return'.freeze
+    K_UNDEF   = 'undef'.freeze
+    K_DEFINED = 'defined?'.freeze
 
     # Register emitter for type
     #
