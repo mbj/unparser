@@ -71,11 +71,11 @@ describe Unparser, 'spike' do
     context 'fixnum' do
       assert_generates s(:int,  1),  '1'
       assert_generates s(:int, -1), '-1'
-      assert_round_trip '1'
-      assert_round_trip '0x1'
-      assert_round_trip '1_000'
-      assert_round_trip '1e10'
-      assert_round_trip '?c'
+      assert_source '1'
+      assert_source '0x1'
+      assert_source '1_000'
+      assert_source '1e10'
+      assert_source '?c'
     end
 
     context 'string' do
@@ -87,26 +87,26 @@ describe Unparser, 'spike' do
     end
 
     context 'execute string' do
-      assert_round_trip '`foo`'
-      assert_round_trip '`foo#{@bar}`'
+      assert_source '`foo`'
+      assert_source '`foo#{@bar}`'
       assert_generates  '%x(\))', '`)`'
      #assert_generates  '%x(`)', '`\``'
-      assert_round_trip '`"`'
+      assert_source '`"`'
     end
 
     context 'symbol' do
       assert_generates s(:sym, :foo), ':foo'
       assert_generates s(:sym, :"A B"), ':"A B"'
-      assert_round_trip ':foo'
-      assert_round_trip ':"A B"'
-      assert_round_trip ':"A\"B"'
+      assert_source ':foo'
+      assert_source ':"A B"'
+      assert_source ':"A\"B"'
     end
 
     context 'regexp' do
-      assert_round_trip '/foo/'
-      assert_round_trip %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
-      assert_round_trip '/foo#{@bar}/'
-      assert_round_trip '/foo#{@bar}/im'
+      assert_source '/foo/'
+      assert_source %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
+      assert_source '/foo#{@bar}/'
+      assert_source '/foo#{@bar}/im'
       assert_generates '%r(/)', '/\//'
       assert_generates '%r(\))', '/)/'
       assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
@@ -133,75 +133,75 @@ describe Unparser, 'spike' do
     end
 
     context 'float' do
-      assert_round_trip '-0.1'
-      assert_round_trip '0.1'
+      assert_source '-0.1'
+      assert_source '0.1'
       assert_generates s(:float, -0.1), '-0.1'
       assert_generates s(:float, 0.1), '0.1'
     end
 
     context 'array' do
-      assert_round_trip '[1, 2]'
-      assert_round_trip '[1]'
-      assert_round_trip '[]'
-      assert_round_trip '[1, *@foo]'
-      assert_round_trip '[*@foo, 1]',     RUBIES - %w(1.8)
-      assert_round_trip '[*@foo, *@baz]', RUBIES - %w(1.8)
+      assert_source '[1, 2]'
+      assert_source '[1]'
+      assert_source '[]'
+      assert_source '[1, *@foo]'
+      assert_source '[*@foo, 1]',     RUBIES - %w(1.8)
+      assert_source '[*@foo, *@baz]', RUBIES - %w(1.8)
     end
 
     context 'hash' do
-      assert_round_trip '{}'
-      assert_round_trip '{1 => 2}'
-      assert_round_trip '{1 => 2, 3 => 4}'
+      assert_source '{}'
+      assert_source '{1 => 2}'
+      assert_source '{1 => 2, 3 => 4}'
     end
   end
 
   context 'access' do
-    assert_round_trip '@a'
-    assert_round_trip '@@a'
-    assert_round_trip '$a'
-    assert_round_trip '$1'
-    assert_round_trip '$`'
-    assert_round_trip 'CONST'
-    assert_round_trip 'SCOPED::CONST'
-    assert_round_trip '::TOPLEVEL'
-    assert_round_trip '::TOPLEVEL::CONST'
+    assert_source '@a'
+    assert_source '@@a'
+    assert_source '$a'
+    assert_source '$1'
+    assert_source '$`'
+    assert_source 'CONST'
+    assert_source 'SCOPED::CONST'
+    assert_source '::TOPLEVEL'
+    assert_source '::TOPLEVEL::CONST'
   end
 
   context 'singletons' do
-    assert_round_trip 'self'
-    assert_round_trip 'true'
-    assert_round_trip 'false'
-    assert_round_trip 'nil'
+    assert_source 'self'
+    assert_source 'true'
+    assert_source 'false'
+    assert_source 'nil'
   end
 
   context 'magic keywords' do
     assert_generates  '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
-    assert_round_trip '__FILE__'
-    assert_round_trip '__LINE__'
+    assert_source '__FILE__'
+    assert_source '__LINE__'
   end
 
   context 'assignment' do
     context 'single' do
-      assert_round_trip 'a = 1'
-      assert_round_trip '@a = 1'
-      assert_round_trip '@@a = 1'
-      assert_round_trip '$a = 1'
-      assert_round_trip 'CONST = 1'
+      assert_source 'a = 1'
+      assert_source '@a = 1'
+      assert_source '@@a = 1'
+      assert_source '$a = 1'
+      assert_source 'CONST = 1'
     end
 
     context 'multiple' do
-      assert_round_trip 'a, b = 1, 2'
-      assert_round_trip 'a, *foo = 1, 2'
-      assert_round_trip 'a, * = 1, 2'
-      assert_round_trip '*foo = 1, 2'
-      assert_round_trip '@a, @b = 1, 2'
-      assert_round_trip 'a.foo, a.bar = 1, 2'
-      assert_round_trip 'a[0, 2]'
-      assert_round_trip 'a[0], a[1] = 1, 2'
-      assert_round_trip 'a[*foo], a[1] = 1, 2'
-      assert_round_trip '@@a, @@b = 1, 2'
-      assert_round_trip '$a, $b = 1, 2'
-      assert_round_trip 'a, b = foo'
+      assert_source 'a, b = 1, 2'
+      assert_source 'a, *foo = 1, 2'
+      assert_source 'a, * = 1, 2'
+      assert_source '*foo = 1, 2'
+      assert_source '@a, @b = 1, 2'
+      assert_source 'a.foo, a.bar = 1, 2'
+      assert_source 'a[0, 2]'
+      assert_source 'a[0], a[1] = 1, 2'
+      assert_source 'a[*foo], a[1] = 1, 2'
+      assert_source '@@a, @@b = 1, 2'
+      assert_source '$a, $b = 1, 2'
+      assert_source 'a, b = foo'
     end
   end
 
@@ -216,21 +216,24 @@ describe Unparser, 'spike' do
   end
 
   context 'send' do
-    assert_round_trip 'foo'
-    assert_round_trip 'self.foo'
-    assert_round_trip 'a.foo'
-    assert_round_trip 'A.foo'
-    assert_round_trip 'foo[1]'
-    assert_round_trip 'foo(1)'
-    assert_round_trip 'foo(bar)'
-    assert_round_trip 'foo(&block)'
-    assert_round_trip 'foo(*arguments)'
-    assert_round_trip "foo do\n\nend"
-    assert_round_trip "foo(1) do\n\nend"
-    assert_round_trip "foo do |a, b|\n\nend"
-    assert_round_trip "foo do |a, *b|\n\nend"
-    assert_round_trip "foo do |a, *|\n\nend"
-    assert_round_trip "foo do\n  bar\nend"
+    assert_source 'foo'
+    assert_source 'self.foo'
+    assert_source 'a.foo'
+    assert_source 'A.foo'
+    assert_source 'foo[1]'
+    assert_source 'foo(1)'
+    assert_source 'foo(bar)'
+    assert_source 'foo(&block)'
+    assert_source 'foo(*arguments)'
+    assert_source "foo do\n\nend"
+    assert_source "foo(1) do\n\nend"
+    assert_source "foo do |a, b|\n\nend"
+    assert_source "foo do |a, *b|\n\nend"
+    assert_source "foo do |a, *|\n\nend"
+    assert_source "foo do\n  bar\nend"
+
+    # Special cases
+    assert_source '(1..2).max'
   end
 
   context 'begin; end' do
