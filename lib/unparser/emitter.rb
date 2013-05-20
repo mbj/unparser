@@ -38,6 +38,7 @@ module Unparser
     K_DEFINED = 'defined?'.freeze
     K_PREEXE  = 'BEGIN'.freeze
     K_POSTEXE = 'END'.freeze
+    K_SUPER   = 'super'.freeze
 
     # Register emitter for type
     #

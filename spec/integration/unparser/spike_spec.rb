@@ -376,6 +376,43 @@ describe Unparser, 'spike' do
     RUBY
   end
 
+  context 'super' do
+    assert_source 'super'
+
+    assert_source <<-RUBY
+      super do
+        foo
+      end
+    RUBY
+
+    assert_source 'super()'
+
+    assert_source <<-RUBY
+      super() do
+        foo
+      end
+    RUBY
+
+    assert_source 'super(a)'
+
+    assert_source <<-RUBY
+      super(a) do
+        foo
+      end
+    RUBY
+
+    assert_source 'super(a, b)'
+
+    assert_source <<-RUBY
+      super(a, b) do
+        foo
+      end
+    RUBY
+
+    assert_source 'super(&block)'
+    assert_source 'super(a, &block)'
+  end
+
   context 'undef' do
     assert_source 'undef :foo'
   end
@@ -396,7 +433,7 @@ describe Unparser, 'spike' do
     RUBY
   end
 
-  context 'define' do
+  context 'def' do
     context 'on instance' do
 
       assert_source <<-RUBY
