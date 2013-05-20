@@ -167,6 +167,11 @@ describe Unparser, 'spike' do
     assert_source '::TOPLEVEL::CONST'
   end
 
+  context 'break' do
+    assert_source 'break'
+    assert_source 'break(a)'
+  end
+
   context 'singletons' do
     assert_source 'self'
     assert_source 'true'
