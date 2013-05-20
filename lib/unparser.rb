@@ -67,5 +67,7 @@ require 'unparser/emitter/defined'
 require 'unparser/emitter/postexe'
 require 'unparser/emitter/super'
 require 'unparser/emitter/break'
+require 'unparser/emitter/retry'
+require 'unparser/emitter/redo'
 
 Unparser::Emitter::REGISTRY.freeze

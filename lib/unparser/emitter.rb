@@ -40,6 +40,8 @@ module Unparser
     K_POSTEXE = 'END'.freeze
     K_SUPER   = 'super'.freeze
     K_BREAK   = 'break'.freeze
+    K_RETRY   = 'retry'.freeze
+    K_REDO    = 'redo'.freeze
 
     # Register emitter for type
     #
