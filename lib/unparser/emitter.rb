@@ -8,8 +8,11 @@ module Unparser
     REGISTRY = {}
 
     DEFAULT_DELIMITER = ', '.freeze
+    
+    ANGLE_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     WS      = ' '.freeze
+    NL      = "\n".freeze
     O_DOT   = '.'.freeze
     O_LT    = '<'.freeze
     O_DLT   = '<<'.freeze
@@ -33,6 +36,8 @@ module Unparser
     K_RETURN  = 'return'.freeze
     K_UNDEF   = 'undef'.freeze
     K_DEFINED = 'defined?'.freeze
+    K_PREEXE  = 'BEGIN'.freeze
+    K_POSTEXE = 'END'.freeze
 
     # Register emitter for type
     #

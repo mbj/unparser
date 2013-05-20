@@ -349,6 +349,22 @@ describe Unparser, 'spike' do
     assert_source 'undef :foo'
   end
 
+  context 'BEGIN' do
+    assert_source <<-RUBY
+      BEGIN {
+        foo
+      }
+    RUBY
+  end
+
+  context 'END' do
+    assert_source <<-RUBY
+      END {
+        foo
+      }
+    RUBY
+  end
+
   context 'define' do
     context 'on instance' do
 
