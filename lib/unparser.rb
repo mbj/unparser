@@ -62,5 +62,6 @@ require 'unparser/emitter/undef'
 require 'unparser/emitter/def'
 require 'unparser/emitter/class'
 require 'unparser/emitter/module'
+require 'unparser/emitter/op_assign'
 
 Unparser::Emitter::REGISTRY.freeze

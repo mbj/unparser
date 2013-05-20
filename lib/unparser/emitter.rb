@@ -146,7 +146,6 @@ module Unparser
       self.class.visit(node, buffer)
     end
 
-
     # Emit delimited body
     #
     # @param [Enumerable<Parser::AST::Node>] nodes

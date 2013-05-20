@@ -5,56 +5,81 @@ module Unparser
 
       handle :send
 
+      INDEX_PARENS  = IceNine.deep_freeze(%w([ ]))
+      NORMAL_PARENS = IceNine.deep_freeze(%w[( )])
+
+      INDEX_REFERENCE = '[]'.freeze
+      INDEX_ASSIGN    = '[]='.freeze
+      ASSIGN_SUFFIX   = '='.freeze
+
     private
 
-      # Dispatch node
+      # Perform dispatch
       #
       # @return [undefined]
       #
       # @api private
       #
       def dispatch
+        case selector
+        when INDEX_REFERENCE
+          run(Index::Reference)
+        when INDEX_ASSIGN
+          run(Index::Assign)
+        else
+          non_index_dispatch
+        end
+      end
+
+      # Delegate to emitter
+      #
+      # @param [Class:Emitter] emitter
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def run(emitter)
+        emitter.emit(node, buffer)
+      end
+      
+      # Perform non index dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def non_index_dispatch
         emit_receiver
         emit_selector
         emit_arguments
       end
 
-      INDEX_SELECTOR = '[]'.freeze
-      INDEX_ASSIGN   = '[]='.freeze
-
-      ASSIGN_SUFFIX = '='.freeze
-
-      INDEX_SELECTORS = [
-        INDEX_SELECTOR,
-        INDEX_ASSIGN
-      ].freeze
-
-      # Test for index operation
+      # Return receiver
       #
-      # @return [true]
-      #   if send is an index operation
-      #
-      # @return [false]
+      # @return [Parser::AST::Node]
       #
       # @api private
       #
-      def index?
-        INDEX_SELECTORS.include?(selector)
+      def emit_receiver
+        receiver = first_child
+        return unless receiver
+        visit(receiver)
+        write(O_DOT) 
       end
 
-      # Return selector
+      # Emit selector
       #
       # @return [undefined]
       #
       # @api private
       #
       def emit_selector
-        return if index?
-        selector = self.selector
+        name = selector
         if mlhs?
-          selector = selector[0..-2]
+          name = name[0..-2]
         end
-        write(selector)
+        write(name)
       end
 
       # Test for mlhs
@@ -95,7 +120,6 @@ module Unparser
         children[1].to_s
       end
       memoize :selector
-      protected :selector
 
       # Test for empty arguments
       #
@@ -120,10 +144,6 @@ module Unparser
       def arguments
         children[2..-1]
       end
-      memoize :arguments
-
-      INDEXED_PARENS = IceNine.deep_freeze(%w([ ]))
-      NORMAL_PARENS = IceNine.deep_freeze(%w[( )])
 
       # Emit arguments
       #
@@ -132,25 +152,84 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        return unless arguments?
-        parens = index? ? INDEXED_PARENS : NORMAL_PARENS
-        parentheses(*parens) do
-          delimited(arguments)
+        args = arguments
+        return if args.empty?
+        parentheses do
+          delimited(args)
         end
       end
 
-      # Return receiver
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      def emit_receiver
-        receiver = first_child
-        return unless receiver
-        visit(receiver)
-        write(O_DOT) unless index?
-      end
+      class Index < self
+
+      private
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          emit_receiver
+          emit_arguments
+        end
+
+        # Emit block within parentheses
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def parentheses(&block)
+          super(*INDEX_PARENS, &block)
+        end
+
+        # Emit receiver
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_receiver
+          visit(first_child)
+        end
+
+        class Reference < self
+
+        private
+
+          # Emit arguments
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_arguments
+            parentheses do
+              delimited(arguments)
+            end
+          end
+        end # Reference
+
+        class Assign < self
+
+          # Emit arguments
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_arguments
+            index, *assignment = arguments
+            parentheses do
+              delimited([index])
+            end
+            return if assignment.empty? # mlhs
+            write(WS, O_ASN, WS)
+            delimited(assignment)
+          end
+        end # Assign
+      end # Index
 
     end # Send
   end # Emitter

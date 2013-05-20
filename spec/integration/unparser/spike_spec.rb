@@ -536,5 +536,26 @@ describe Unparser, 'spike' do
       RUBY
 
     end
+
+    context 'op assign' do
+
+      %w(|= ||= &= &&= += -= *= /= **= %=).each do |op|
+        assert_source "self.foo #{op} bar"
+        assert_source "foo[key] #{op} bar"
+      end
+
+    end
+
+    context 'element assignment' do
+      assert_source 'array[index] = value'
+      assert_source 'array[*index] = value'
+
+      %w(+ - * / % & | || &&).each do |operator|
+        context "with #{operator}" do
+          assert_source "array[index] #{operator}= 2"
+          assert_source "array[] #{operator}= 2"
+        end
+      end
+    end
   end
 end
