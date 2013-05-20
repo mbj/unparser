@@ -231,9 +231,40 @@ describe Unparser, 'spike' do
     assert_source "foo do |a, *b|\n\nend"
     assert_source "foo do |a, *|\n\nend"
     assert_source "foo do\n  bar\nend"
+    assert_source 'foo.bar(*args)'
+
+    assert_source <<-RUBY
+      foo.bar do |(a, b), c|
+        d
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo.bar do |(a, b)|
+        d
+      end
+    RUBY
 
     # Special cases
     assert_source '(1..2).max'
+
+    assert_source 'foo.bar(*args)'
+    assert_source 'foo.bar(*arga, foo, *argb)', RUBIES - %w(1.8)
+    assert_source 'foo.bar(*args, foo)',        RUBIES - %w(1.8)
+    assert_source 'foo.bar(foo, *args)'
+    assert_source 'foo.bar(foo, *args, &block)'
+    assert_source <<-RUBY
+      foo(bar, *args)
+    RUBY
+
+    assert_source <<-RUBY
+      foo(*args, &block)
+    RUBY
+
+    assert_source 'foo.bar(&baz)'
+    assert_source 'foo.bar(:baz, &baz)'
+    assert_source 'foo.bar=(:baz)'
+    assert_source 'self.foo=(:bar)'
   end
 
   context 'begin; end' do
@@ -565,7 +596,6 @@ describe Unparser, 'spike' do
     end
 
     context 'op assign' do
-
       %w(|= ||= &= &&= += -= *= /= **= %=).each do |op|
         assert_source "self.foo #{op} bar"
         assert_source "foo[key] #{op} bar"

@@ -1,6 +1,26 @@
 module Unparser
   class Emitter
 
+    # Arg expr (pattern args) emitter
+    class ArgExpr < self
+
+      handle :arg_expr
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        parentheses do
+          visit(first_child)
+        end
+      end
+    end # ArgExpr
+
     # Arguments emitter
     class Arguments < self
 
@@ -15,7 +35,14 @@ module Unparser
       # @api private
       #
       def dispatch
-        delimited(children)
+        mapped = children.map do |child|
+          if child.type == :mlhs
+            Parser::AST::Node.new(:arg_expr, [child])
+          else
+            child
+          end
+        end
+        delimited(mapped)
       end
 
     end # Arguments
