@@ -450,6 +450,44 @@ describe Unparser, 'spike' do
     RUBY
   end
 
+  context 'alias' do
+    assert_source <<-RUBY
+      alias $foo $bar
+    RUBY
+
+    assert_source <<-RUBY
+      alias foo bar
+    RUBY
+  end
+
+  context 'if statement' do
+    assert_source <<-RUBY
+      if /foo/
+        bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      if 3
+        9
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      if 4
+        5
+      else
+        6
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      unless 3
+        9
+      end
+    RUBY
+  end
+
   context 'def' do
     context 'on instance' do
 
@@ -541,34 +579,6 @@ describe Unparser, 'spike' do
             end.zip(@attributes)]
             @keys = coerce_keys
           end
-        end
-      RUBY
-    end
-
-    context 'if statement' do
-      assert_source <<-RUBY
-        if /foo/
-          bar
-        end
-      RUBY
-
-      assert_source <<-RUBY
-        if 3
-          9
-        end
-      RUBY
-
-      assert_source <<-RUBY
-        if 4
-          5
-        else
-          6
-        end
-      RUBY
-
-      assert_source <<-RUBY
-        unless 3
-          9
         end
       RUBY
     end
@@ -742,18 +752,6 @@ describe Unparser, 'spike' do
  #    RUBY
  #  end
  #end
-
-  context 'valias' do
-    assert_source <<-RUBY
-      alias $foo $bar
-    RUBY
-  end
-
-  context 'alias' do
-    assert_source <<-RUBY
-      alias foo bar
-    RUBY
-  end
 
   context 'yield' do
     context 'without arguments' do
