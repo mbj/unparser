@@ -91,7 +91,6 @@ require 'unparser/emitter/not'
 require 'unparser/emitter/binary'
 require 'unparser/emitter/case'
 require 'unparser/emitter/for'
-require 'unparser/emitter/while'
-require 'unparser/emitter/until'
+require 'unparser/emitter/repetition'
 
 Unparser::Emitter::REGISTRY.freeze
