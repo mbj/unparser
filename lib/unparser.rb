@@ -89,5 +89,6 @@ require 'unparser/emitter/alias'
 require 'unparser/emitter/yield'
 require 'unparser/emitter/not'
 require 'unparser/emitter/binary'
+require 'unparser/emitter/case'
 
 Unparser::Emitter::REGISTRY.freeze

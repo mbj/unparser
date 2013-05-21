@@ -33,6 +33,7 @@ module Unparser
     K_DEF     = 'def'.freeze
     K_END     = 'end'.freeze
     K_BEGIN   = 'begin'.freeze
+    K_CASE    = 'case'.freeze
     K_CLASS   = 'class'.freeze
     K_MODULE  = 'module'.freeze
     K_RESCUE  = 'rescue'.freeze
@@ -50,6 +51,7 @@ module Unparser
     K_ALIAS   = 'alias'.freeze
     K_ELSE    = 'else'.freeze
     K_UNLESS  = 'unless'.freeze
+    K_WHEN    = 'when'.freeze
     K_YIELD   = 'yield'.freeze
 
     # Register emitter for type

@@ -804,6 +804,49 @@ describe Unparser, 'spike' do
  #  end
  #end
 
+  context 'case statement' do
+    assert_source <<-RUBY
+      case
+      when bar
+        baz
+      when baz
+        bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      case foo
+      when bar
+        baz
+      when baz
+        bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      case foo
+      when bar, baz
+        :other
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      case foo
+      when *bar
+        :value
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      case foo
+      when bar
+        baz
+      else
+        :foo
+      end
+    RUBY
+  end
+
   context 'unary operators' do
     context 'negation' do
       assert_source '!1'
@@ -823,61 +866,6 @@ describe Unparser, 'spike' do
 
     context 'unary plus' do
       assert_source '+a'
-    end
-  end
-
-  context 'case statement' do
-    context 'without else branch' do
-      assert_source <<-RUBY
-        case 
-        when bar
-          baz
-        when baz
-          bar
-        end
-      RUBY
-    end
-  end
-
-  context 'receiver case statement' do
-    context 'without else branch' do
-      assert_source <<-RUBY
-        case foo
-        when bar
-          baz
-        when baz
-          bar
-        end
-      RUBY
-    end
-
-    context 'with multivalued conditions' do
-      assert_source <<-RUBY
-        case foo
-        when bar, baz
-          :other
-        end
-      RUBY
-    end
-
-    context 'with splat operator' do
-      assert_source <<-RUBY
-        case foo
-        when *bar
-          :value
-        end
-      RUBY
-    end
-
-    context 'with else branch' do
-      assert_source <<-RUBY
-        case foo
-        when bar
-          baz
-        else
-          :foo
-        end
-      RUBY
     end
   end
 
