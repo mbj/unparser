@@ -7,11 +7,19 @@ module Unparser
 
   EMPTY_STRING = ''.freeze
 
+  UNARY_OPERATORS = %w(
+    !
+    ~
+    -@
+    +@
+  ).map(&:to_sym).to_set.freeze
+
+
   BINARY_OPERATORS = %w(
     + - * / & | && || << >> == 
     === != <= < <=> > >= =~ !~ ^ 
     **
-  ).map(&:to_sym).to_set
+  ).map(&:to_sym).to_set.freeze
 
   # Unparse ast into string
   #

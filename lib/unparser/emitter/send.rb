@@ -105,6 +105,9 @@ module Unparser
         if binary?
           run(Binary)
           return
+        elsif unary?
+          run(Unary)
+          return
         end
         emit_receiver
         emit_selector
@@ -121,6 +124,20 @@ module Unparser
         return unless first_child
         emit_unambigous_receiver
         write(O_DOT) 
+      end
+
+      # Test for unary operator implemented as method
+      #
+      # @return [true]
+      #   if node is a unary operator 
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def unary?
+        UNARY_OPERATORS.include?(children[1])
       end
 
       # Test for binary operator implemented as method
@@ -300,6 +317,29 @@ module Unparser
         end # Assign
 
       end # Index
+
+      class Unary < self
+
+      private
+
+        MAP = IceNine.deep_freeze(
+          '-@' => '-',
+          '+@' => '+'
+        )
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          name = selector
+          write(MAP.fetch(name, name))
+          emit_unambigous_receiver
+        end
+
+      end # Unary
 
       class Binary < self
 
