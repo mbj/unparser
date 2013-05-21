@@ -847,28 +847,6 @@ describe Unparser, 'spike' do
     RUBY
   end
 
-  context 'unary operators' do
-    context 'negation' do
-      assert_source '!1'
-    end
-
-    context 'double negation' do
-      assert_source '!!1'
-    end
-
-    context 'unary match' do
-      assert_source '~a'
-    end
-
-    context 'unary minus' do
-      assert_source '-a'
-    end
-
-    context 'unary plus' do
-      assert_source '+a'
-    end
-  end
-
   context 'for' do
     context 'single assignment' do
       assert_source <<-RUBY
@@ -892,6 +870,28 @@ describe Unparser, 'spike' do
           baz
         end
       RUBY
+    end
+  end
+
+  context 'unary operators' do
+    context 'negation' do
+      assert_source '!1'
+    end
+
+    context 'double negation' do
+      assert_source '!!1'
+    end
+
+    context 'unary match' do
+      assert_source '~a'
+    end
+
+    context 'unary minus' do
+      assert_source '-a'
+    end
+
+    context 'unary plus' do
+      assert_source '+a'
     end
   end
 
