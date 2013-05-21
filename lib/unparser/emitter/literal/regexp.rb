@@ -88,6 +88,7 @@ module Unparser
         def dispatch
           write(children.map(&:to_s).join)
         end
+
       end # Regopt
 
     end # Literal
