@@ -741,49 +741,22 @@ describe Unparser, 'spike' do
 
   context 'match operators' do
     assert_source <<-RUBY
-      /bar/.=~(foo)
+      (/bar/ =~ foo)
     RUBY
 
     assert_source <<-RUBY
-      foo.=~(/bar/)
+      (foo =~ /bar/)
     RUBY
   end
 
- #context 'flip flops' do
- #  context 'flip2' do
- #    assert_source <<-RUBY
- #      if (((i) == (4)))..(((i) == (4)))
- #        foo
- #      end
- #    RUBY
- #  end
-
- #  context 'flip3' do
- #    assert_source <<-RUBY
- #      if (((i) == (4)))...(((i) == (4)))
- #        foo
- #      end
- #    RUBY
- #  end
- #end
-
   context 'binary operators methods' do
     %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
-      context "on literals #{operator}" do
-        assert_source "((1) #{operator} (2))"
-      end
-
-      context "#{operator} with splat args" do
-        assert_source "((left).#{operator}(*foo))"
-      end
-
-      context "on self #{operator}" do
-        assert_source "((self) #{operator} (b))"
-      end
-
-      context "on send #{operator}" do
-        assert_source "((a) #{operator} (b))"
-      end
+      assert_source "(1 #{operator} 2)"
+      assert_source "(left.#{operator}(*foo))"
+      assert_source "(left.#{operator}(a, b))"
+      assert_source "(self #{operator} b)"
+      assert_source "(a #{operator} b)"
+      assert_source "(a #{operator} b).foo"
     end
   end
 
@@ -842,6 +815,24 @@ describe Unparser, 'spike' do
       assert_source '(a ||= (2)).bar'
     end
   end
+
+ #context 'flip flops' do
+ #  context 'flip2' do
+ #    assert_source <<-RUBY
+ #      if (((i) == (4)))..(((i) == (4)))
+ #        foo
+ #      end
+ #    RUBY
+ #  end
+
+ #  context 'flip3' do
+ #    assert_source <<-RUBY
+ #      if (((i) == (4)))...(((i) == (4)))
+ #        foo
+ #      end
+ #    RUBY
+ #  end
+ #end
 
   context 'unary operators' do
     context 'negation' do

@@ -71,6 +71,10 @@ module Unparser
       # @api private
       #
       def non_index_dispatch
+        if binary?
+          run(Binary)
+          return
+        end
         emit_receiver
         emit_selector
         emit_arguments
@@ -86,6 +90,20 @@ module Unparser
         return unless first_child
         emit_unambigous_receiver
         write(O_DOT) 
+      end
+
+      # Test for binary operator implemented as method
+      #
+      # @return [true]
+      #   if node is a binary operator 
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def binary?
+        BINARY_OPERATORS.include?(children[1])
       end
 
       # Emit selector
@@ -249,7 +267,104 @@ module Unparser
             delimited(assignment)
           end
         end # Assign
+
       end # Index
+
+      class Binary < self
+
+      private
+
+        # Return undefined
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          parentheses do
+            emit_receiver
+            emit_operator
+            emit_right
+          end
+        end
+
+        # Emit receiver
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_receiver
+          emit_unambigous_receiver
+          write(O_DOT) if parentheses?
+        end
+
+        # Emit operator 
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_operator
+          parens = parentheses? ? EMPTY_STRING : WS
+          parentheses(parens, parens) { write(selector) }
+        end
+
+        # Return right node
+        #
+        # @return [Parser::AST::Node]
+        #
+        # @api private
+        #
+        def right_node
+          children[2]
+        end
+
+        # Test for splat argument
+        #
+        # @return [true]
+        #   if first argument is a splat
+        #
+        # @return [false]
+        #   otherwise
+        #
+        # @api private
+        #
+        def splat?
+          right_node.type == :splat
+        end
+
+        # Test if parentheses are needed
+        #
+        # @return [true]
+        #   if parenthes are needed
+        #
+        # @return [false]
+        #   otherwise
+        #
+        # @api private
+        #
+        def parentheses?
+          splat? || children.length >= 4
+        end
+        memoize :parentheses?
+
+        # Emit right
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_right
+          node = right_node
+          if parentheses?
+            parentheses { delimited(children[2..-1]) }
+            return
+          end
+          visit(node)
+        end
+
+      end # Binary
 
     end # Send
   end # Emitter

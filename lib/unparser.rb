@@ -7,6 +7,12 @@ module Unparser
 
   EMPTY_STRING = ''.freeze
 
+  BINARY_OPERATORS = %w(
+    + - * / & | && || << >> == 
+    === != <= < <=> > >= =~ !~ ^ 
+    **
+  ).map(&:to_sym).to_set
+
   # Unparse ast into string
   #
   # @param [Parser::Node] node
