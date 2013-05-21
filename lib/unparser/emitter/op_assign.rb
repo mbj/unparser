@@ -1,12 +1,8 @@
 module Unparser
   class Emitter
 
-    # Emitter for and assign
-    class AndAssign < self
-
-      handle :and_asgn
-
-      AND_ASGN = '&&='.freeze
+    # Base class for and and or op-assign
+    class BinaryAssign < self
 
     private
 
@@ -18,34 +14,23 @@ module Unparser
       #
       def dispatch
         visit(first_child)
-        write(WS, AND_ASGN, WS)
+        write(WS, self.class::KEYWORD, WS)
         visit(children[1])
       end
 
-    end # OrAssign
+      # Emitter for binary and assign
+      class And < self
+        KEYWORD = '&&='.freeze
+        handle :and_asgn
+      end # And
 
-    # Emitter for or assign
-    class OrAssign < self
+      # Emitter for binary or assign
+      class Or < self
+        KEYWORD = '||='.freeze
+        handle :or_asgn
+      end # Or
 
-      handle :or_asgn
-
-      OR_ASGN = '||='.freeze
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        visit(first_child)
-        write(WS, OR_ASGN, WS)
-        visit(children[1])
-      end
-
-    end # OrAssign
+    end # BinaryAssign
 
     # Emitter for op assign
     class OpAssign < self

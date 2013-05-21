@@ -1,5 +1,7 @@
 module Unparser
   class Emitter
+
+    # Emitter for yield node
     class Yield < self
 
       handle :yield
