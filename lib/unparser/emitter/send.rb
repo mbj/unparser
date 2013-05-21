@@ -71,6 +71,8 @@ module Unparser
       # @return [false]
       #   otherwise
       #
+      # @api private
+      #
       def binary_receiver?
         receiver = effective_receiver
         case receiver.type
