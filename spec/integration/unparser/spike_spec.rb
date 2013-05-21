@@ -904,53 +904,21 @@ describe Unparser, 'spike' do
   end
 
   context 'while' do
-    context 'single statement in body' do
-      assert_source <<-RUBY
-        while false
-          3
-        end
-      RUBY
-    end
-
-    context 'multiple expressions in body' do
-      assert_source <<-RUBY
-        while false
-          3
-          5
-        end
-      RUBY
-    end
+    assert_source <<-RUBY
+      while false
+        3
+      end
+    RUBY
   end
 
   context 'until' do
-    context 'with single expression in body' do
-      assert_source <<-RUBY
-        until false
-          3
-        end
-      RUBY
-    end
-
-    context 'with multiple expressions in body' do
-      assert_source <<-RUBY 
-        while false
-          3
-          5
-        end
-      RUBY
-    end
+    assert_source <<-RUBY
+      until false
+        3
+      end
+    RUBY
   end
 
-  # Note:
-  #
-  # Do not remove method_call from
-  #
-  # begin
-  #   stuff
-  # end.method_call 
-  #
-  # As 19mode would optimize begin end blocks away
-  #
   context 'begin' do
     context 'simple' do
       assert_source <<-RUBY

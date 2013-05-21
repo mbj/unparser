@@ -54,6 +54,8 @@ module Unparser
     K_IN      = 'in'.freeze
     K_UNLESS  = 'unless'.freeze
     K_WHEN    = 'when'.freeze
+    K_WHILE   = 'while'.freeze
+    K_UNTIL   = 'until'.freeze
     K_YIELD   = 'yield'.freeze
 
     # Register emitter for type
