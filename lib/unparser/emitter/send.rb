@@ -40,16 +40,47 @@ module Unparser
       # @api private
       #
       def emit_unambigous_receiver
-        receiver = first_child
-        if receiver.type == :begin && receiver.children.length == 1
-          receiver = receiver.children.first
-        end
-        if AMBIGOUS.include?(receiver.type)
+        receiver = effective_receiver
+        if AMBIGOUS.include?(receiver.type) or binary_receiver?
           parentheses { visit(receiver) }
           return
         end
 
         visit(receiver)
+      end
+
+      # Return effective receiver
+      #
+      # @return [Parser::AST::Node]
+      #
+      # @api private
+      #
+      def effective_receiver
+        receiver = first_child
+        if receiver.type == :begin && receiver.children.length == 1
+          receiver = receiver.children.first
+        end
+        receiver
+      end
+
+      # Test for binary receiver
+      #
+      # @return [true]
+      #   if receiver is a binary operation implemented by a method
+      #
+      # @return [false]
+      #   otherwise
+      #
+      def binary_receiver?
+        receiver = effective_receiver
+        case receiver.type
+        when :or_asgn, :and_asgn
+          true
+        when :send
+          BINARY_OPERATORS.include?(receiver.children[1])
+        else
+          false
+        end
       end
 
       # Delegate to emitter
@@ -281,11 +312,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          parentheses do
-            emit_receiver
-            emit_operator
-            emit_right
-          end
+          emit_receiver
+          emit_operator
+          emit_right
         end
 
         # Emit receiver

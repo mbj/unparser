@@ -741,79 +741,49 @@ describe Unparser, 'spike' do
 
   context 'match operators' do
     assert_source <<-RUBY
-      (/bar/ =~ foo)
+      /bar/ =~ foo
     RUBY
 
     assert_source <<-RUBY
-      (foo =~ /bar/)
+      foo =~ /bar/
     RUBY
   end
 
   context 'binary operators methods' do
     %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
-      assert_source "(1 #{operator} 2)"
-      assert_source "(left.#{operator}(*foo))"
-      assert_source "(left.#{operator}(a, b))"
-      assert_source "(self #{operator} b)"
-      assert_source "(a #{operator} b)"
-      assert_source "(a #{operator} b).foo"
+      rubies = RUBIES - (%w(!= !~).include?(operator) ? %w(1.8) : [])
+      assert_source "1 #{operator} 2",        rubies
+      assert_source "left.#{operator}(*foo)", rubies
+      assert_source "left.#{operator}(a, b)", rubies
+      assert_source "self #{operator} b",     rubies
+      assert_source "a #{operator} b",        rubies
+      assert_source "(a #{operator} b).foo",  rubies
     end
   end
 
    context 'binary operator' do
-     context 'and keywords' do
-       assert_source '((a) || (break(foo)))'
-     end
-
-     context 'sending methods to result' do
-       assert_source '((a) || (b)).foo'
-     end
-
-     context 'nested' do
-       assert_source '((a) || (((b) || (c))))'
-     end
+     assert_source '((a) || (break(foo)))'
+     assert_source '((break(foo)) || (a))'
+     assert_source '((a) || (b)).foo'
+     assert_source '((a) || (((b) || (c))))'
    end
 
   { :or => :'||', :and => :'&&' }.each do |word, symbol|
-    context "word form form equivalency of #{word} and #{symbol}" do
-      assert_generates "((a) #{symbol} (break(foo)))", "a #{word} break foo"
-    end
+    assert_generates "a #{word} break foo", "((a) #{symbol} (break(foo)))"
   end
 
   context 'expansion of shortcuts' do
-    context 'on += operator' do
-      assert_generates 'a = ((a) + (2))', 'a += 2'
-    end
-
-    context 'on -= operator' do
-      assert_generates 'a = ((a) - (2))', 'a -= 2'
-    end
-
-    context 'on **= operator' do
-      assert_generates 'a = ((a) ** (2))', 'a **= 2'
-    end
-
-    context 'on *= operator' do
-      assert_generates 'a = ((a) * (2))', 'a *= 2'
-    end
-
-    context 'on /= operator' do
-      assert_generates 'a = ((a) / (2))', 'a /= 2'
-    end
+    assert_source 'a += 2'
+    assert_source 'a -= 2'
+    assert_source 'a **= 2'
+    assert_source 'a *= 2'
+    assert_source 'a /= 2'
   end
 
   context 'shortcuts' do
-    context 'on &&= operator' do
-      assert_source '(a &&= (b))'
-    end
-
-    context 'on ||= operator' do
-      assert_source '(a ||= (2))'
-    end
-
-    context 'calling methods on shortcuts' do
-      assert_source '(a ||= (2)).bar'
-    end
+    assert_source 'a &&= b'
+    assert_source 'a ||= 2'
+    assert_source '(a ||= 2).bar'
   end
 
  #context 'flip flops' do

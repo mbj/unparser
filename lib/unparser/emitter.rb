@@ -22,6 +22,9 @@ module Unparser
     O_ASR   = '=>'.freeze
     O_PIPE  = '|'.freeze
     O_DCL   = '::'.freeze
+    O_NEG   = '!'.freeze
+    O_OR    = '||'.freeze
+    O_AND   = '&&'.freeze
 
     M_PO  = '('.freeze
     M_PC  = ')'.freeze
