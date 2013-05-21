@@ -848,51 +848,31 @@ describe Unparser, 'spike' do
   end
 
   context 'for' do
-    context 'single assignment' do
-      assert_source <<-RUBY
-        for a in bar do
-          baz
-        end
-      RUBY
-    end
+    assert_source <<-RUBY
+      for a in bar do
+        baz
+      end
+    RUBY
 
-    context 'splat assignment' do
-      assert_source <<-RUBY
-        for a, *b in bar do
-          baz
-        end
-      RUBY
-    end
+    assert_source <<-RUBY
+      for a, *b in bar do
+        baz
+      end
+    RUBY
 
-    context 'multiple assignment' do
-      assert_source <<-RUBY
-        for a, b in bar do
-          baz
-        end
-      RUBY
-    end
+    assert_source <<-RUBY
+      for a, b in bar do
+        baz
+      end
+    RUBY
   end
 
   context 'unary operators' do
-    context 'negation' do
-      assert_source '!1'
-    end
-
-    context 'double negation' do
-      assert_source '!!1'
-    end
-
-    context 'unary match' do
-      assert_source '~a'
-    end
-
-    context 'unary minus' do
-      assert_source '-a'
-    end
-
-    context 'unary plus' do
-      assert_source '+a'
-    end
+    assert_source '!1'
+    assert_source '!!1'
+    assert_source '~a'
+    assert_source '-a'
+    assert_source '+a'
   end
 
   context 'loop' do
@@ -917,160 +897,5 @@ describe Unparser, 'spike' do
         3
       end
     RUBY
-  end
-
-  context 'begin' do
-    context 'simple' do
-      assert_source <<-RUBY
-        begin
-          foo
-          bar
-        end.some_method
-      RUBY
-    end
-
-    context 'with rescue condition' do
-      assert_source <<-RUBY
-        x = begin
-          foo
-        rescue
-          bar
-        end.some_method
-      RUBY
-    end
-
-    context 'with with ensure' do
-      assert_source <<-RUBY
-        begin
-          foo
-        ensure
-          bar
-        end.some_method
-      RUBY
-    end
-  end
-
-  context 'rescue' do
-    context 'as block' do
-      assert_source <<-RUBY
-        begin
-          foo
-          foo
-        rescue
-          bar
-        end
-      RUBY
-    end
-    context 'without rescue condition' do
-      assert_source <<-RUBY
-        begin
-          bar
-        rescue
-          baz
-        end
-      RUBY
-    end
-
-    context 'within a block' do
-      assert_source <<-RUBY
-        foo do
-          begin
-            bar
-          rescue
-            baz
-          end
-        end
-      RUBY
-    end
-
-    context 'with rescue condition' do
-      context 'without assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError
-            baz
-          end
-        RUBY
-      end
-
-      context 'with assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError => exception
-            baz
-          end
-        RUBY
-      end
-    end
-
-    context 'with multivalued rescue condition' do
-      context 'without assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError, SomeOtherError
-            baz
-          end
-        RUBY
-      end
-
-      context 'with assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError, SomeOther => exception
-            baz
-          end
-        RUBY
-      end
-    end
-
-    context 'with multiple rescue conditions' do
-      assert_source <<-RUBY
-        begin
-          foo
-        rescue SomeError
-          bar
-        rescue
-          baz
-        end
-      RUBY
-    end
-
-    context 'with normal and splat condition' do
-      context 'without assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError, *bar
-            baz
-          end
-        RUBY
-      end
-
-      context 'with assignment' do
-        assert_source <<-RUBY
-          begin
-            bar
-          rescue SomeError, *bar => exception
-            baz
-          end
-        RUBY
-      end
-    end
-
-    context 'with splat condition' do
-      context 'without assignment' do
-        assert_source <<-RUBY
-          defined?(@foo)
-        RUBY
-
-        assert_source <<-RUBY
-          defined?(Foo)
-        RUBY
-      end
-    end
   end
 end
