@@ -71,7 +71,7 @@ DuplicateMethodCall:
   exclude:
   - Unparser::Emitter::Def#dispatch # two calls to Emitter#ws okay
   - Unparser::Emitter::Optarg#dispatch # two calls to Emitter#ws okay
-  - Unparser::Emitter::Send#emit_unambigous_receiver # two calls to visit(receiver), okay
+  - Unparser::Emitter::Send#emit_unambiguous_receiver # two calls to visit(receiver), okay
   enabled: true
   max_calls: 1
 UtilityFunction:

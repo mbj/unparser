@@ -33,13 +33,13 @@ module Unparser
         end
       end
 
-      # Emit unambigous receiver
+      # Emit unambiguous receiver
       #
       # @return [undefined]
       #
       # @api private
       #
-      def emit_unambigous_receiver
+      def emit_unambiguous_receiver
         receiver = effective_receiver
         if AMBIGOUS.include?(receiver.type) or binary_receiver?
           parentheses { visit(receiver) }
@@ -135,7 +135,7 @@ module Unparser
       #
       def emit_receiver
         return unless first_child
-        emit_unambigous_receiver
+        emit_unambiguous_receiver
         write(O_DOT) 
       end
 

@@ -25,7 +25,7 @@ module Unparser
         # @api private
         #
         def emit_receiver
-          emit_unambigous_receiver
+          emit_unambiguous_receiver
           write(O_DOT) if parentheses?
         end
 

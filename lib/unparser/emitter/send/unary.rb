@@ -20,7 +20,7 @@ module Unparser
         def dispatch
           name = selector
           write(MAP.fetch(name, name))
-          emit_unambigous_receiver
+          emit_unambiguous_receiver
         end
 
       end # Unary
