@@ -112,6 +112,16 @@ module Unparser
           run(Unary)
           return
         end
+        regular_dispatch
+      end
+
+      # Perform regular dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def regular_dispatch
         emit_receiver
         emit_selector
         emit_arguments
