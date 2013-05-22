@@ -1,9 +1,7 @@
 module Unparser
   class Emitter
-    # Emitter for postexe nodes
-    class Preexe < self
-
-      handle :preexe
+    # Base class for pre and postexe emitters
+    class Hookexe < self
 
     private
 
@@ -14,36 +12,29 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_PREEXE, WS)
+        write(self.class::KEYWORD, WS)
         parentheses(*CURLY_BRACKETS) do
           indented { visit(first_child) }
         end
       end
 
-    end # Postexe
+      # Emitter for postexe nodes
+      class Preexe < self
 
-    # Emitter for postexe nodes
-    class Postexe < self
+        KEYWORD = K_PREEXE
 
-      handle :postexe
+        handle :preexe
 
-      POSTEXE_PARENS = IceNine.deep_freeze(%w({ }))
+      end # Postexe
 
-    private
+      # Emitter for postexe nodes
+      class Postexe < self
 
-      # Perfrom dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(K_POSTEXE, WS)
-        parentheses(*CURLY_BRACKETS) do
-          indented { visit(first_child) }
-        end
-      end
+        KEYWORD = K_POSTEXE
 
-    end # Postexe
+        handle :postexe
+
+      end # Postexe
+    end # Hookexe
   end # Emitter
 end # Unparser

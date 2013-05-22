@@ -77,8 +77,18 @@ module Unparser
       #
       def dispatch
         write(K_WHEN, WS)
-        delimited(children[0..-2])
+        emit_captures
         indented { visit(children.last) }
+      end
+
+      # Emit captures
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_captures
+        delimited(children[0..-2])
       end
 
     end

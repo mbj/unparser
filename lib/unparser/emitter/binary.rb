@@ -13,10 +13,30 @@ module Unparser
       #
       def dispatch
         parentheses do
-          parentheses { visit(first_child) }
+          emit_left
           write(WS, self.class::OPERATOR, WS)
-          parentheses { visit(children[1]) }
+          emit_right
         end
+      end
+
+      # Emit left
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_left
+        parentheses { visit(first_child) }
+      end
+
+      # Emit right
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_right
+        parentheses { visit(children[1]) }
       end
 
       # Emitter for or nodes

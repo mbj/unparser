@@ -47,8 +47,18 @@ module Unparser
       #
       def dispatch
         visit(first_child)
-        write(WS, children[1].to_s, O_ASN, WS)
+        emit_operator
         visit(children[2])
+      end
+
+      # Emit operator
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_operator
+        write(WS, children[1].to_s, O_ASN, WS)
       end
 
     end # OpAssign
