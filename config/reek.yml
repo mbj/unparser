@@ -35,6 +35,8 @@ LongParameterList:
 FeatureEnvy:
   exclude:
   - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
+  - Unparser::Emitter::Send#binary_receiver?
+  - Unparser::Emitter::Send#effective_receiver
   enabled: true
 ClassVariable:
   exclude: []
@@ -69,6 +71,7 @@ DuplicateMethodCall:
   exclude:
   - Unparser::Emitter::Def#dispatch # two calls to Emitter#ws okay
   - Unparser::Emitter::Optarg#dispatch # two calls to Emitter#ws okay
+  - Unparser::Emitter::Send#emit_unambigous_receiver # two calls to visit(receiver), okay
   enabled: true
   max_calls: 1
 UtilityFunction:
@@ -88,7 +91,8 @@ UncommunicativeVariableName:
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
   exclude: 
-  - Unparser::Emitter::Send
+  - Unparser::Emitter::Send # TODO Fixme
+  - Unparser::Emitter::If
   enabled: true
   max_ifs: 1
 DataClump:
