@@ -57,8 +57,9 @@ module Unparser
       #
       def effective_receiver
         receiver = first_child
-        if receiver.type == :begin && receiver.children.length == 1
-          receiver = receiver.children.first
+        children = receiver.children
+        if receiver.type == :begin && children.length == 1
+          receiver = children.first
         end
         receiver
       end
