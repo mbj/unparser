@@ -1,5 +1,6 @@
 module Unparser
   class Emitter
+    # Emitter for for nodes
     class For < self
 
       handle :for

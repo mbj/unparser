@@ -1,5 +1,6 @@
 module Unparser
   class Emitter
+    # Emitter for break nodes
     class Break < self
 
       handle :break

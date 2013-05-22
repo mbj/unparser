@@ -1,5 +1,6 @@
 module Unparser
   class Emitter
+    # Emitter for 1.8 only not node
     class Not < self
       handle :not
 

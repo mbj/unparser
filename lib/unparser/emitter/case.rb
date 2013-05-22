@@ -1,5 +1,6 @@
 module Unparser
   class Emitter
+    # Emitter for case nodes
     class Case < self
 
       handle :case
@@ -61,6 +62,7 @@ module Unparser
 
     end # Case
 
+    # Emitter for when nodes
     class When < self
 
       handle :when
