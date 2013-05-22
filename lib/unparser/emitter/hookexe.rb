@@ -14,8 +14,18 @@ module Unparser
       def dispatch
         write(self.class::KEYWORD, WS)
         parentheses(*CURLY_BRACKETS) do
-          indented { visit(first_child) }
+          emit_body
         end
+      end
+
+      # Emit body
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_body
+        indented { visit(first_child) }
       end
 
       # Emitter for postexe nodes
