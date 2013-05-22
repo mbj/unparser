@@ -37,6 +37,7 @@ module Unparser
           visit(first_child)
         end
 
+        # Emitter for index reference nodes
         class Reference < self
 
         private
@@ -54,6 +55,7 @@ module Unparser
           end
         end # Reference
 
+        # Emitter for assign to index nodes
         class Assign < self
 
           # Emit arguments
