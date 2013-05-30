@@ -8,8 +8,8 @@ describe Unparser::Emitter::SourceMap, '.emit' do
   let(:node) do
     mock('Node', 
       :type => :foo,
-      :source_map => mock('SourceMap', 
-        :expression => mock('SourceRange', :to_source => 'foo')
+      :location => mock('SourceMap', 
+        :expression => mock('SourceRange', :source => 'foo')
       )
     )
   end

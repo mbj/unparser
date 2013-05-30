@@ -14,7 +14,7 @@ module Unparser
         # @api private
         # 
         def dispatch
-          if node.source_map
+          if node.location
             emit_source_map
           else
             dispatch_value

@@ -64,9 +64,9 @@ module Unparser
         # @api private
         #
         def delimiter
-          source_map = node.source_map
-          return DELIMITER unless source_map
-          source_map.expression.to_source[-1]
+          location = node.location
+          return DELIMITER unless location
+          location.expression.source[-1]
         end
         memoize :delimiter
 

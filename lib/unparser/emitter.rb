@@ -306,7 +306,7 @@ module Unparser
       # @api private
       #
       def self.emit(node, buffer)
-        buffer.append(node.source_map.expression.to_source)
+        buffer.append(node.location.expression.source)
         self
       end
 

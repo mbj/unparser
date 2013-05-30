@@ -11,8 +11,10 @@ end
 Rake.application.load_imports
 
 Rake::Task['metrics:mutant'].overwrite do
-  status = Mutant::CLI.run(%W(--rspec-full -r ./spec/spec_helper.rb ::Unparser))
-  unless status.zero?
-    fail "Not mutation covered :("
+  if defined?(Mutant)
+    status = Mutant::CLI.run(%W(--rspec-full -r ./spec/spec_helper.rb ::Unparser))
+    unless status.zero?
+      fail "Not mutation covered :("
+    end
   end
 end

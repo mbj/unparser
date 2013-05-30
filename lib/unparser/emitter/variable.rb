@@ -1,52 +1,6 @@
 module Unparser
   class Emitter
 
-    # Emitter for cdecl nodes that will go away soon (parser-2.0.0)
-    class Cdecl < self
-
-      handle :cdecl
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        name, value = children[1, 2]
-        write(name.to_s)
-        if value
-          write(WS, O_ASN, WS)
-          visit(value)
-        end
-      end
-    end
-
-    # Emitter for cvdecl nodes that will go away soon (parser-2.0.0)
-    class Cvdecl < self
-
-      handle :cvdecl
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(first_child.to_s)
-        value = children[1]
-        if value
-          write(WS, O_ASN, WS)
-          visit(value)
-        end
-      end
-    end
-
     # Emitter for various variable accesses
     class Variable < self
 
