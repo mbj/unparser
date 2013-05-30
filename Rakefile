@@ -13,7 +13,9 @@ Rake.application.load_imports
 Rake::Task['metrics:mutant'].overwrite do
   begin
     require 'mutant'
-  rescue LoadError
+  rescue LoadError => exception
+    puts exception.message
+    p exception.backtrace
   end
   if defined?(Mutant)
     status = Mutant::CLI.run(%W(--rspec-full -r ./spec/spec_helper.rb ::Unparser))
