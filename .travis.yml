@@ -9,6 +9,4 @@ rvm:
   - jruby-head
   - rbx-19mode
 notifications:
-  irc: "irc.freenode.org#datamapper"
-  email:
-    - mbj@seonic.net
+  irc: irc.freenode.org#rom-rb
