@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version  = '0.0.1'
 
   s.authors  = ['Markus Schirp']
-  s.email    = 'mbj@seonic.net'
+  s.email    = 'mbj@schir-dso.com'
   s.summary  = 'Generate equivalent source for parser gem AST nodes'
   s.homepage = 'http://github.com/mbj/unparser'
 
