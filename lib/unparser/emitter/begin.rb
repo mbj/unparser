@@ -133,27 +133,26 @@ module Unparser
       # @api private
       #
       def dispatch
-        if flat?
+        case children.length
+        when 0
+          write(K_NIL)
+        when 1
           visit(first_child)
-          return
+        else
+          emit_normal
         end
-        k_begin
-        indented { emit_inner }
-        k_end
       end
 
-      # Test for flat emit without keywords
+      # Emit normal begin block
       #
-      # @return [true]
-      #   if flat emit is possible
-      #
-      # @return [false]
-      #   otherwise
+      # @return [undefined]
       #
       # @api private
       #
-      def flat?
-        children.one? 
+      def emit_normal
+        k_begin
+        indented { emit_inner }
+        k_end
       end
 
       # Emit inner nodes

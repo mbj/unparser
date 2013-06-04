@@ -285,6 +285,8 @@ describe Unparser, 'spike' do
   end
 
   context 'begin; end' do
+    assert_generates s(:begin), 'nil'
+
     assert_source <<-RUBY
       begin
         foo

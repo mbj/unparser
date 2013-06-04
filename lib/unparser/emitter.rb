@@ -51,6 +51,7 @@ module Unparser
     K_ALIAS   = 'alias'.freeze
     K_ELSE    = 'else'.freeze
     K_FOR     = 'for'.freeze
+    K_NIL     = 'nil'.freeze
     K_IN      = 'in'.freeze
     K_UNLESS  = 'unless'.freeze
     K_WHEN    = 'when'.freeze
