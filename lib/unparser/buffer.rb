@@ -53,6 +53,7 @@ module Unparser
     def unindent
       nl
       @indent-=1
+      self
     end
 
     # Write newline
@@ -63,6 +64,7 @@ module Unparser
     #
     def nl
       @content << NL
+      self
     end
 
     # Return content of buffer
@@ -85,7 +87,6 @@ module Unparser
     #
     def prefix
       @content << '  '*@indent
-      self
     end
 
   end # Buffer

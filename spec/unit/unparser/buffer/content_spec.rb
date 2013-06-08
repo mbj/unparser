@@ -6,23 +6,23 @@ describe Unparser::Buffer, '#content' do
   let(:object) { described_class.new }
 
   shared_examples_for 'buffer content' do
-    it 'should contain expected content' do
+    it 'contains expected content' do
       should eql(expected_content)
     end
 
-    its(:frozen?) { should be(true) }
+    it { should be_frozen }
 
-    it 'should return fresh string copies' do
+    it 'returns fresh string copies' do
       first  = object.content
       second = object.content
-      first.should eql(second)
-      first.should_not be(second)
+      expect(first).to eql(second)
+      expect(first).to_not be(second)
     end
   end
 
   context 'with empty buffer' do
     let(:expected_content) { '' }
-    
+
     it_should_behave_like 'buffer content'
   end
 
@@ -30,8 +30,9 @@ describe Unparser::Buffer, '#content' do
     before do
       object.append('foo')
     end
+
     let(:expected_content) { 'foo' }
 
-    it_should_behave_like 'buffer content'
+    it_behaves_like 'buffer content'
   end
 end
