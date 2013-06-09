@@ -8,7 +8,7 @@ module Unparser
     REGISTRY = {}
 
     DEFAULT_DELIMITER = ', '.freeze
-    
+
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     WS      = ' '.freeze
@@ -112,7 +112,7 @@ module Unparser
     #
     def self.visit(node, buffer)
       type = node.type
-      emitter = REGISTRY.fetch(type) do 
+      emitter = REGISTRY.fetch(type) do
         raise ArgumentError, "No emitter for node: #{type.inspect}"
       end
       emitter.emit(node, buffer)
