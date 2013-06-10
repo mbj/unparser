@@ -23,7 +23,7 @@ describe Unparser, 'spike' do
       yield version, parser
     end
   end
-  
+
   def self.strip(ruby)
     lines = ruby.lines
     line = lines.first
@@ -499,6 +499,11 @@ describe Unparser, 'spike' do
 
     assert_source <<-RUBY
       unless 3
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      unless 3
         9
       end
     RUBY
@@ -542,7 +547,7 @@ describe Unparser, 'spike' do
           bar
         end
       RUBY
-      
+
       assert_source <<-RUBY
         def foo(*bar)
           bar
@@ -675,7 +680,7 @@ describe Unparser, 'spike' do
 
     context 'module' do
 
-      assert_source <<-RUBY 
+      assert_source <<-RUBY
         module TestModule
 
         end
