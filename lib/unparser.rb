@@ -6,21 +6,6 @@ require 'parser/all'
 module Unparser
 
   EMPTY_STRING = ''.freeze
-
-  UNARY_OPERATORS = %w(
-    !
-    ~
-    -@
-    +@
-  ).map(&:to_sym).to_set.freeze
-
-
-  BINARY_OPERATORS = %w(
-    + - * / & | && || << >> == 
-    === != <= < <=> > >= =~ !~ ^ 
-    **
-  ).map(&:to_sym).to_set.freeze
-
   # Unparse ast into string
   #
   # @param [Parser::Node] node
@@ -53,6 +38,7 @@ module Unparser
 end # Unparser
 
 require 'unparser/buffer'
+require 'unparser/constants'
 require 'unparser/emitter'
 require 'unparser/emitter/literal'
 require 'unparser/emitter/literal/primitive'
