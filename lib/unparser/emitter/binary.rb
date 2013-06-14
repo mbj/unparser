@@ -3,6 +3,14 @@ module Unparser
     # Base class for binary emitters
     class Binary < self
 
+      handle :or, :and
+      children :left, :right
+
+      MAP = {
+        :or => O_OR,
+        :and => O_AND
+      }.freeze
+
     private
 
       # Perform dispatch
@@ -14,7 +22,7 @@ module Unparser
       def dispatch
         parentheses do
           emit_left
-          write(WS, self.class::OPERATOR, WS)
+          write(WS, MAP.fetch(node.type), WS)
           emit_right
         end
       end
@@ -26,7 +34,7 @@ module Unparser
       # @api private
       #
       def emit_left
-        parentheses { visit(first_child) }
+        parentheses { visit(left) }
       end
 
       # Emit right
@@ -36,20 +44,8 @@ module Unparser
       # @api private
       #
       def emit_right
-        parentheses { visit(children[1]) }
+        parentheses { visit(right) }
       end
-
-      # Emitter for or nodes
-      class Or < self
-        OPERATOR = O_OR
-        handle :or
-      end # Or
-
-      # Emitter for and nodes
-      class And < self
-        OPERATOR = O_AND
-        handle :and
-      end # And
 
     end # Binary
   end # Emitter

@@ -5,6 +5,8 @@ module Unparser
 
       handle :module
 
+      children :name, :body
+
     private
 
       # Perform dispatch
@@ -15,7 +17,7 @@ module Unparser
       #
       def dispatch
         write(K_MODULE, WS)
-        visit(first_child)
+        visit(name)
         emit_body
         k_end
       end
@@ -27,7 +29,7 @@ module Unparser
       # @api private
       #
       def emit_body
-        emit_non_nil_body(children[1])
+        emit_non_nil_body(body)
       end
 
     end # Module

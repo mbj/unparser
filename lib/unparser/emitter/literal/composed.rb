@@ -8,6 +8,8 @@ module Unparser
 
         handle :pair
 
+      private
+
         # Perform dispatch
         #
         # @return [undefined]
@@ -17,6 +19,7 @@ module Unparser
         def dispatch
           delimited(children, HASHROCKET)
         end
+
       end # HashPair
 
       # Base class for compound literal emitters

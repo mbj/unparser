@@ -4,6 +4,15 @@ module Unparser
       # Abstract base class for literal range emitter
       class Range < self
 
+        TOKENS = IceNine.deep_freeze(
+          :irange => '..',
+          :erange => '...'
+        )
+
+        handle *TOKENS.keys
+
+        children :begin_node, :end_node
+
       private
 
         # Perform dispatch
@@ -14,41 +23,9 @@ module Unparser
         #
         def dispatch
           visit(begin_node)
-          write(self.class::TOKEN)
+          write(TOKENS.fetch(node.type))
           visit(end_node)
         end
-
-        # Return range begin node
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def begin_node
-          children[0]
-        end
-
-        # Return range end node
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def end_node
-          children[1]
-        end
-
-        # Inclusive range emitter
-        class Inclusive < self
-          TOKEN = '..'.freeze
-          handle :irange
-        end # Inclusive
-
-        # Exclusive range emitter
-        class Exclusive < self
-          TOKEN = '...'.freeze
-          handle :erange
-        end # Exclusive
 
       end # Range
     end # Literal

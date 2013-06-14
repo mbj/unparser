@@ -5,6 +5,8 @@ module Unparser
 
       handle :class
 
+      children :name, :superclass, :body
+
     private
 
       # Perform dispatch
@@ -15,7 +17,7 @@ module Unparser
       #
       def dispatch
         write(K_CLASS, WS)
-        visit(first_child)
+        visit(name)
         emit_superclass
         emit_body
         k_end
@@ -28,7 +30,6 @@ module Unparser
       # @api private
       #
       def emit_superclass
-        superclass = children[1]
         return unless superclass
         write(WS, O_LT, WS)
         visit(superclass)
@@ -41,7 +42,7 @@ module Unparser
       # @api private
       #
       def emit_body
-        emit_non_nil_body(children[2])
+        emit_non_nil_body(body)
       end
 
     end # Class
@@ -51,6 +52,8 @@ module Unparser
 
       handle :sclass
 
+      children :object, :body
+
       # Perform dispatch
       #
       # @return [undefined]
@@ -58,9 +61,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_CLASS, WS, O_DLT, WS) 
-        visit(first_child)
-        emit_non_nil_body(children[1])
+        write(K_CLASS, WS, O_DLT, WS)
+        visit(object)
+        emit_non_nil_body(body)
         k_end
       end
 

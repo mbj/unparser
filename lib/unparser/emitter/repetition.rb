@@ -1,8 +1,17 @@
 module Unparser
   class Emitter
 
-    # Base class for while and until emitters 
+    # Base class for while and until emitters
     class Repetition < self
+
+      MAP = {
+        :while => K_WHILE,
+        :until => K_UNTIL
+      }.freeze
+
+      handle *MAP.keys
+
+      children :condition, :body
 
     private
 
@@ -13,31 +22,11 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(self.class::KEYWORD, WS)
-        visit(first_child)
-        indented { visit(children[1]) }
+        write(MAP.fetch(node.type), WS)
+        visit(condition)
+        indented { visit(body) }
         k_end
       end
-
-      # Emitter for until nodes
-      class Until < self
-
-        KEYWORD = K_UNTIL
-
-        handle :until
-
-      private
-
-      end # Until
-
-      # Emiter for while nodes
-      class While < self
-
-        handle :while
-
-        KEYWORD = K_WHILE
-
-      end # While
 
     end # Repetition
   end # Emitter

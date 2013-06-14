@@ -5,6 +5,8 @@ module Unparser
 
       handle :return
 
+      children :argument
+
     private
 
       # Perform dispatch
@@ -25,7 +27,6 @@ module Unparser
       # @api private
       #
       def emit_argument
-        argument = first_child
         return unless argument
         parentheses do
           visit(argument)

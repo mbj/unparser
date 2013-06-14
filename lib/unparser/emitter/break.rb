@@ -5,6 +5,8 @@ module Unparser
 
       handle :break
 
+      children :arguments
+
     private
 
       # Perform dispatch
@@ -15,7 +17,6 @@ module Unparser
       #
       def dispatch
         write(K_BREAK)
-        arguments = first_child
         return unless arguments
         parentheses do
           visit(arguments)

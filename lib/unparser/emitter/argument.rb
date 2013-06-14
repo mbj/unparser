@@ -6,6 +6,8 @@ module Unparser
 
       handle :arg_expr
 
+      children :body
+
     private
 
       # Perform dispatch
@@ -16,7 +18,7 @@ module Unparser
       #
       def dispatch
         parentheses do
-          visit(first_child)
+          visit(body)
         end
       end
     end # ArgExpr
@@ -52,6 +54,8 @@ module Unparser
 
       handle :blockarg
 
+      children :name
+
     private
 
       # Perform dispatch
@@ -61,7 +65,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_AMP, first_child.to_s)
+        write(O_AMP, name.to_s)
       end
 
     end # Blockarg
@@ -71,6 +75,10 @@ module Unparser
 
       handle :optarg
 
+      children :name, :value
+
+    private
+
       # Perform dispatch
       #
       # @return [undefined]
@@ -78,8 +86,8 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(first_child.to_s, WS, O_ASN, WS)
-        visit(children[1])
+        write(name.to_s, WS, O_ASN, WS)
+        visit(value)
       end
     end
 
@@ -125,6 +133,8 @@ module Unparser
 
       handle :block_pass
 
+      children :name
+
     private
 
       # Perform dispatch
@@ -135,7 +145,7 @@ module Unparser
       #
       def dispatch
         write(O_AMP)
-        visit(first_child)
+        visit(name)
       end
 
     end # BlockPass

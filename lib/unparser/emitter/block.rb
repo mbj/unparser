@@ -6,6 +6,8 @@ module Unparser
 
       handle :block
 
+      children :send, :arguments, :body
+
     private
 
       # Perform dispatch
@@ -15,21 +17,11 @@ module Unparser
       # @api private
       #
       def dispatch
-        emit_send
+        visit(send)
         write(WS, K_DO)
         emit_block_arguments
         indented { emit_body }
         k_end
-      end
-
-      # Emit send
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_send
-        visit(first_child)
       end
 
       # Emit arguments
@@ -39,7 +31,6 @@ module Unparser
       # @api private
       #
       def emit_block_arguments
-        arguments = children[1]
         return if arguments.children.empty?
         ws
         parentheses(O_PIPE, O_PIPE) do
@@ -54,7 +45,6 @@ module Unparser
       # @api private
       #
       def emit_body
-        body = children[2]
         visit(body)
       end
 

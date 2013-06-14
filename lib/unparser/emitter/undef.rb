@@ -5,6 +5,8 @@ module Unparser
 
       handle :undef
 
+      children :subject
+
     private
 
       # Perform dispatch
@@ -15,7 +17,7 @@ module Unparser
       #
       def dispatch
         write(K_UNDEF, WS)
-        visit(first_child)
+        visit(subject)
       end
 
     end # Undef

@@ -6,8 +6,10 @@ module Unparser
 
       handle :ivar, :lvar, :cvar, :gvar, :back_ref
 
+      children :name
+
     private
-     
+
       # Perform dispatch
       #
       # @return [undefined]
@@ -15,7 +17,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(first_child.to_s)
+        write(name.to_s)
       end
 
     end # Access
@@ -24,6 +26,8 @@ module Unparser
     class Const < self
 
       handle :const
+
+      children :parent, :name
 
     private
 
@@ -35,7 +39,7 @@ module Unparser
       #
       def dispatch
         emit_parent
-        write(children.last.to_s)
+        write(name.to_s)
       end
 
       # Emit parent
@@ -45,7 +49,6 @@ module Unparser
       # @api private
       #
       def emit_parent
-        parent = first_child
         return unless parent
         visit(parent)
         if parent.type != :cbase
@@ -59,6 +62,8 @@ module Unparser
       PREFIX = '$'.freeze
       handle :nth_ref
 
+      children :name
+
     private
 
       # Perform dispatch
@@ -69,7 +74,7 @@ module Unparser
       #
       def dispatch
         write(PREFIX)
-        write(first_child.to_s)
+        write(name.to_s)
       end
 
     end # NthRef

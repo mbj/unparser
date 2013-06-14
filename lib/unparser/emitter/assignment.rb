@@ -23,23 +23,25 @@ module Unparser
         # Emit right
         #
         # @return [undefined]
-        # 
+        #
         # @api private
         #
         def emit_right
           right = right_node
           if right
             write(WS, O_ASN, WS)
-            visit(right) 
+            visit(right)
           end
         end
 
         abstract_method :emit_left
 
         # Variable assignment emitter
-        class Variable < self 
+        class Variable < self
 
           handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
+
+          children :name, :right_node
 
         private
 
@@ -50,36 +52,20 @@ module Unparser
           # @api private
           #
           def emit_left
-            write(first_child.to_s)
+            write(name.to_s)
           end
 
-          # Return right node
-          #
-          # @return [Parser::AST::Node]
-          #
-          # @api private
-          #
-          def right_node
-            children[1]
-          end
-        end
+        end # Variable
 
         # Constant assignment emitter
         class Constant < self
 
+
           handle :casgn
 
-        private
+          children :base, :name, :right_node
 
-          # Return right node
-          #
-          # @return [Parser::AST::Node]
-          #
-          # @api private
-          #
-          def right_node
-            children[2]
-          end
+        private
 
           # Emit left
           #
@@ -88,20 +74,10 @@ module Unparser
           # @api private
           #
           def emit_left
-            emit_base
-            write(children[1].to_s)
+            visit(base) if base
+            write(name.to_s)
           end
 
-          # Emit base
-          #
-          # @return [undefined]
-          #
-          # @api private
-          #
-          def emit_base
-            base = first_child
-            visit(base) if base
-          end
         end # Constant
       end # Single
 
@@ -157,7 +133,7 @@ module Unparser
         def dispatch
           delimited(children)
         end
-      end # MultipleLeftHandSide
+      end # MLHS
 
     end # Assignment
   end # Emitter

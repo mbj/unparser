@@ -29,7 +29,7 @@ module Unparser
         # @return [undefined]
         #
         # @api private
-        # 
+        #
         def emit_segment(node)
           if node.type == :str
             emit_str_segment(node)

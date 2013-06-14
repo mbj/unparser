@@ -5,6 +5,8 @@ module Unparser
 
       handle :splat
 
+      children :subject
+
     private
 
       # Perform dispatch
@@ -15,8 +17,7 @@ module Unparser
       #
       def dispatch
         write(O_SPLAT)
-        child = first_child
-        visit(child) if child
+        visit(subject) if subject
       end
     end
   end

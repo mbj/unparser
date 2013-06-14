@@ -1,9 +1,11 @@
 module Unparser
   class Emitter
     class Literal
-      
+
       # Base class for primitive emitters
       class Primitive < self
+
+        children :value
 
       private
 
@@ -12,7 +14,7 @@ module Unparser
         # @return [undefined]
         #
         # @api private
-        # 
+        #
         def dispatch
           if node.location
             emit_source_map
@@ -22,16 +24,6 @@ module Unparser
         end
 
         abstract_method :disaptch_value
-
-        # Return value
-        #
-        # @return [Object]
-        #
-        # @api private
-        #
-        def value
-          first_child
-        end
 
         # Emitter for primitives based on Object#inspect
         class Inspect < self
@@ -45,7 +37,7 @@ module Unparser
           # @return [undefined]
           #
           # @api private
-          # 
+          #
           def dispatch_value
             buffer.append(value.inspect)
           end

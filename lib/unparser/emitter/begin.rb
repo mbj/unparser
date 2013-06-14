@@ -6,6 +6,8 @@ module Unparser
 
       handle :rescue
 
+      children :body
+
     private
 
       # Perform dispatch
@@ -16,7 +18,7 @@ module Unparser
       #
       def dispatch
         k_begin
-        indented { visit(first_child) }
+        indented { visit(body) }
         children[1..-2].each do |child|
           visit(child)
         end
@@ -29,7 +31,7 @@ module Unparser
 
       handle :ensure
 
-      K_ENSURE = 'ensure'.freeze
+      children :body, :ensure_body
 
     private
 
@@ -54,7 +56,7 @@ module Unparser
       # @api private
       #
       def emit_body
-        indented { visit(first_child) }
+        indented { visit(body) }
       end
 
       # Emit ensure body
@@ -64,7 +66,7 @@ module Unparser
       # @api private
       #
       def emit_ensure_body
-        indented { visit(children[1]) }
+        indented { visit(ensure_body) }
       end
 
     end # Ensure
@@ -74,7 +76,7 @@ module Unparser
 
       handle :resbody
 
-      K_RESCUE = 'rescue'.freeze
+      children :exception, :assignment, :body
 
     private
 
@@ -88,7 +90,7 @@ module Unparser
         write(K_RESCUE)
         emit_exception
         emit_assignment
-        indented { visit(children[2]) }
+        indented { visit(body) }
       end
 
       # Emit exception
@@ -98,7 +100,6 @@ module Unparser
       # @api private
       #
       def emit_exception
-        exception = first_child
         return unless exception
         ws
         delimited(exception.children)
@@ -111,7 +112,6 @@ module Unparser
       # @api private
       #
       def emit_assignment
-        assignment = children[1]
         return unless assignment
         write(WS, O_ASR, WS)
         visit(assignment)

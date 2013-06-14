@@ -6,6 +6,7 @@ require 'parser/all'
 module Unparser
 
   EMPTY_STRING = ''.freeze
+
   # Unparse ast into string
   #
   # @param [Parser::Node] node

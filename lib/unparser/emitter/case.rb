@@ -5,6 +5,8 @@ module Unparser
 
       handle :case
 
+      children :condition
+
     private
 
       # Perform dispatch
@@ -54,7 +56,6 @@ module Unparser
       # @api private
       #
       def emit_condition
-        condition = first_child
         return unless condition
         write(WS)
         visit(condition)

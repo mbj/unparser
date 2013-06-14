@@ -11,6 +11,22 @@ module Unparser
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
+    # Create name helpers
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def self.children(*names)
+      names.each_with_index do |name, index|
+        define_method(name) do
+          children[index]
+        end
+        private name
+      end
+    end
+    private_class_method :children
+
     # Register emitter for type
     #
     # @param [Symbol] type

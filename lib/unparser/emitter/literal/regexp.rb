@@ -57,7 +57,7 @@ module Unparser
           Parser::AST::Node.new(:str, [Unparser.transquote(source, delimiter, DELIMITER)])
         end
 
-        # Return closing delimiter 
+        # Return closing delimiter
         #
         # @return [String]
         #

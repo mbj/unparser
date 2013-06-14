@@ -5,6 +5,8 @@ module Unparser
 
       handle :if
 
+      children :condition, :if_branch, :else_branch
+
     private
 
       # Perform dispatch
@@ -32,7 +34,7 @@ module Unparser
       # @api private
       #
       def unless?
-        !children[1]
+        !if_branch
       end
 
       # Return keyword
@@ -52,7 +54,7 @@ module Unparser
       # @api private
       #
       def emit_condition
-        visit(first_child)
+        visit(condition)
       end
 
       # Emit if branch
@@ -62,9 +64,8 @@ module Unparser
       # @api private
       #
       def emit_if_branch
-        node = children[1]
-        return unless node
-        indented { visit(node) }
+        return unless if_branch
+        indented { visit(if_branch) }
       end
 
       # Emit else branch
@@ -74,7 +75,6 @@ module Unparser
       # @api private
       #
       def emit_else_branch
-        else_branch = children[2]
         return unless else_branch
         write(K_ELSE) unless unless?
         indented { visit(else_branch) }

@@ -5,6 +5,8 @@ module Unparser
 
       handle :defined?
 
+      children :subject
+
     private
 
       # Perform dispatch
@@ -16,7 +18,7 @@ module Unparser
       def dispatch
         write(K_DEFINED)
         parentheses do
-          visit(first_child)
+          visit(subject)
         end
       end
 

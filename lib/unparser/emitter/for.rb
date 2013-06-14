@@ -5,6 +5,8 @@ module Unparser
 
       handle :for
 
+      children :condition, :assignment, :body
+
     private
 
       # Perform dispatch
@@ -27,9 +29,9 @@ module Unparser
       # @api private
       #
       def emit_condition
-        visit(first_child)
+        visit(condition)
         write(WS, K_IN, WS)
-        visit(children[1])
+        visit(assignment)
         write(WS, K_DO)
       end
 
@@ -40,7 +42,7 @@ module Unparser
       # @api private
       #
       def emit_body
-        indented { visit(children[2]) }
+        indented { visit(body) }
       end
 
     end # For

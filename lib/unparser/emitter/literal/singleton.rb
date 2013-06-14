@@ -9,7 +9,7 @@ module Unparser
       private
 
         # Perform dispatco
-        # 
+        #
         # @return [undefined]
         #
         # @api private

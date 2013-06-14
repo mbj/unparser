@@ -3,6 +3,15 @@ module Unparser
     # Base class for pre and postexe emitters
     class Hookexe < self
 
+      MAP = {
+        :preexe  => K_PREEXE,
+        :postexe => K_POSTEXE
+      }.freeze
+
+      handle *MAP.keys
+
+      children :body
+
     private
 
       # Perfrom dispatch
@@ -12,7 +21,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(self.class::KEYWORD, WS)
+        write(MAP.fetch(node.type), WS)
         parentheses(*CURLY_BRACKETS) do
           emit_body
         end
@@ -25,26 +34,9 @@ module Unparser
       # @api private
       #
       def emit_body
-        indented { visit(first_child) }
+        indented { visit(body) }
       end
 
-      # Emitter for postexe nodes
-      class Preexe < self
-
-        KEYWORD = K_PREEXE
-
-        handle :preexe
-
-      end # Postexe
-
-      # Emitter for postexe nodes
-      class Postexe < self
-
-        KEYWORD = K_POSTEXE
-
-        handle :postexe
-
-      end # Postexe
     end # Hookexe
   end # Emitter
 end # Unparser

@@ -10,7 +10,7 @@ module Unparser
       # @return [undefined]
       #
       # @api private
-      # 
+      #
       abstract_method :emit_name
       private :emit_name
 
@@ -19,7 +19,7 @@ module Unparser
       # @return [Parser::AST::Node]
       #
       # @api private
-      # 
+      #
       abstract_method :body
       private :body
 
@@ -37,7 +37,7 @@ module Unparser
         k_end
       end
 
-      # Emit body 
+      # Emit body
       #
       # @return [undefined]
       #
@@ -54,7 +54,6 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        arguments = argument_node
         return if arguments.children.empty?
         parentheses do
           visit(arguments)
@@ -66,6 +65,8 @@ module Unparser
 
         handle :def
 
+        children :name, :arguments, :body
+
       private
 
         # Emit name
@@ -75,34 +76,17 @@ module Unparser
         # @api private
         #
         def emit_name
-          write(first_child.to_s)
+          write(name.to_s)
         end
 
-        # Return body node
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def body
-          children[2]
-        end
-
-        # Emit argument node
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def argument_node
-          children[1]
-        end
       end # Instance
 
       # Emitter for defines on singleton
       class Singleton < self
 
         handle :defs
+
+        children :subject, :name, :arguments, :body
 
       private
 
@@ -113,28 +97,8 @@ module Unparser
         # @api private
         #
         def emit_name
-          visit(first_child)
-          write(O_DOT, children[1].to_s)
-        end
-
-        # Return argument node
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def argument_node
-          children[2]
-        end
-
-        # Return body
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def body
-          children[3]
+          visit(subject)
+          write(O_DOT, name.to_s)
         end
 
       end # Singleton

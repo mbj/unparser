@@ -56,7 +56,8 @@ UncommunicativeModuleName:
   - !ruby/regexp /[0-9]$/
 NestedIterators:
   ignore_iterators: []
-  exclude: []
+  exclude:
+  - Unparser::Emitter#self.children
   enabled: true
   max_allowed_nesting: 1
 TooManyStatements:
@@ -68,11 +69,8 @@ TooManyStatements:
   enabled: true
 DuplicateMethodCall:
   allow_calls: []
-  exclude:
-  - Unparser::Emitter::Def#dispatch # two calls to Emitter#ws okay
-  - Unparser::Emitter::Optarg#dispatch # two calls to Emitter#ws okay
-  - Unparser::Emitter::Send#emit_unambiguous_receiver # two calls to visit(receiver), okay
-  enabled: true
+  exclude: []
+  enabled: false
   max_calls: 1
 UtilityFunction:
   max_helper_calls: 1

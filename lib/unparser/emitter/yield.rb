@@ -16,10 +16,9 @@ module Unparser
       #
       def dispatch
         write(K_YIELD)
-        arguments = children
-        return if arguments.empty?
+        return if children.empty?
         parentheses do
-          delimited(arguments)
+          delimited(children)
         end
       end
 

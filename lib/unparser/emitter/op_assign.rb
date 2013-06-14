@@ -4,6 +4,15 @@ module Unparser
     # Base class for and and or op-assign
     class BinaryAssign < self
 
+      children :target, :expression
+
+      MAP = IceNine.deep_freeze(
+        :and_asgn => '&&=',
+        :or_asgn  => '||='
+      )
+
+      handle *MAP.keys
+
     private
 
       # Perform dispatch
@@ -13,22 +22,10 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit(first_child)
-        write(WS, self.class::KEYWORD, WS)
-        visit(children[1])
+        visit(target)
+        write(WS, MAP.fetch(node.type), WS)
+        visit(expression)
       end
-
-      # Emitter for binary and assign
-      class And < self
-        KEYWORD = '&&='.freeze
-        handle :and_asgn
-      end # And
-
-      # Emitter for binary or assign
-      class Or < self
-        KEYWORD = '||='.freeze
-        handle :or_asgn
-      end # Or
 
     end # BinaryAssign
 

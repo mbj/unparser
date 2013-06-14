@@ -5,6 +5,8 @@ module Unparser
 
       handle :alias
 
+      children :target, :source
+
     private
 
       # Perform dispatch
@@ -15,9 +17,9 @@ module Unparser
       #
       def dispatch
         write(K_ALIAS, WS)
-        visit(first_child)
+        visit(target)
         write(WS)
-        visit(children[1])
+        visit(source)
       end
 
     end # Alias
