@@ -33,39 +33,53 @@ module Unparser
     M_PO  = '('.freeze
     M_PC  = ')'.freeze
 
-    K_DO      = 'do'.freeze
-    K_DEF     = 'def'.freeze
-    K_END     = 'end'.freeze
-    K_BEGIN   = 'begin'.freeze
-    K_CASE    = 'case'.freeze
-    K_CLASS   = 'class'.freeze
-    K_MODULE  = 'module'.freeze
-    K_RESCUE  = 'rescue'.freeze
-    K_RETURN  = 'return'.freeze
-    K_UNDEF   = 'undef'.freeze
-    K_DEFINED = 'defined?'.freeze
-    K_PREEXE  = 'BEGIN'.freeze
-    K_POSTEXE = 'END'.freeze
-    K_SUPER   = 'super'.freeze
-    K_BREAK   = 'break'.freeze
-    K_RETRY   = 'retry'.freeze
-    K_REDO    = 'redo'.freeze
-    K_NEXT    = 'next'.freeze
-    K_IF      = 'if'.freeze
-    K_ALIAS   = 'alias'.freeze
-    K_ELSE    = 'else'.freeze
-    K_FOR     = 'for'.freeze
-    K_NIL     = 'nil'.freeze
-    K_IN      = 'in'.freeze
-    K_UNLESS  = 'unless'.freeze
-    K_WHEN    = 'when'.freeze
-    K_WHILE   = 'while'.freeze
-    K_UNTIL   = 'until'.freeze
-    K_YIELD   = 'yield'.freeze
+    K_DO       = 'do'
+    K_DEF      = 'def'
+    K_END      = 'end'
+    K_BEGIN    = 'begin'
+    K_CASE     = 'case'
+    K_CLASS    = 'class'
+    K_SELF     = 'self'
+    K_ENSURE   = 'ensure'
+    K_DEFINE   = 'define'
+    K_MODULE   = 'module'
+    K_RESCUE   = 'rescue'
+    K_RETURN   = 'return'
+    K_UNDEF    = 'undef'
+    K_DEFINED  = 'defined?'
+    K_PREEXE   = 'BEGIN'
+    K_POSTEXE  = 'END'
+    K_SUPER    = 'super'
+    K_BREAK    = 'break'
+    K_RETRY    = 'retry'
+    K_REDO     = 'redo'
+    K_NEXT     = 'next'
+    K_FALSE    = 'false'
+    K_TRUE     = 'true'
+    K_IF       = 'if'
+    K_AND      = 'and'
+    K_ALIAS    = 'alias'
+    K_ELSE     = 'else'
+    K_ELSIF    = 'elsif'
+    K_FOR      = 'for'
+    K_NIL      = 'nil'
+    K_NOT      = 'not'
+    K_IN       = 'in'
+    K_OR       = 'or'
+    K_UNLESS   = 'unless'
+    K_WHEN     = 'when'
+    K_WHILE    = 'while'
+    K_UNTIL    = 'until'
+    K_YIELD    = 'yield'
+    K_ENCODING = '__ENCODING__'
+    K_EEND     = '__END__'
+    K_FILE     = '__FILE__'
+    K_THEN     = 'then'
+
 
     KEYWORDS = constants.map do |name|
       if name.to_s.start_with?('K_')
-        const_get(name)
+        const_get(name).freeze.to_sym
       end
     end.compact.freeze
 
