@@ -499,6 +499,7 @@ describe Unparser, 'spike' do
 
     assert_source <<-RUBY
       unless 3
+        nil
       end
     RUBY
 
