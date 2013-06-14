@@ -543,6 +543,12 @@ describe Unparser, 'spike' do
         end
       RUBY
 
+      assert_source <<-RUBY, %w(1.9 2.0)
+        def foo(bar, baz = true, foo)
+          bar
+        end
+      RUBY
+
       assert_source <<-RUBY
         def foo(*)
           bar
