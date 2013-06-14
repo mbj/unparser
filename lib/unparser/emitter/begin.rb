@@ -150,9 +150,13 @@ module Unparser
       # @api private
       #
       def emit_normal
-        k_begin
-        indented { emit_inner }
-        k_end
+        unless parent.needs_begin?
+          emit_inner
+        else
+          k_begin
+          indented { emit_inner }
+          k_end
+        end
       end
 
       # Emit inner nodes

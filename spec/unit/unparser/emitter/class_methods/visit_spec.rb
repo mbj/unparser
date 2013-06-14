@@ -12,7 +12,7 @@ describe Unparser::Emitter, '.visit' do
   end
 
   class Dummy < Unparser::Emitter
-    def self.emit(node, buffer)
+    def self.emit(node, buffer, parent)
       buffer.append('foo')
     end
   end

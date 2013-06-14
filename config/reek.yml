@@ -12,7 +12,7 @@ UncommunicativeParameterName:
 TooManyInstanceVariables:
   exclude: []
   enabled: true
-  max_instance_variables: 2
+  max_instance_variables: 3
 TooManyMethods:
   exclude:
   - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses 
@@ -27,7 +27,7 @@ UncommunicativeMethodName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LongParameterList:
-  max_params: 2
+  max_params: 3
   exclude: 
   - Unparser#self.transquote
   enabled: true

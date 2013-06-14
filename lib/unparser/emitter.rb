@@ -2,7 +2,8 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include Adamantium::Flat, AbstractType, Equalizer.new(:node, :buffer), Constants
+    include Adamantium::Flat, AbstractType, Constants
+    include Equalizer.new(:node, :buffer, :parent)
 
     # Registry for node emitters
     REGISTRY = {}
@@ -62,8 +63,8 @@ module Unparser
     #
     # @api private
     #
-    def initialize(node, buffer)
-      @node, @buffer = node, buffer
+    def initialize(node, buffer, parent)
+      @node, @buffer, @parent = node, buffer, parent
       dispatch
     end
 
@@ -78,13 +79,27 @@ module Unparser
     #
     # @api private
     #
-    def self.visit(node, buffer)
+    def self.visit(node, buffer, parent = Root)
       type = node.type
       emitter = REGISTRY.fetch(type) do
         raise ArgumentError, "No emitter for node: #{type.inspect}"
       end
-      emitter.emit(node, buffer)
+      emitter.emit(node, buffer, parent)
       self
+    end
+
+    # Test if node needs begin
+    #
+    # @return [true]
+    #   if if node needs begin
+    #
+    # @return [false]
+    #   otherwise
+    #
+    # @api private
+    #
+    def needs_begin?
+      false
     end
 
     # Return node
@@ -105,6 +120,15 @@ module Unparser
     #
     attr_reader :buffer
     protected :buffer
+
+    # Return parent emitter
+    #
+    # @return [Parent]
+    #
+    # @api private
+    #
+    attr_reader :parent
+    protected :parent
 
     # Emit contents of block within parentheses
     #
@@ -137,7 +161,7 @@ module Unparser
     # @api private
     #
     def visit(node)
-      self.class.visit(node, buffer)
+      self.class.visit(node, buffer, self)
     end
 
     # Emit delimited body

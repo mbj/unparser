@@ -14,6 +14,16 @@ module Unparser
 
       AMBIGOUS = [:irange, :erange].to_set.freeze
 
+      # Tell node needs begin
+      #
+      # @return [true]
+      #
+      # @api private
+      #
+      def needs_begin?
+        true
+      end
+
     private
 
       # Perform dispatch
@@ -95,9 +105,9 @@ module Unparser
       # @api private
       #
       def run(emitter)
-        emitter.emit(node, buffer)
+        emitter.emit(node, buffer, self)
       end
-      
+
       # Perform non index dispatch
       #
       # @return [undefined]
@@ -136,13 +146,13 @@ module Unparser
       def emit_receiver
         return unless first_child
         emit_unambiguous_receiver
-        write(O_DOT) 
+        write(O_DOT)
       end
 
       # Test for unary operator implemented as method
       #
       # @return [true]
-      #   if node is a unary operator 
+      #   if node is a unary operator
       #
       # @return [false]
       #   otherwise
@@ -156,7 +166,7 @@ module Unparser
       # Test for binary operator implemented as method
       #
       # @return [true]
-      #   if node is a binary operator 
+      #   if node is a binary operator
       #
       # @return [false]
       #   otherwise

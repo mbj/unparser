@@ -288,10 +288,8 @@ describe Unparser, 'spike' do
     assert_generates s(:begin), 'nil'
 
     assert_source <<-RUBY
-      begin
-        foo
-        bar
-      end
+      foo
+      bar
     RUBY
 
     assert_source <<-RUBY
@@ -307,6 +305,7 @@ describe Unparser, 'spike' do
       begin
         foo
       ensure
+        bar
         baz
       end
     RUBY
@@ -321,12 +320,11 @@ describe Unparser, 'spike' do
 
     assert_source <<-RUBY
       begin
-        begin
-          foo
-          bar
-        end
+        foo
+        bar
       rescue
         baz
+        bar
       end
     RUBY
 
@@ -598,15 +596,16 @@ describe Unparser, 'spike' do
       RUBY
 
       assert_source <<-RUBY
-        def initialize(attributes, options)
-          begin
-            @attributes = freeze_object(attributes)
-            @options = freeze_object(options)
-            @attribute_for = Hash[@attributes.map do |attribute|
-              attribute.name
-            end.zip(@attributes)]
-            @keys = coerce_keys
-          end
+        def foo
+          bar
+          baz
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def self.foo
+          bar
+          baz
         end
       RUBY
     end

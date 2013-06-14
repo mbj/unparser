@@ -82,5 +82,6 @@ require 'unparser/emitter/binary'
 require 'unparser/emitter/case'
 require 'unparser/emitter/for'
 require 'unparser/emitter/repetition'
+require 'unparser/emitter/root'
 
 Unparser::Emitter::REGISTRY.freeze
