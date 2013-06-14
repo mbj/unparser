@@ -7,7 +7,9 @@ Gem::Specification.new do |s|
   s.authors  = ['Markus Schirp']
   s.email    = 'mbj@schir-dso.com'
   s.summary  = 'Generate equivalent source for parser gem AST nodes'
+  s.description = s.summary
   s.homepage = 'http://github.com/mbj/unparser'
+  s.license  = 'MIT'
 
   s.files            = `git ls-files`.split("\n")
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
