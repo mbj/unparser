@@ -242,11 +242,11 @@ describe Unparser, 'spike' do
     assert_source 'foo(bar)'
     assert_source 'foo(&block)'
     assert_source 'foo(*arguments)'
-    assert_source "foo do\n\nend"
-    assert_source "foo(1) do\n\nend"
-    assert_source "foo do |a, b|\n\nend"
-    assert_source "foo do |a, *b|\n\nend"
-    assert_source "foo do |a, *|\n\nend"
+    assert_source "foo do\n  nil\nend"
+    assert_source "foo(1) do\n  nil\nend"
+    assert_source "foo do |a, b|\n  nil\nend"
+    assert_source "foo do |a, *b|\n  nil\nend"
+    assert_source "foo do |a, *|\n  nil\nend"
     assert_source "foo do\n  bar\nend"
     assert_source 'foo.bar(*args)'
 

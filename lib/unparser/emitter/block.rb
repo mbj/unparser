@@ -22,7 +22,7 @@ module Unparser
         k_end
       end
 
-      # Emit send 
+      # Emit send
       #
       # @return [undefined]
       #
@@ -44,7 +44,7 @@ module Unparser
         ws
         parentheses(O_PIPE, O_PIPE) do
           visit(arguments)
-        end 
+        end
       end
 
       # Emit body
@@ -55,7 +55,6 @@ module Unparser
       #
       def emit_body
         body = children[2]
-        return if body.type == :nil
         visit(body)
       end
 
