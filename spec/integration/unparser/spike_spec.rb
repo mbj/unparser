@@ -513,6 +513,11 @@ describe Unparser, 'spike' do
 
       assert_source <<-RUBY
         def foo
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo
           bar
         end
       RUBY

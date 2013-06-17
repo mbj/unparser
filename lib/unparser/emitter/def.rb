@@ -37,16 +37,6 @@ module Unparser
         k_end
       end
 
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        indented { visit(body) }
-      end
-
       # Emit arguments
       #
       # @return [undefined]
