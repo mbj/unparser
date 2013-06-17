@@ -279,6 +279,10 @@ module Unparser
     # @api private
     #
     def emit_non_nil_body(node)
+      unless node
+        nl
+        return
+      end
       if node.type == :nil
         nl
         return
