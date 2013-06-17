@@ -83,5 +83,6 @@ require 'unparser/emitter/case'
 require 'unparser/emitter/for'
 require 'unparser/emitter/repetition'
 require 'unparser/emitter/root'
+require 'unparser/emitter/match'
 
 Unparser::Emitter::REGISTRY.freeze
