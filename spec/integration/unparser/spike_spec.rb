@@ -242,7 +242,7 @@ describe Unparser, 'spike' do
     assert_source 'foo(bar)'
     assert_source 'foo(&block)'
     assert_source 'foo(*arguments)'
-    assert_source "foo do\n  nil\nend"
+    assert_source "foo do\nend"
     assert_source "foo(1) do\n  nil\nend"
     assert_source "foo do |a, b|\n  nil\nend"
     assert_source "foo do |a, *b|\n  nil\nend"
@@ -606,20 +606,26 @@ describe Unparser, 'spike' do
           baz
         end
       RUBY
-
-      assert_source <<-RUBY
-        def self.foo
-          bar
-          baz
-        end
-      RUBY
     end
 
     context 'on singleton' do
 
       assert_source <<-RUBY
         def self.foo
+        end
+      RUBY
+
+
+      assert_source <<-RUBY
+        def self.foo
           bar
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def self.foo
+          bar
+          baz
         end
       RUBY
 
