@@ -283,10 +283,6 @@ module Unparser
         nl
         return
       end
-      if node.type == :nil
-        nl
-        return
-      end
       indented { visit(node) }
     end
 
