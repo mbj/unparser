@@ -278,12 +278,12 @@ module Unparser
     #
     # @api private
     #
-    def emit_non_nil_body(node)
-      unless node
+    def emit_body
+      unless body
         nl
         return
       end
-      indented { visit(node) }
+      indented { visit(body) }
     end
 
     # Emitter that fully relies on parser source maps

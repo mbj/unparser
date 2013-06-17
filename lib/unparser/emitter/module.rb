@@ -22,16 +22,6 @@ module Unparser
         k_end
       end
 
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        emit_non_nil_body(body)
-      end
-
     end # Module
   end # Emitter
 end # Unparser

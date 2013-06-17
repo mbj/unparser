@@ -35,16 +35,6 @@ module Unparser
         visit(superclass)
       end
 
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        emit_non_nil_body(body)
-      end
-
     end # Class
 
     # Emitter for sclass nodes
@@ -63,7 +53,7 @@ module Unparser
       def dispatch
         write(K_CLASS, WS, O_DLT, WS)
         visit(object)
-        emit_non_nil_body(body)
+        emit_body
         k_end
       end
 
