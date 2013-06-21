@@ -7,8 +7,6 @@ unparser
 
 Generate equivalent inputs for ASTs from whitequarks awesome [parser](https://github.com/whitequark/parser).
 
-Only supports 1.9 syntax currently!
-
 Usage
 -----
 
