@@ -146,7 +146,7 @@ module Unparser
       def emit_receiver
         return unless first_child
         emit_unambiguous_receiver
-        write(O_DOT)
+        write(T_DOT)
       end
 
       # Test for unary operator implemented as method

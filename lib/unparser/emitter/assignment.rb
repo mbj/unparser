@@ -29,7 +29,7 @@ module Unparser
         def emit_right
           right = right_node
           if right
-            write(WS, O_ASN, WS)
+            write(WS, T_ASN, WS)
             visit(right)
           end
         end
@@ -105,7 +105,7 @@ module Unparser
         # @api private
         #
         def emit_right
-          write(WS, O_ASN, WS)
+          write(WS, T_ASN, WS)
           right = children.last
           case right.type
           when :array

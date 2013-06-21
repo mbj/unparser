@@ -16,7 +16,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_NEG)
+        write(T_NEG)
         visit(body)
       end
 

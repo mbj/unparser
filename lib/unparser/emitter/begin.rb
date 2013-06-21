@@ -113,7 +113,7 @@ module Unparser
       #
       def emit_assignment
         return unless assignment
-        write(WS, O_ASR, WS)
+        write(WS, T_ASR, WS)
         visit(assignment)
       end
 

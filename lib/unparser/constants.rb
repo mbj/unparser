@@ -17,20 +17,20 @@ module Unparser
 
     WS       = ' '.freeze
     NL       = "\n".freeze
-    O_DOT    = '.'.freeze
-    O_LT     = '<'.freeze
-    O_DLT    = '<<'.freeze
-    O_AMP    = '&'.freeze
-    O_ASN    = '='.freeze
-    O_SPLAT  = '*'.freeze
-    O_DSPLAT = '**'.freeze
-    O_ASR    = '=>'.freeze
-    O_PIPE   = '|'.freeze
-    O_DCL    = '::'.freeze
-    O_NEG    = '!'.freeze
-    O_OR     = '||'.freeze
-    O_AND    = '&&'.freeze
-    O_COLON  = ':'.freeze
+    T_DOT    = '.'.freeze
+    T_LT     = '<'.freeze
+    T_DLT    = '<<'.freeze
+    T_AMP    = '&'.freeze
+    T_ASN    = '='.freeze
+    T_SPLAT  = '*'.freeze
+    T_DSPLAT = '**'.freeze
+    T_ASR    = '=>'.freeze
+    T_PIPE   = '|'.freeze
+    T_DCL    = '::'.freeze
+    T_NEG    = '!'.freeze
+    T_OR     = '||'.freeze
+    T_AND    = '&&'.freeze
+    T_COLON  = ':'.freeze
 
     M_PO  = '('.freeze
     M_PC  = ')'.freeze

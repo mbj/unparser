@@ -88,7 +88,7 @@ module Unparser
         #
         def emit_name
           visit(subject)
-          write(O_DOT, name.to_s)
+          write(T_DOT, name.to_s)
         end
 
       end # Singleton

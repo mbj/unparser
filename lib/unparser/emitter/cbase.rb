@@ -14,7 +14,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_DCL)
+        write(T_DCL)
       end
 
     end # CBase

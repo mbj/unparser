@@ -7,8 +7,8 @@ module Unparser
       children :left, :right
 
       MAP = {
-        :or => O_OR,
-        :and => O_AND
+        :or => T_OR,
+        :and => T_AND
       }.freeze
 
     private

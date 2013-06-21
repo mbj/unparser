@@ -55,7 +55,7 @@ module Unparser
       # @api private
       #
       def emit_operator
-        write(WS, children[1].to_s, O_ASN, WS)
+        write(WS, children[1].to_s, T_ASN, WS)
       end
 
     end # OpAssign

@@ -26,10 +26,10 @@ module Unparser
         #
         def emit_receiver
           emit_unambiguous_receiver
-          write(O_DOT) if parentheses?
+          write(T_DOT) if parentheses?
         end
 
-        # Emit operator 
+        # Emit operator
         #
         # @return [undefined]
         #

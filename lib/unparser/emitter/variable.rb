@@ -52,7 +52,7 @@ module Unparser
         return unless parent
         visit(parent)
         if parent.type != :cbase
-          write(O_DCL)
+          write(T_DCL)
         end
       end
     end

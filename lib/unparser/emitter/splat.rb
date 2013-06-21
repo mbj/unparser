@@ -16,7 +16,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_SPLAT)
+        write(T_SPLAT)
         visit(subject) if subject
       end
     end

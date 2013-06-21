@@ -70,7 +70,7 @@ module Unparser
               delimited([index])
             end
             return if assignment.empty? # mlhs
-            write(WS, O_ASN, WS)
+            write(WS, T_ASN, WS)
             delimited(assignment)
           end
 

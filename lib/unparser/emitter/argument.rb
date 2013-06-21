@@ -65,7 +65,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_AMP, name.to_s)
+        write(T_AMP, name.to_s)
       end
 
     end # Blockarg
@@ -86,7 +86,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(name.to_s, WS, O_ASN, WS)
+        write(name.to_s, WS, T_ASN, WS)
         visit(value)
       end
     end
@@ -107,7 +107,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_DSPLAT, name.to_s)
+        write(T_DSPLAT, name.to_s)
       end
     end # KeywordRest
 
@@ -126,7 +126,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(name.to_s, O_COLON, WS)
+        write(name.to_s, T_COLON, WS)
         visit(value)
       end
 
@@ -147,7 +147,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(name.to_s, O_COLON)
+        write(name.to_s, T_COLON)
       end
 
     end # Restarg
@@ -168,7 +168,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_SPLAT, name.to_s)
+        write(T_SPLAT, name.to_s)
       end
 
     end # Restarg
@@ -210,7 +210,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_AMP)
+        write(T_AMP)
         visit(name)
       end
 

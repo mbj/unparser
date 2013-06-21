@@ -33,7 +33,7 @@ module Unparser
       def emit_block_arguments
         return if arguments.children.empty?
         ws
-        parentheses(O_PIPE, O_PIPE) do
+        parentheses(T_PIPE, T_PIPE) do
           visit(arguments)
         end
       end

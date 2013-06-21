@@ -31,7 +31,7 @@ module Unparser
       #
       def emit_superclass
         return unless superclass
-        write(WS, O_LT, WS)
+        write(WS, T_LT, WS)
         visit(superclass)
       end
 
@@ -51,7 +51,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_CLASS, WS, O_DLT, WS)
+        write(K_CLASS, WS, T_DLT, WS)
         visit(object)
         emit_body
         k_end
