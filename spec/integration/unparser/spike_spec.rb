@@ -238,6 +238,7 @@ describe Unparser, 'spike' do
     assert_source 'a.foo'
     assert_source 'A.foo'
     assert_source 'foo[1]'
+    assert_source 'foo[*baz]'
     assert_source 'foo(1)'
     assert_source 'foo(bar)'
     assert_source 'foo(&block)'
