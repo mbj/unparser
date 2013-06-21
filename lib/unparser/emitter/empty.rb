@@ -1,5 +1,7 @@
 module Unparser
   class Emitter
+
+    # Emitter for artifical empty node
     class Empty < self
 
       handle :empty
