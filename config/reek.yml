@@ -15,7 +15,7 @@ TooManyInstanceVariables:
   max_instance_variables: 3
 TooManyMethods:
   exclude:
-  - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses 
+  - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses
   enabled: true
   max_methods: 10
 UncommunicativeMethodName:
@@ -28,7 +28,7 @@ UncommunicativeMethodName:
   - !ruby/regexp /[A-Z]/
 LongParameterList:
   max_params: 3
-  exclude: 
+  exclude:
   - Unparser#self.transquote
   enabled: true
   overrides: {}
@@ -62,7 +62,7 @@ NestedIterators:
   max_allowed_nesting: 1
 TooManyStatements:
   max_statements: 5
-  exclude: 
+  exclude:
   - Unparser::Emitter::Block#dispatch # 6 statements
   - Unparser::Emitter::Def#dispatch # 6 statements
   - Unparser::Emitter::Class#dispatch # 6 statements
@@ -88,7 +88,7 @@ UncommunicativeVariableName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
-  exclude: 
+  exclude:
   - Unparser::Emitter::Send # TODO Fixme
   - Unparser::Emitter::If
   enabled: true
@@ -101,6 +101,8 @@ DataClump:
 ControlParameter:
   exclude: []
   enabled: true
+NilCheck:
+  enabled: false
 LongYieldList:
   max_params: 1
   exclude: []
