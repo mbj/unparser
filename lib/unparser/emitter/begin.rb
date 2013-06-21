@@ -135,7 +135,6 @@ module Unparser
       def dispatch
         case children.length
         when 0
-          write(K_NIL)
         when 1
           visit(first_child)
         else

@@ -9,13 +9,16 @@ module Unparser
 
   # Unparse ast into string
   #
-  # @param [Parser::Node] node
+  # @param [Parser::Node, nil] node
   #
   # @return [String]
   #
   # @api private
   #
   def self.unparse(node)
+    if node.nil?
+      node = Parser::AST::Node.new(:empty)
+    end
     buffer = Buffer.new
     Emitter.visit(node, buffer)
     buffer.content
@@ -84,5 +87,6 @@ require 'unparser/emitter/for'
 require 'unparser/emitter/repetition'
 require 'unparser/emitter/root'
 require 'unparser/emitter/match'
+require 'unparser/emitter/empty'
 
 Unparser::Emitter::REGISTRY.freeze

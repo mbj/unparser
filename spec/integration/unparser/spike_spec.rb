@@ -44,7 +44,7 @@ describe Unparser, 'spike' do
   def self.assert_generates(ast, expected, versions = RUBIES)
     with_versions(versions) do |version, parser|
       it "should generate #{ast.inspect} as #{expected} under #{version}" do
-        unless ast.kind_of?(Parser::AST::Node)
+        if ast.kind_of?(String)
           ast = parser.parse(ast)
         end
         generated = Unparser.unparse(ast)
@@ -242,13 +242,44 @@ describe Unparser, 'spike' do
     assert_source 'foo(bar)'
     assert_source 'foo(&block)'
     assert_source 'foo(*arguments)'
-    assert_source "foo do\nend"
-    assert_source "foo(1) do\n  nil\nend"
-    assert_source "foo do |a, b|\n  nil\nend"
-    assert_source "foo do |a, *b|\n  nil\nend"
-    assert_source "foo do |a, *|\n  nil\nend"
-    assert_source "foo do\n  bar\nend"
-    assert_source 'foo.bar(*args)'
+    assert_source <<-RUBY
+      foo do
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo(1) do
+        nil
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo do |a, b|
+        nil
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo do |a, *b|
+        nil
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo do |a, *|
+        nil
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo do
+        bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      foo.bar(*args)
+    RUBY
 
     assert_source <<-RUBY
       foo.bar do |(a, b), c|
@@ -285,7 +316,7 @@ describe Unparser, 'spike' do
   end
 
   context 'begin; end' do
-    assert_generates s(:begin), 'nil'
+    assert_generates s(:begin), ''
 
     assert_source <<-RUBY
       foo
@@ -756,6 +787,11 @@ describe Unparser, 'spike' do
   end
 
   context 'lambda' do
+    assert_source <<-RUBY
+      lambda do
+      end
+    RUBY
+
     assert_source <<-RUBY
       lambda do |a, b|
         a
