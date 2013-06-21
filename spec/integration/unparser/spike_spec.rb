@@ -6,7 +6,8 @@ describe Unparser, 'spike' do
   PARSERS = IceNine.deep_freeze(
     '1.8' => Parser::Ruby18,
     '1.9' => Parser::Ruby19,
-    '2.0' => Parser::Ruby20
+    '2.0' => Parser::Ruby20,
+    '2.1' => Parser::Ruby21
   )
 
   RUBIES = PARSERS.keys.freeze
@@ -242,6 +243,7 @@ describe Unparser, 'spike' do
     assert_source 'foo(1)'
     assert_source 'foo(bar)'
     assert_source 'foo(&block)'
+    assert_source 'foo(*arguments)'
     assert_source 'foo(*arguments)'
     assert_source <<-RUBY
       foo do
@@ -581,6 +583,16 @@ describe Unparser, 'spike' do
       assert_source <<-RUBY, %w(1.9 2.0)
         def foo(bar, baz = true, foo)
           bar
+        end
+      RUBY
+
+      assert_source <<-RUBY, %w(2.1)
+        def foo(bar: 1)
+        end
+      RUBY
+
+      assert_source <<-RUBY, %w(2.0)
+        def foo(**bar)
         end
       RUBY
 

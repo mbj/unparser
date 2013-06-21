@@ -91,9 +91,12 @@ module Unparser
       end
     end
 
-    # Rest argument emitter
-    class Restarg < self
-      handle :restarg
+    # Keyword rest argument emitter
+    class KeywordRest < self
+
+      handle :kwrestarg
+
+      children :name
 
     private
 
@@ -104,7 +107,68 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(O_SPLAT, first_child.to_s)
+        write(O_DSPLAT, name.to_s)
+      end
+    end # KeywordRest
+
+    # Optional keyword argument emitter
+    class KeywordOptional < self
+      handle :kwoptarg
+
+      children :name, :value
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(name.to_s, O_COLON, WS)
+        visit(value)
+      end
+
+    end # KeywordOptional
+
+    # Keyword argument emitter
+    class Kwarg < self
+      handle :kwarg
+
+      children :name
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(name.to_s, O_COLON)
+      end
+
+    end # Restarg
+
+    # Rest argument emitter
+    class Restarg < self
+
+      handle :restarg
+
+      children :name
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(O_SPLAT, name.to_s)
       end
 
     end # Restarg
@@ -114,6 +178,8 @@ module Unparser
 
       handle :arg
 
+      children :name
+
     private
 
       # Perform dispatch
@@ -123,7 +189,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(first_child.to_s)
+        write(name.to_s)
       end
 
     end # Argument

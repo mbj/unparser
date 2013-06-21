@@ -1,6 +1,8 @@
 require 'unparser'
 require 'devtools/spec_helper'
 
+require 'parser/ruby21'
+
 module SpecHelper
   def s(type, *children)
     Parser::AST::Node.new(type, children)

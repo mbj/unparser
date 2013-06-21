@@ -15,20 +15,22 @@ module Unparser
       **
     ).map(&:to_sym).to_set.freeze
 
-    WS      = ' '.freeze
-    NL      = "\n".freeze
-    O_DOT   = '.'.freeze
-    O_LT    = '<'.freeze
-    O_DLT   = '<<'.freeze
-    O_AMP   = '&'.freeze
-    O_ASN   = '='.freeze
-    O_SPLAT = '*'.freeze
-    O_ASR   = '=>'.freeze
-    O_PIPE  = '|'.freeze
-    O_DCL   = '::'.freeze
-    O_NEG   = '!'.freeze
-    O_OR    = '||'.freeze
-    O_AND   = '&&'.freeze
+    WS       = ' '.freeze
+    NL       = "\n".freeze
+    O_DOT    = '.'.freeze
+    O_LT     = '<'.freeze
+    O_DLT    = '<<'.freeze
+    O_AMP    = '&'.freeze
+    O_ASN    = '='.freeze
+    O_SPLAT  = '*'.freeze
+    O_DSPLAT = '**'.freeze
+    O_ASR    = '=>'.freeze
+    O_PIPE   = '|'.freeze
+    O_DCL    = '::'.freeze
+    O_NEG    = '!'.freeze
+    O_OR     = '||'.freeze
+    O_AND    = '&&'.freeze
+    O_COLON  = ':'.freeze
 
     M_PO  = '('.freeze
     M_PC  = ')'.freeze
