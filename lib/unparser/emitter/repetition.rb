@@ -24,7 +24,7 @@ module Unparser
       def dispatch
         write(MAP.fetch(node.type), WS)
         visit(condition)
-        indented { visit(body) }
+        emit_body
         k_end
       end
 

@@ -946,12 +946,22 @@ describe Unparser, 'spike' do
   context 'while' do
     assert_source <<-RUBY
       while false
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      while false
         3
       end
     RUBY
   end
 
   context 'until' do
+    assert_source <<-RUBY
+      until false
+      end
+    RUBY
+
     assert_source <<-RUBY
       until false
         3
