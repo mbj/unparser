@@ -822,7 +822,7 @@ describe Unparser, 'spike' do
     RUBY
   end
 
-  context 'binary operators methods' do
+  context 'binary operator methods' do
     %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
       rubies = RUBIES - (%w(!= !~).include?(operator) ? %w(1.8) : [])
       assert_source "1 #{operator} 2",        rubies
@@ -834,12 +834,12 @@ describe Unparser, 'spike' do
     end
   end
 
-   context 'binary operator' do
+  context 'binary operator' do
      assert_source '((a) || (break(foo)))'
      assert_source '((break(foo)) || (a))'
      assert_source '((a) || (b)).foo'
      assert_source '((a) || (((b) || (c))))'
-   end
+  end
 
   { :or => :'||', :and => :'&&' }.each do |word, symbol|
     assert_generates "a #{word} break foo", "((a) #{symbol} (break(foo)))"
