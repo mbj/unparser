@@ -1,6 +1,7 @@
 module Unparser
   class Emitter
 
+    # Emitter for postconditions
     class Post < self
 
       handle :while_post, :until_post
