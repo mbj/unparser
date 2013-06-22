@@ -122,7 +122,7 @@ module Unparser
     # Emitter for begin nodes
     class Begin < self
 
-      handle :begin
+      handle :begin, :kwbegin
 
     private
 
@@ -133,9 +133,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        case children.length
-        when 0
-        when 1
+        if children.length == 1 and !parent.needs_begin?
           visit(first_child)
         else
           emit_normal
@@ -149,12 +147,12 @@ module Unparser
       # @api private
       #
       def emit_normal
-        unless parent.needs_begin?
-          emit_inner
-        else
+        if parent.needs_begin?
           k_begin
           indented { emit_inner }
           k_end
+        else
+          emit_inner
         end
       end
 

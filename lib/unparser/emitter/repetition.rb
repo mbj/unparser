@@ -1,6 +1,42 @@
 module Unparser
   class Emitter
 
+    class Post < self
+
+      handle :while_post, :until_post
+
+      children :condition, :body
+
+      MAP = {
+        :while_post => K_WHILE,
+        :until_until => K_UNTIL
+      }.freeze
+
+      handle *MAP.keys
+
+      # Test if child should be emitted with explicit begin nodes
+      #
+      # @return [true]
+      #
+      # @api private
+      #
+      def needs_begin?
+        true
+      end
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        visit(body)
+        write(WS, MAP.fetch(node.type), WS)
+        visit(condition)
+      end
+    end
+
     # Base class for while and until emitters
     class Repetition < self
 

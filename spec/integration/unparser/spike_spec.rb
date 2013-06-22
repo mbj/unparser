@@ -956,6 +956,21 @@ describe Unparser, 'spike' do
     RUBY
   end
 
+  context 'post conditions' do
+    assert_source <<-RUBY
+      begin
+        foo
+      end while baz
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        foo
+        bar
+      end while baz
+    RUBY
+  end
+
   context 'while' do
     assert_source <<-RUBY
       while false
