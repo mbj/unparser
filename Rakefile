@@ -16,7 +16,7 @@ Rake::Task['metrics:mutant'].overwrite do
   rescue LoadError
   end
   if defined?(Mutant) and !ENV.key?('CI')
-    status = Mutant::CLI.run(%W(--rspec-full -r ./spec/spec_helper.rb ::Unparser))
+    status = Mutant::CLI.run(%W(--rspec-full ::Unparser))
     unless status.zero?
       fail "Not mutation covered :("
     end
