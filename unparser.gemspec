@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
   s.require_paths    = %w(lib)
   s.extra_rdoc_files = %w(README.md)
+  s.executables      = [ 'unparse' ]
 
   s.add_dependency('parser',        '~> 2.0.0.beta9')
   s.add_dependency('concord',       '~> 0.1.0')
