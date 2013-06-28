@@ -88,5 +88,5 @@ require 'unparser/emitter/repetition'
 require 'unparser/emitter/root'
 require 'unparser/emitter/match'
 require 'unparser/emitter/empty'
-
-Unparser::Emitter::REGISTRY.freeze
+# make it easy for zombie
+require 'unparser/finalize'
