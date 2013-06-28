@@ -897,6 +897,15 @@ describe Unparser, 'spike' do
     assert_source <<-RUBY
       case foo
       when bar
+      when baz
+        bar
+      end
+    RUBY
+
+
+    assert_source <<-RUBY
+      case foo
+      when bar
         baz
       when baz
         bar

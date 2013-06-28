@@ -79,7 +79,12 @@ module Unparser
       def dispatch
         write(K_WHEN, WS)
         emit_captures
-        indented { visit(children.last) }
+        body = children.last
+        if body
+          indented { visit(body) }
+        else
+          nl
+        end
       end
 
       # Emit captures

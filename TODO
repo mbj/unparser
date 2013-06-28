@@ -1,1 +1,2 @@
-Refactor Emitter::Send, it is ugly.
+* Refactor Emitter::Send, it is ugly.
+* Remove duplicated logic with empty or non empty bodies
