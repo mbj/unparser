@@ -34,7 +34,7 @@ Parser::CurrentRuby.parse(generated) == node # true, but identical AST
 
 Summary: unparser does not reproduce your source! It produces equivalent source.
 
-Technical: unparser does not use the source locations in parsers nodes.
+Technical: unparser does not use source location information parser collects.
 This is required for tools like [mutant](https://github.com/mbj/mutant) that inject/modify nodes
 without respecting source locations.
 
