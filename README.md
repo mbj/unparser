@@ -10,14 +10,15 @@ Generate equivalent inputs for ASTs from whitequarks awesome [parser](https://gi
 Usage
 -----
 
-In spike mode, no public API currently.
+```
+require 'unparser'
+Unparser.unparse(your_ast) # => "the code"
+```
 
 Installation
 ------------
 
-There is currently no gem release. Use git source in your Gemfile:
-
-```gem 'unparser', :git => 'https://github.com/mbj/unparser'```
+Install the gem `unparser` via your prefered method.
 
 Credits
 -------
