@@ -10,7 +10,7 @@ Generate equivalent inputs for ASTs from whitequarks awesome [parser](https://gi
 Usage
 -----
 
-```
+```ruby
 require 'unparser'
 Unparser.unparse(your_ast) # => "the code"
 ```
