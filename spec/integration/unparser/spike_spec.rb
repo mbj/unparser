@@ -73,10 +73,11 @@ describe Unparser, 'spike' do
       assert_generates s(:int,  1),  '1'
       assert_generates s(:int, -1), '-1'
       assert_source '1'
-      assert_source '0x1'
-      assert_source '1_000'
-      assert_source '1e10'
-      assert_source '?c'
+      assert_generates '0x1', '1'
+      assert_generates '1_000', '1000'
+      assert_generates '1e10',  '10000000000.0'
+      assert_generates '?c', '"c"', RUBIES  - %w(1.8)
+      assert_generates '?c', '99', %w(1.8)
     end
 
     context 'string' do
@@ -147,6 +148,7 @@ describe Unparser, 'spike' do
       assert_source '[1, *@foo]'
       assert_source '[*@foo, 1]',     RUBIES - %w(1.8)
       assert_source '[*@foo, *@baz]', RUBIES - %w(1.8)
+      assert_generates '%w(foo bar)', %q(["foo", "bar"])
     end
 
     context 'hash' do
@@ -193,9 +195,9 @@ describe Unparser, 'spike' do
   end
 
   context 'magic keywords' do
-    assert_generates  '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
-    assert_source '__FILE__'
-    assert_source '__LINE__'
+    assert_generates '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
+    assert_generates '__FILE__', '"(string)"'
+    assert_generates '__LINE__', '1'
   end
 
   context 'assignment' do
@@ -497,7 +499,7 @@ describe Unparser, 'spike' do
     RUBY
 
     assert_source <<-RUBY
-      alias foo bar
+      alias :foo :bar
     RUBY
   end
 

@@ -51,8 +51,8 @@ module Unparser
 
         # Array literal emitter
         class Array < self
-          OPEN = '['.freeze
-          CLOSE = ']'.freeze
+          OPEN      = '['.freeze
+          CLOSE     = ']'.freeze
           DELIMITER = ', '.freeze
 
           handle :array
