@@ -10,7 +10,7 @@ module Unparser
 
       MAP = {
         :while_post => K_WHILE,
-        :until_until => K_UNTIL
+        :until_post => K_UNTIL
       }.freeze
 
       handle *MAP.keys

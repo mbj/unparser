@@ -974,6 +974,13 @@ describe Unparser, 'spike' do
       begin
         foo
         bar
+      end until baz
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+        foo
+        bar
       end while baz
     RUBY
   end
