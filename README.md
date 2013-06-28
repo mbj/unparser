@@ -5,7 +5,7 @@ unparser
 [![Dependency Status](https://gemnasium.com/mbj/unparser.png)](https://gemnasium.com/mbj/unparser)
 [![Code Climate](https://codeclimate.com/github/mbj/unparser.png)](https://codeclimate.com/github/mbj/unparser)
 
-Generate equivalent inputs for ASTs from whitequarks awesome [parser](https://github.com/whitequark/parser).
+Generate equivalent source for ASTs from whitequarks awesome [parser](https://github.com/whitequark/parser).
 
 Usage
 -----
@@ -14,6 +14,29 @@ Usage
 require 'unparser'
 Unparser.unparse(your_ast) # => "the code"
 ```
+
+Equivalent vs identical:
+
+```ruby
+require 'unparser'
+
+code = <<-RUBY
+%w(foo bar)
+RUBY
+
+node = Parser::CurrentRuby.parse(code)
+
+generated = Unparser.unparse(node) # ["foo", "bar"], NOT %w(foo bar) !
+
+code == generated                            # false, not identical code
+Parser::CurrentRuby.parse(generated) == node # true, but identical AST
+```
+
+Summary: unparser does not reproduce your source! It produces equivalent source.
+
+Technical: unparser does not use the source locations in parsers nodes.
+This is required for tools like [mutant](https://github.com/mbj/mutant) that inject/modify nodes
+without respecting source locations.
 
 Installation
 ------------
