@@ -90,7 +90,11 @@ module Unparser
         write(K_RESCUE)
         emit_exception
         emit_assignment
-        indented { visit(body) }
+        if body
+          indented { visit(body) }
+        else
+          nl
+        end
       end
 
       # Emit exception
