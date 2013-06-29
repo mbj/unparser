@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+trap('INT') do |status|
+  exit! 128+status
+end
+
+require 'unparser'
+require 'parser/current'
+
+ARGV.each do |file|
+  source    = File.read(file)
+  node      = Parser::CurrentRuby.parse(source)
+  generated = Unparser.unparse(node)
+  unparsed  = Parser::CurrentRuby.parse(generated)
+  unless unparsed == node
+    $stderr.puts "Node:"
+    $stderr.puts node.inspect
+    $stderr.puts "Unparsed-Node:"
+    $stderr.puts unparsed.inspect
+    $stderr.puts "Original:"
+    $stderr.puts source
+    $stderr.puts "Generated:"
+    $stderr.puts generated
+    fail "BUG!"
+  end
+end
