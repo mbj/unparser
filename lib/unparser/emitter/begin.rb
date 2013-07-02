@@ -17,16 +17,52 @@ module Unparser
       # @api private
       #
       def dispatch
-        k_begin
         indented { visit(body) }
-        children[1..-2].each do |child|
+        rescue_bodies.each do |child|
           visit(child)
         end
-        k_end
+        emit_else
       end
+
+      # Return rescue bodies
+      #
+      # @return [Enumerable<Parser::AST::Node>]
+      #
+      # @api private
+      #
+      def rescue_bodies
+        children[1..-2]
+      end
+
+      # Emit else
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_else
+        return unless else_branch
+        write(K_ELSE)
+        indented { visit(else_branch) }
+      end
+
+      # Return else body
+      #
+      # @return [Parser::AST::Node]
+      #   if else body is present
+      #
+      # @return [nil]
+      #   otherwise
+      #
+      # @api private
+      #
+      def else_branch
+        children.last
+      end
+
     end # Rescue
 
-    # Emitter for enusre nodes
+    # Emitter for ensure nodes
     class Ensure < self
 
       handle :ensure
@@ -42,11 +78,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        k_begin
         emit_body
         write(K_ENSURE)
         emit_ensure_body
-        k_end
       end
 
       # Emit body
@@ -126,39 +160,9 @@ module Unparser
     # Emitter for begin nodes
     class Begin < self
 
-      handle :begin, :kwbegin
+      children :body
 
     private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        if children.length == 1 and !parent.needs_begin?
-          visit(first_child)
-        else
-          emit_normal
-        end
-      end
-
-      # Emit normal begin block
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_normal
-        if parent.needs_begin?
-          k_begin
-          indented { emit_inner }
-          k_end
-        else
-          emit_inner
-        end
-      end
 
       # Emit inner nodes
       #
@@ -175,6 +179,61 @@ module Unparser
         end
       end
 
-    end # Body
+      class Implicit < self
+
+        handle :begin
+
+      private
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          emit_inner
+        end
+
+      end # Implicit
+
+      # Emitter for explicit begins
+      class Explicit < self
+
+        handle :kwbegin
+
+      private
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          write(K_BEGIN)
+          emit_body
+          k_end
+        end
+
+        NOINDENT = [:rescue, :ensure].to_set
+
+        # Emit body
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_body
+          if NOINDENT.include?(body.type)
+            emit_inner
+          else
+            indented { emit_inner }
+          end
+        end
+
+      end # Explicit
+
+    end # Begin
   end # Emitter
 end # Unparser

@@ -20,8 +20,11 @@ module Unparser
     #
     def self.children(*names)
       names.each_with_index do |name, index|
+        define_method(:remaining_children) do
+          children[names.length..-1]
+        end
         define_method(name) do
-          children[index]
+          children.at(index)
         end
         private name
       end
@@ -211,16 +214,6 @@ module Unparser
       strings.each do |string|
         buffer.append(string)
       end
-    end
-
-    # Write begin keyword
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def k_begin
-      write(K_BEGIN)
     end
 
     # Write end keyword
