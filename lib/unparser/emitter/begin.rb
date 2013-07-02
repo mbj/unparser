@@ -78,29 +78,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        emit_body
+        visit_indented(body)
         write(K_ENSURE)
-        emit_ensure_body
-      end
-
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        indented { visit(body) }
-      end
-
-      # Emit ensure body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_ensure_body
-        indented { visit(ensure_body) }
+        visit_indented(ensure_body)
       end
 
     end # Ensure
@@ -124,11 +104,7 @@ module Unparser
         write(K_RESCUE)
         emit_exception
         emit_assignment
-        if body
-          indented { visit(body) }
-        else
-          nl
-        end
+        emit_body
       end
 
       # Emit exception

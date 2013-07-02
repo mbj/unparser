@@ -28,7 +28,7 @@ module Unparser
         define_method(name) do
           children.at(index)
         end
-        private name
+        protected name
       end
     end
     private_class_method :children
@@ -273,7 +273,7 @@ module Unparser
     #
     # @api private
     #
-    def emit_body
+    def emit_body(body = self.body)
       unless body
         nl
         return

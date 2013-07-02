@@ -35,16 +35,6 @@ module Unparser
         write(WS, K_DO)
       end
 
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        indented { visit(body) }
-      end
-
     end # For
   end # Emitter
 end # Unparser

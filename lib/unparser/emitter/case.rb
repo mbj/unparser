@@ -33,7 +33,7 @@ module Unparser
         else_branch = children.last
         return unless else_branch
         write(K_ELSE)
-        indented { visit(else_branch) }
+        visit_indented(else_branch)
       end
 
       # Emit whens
@@ -80,11 +80,7 @@ module Unparser
         write(K_WHEN, WS)
         emit_captures
         body = children.last
-        if body
-          indented { visit(body) }
-        else
-          nl
-        end
+        emit_body(body)
       end
 
       # Emit captures

@@ -65,7 +65,7 @@ module Unparser
       #
       def emit_if_branch
         return unless if_branch
-        indented { visit(if_branch) }
+        visit_indented(if_branch)
       end
 
       # Emit else branch
@@ -77,7 +77,7 @@ module Unparser
       def emit_else_branch
         return unless else_branch
         write(K_ELSE) unless unless?
-        indented { visit(else_branch) }
+        visit_indented(else_branch)
       end
 
     end # If

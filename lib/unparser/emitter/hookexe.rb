@@ -27,16 +27,6 @@ module Unparser
         end
       end
 
-      # Emit body
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_body
-        indented { visit(body) }
-      end
-
     end # Hookexe
   end # Emitter
 end # Unparser
