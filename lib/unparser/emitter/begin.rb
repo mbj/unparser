@@ -155,6 +155,7 @@ module Unparser
         end
       end
 
+      # Emitter for implicit begins
       class Implicit < self
 
         handle :begin

@@ -99,7 +99,8 @@ DataClump:
   max_copies: 1
   min_clump_size: 3
 ControlParameter:
-  exclude: []
+  exclude:
+    - Unparser::Emitter#emit_body # false positive
   enabled: true
 NilCheck:
   enabled: false

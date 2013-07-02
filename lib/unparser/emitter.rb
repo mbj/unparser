@@ -14,6 +14,39 @@ module Unparser
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
+    # Define remaining children
+    #
+    # @param [Enumerable<Symbol>] names
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def self.define_remaining_children(names)
+      define_method(:remaining_children) do
+        children[names.length..-1]
+      end
+      private :remaining_children
+    end
+    private_class_method :define_remaining_children
+
+    # Define named child
+    #
+    # @param [Symbol] name
+    # @param [Fixnum] index
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def self.define_child(name, index)
+      define_method(name) do
+        children.at(index)
+      end
+      protected name
+    end
+    private_class_method :define_child
+
     # Create name helpers
     #
     # @return [undefined]
@@ -21,14 +54,10 @@ module Unparser
     # @api private
     #
     def self.children(*names)
+      define_remaining_children(names)
+
       names.each_with_index do |name, index|
-        define_method(:remaining_children) do
-          children[names.length..-1]
-        end
-        define_method(name) do
-          children.at(index)
-        end
-        protected name
+        define_child(name, index)
       end
     end
     private_class_method :children
