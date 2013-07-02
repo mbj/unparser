@@ -7,6 +7,10 @@ unparser
 
 Generate equivalent source for ASTs from whitequarks awesome [parser](https://github.com/whitequark/parser).
 
+This library is in early development stage and still has some bugs/missing features.
+Nevertheless it is able to regenerate it own source and serves well for
+[mutant](https://github.cm/mbj/mutant) mutators and the in-memory vendoring for self hosting mutant.
+
 Usage
 -----
 
