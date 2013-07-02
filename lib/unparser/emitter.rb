@@ -8,6 +8,8 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {}
 
+    NOINDENT = [:rescue, :ensure].to_set
+
     DEFAULT_DELIMITER = ', '.freeze
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
@@ -276,7 +278,23 @@ module Unparser
         nl
         return
       end
-      indented { visit(body) }
+      visit_indented(body)
+    end
+
+    # Visit indented node
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def visit_indented(node)
+      if NOINDENT.include?(node.type)
+        visit(node)
+      else
+        indented { visit(node) }
+      end
     end
 
     # Emitter that fully relies on parser source maps

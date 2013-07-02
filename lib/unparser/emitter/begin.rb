@@ -17,7 +17,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        indented { visit(body) }
+        visit_indented(body)
         rescue_bodies.each do |child|
           visit(child)
         end
@@ -43,7 +43,7 @@ module Unparser
       def emit_else
         return unless else_branch
         write(K_ELSE)
-        indented { visit(else_branch) }
+        visit_indented(else_branch)
       end
 
       # Return else body
@@ -215,8 +215,6 @@ module Unparser
           emit_body
           k_end
         end
-
-        NOINDENT = [:rescue, :ensure].to_set
 
         # Emit body
         #

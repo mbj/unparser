@@ -356,6 +356,19 @@ describe Unparser, 'spike' do
 
     assert_source <<-RUBY
       begin
+        begin
+          foo
+          bar
+        rescue
+        end
+      rescue
+        baz
+        bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
         foo
         bar
       rescue
@@ -575,6 +588,22 @@ describe Unparser, 'spike' do
       RUBY
 
       assert_source <<-RUBY
+        def foo
+          bar
+        ensure
+          baz
+        end
+      RUBY
+
+      assert_source <<-RUBY
+        def foo
+          bar
+        rescue
+          baz
+        end
+      RUBY
+
+      assert_source <<-RUBY
         def foo(bar)
           bar
         end
@@ -671,7 +700,6 @@ describe Unparser, 'spike' do
     end
 
     context 'on singleton' do
-
       assert_source <<-RUBY
         def self.foo
         end
