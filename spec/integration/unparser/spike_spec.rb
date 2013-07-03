@@ -905,23 +905,24 @@ describe Unparser, 'spike' do
     assert_source '(a ||= 2).bar'
   end
 
- #context 'flip flops' do
- #  context 'flip2' do
- #    assert_source <<-RUBY
- #      if (((i) == (4)))..(((i) == (4)))
- #        foo
- #      end
- #    RUBY
- #  end
+  context 'flip flops' do
+    before { pending }
+    context 'flip2' do
+      assert_source <<-RUBY
+        if (((i) == (4)))..(((i) == (4)))
+          foo
+        end
+      RUBY
+    end
 
- #  context 'flip3' do
- #    assert_source <<-RUBY
- #      if (((i) == (4)))...(((i) == (4)))
- #        foo
- #      end
- #    RUBY
- #  end
- #end
+    context 'flip3' do
+      assert_source <<-RUBY
+        if (((i) == (4)))...(((i) == (4)))
+          foo
+        end
+      RUBY
+    end
+  end
 
   context 'case statement' do
     assert_source <<-RUBY
