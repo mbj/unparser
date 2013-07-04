@@ -14,16 +14,6 @@ module Unparser
 
       AMBIGOUS = [:irange, :erange].to_set.freeze
 
-      # Tell node needs begin
-      #
-      # @return [true]
-      #
-      # @api private
-      #
-      def needs_begin?
-        true
-      end
-
     private
 
       # Perform dispatch

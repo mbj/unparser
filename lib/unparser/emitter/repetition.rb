@@ -15,16 +15,6 @@ module Unparser
 
       handle *MAP.keys
 
-      # Test if child should be emitted with explicit begin nodes
-      #
-      # @return [true]
-      #
-      # @api private
-      #
-      def needs_begin?
-        true
-      end
-
       # Perform dispatch
       #
       # @return [undefined]

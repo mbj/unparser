@@ -122,19 +122,15 @@ module Unparser
       self
     end
 
-    # Test if node needs begin
+    # Dispatch node
     #
-    # @return [true]
-    #   if if node needs begin
+    # @param [Parser::AST::Node] node
     #
-    # @return [false]
-    #   otherwise
+    # @return [undefined]
     #
     # @api private
     #
-    def needs_begin?
-      false
-    end
+    abstract_method :dispatch
 
     # Return node
     #
