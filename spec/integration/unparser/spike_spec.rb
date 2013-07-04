@@ -906,18 +906,17 @@ describe Unparser, 'spike' do
   end
 
   context 'flip flops' do
-    before { pending }
-    context 'flip2' do
+    context 'inclusive' do
       assert_source <<-RUBY
-        if (((i) == (4)))..(((i) == (4)))
+        if (i == 4)..(i == 4)
           foo
         end
       RUBY
     end
 
-    context 'flip3' do
+    context 'exclusive' do
       assert_source <<-RUBY
-        if (((i) == (4)))...(((i) == (4)))
+        if (i == 4)...(i == 4)
           foo
         end
       RUBY

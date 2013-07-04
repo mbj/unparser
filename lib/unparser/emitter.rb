@@ -124,8 +124,6 @@ module Unparser
 
     # Dispatch node
     #
-    # @param [Parser::AST::Node] node
-    #
     # @return [undefined]
     #
     # @api private

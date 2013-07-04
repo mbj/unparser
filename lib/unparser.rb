@@ -88,5 +88,6 @@ require 'unparser/emitter/repetition'
 require 'unparser/emitter/root'
 require 'unparser/emitter/match'
 require 'unparser/emitter/empty'
+require 'unparser/emitter/flipflop'
 # make it easy for zombie
 require 'unparser/finalize'
