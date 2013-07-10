@@ -28,6 +28,7 @@ module Unparser
 
         end # Inspect
 
+        # Literal emitter with macro regeneration base class
         class MacroSafe < self
 
         private
@@ -72,11 +73,13 @@ module Unparser
             self.class::MACRO
           end
 
+          # String macro safe emitter
           class String < self
             MACRO = '__FILE__'.freeze
             handle :str
           end # String
 
+          # Integer macro safe emitter
           class Integer < self
             MACRO = '__LINE__'.freeze
             handle :int

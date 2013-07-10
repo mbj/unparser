@@ -1,5 +1,6 @@
 module Unparser
   class Emitter
+    # Emitter for flip flops
     class FlipFlop < self
 
       MAP = IceNine.deep_freeze(
