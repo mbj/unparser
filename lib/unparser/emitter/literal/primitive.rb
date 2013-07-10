@@ -12,7 +12,7 @@ module Unparser
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 
-          handle :int, :str, :float, :sym
+          handle :float, :sym, :int
 
         private
 
@@ -27,6 +27,62 @@ module Unparser
           end
 
         end # Inspect
+
+        class MacroSafe < self
+
+        private
+
+          # Perform dispatch
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch
+            if(source == macro)
+              write(macro)
+              return
+            end
+            write(value.inspect)
+          end
+
+          # Return source, if present
+          #
+          # @return [String]
+          #   if present
+          #
+          # @return [nil]
+          #   otherwise
+          #
+          # @api private
+          #
+          def source
+            location = node.location || return
+            expression = location.expression || return
+            expression.source
+          end
+
+          # Return marco
+          #
+          # @return [String]
+          #
+          # @api private
+          #
+          def macro
+            self.class::MACRO
+          end
+
+          class String < self
+            MACRO = '__FILE__'.freeze
+            handle :str
+          end # String
+
+          class Integer < self
+            MACRO = '__LINE__'.freeze
+            handle :int
+          end # Integer
+
+        end # MacroSave
       end # Primitive
     end # Literal
   end # Emitter

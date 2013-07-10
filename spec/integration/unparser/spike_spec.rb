@@ -196,8 +196,8 @@ describe Unparser, 'spike' do
 
   context 'magic keywords' do
     assert_generates '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
-    assert_generates '__FILE__', '"(string)"'
-    assert_generates '__LINE__', '1'
+    assert_source '__FILE__'
+    assert_source '__LINE__'
   end
 
   context 'assignment' do
