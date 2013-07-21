@@ -6,34 +6,34 @@ module Unparser
       ~
       -@
       +@
-    ).map(&:to_sym).to_set.freeze
+    ).map(&:to_sym).to_set
 
 
     BINARY_OPERATORS = %w(
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
       **
-    ).map(&:to_sym).to_set.freeze
+    ).map(&:to_sym).to_set
 
-    WS       = ' '.freeze
-    NL       = "\n".freeze
-    T_DOT    = '.'.freeze
-    T_LT     = '<'.freeze
-    T_DLT    = '<<'.freeze
-    T_AMP    = '&'.freeze
-    T_ASN    = '='.freeze
-    T_SPLAT  = '*'.freeze
-    T_DSPLAT = '**'.freeze
-    T_ASR    = '=>'.freeze
-    T_PIPE   = '|'.freeze
-    T_DCL    = '::'.freeze
-    T_NEG    = '!'.freeze
-    T_OR     = '||'.freeze
-    T_AND    = '&&'.freeze
-    T_COLON  = ':'.freeze
+    WS       = ' '
+    NL       = "\n"
+    T_DOT    = '.'
+    T_LT     = '<'
+    T_DLT    = '<<'
+    T_AMP    = '&'
+    T_ASN    = '='
+    T_SPLAT  = '*'
+    T_DSPLAT = '**'
+    T_ASR    = '=>'
+    T_PIPE   = '|'
+    T_DCL    = '::'
+    T_NEG    = '!'
+    T_OR     = '||'
+    T_AND    = '&&'
+    T_COLON  = ':'
 
-    M_PO  = '('.freeze
-    M_PC  = ')'.freeze
+    M_PO  = '('
+    M_PC  = ')'
 
     K_DO       = 'do'
     K_DEF      = 'def'
@@ -78,10 +78,13 @@ module Unparser
     K_FILE     = '__FILE__'
     K_THEN     = 'then'
 
+    constants.each do |name|
+      const_get(name).freeze
+    end
 
     KEYWORDS = constants.map do |name|
       if name.to_s.start_with?('K_')
-        const_get(name).freeze.to_sym
+        const_get(name).to_sym
       end
     end.compact.freeze
 
