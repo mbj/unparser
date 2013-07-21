@@ -2,10 +2,7 @@ module Unparser
   module Constants
 
     UNARY_OPERATORS = %w(
-      !
-      ~
-      -@
-      +@
+      ! ~ -@ +@
     ).map(&:to_sym).to_set
 
 
