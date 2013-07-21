@@ -1,10 +1,10 @@
 module Unparser
+  # All unparser constants maybe included in other libraries.
   module Constants
 
     UNARY_OPERATORS = %w(
       ! ~ -@ +@
     ).map(&:to_sym).to_set
-
 
     BINARY_OPERATORS = %w(
       + - * / & | && || << >> ==
@@ -76,9 +76,9 @@ module Unparser
     K_THEN     = 'then'
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
-      const_get(name).freeze
+      value = const_get(name).freeze
       if name.to_s.start_with?('K_')
-        keywords << const_get(name).to_sym
+        keywords << value.to_sym
       end
     end.to_set.freeze
 
