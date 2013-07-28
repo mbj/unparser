@@ -26,7 +26,6 @@ module Unparser
         #
         def emit_receiver
           emit_unambiguous_receiver
-          write(T_DOT) if parentheses?
         end
 
         # Emit operator
@@ -36,8 +35,7 @@ module Unparser
         # @api private
         #
         def emit_operator
-          parens = parentheses? ? EMPTY_STRING : WS
-          parentheses(parens, parens) { write(string_selector) }
+          write(WS, string_selector, WS)
         end
 
         # Return right node
@@ -50,35 +48,6 @@ module Unparser
           children[2]
         end
 
-        # Test for splat argument
-        #
-        # @return [true]
-        #   if first argument is a splat
-        #
-        # @return [false]
-        #   otherwise
-        #
-        # @api private
-        #
-        def splat?
-          right_node.type == :splat
-        end
-
-        # Test if parentheses are needed
-        #
-        # @return [true]
-        #   if parenthes are needed
-        #
-        # @return [false]
-        #   otherwise
-        #
-        # @api private
-        #
-        def parentheses?
-          splat? || children.length >= 4
-        end
-        memoize :parentheses?
-
         # Emit right
         #
         # @return [undefined]
@@ -86,12 +55,7 @@ module Unparser
         # @api private
         #
         def emit_right
-          node = right_node
-          if parentheses?
-            parentheses { delimited(children[2..-1]) }
-            return
-          end
-          visit(node)
+          visit(right_node)
         end
 
       end # Binary
