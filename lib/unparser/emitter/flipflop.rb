@@ -21,9 +21,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        parentheses { visit(left) }
+        visit(left)
         write(MAP.fetch(node.type))
-        parentheses { visit(right) }
+        visit(right)
       end
     end # FlipFLop
   end # Emitter

@@ -870,6 +870,12 @@ describe Unparser, 'spike' do
     end
   end
 
+  context 'nested binary operators' do
+    assert_source '(a + b) / (c - d)'
+    assert_source '(a + b) / (c.-(e, f))'
+    assert_source '(a + b) / (c.-(*f))'
+  end
+
   context 'binary operator' do
      assert_source '((a) || (break(foo)))'
      assert_source '((break(foo)) || (a))'
@@ -1048,4 +1054,5 @@ describe Unparser, 'spike' do
       end
     RUBY
   end
+
 end
