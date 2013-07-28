@@ -6,10 +6,10 @@ describe Unparser::Emitter::SourceMap, '.emit' do
   let(:buffer)  { Unparser::Buffer.new      }
 
   let(:node) do
-    mock('Node', 
+    double('Node',
       :type => :foo,
-      :location => mock('SourceMap', 
-        :expression => mock('SourceRange', :source => 'foo')
+      :location => double('SourceMap',
+        :expression => double('SourceRange', :source => 'foo')
       )
     )
   end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Unparser, '.unparse' do
   subject { described_class.unparse(node) }
 
-  let(:node) { mock('Node') }
+  let(:node) { double('Node') }
 
   before do
     described_class::Emitter.should_receive(:visit) do |node, buffer|

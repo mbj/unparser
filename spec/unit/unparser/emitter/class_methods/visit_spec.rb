@@ -4,7 +4,7 @@ describe Unparser::Emitter, '.visit' do
   subject { object.visit(node, buffer) }
   let(:object) { described_class }
 
-  let(:node)   { mock('Node', :type => type, :source_map => nil) }
+  let(:node)   { double('Node', :type => type, :source_map => nil) }
   let(:buffer) { Unparser::Buffer.new        }
 
   before do
