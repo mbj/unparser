@@ -89,5 +89,8 @@ require 'unparser/emitter/root'
 require 'unparser/emitter/match'
 require 'unparser/emitter/empty'
 require 'unparser/emitter/flipflop'
+require 'unparser/emitter/rescue'
+require 'unparser/emitter/resbody'
+require 'unparser/emitter/ensure'
 # make it easy for zombie
 require 'unparser/finalize'
