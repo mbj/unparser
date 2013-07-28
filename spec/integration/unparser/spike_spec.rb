@@ -411,6 +411,13 @@ describe Unparser, 'spike' do
 
     assert_source <<-RUBY
       begin
+      rescue
+      ensure
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
         foo
       rescue Exception => bar
         bar

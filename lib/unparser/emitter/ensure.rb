@@ -19,7 +19,11 @@ module Unparser
       def dispatch
         visit_indented(body)
         write(K_ENSURE)
-        visit_indented(ensure_body)
+        if ensure_body
+          visit_indented(ensure_body)
+        else
+          nl
+        end
       end
 
     end # Ensure
