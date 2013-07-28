@@ -37,7 +37,7 @@ module Unparser
         #
         def emit_operator
           parens = parentheses? ? EMPTY_STRING : WS
-          parentheses(parens, parens) { write(selector) }
+          parentheses(parens, parens) { write(string_selector) }
         end
 
         # Return right node

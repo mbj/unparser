@@ -7,8 +7,8 @@ module Unparser
       private
 
         MAP = IceNine.deep_freeze(
-          '-@' => '-',
-          '+@' => '+'
+          :'-@' => '-',
+          :'+@' => '+'
         )
 
         # Perform dispatch
@@ -19,7 +19,7 @@ module Unparser
         #
         def dispatch
           name = selector
-          write(MAP.fetch(name, name))
+          write(MAP.fetch(name, name).to_s)
           emit_unambiguous_receiver
         end
 

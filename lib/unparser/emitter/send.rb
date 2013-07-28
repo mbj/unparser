@@ -8,11 +8,13 @@ module Unparser
       INDEX_PARENS  = IceNine.deep_freeze(%w([ ]))
       NORMAL_PARENS = IceNine.deep_freeze(%w[( )])
 
-      INDEX_REFERENCE = '[]'.freeze
-      INDEX_ASSIGN    = '[]='.freeze
+      INDEX_REFERENCE = :'[]'
+      INDEX_ASSIGN    = :'[]='
       ASSIGN_SUFFIX   = '='.freeze
 
       AMBIGOUS = [:irange, :erange].to_set.freeze
+
+      children :receiver, :selector
 
     private
 
@@ -32,6 +34,17 @@ module Unparser
           non_index_dispatch
         end
       end
+
+      # Return string selector
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def string_selector
+        selector.to_s
+      end
+      memoize :string_selector
 
       # Emit unambiguous receiver
       #
@@ -150,7 +163,7 @@ module Unparser
       # @api private
       #
       def unary?
-        UNARY_OPERATORS.include?(children[1])
+        UNARY_OPERATORS.include?(selector)
       end
 
       # Test for binary operator implemented as method
@@ -164,7 +177,7 @@ module Unparser
       # @api private
       #
       def binary?
-        BINARY_OPERATORS.include?(children[1])
+        BINARY_OPERATORS.include?(selector)
       end
 
       # Emit selector
@@ -174,7 +187,7 @@ module Unparser
       # @api private
       #
       def emit_selector
-        name = selector
+        name = string_selector
         if mlhs?
           name = name[0..-2]
         end
@@ -206,19 +219,8 @@ module Unparser
       # @api private
       #
       def assignment?
-        selector[-1] == ASSIGN_SUFFIX
+        string_selector[-1] == ASSIGN_SUFFIX
       end
-
-      # Return selector
-      #
-      # @return [String]
-      #
-      # @api private
-      #
-      def selector
-        children[1].to_s
-      end
-      memoize :selector
 
       # Test for empty arguments
       #
