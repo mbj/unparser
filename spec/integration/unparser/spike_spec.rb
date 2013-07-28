@@ -128,6 +128,8 @@ describe Unparser, 'spike' do
 
     context 'irange' do
       assert_generates '1..2', %q(1..2)
+      assert_source   '(0.0 / 0.0)..1'
+      assert_source   '1..(0.0 / 0.0)'
     end
 
     context 'erange' do
@@ -398,6 +400,12 @@ describe Unparser, 'spike' do
         foo
       rescue Exception, Other => bar
         bar
+      end
+    RUBY
+
+    assert_source <<-RUBY
+      begin
+      rescue Exception => e
       end
     RUBY
 

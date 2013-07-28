@@ -16,7 +16,11 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit_indented(body)
+        if body
+          visit_indented(body)
+        else
+          nl
+        end
         rescue_bodies.each do |child|
           visit(child)
         end
