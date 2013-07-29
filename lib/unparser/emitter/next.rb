@@ -15,6 +15,8 @@ module Unparser
       #
       def dispatch
         write(K_NEXT)
+        return if children.empty?
+        parentheses { visit(children.first) }
       end
 
     end # Next

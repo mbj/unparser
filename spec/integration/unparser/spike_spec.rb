@@ -179,6 +179,7 @@ describe Unparser, 'spike' do
 
   context 'next' do
     assert_source 'next'
+    assert_source 'next(bar)'
   end
 
   context 'retry' do
