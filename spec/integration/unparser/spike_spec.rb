@@ -225,6 +225,7 @@ describe Unparser, 'spike' do
       assert_source '@@a, @@b = 1, 2'
       assert_source '$a, $b = 1, 2'
       assert_source 'a, b = foo'
+      assert_source 'a, (b, c) = 1, [2, 3]'
     end
   end
 

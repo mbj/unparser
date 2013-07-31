@@ -131,8 +131,13 @@ module Unparser
         # @api private
         #
         def dispatch
-          delimited(children)
+          if parent.node.type == :mlhs
+            parentheses { delimited(children) }
+          else
+            delimited(children)
+          end
         end
+
       end # MLHS
 
     end # Assignment
