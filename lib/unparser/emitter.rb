@@ -331,7 +331,7 @@ module Unparser
     # @api private
     #
     def parent_type
-      parent && parent.node.type
+      parent && parent.node && parent.node.type
     end
 
     # Emitter that fully relies on parser source maps

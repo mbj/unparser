@@ -42,6 +42,18 @@ describe Unparser, 'spike' do
     generated.should eql(input)
   end
 
+  def self.assert_generates_one_way(ast, expected, versions = RUBIES)
+    with_versions(versions) do |version, parser|
+      it "should generate #{ast.inspect} as #{expected} under #{version}" do
+        if ast.kind_of?(String)
+          ast = parser.parse(ast)
+        end
+        generated = Unparser.unparse(ast)
+        generated.should eql(expected)
+      end
+    end
+  end
+
   def self.assert_generates(ast, expected, versions = RUBIES)
     with_versions(versions) do |version, parser|
       it "should generate #{ast.inspect} as #{expected} under #{version}" do
@@ -226,6 +238,7 @@ describe Unparser, 'spike' do
       assert_source '$a, $b = 1, 2'
       assert_source 'a, b = foo'
       assert_source 'a, (b, c) = 1, [2, 3]'
+      assert_generates_one_way s(:mlhs, s(:lvasgn, :a), s(:lvasgn, :b)), 'a, b'
     end
   end
 
