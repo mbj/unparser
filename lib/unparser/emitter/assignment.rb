@@ -131,7 +131,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if parent.node.type == :mlhs
+          if parent_type == :mlhs
             parentheses { delimited(children) }
           else
             delimited(children)

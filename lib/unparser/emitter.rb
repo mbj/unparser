@@ -320,6 +320,20 @@ module Unparser
       end
     end
 
+    # Return parent type
+    #
+    # @return [Symbol]
+    #   if parent is present
+    #
+    # @return [nil]
+    #   otherwiseo
+    #
+    # @api private
+    #
+    def parent_type
+      parent && parent.node.type
+    end
+
     # Emitter that fully relies on parser source maps
     class SourceMap < self
 
