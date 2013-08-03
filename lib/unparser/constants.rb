@@ -9,7 +9,7 @@ module Unparser
     BINARY_OPERATORS = %w(
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
-      **
+      ** %
     ).map(&:to_sym).to_set
 
     WS       = ' '
