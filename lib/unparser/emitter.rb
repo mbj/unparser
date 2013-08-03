@@ -138,8 +138,6 @@ module Unparser
     #
     attr_reader :node
 
-  private
-
     # Return buffer
     #
     # @return [Buffer] buffer
@@ -157,6 +155,8 @@ module Unparser
     #
     attr_reader :parent
     protected :parent
+
+  private
 
     # Emit contents of block within parentheses
     #

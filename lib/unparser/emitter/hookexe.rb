@@ -8,7 +8,7 @@ module Unparser
         :postexe => K_POSTEXE
       }.freeze
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
       children :body
 

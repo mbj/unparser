@@ -13,7 +13,7 @@ module Unparser
         :until_post => K_UNTIL
       }.freeze
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
       # Perform dispatch
       #
@@ -36,7 +36,7 @@ module Unparser
         :until => K_UNTIL
       }.freeze
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
       children :condition, :body
 

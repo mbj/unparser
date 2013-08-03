@@ -9,7 +9,7 @@ module Unparser
           :erange => '...'
         )
 
-        handle *TOKENS.keys
+        handle(*TOKENS.keys)
 
         children :begin_node, :end_node
 

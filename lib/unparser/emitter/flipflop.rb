@@ -8,7 +8,7 @@ module Unparser
         :eflipflop => '...',
       ).freeze
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
       children :left, :right
 

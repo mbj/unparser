@@ -11,7 +11,7 @@ module Unparser
         :or_asgn  => '||='
       )
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
     private
 
