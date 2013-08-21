@@ -18,9 +18,40 @@ module Unparser
         #
         def dispatch
           parentheses(DELIMITER, DELIMITER) do
-            visit(dynamic_body)
+            # stupid for now
+            body.each do |child|
+              write_body(child)
+            end
+            #visit(dynamic_body)
           end
           visit(children.last)
+        end
+
+        # Return non regopt children
+        #
+        # @return [Array<Parser::AST::Node>]
+        #
+        # @api private
+        #
+        def body
+          children[0..-2]
+        end
+
+        # Write specific body component
+        #
+        # @param [Parser::AST::Node] node
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def write_body(node)
+          case node.type
+          when :str
+            write(escape(node).children.first)
+          else
+            visit(s(:interpolated, [node]))
+          end
         end
 
         # Return dynamic body

@@ -8,6 +8,29 @@ module Unparser
         OPEN = '#{'.freeze
         CLOSE = '}'.freeze
 
+        # Emitter for interpolated nodes
+        class Interpolation < self
+
+          handle :interpolated
+
+          children :subject
+
+        private
+
+          # Perform dispatch
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch
+            write(OPEN)
+            visit(subject)
+            write(CLOSE)
+          end
+
+        end
+
       private
 
         # Perform dispatch

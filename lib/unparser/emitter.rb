@@ -334,6 +334,18 @@ module Unparser
       parent && parent.node && parent.node.type
     end
 
+    # Helper for building nodes
+    #
+    # @param [Symbol]
+    #
+    # @return [Parser::AST::Node]
+    #
+    # @api private
+    #
+    def s(type, *children)
+      Parser::AST::Node.new(type, *children)
+    end
+
     # Emitter that fully relies on parser source maps
     class SourceMap < self
 

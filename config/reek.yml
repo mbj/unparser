@@ -19,7 +19,8 @@ TooManyMethods:
   enabled: true
   max_methods: 10
 UncommunicativeMethodName:
-  accept: []
+  accept:
+  - s
   exclude: []
   enabled: true
   reject:
@@ -58,6 +59,7 @@ NestedIterators:
   ignore_iterators: []
   exclude:
   - Unparser::Emitter#self.children
+  - Unparser::Emitter::Literal::Regexp#dispatch
   enabled: true
   max_allowed_nesting: 1
 TooManyStatements:

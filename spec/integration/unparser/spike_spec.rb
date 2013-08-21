@@ -120,7 +120,8 @@ describe Unparser, 'spike' do
       assert_source '/foo/'
       assert_source %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
       assert_source '/foo#{@bar}/'
-      assert_source '/foo#{@bar}/im'
+      assert_source '/foo#{@bar}/imx'
+      assert_source "/\n/"
       assert_generates '%r(/)', '/\//'
       assert_generates '%r(\))', '/)/'
       assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
