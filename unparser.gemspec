@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.md)
   s.executables      = [ 'test-unparser' ]
 
-  s.add_dependency('parser',        '~> 2.0.0.pre5')
+  s.add_dependency('parser',        '~> 2.0.0.pre6')
   s.add_dependency('concord',       '~> 0.1.1')
   s.add_dependency('adamantium',    '~> 0.0.10')
   s.add_dependency('equalizer',     '~> 0.0.5')
