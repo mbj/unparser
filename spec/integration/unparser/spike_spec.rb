@@ -122,6 +122,7 @@ describe Unparser, 'spike' do
       assert_source '/foo#{@bar}/'
       assert_source '/foo#{@bar}/imx'
       assert_source "/\n/"
+      assert_source '/\n/'
       assert_source "/\n/x"
       assert_generates '%r(/)', '/\//'
       assert_generates '%r(\))', '/)/'
