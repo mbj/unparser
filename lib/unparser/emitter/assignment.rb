@@ -74,7 +74,10 @@ module Unparser
           # @api private
           #
           def emit_left
-            visit(base) if base
+            if base
+              visit(base)
+              write(T_DCL)
+            end
             write(name.to_s)
           end
 

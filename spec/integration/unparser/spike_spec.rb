@@ -225,6 +225,7 @@ describe Unparser, 'spike' do
       assert_source '@@a = 1'
       assert_source '$a = 1'
       assert_source 'CONST = 1'
+      assert_source 'Name::Spaced::CONST = 1'
     end
 
     context 'multiple' do
