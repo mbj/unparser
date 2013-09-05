@@ -37,7 +37,7 @@ FeatureEnvy:
   exclude:
   - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
   - Unparser::Emitter::Send#binary_receiver?
-  - Unparser::Emitter::Send#effective_receiver
+  - Unparser::Emitter#visit_terminated
   enabled: true
 ClassVariable:
   exclude: []

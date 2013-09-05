@@ -22,9 +22,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          visit(begin_node)
+          visit_terminated(begin_node)
           write(TOKENS.fetch(node.type))
-          visit(end_node)
+          visit_terminated(end_node)
         end
 
       end # Range

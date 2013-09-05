@@ -139,7 +139,7 @@ module Unparser
     # @api private
     #
     def terminated?
-      TERIMINATED.include?(node.type)
+      TERMINATED.include?(node.type)
     end
 
   protected
@@ -179,7 +179,7 @@ module Unparser
       SourceMap.emit(node, buffer)
     end
 
-    # Dispatch helper
+    # Visit node
     #
     # @param [Parser::AST::Node] node
     #
@@ -188,7 +188,25 @@ module Unparser
     # @api private
     #
     def visit(node)
-      emitter(node).write_to_buffer
+      emitter = emitter(node)
+      emitter.write_to_buffer
+    end
+
+    # Visit unambigous node
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def visit_terminated(node)
+      emitter = emitter(node)
+      unless emitter.terminated?
+        parentheses { emitter.write_to_buffer }
+        return
+      end
+      emitter.write_to_buffer
     end
 
     # Return emitter for node

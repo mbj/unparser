@@ -37,25 +37,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if parentheses?
-            parentheses { emit_inner }
-          else
-            emit_inner
-          end
-        end
-
-        # Test if begin node needs to be enclosed within parentheses
-        #
-        # @return [true]
-        #   if parentheses are needed
-        #
-        # @return [false]
-        #   otherwise
-        #
-        # @api private
-        #
-        def parentheses?
-          children.length == 1 && children.first.type == :send && BINARY_OPERATORS.include?(children.first.children[1])
+          emit_inner
         end
 
       end # Implicit

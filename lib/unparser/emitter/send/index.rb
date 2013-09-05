@@ -34,7 +34,7 @@ module Unparser
         # @api private
         #
         def emit_receiver
-          visit(first_child)
+          visit_terminated(first_child)
         end
 
         # Emitter for index reference nodes

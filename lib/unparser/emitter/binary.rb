@@ -12,6 +12,16 @@ module Unparser
 
       handle *MAP.keys
 
+      # Test if expression is terminated
+      #
+      # @return [false]
+      #
+      # @api private
+      #
+      def terminated?
+        false
+      end
+
     private
 
       # Perform dispatch
@@ -21,31 +31,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        parentheses do
-          emit_left
-          write(WS, MAP.fetch(node.type), WS)
-          emit_right
-        end
-      end
-
-      # Emit left
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_left
-        parentheses { visit(left) }
-      end
-
-      # Emit right
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_right
-        parentheses { visit(right) }
+        visit_terminated(left)
+        write(WS, MAP.fetch(node.type), WS)
+        visit_terminated(right)
       end
 
     end # Binary

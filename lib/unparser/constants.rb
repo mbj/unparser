@@ -75,12 +75,17 @@ module Unparser
     K_FILE     = '__FILE__'
     K_THEN     = 'then'
 
+    TERMINATED = [
+      :int, :float, :self, :kwbegin, :const, :regexp
+    ].to_set
+
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze
       if name.to_s.start_with?('K_')
         keywords << value.to_sym
       end
     end.to_set.freeze
+
 
   end # Constants
 end # Unparser

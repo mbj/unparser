@@ -4,7 +4,6 @@ describe Unparser do
   describe '.unparse' do
 
     PARSERS = IceNine.deep_freeze(
-      '1.8' => Parser::Ruby18,
       '1.9' => Parser::Ruby19,
       '2.0' => Parser::Ruby20,
       '2.1' => Parser::Ruby21
@@ -88,8 +87,7 @@ describe Unparser do
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
-        assert_generates '?c', '"c"', RUBIES  - %w(1.8)
-        assert_generates '?c', '99', %w(1.8)
+        assert_generates '?c', '"c"'
       end
 
       context 'string' do
@@ -163,8 +161,8 @@ describe Unparser do
         assert_source '[1]'
         assert_source '[]'
         assert_source '[1, *@foo]'
-        assert_source '[*@foo, 1]',     RUBIES - %w(1.8)
-        assert_source '[*@foo, *@baz]', RUBIES - %w(1.8)
+        assert_source '[*@foo, 1]'
+        assert_source '[*@foo, *@baz]'
         assert_generates '%w(foo bar)', %q(["foo", "bar"])
       end
 
@@ -213,7 +211,7 @@ describe Unparser do
     end
 
     context 'magic keywords' do
-      assert_generates '__ENCODING__', 'Encoding::UTF_8', RUBIES - %w(1.8)
+      assert_generates '__ENCODING__', 'Encoding::UTF_8'
       assert_source '__FILE__'
       assert_source '__LINE__'
     end
@@ -321,10 +319,11 @@ describe Unparser do
 
       # Special cases
       assert_source '(1..2).max'
+      assert_source '(a = b).bar'
 
       assert_source 'foo.bar(*args)'
-      assert_source 'foo.bar(*arga, foo, *argb)', RUBIES - %w(1.8)
-      assert_source 'foo.bar(*args, foo)',        RUBIES - %w(1.8)
+      assert_source 'foo.bar(*arga, foo, *argb)'
+      assert_source 'foo.bar(*args, foo)'
       assert_source 'foo.bar(foo, *args)'
       assert_source 'foo.bar(foo, *args, &block)'
       assert_source <<-RUBY
@@ -894,31 +893,30 @@ describe Unparser do
 
     context 'binary operator methods' do
       %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
-        rubies = RUBIES - (%w(!= !~).include?(operator) ? %w(1.8) : [])
-        assert_source "1 #{operator} 2",        rubies
-        assert_source "left.#{operator}(*foo)", rubies
-        assert_source "left.#{operator}(a, b)", rubies
-        assert_source "self #{operator} b",     rubies
-        assert_source "a #{operator} b",        rubies
-        assert_source "(a #{operator} b).foo",  rubies
+        assert_source "1 #{operator} 2"
+        assert_source "left.#{operator}(*foo)"
+        assert_source "left.#{operator}(a, b)"
+        assert_source "self #{operator} b"
+        assert_source "a #{operator} b"
+        assert_source "(a #{operator} b).foo"
       end
     end
 
     context 'nested binary operators' do
       assert_source '(a + b) / (c - d)'
-      assert_source '(a + b) / (c.-(e, f))'
-      assert_source '(a + b) / (c.-(*f))'
+      assert_source '(a + b) / c.-(e, f)'
+      assert_source '(a + b) / c.-(*f)'
     end
 
     context 'binary operator' do
-       assert_source '((a) || (break(foo)))'
-       assert_source '((break(foo)) || (a))'
-       assert_source '((a) || (b)).foo'
-       assert_source '((a) || (((b) || (c))))'
+       assert_source 'a || (break(foo))'
+       assert_source '(break(foo)) || (a)'
+       assert_source '(a || b).foo'
+       assert_source 'a || (b || c)'
     end
 
     { :or => :'||', :and => :'&&' }.each do |word, symbol|
-      assert_generates "a #{word} break foo", "((a) #{symbol} (break(foo)))"
+      assert_generates "a #{word} break foo", "a #{symbol} (break(foo))"
     end
 
     context 'expansion of shortcuts' do
@@ -1028,6 +1026,7 @@ describe Unparser do
     context 'unary operators' do
       assert_source '!1'
       assert_source '!!1'
+      assert_source '!(!1).baz'
       assert_source '~a'
       assert_source '-a'
       assert_source '+a'

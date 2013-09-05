@@ -13,19 +13,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          emit_receiver
+          visit_terminated(receiver)
           emit_operator
           emit_right
-        end
-
-        # Emit receiver
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_receiver
-          emit_unambiguous_receiver
         end
 
         # Emit operator
@@ -55,7 +45,7 @@ module Unparser
         # @api private
         #
         def emit_right
-          visit(right_node)
+          visit_terminated(right_node)
         end
 
       end # Binary

@@ -16,6 +16,24 @@ module Unparser
 
       children :receiver, :selector
 
+      # Test for terminated expression
+      #
+      # @return [true]
+      #   if send is terminated
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def terminated?
+        [
+          Unary,
+          Index::Reference,
+          Regular
+        ].include?(effective_emitter)
+      end
+
     private
 
       # Perform dispatch
@@ -25,13 +43,40 @@ module Unparser
       # @api private
       #
       def dispatch
+        run(effective_emitter)
+      end
+
+      # Return effective emitter
+      #
+      # @return [Class:Emitter]
+      #
+      # @api private
+      #
+      def effective_emitter
         case selector
         when INDEX_REFERENCE
-          run(Index::Reference)
+          Index::Reference
         when INDEX_ASSIGN
-          run(Index::Assign)
+          Index::Assign
         else
-          non_index_dispatch
+          non_index_emitter
+        end
+      end
+      memoize :effective_emitter
+
+      # Return non index emitter
+      #
+      # @return [Class:Emitter]
+      #
+      # @api private
+      #
+      def non_index_emitter
+        if binary?
+          Binary
+        elsif unary?
+          Unary
+        else
+          Regular
         end
       end
 
@@ -46,59 +91,6 @@ module Unparser
       end
       memoize :string_selector
 
-      # Emit unambiguous receiver
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_unambiguous_receiver
-        receiver = effective_receiver
-        if AMBIGOUS.include?(receiver.type) or binary_receiver?
-          parentheses { visit(receiver) }
-          return
-        end
-
-        visit(receiver)
-      end
-
-      # Return effective receiver
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      def effective_receiver
-        receiver = first_child
-        children = receiver.children
-        if receiver.type == :begin && children.length == 1
-          receiver = children.first
-        end
-        receiver
-      end
-
-      # Test for binary receiver
-      #
-      # @return [true]
-      #   if receiver is a binary operation implemented by a method
-      #
-      # @return [false]
-      #   otherwise
-      #
-      # @api private
-      #
-      def binary_receiver?
-        receiver = effective_receiver
-        case receiver.type
-        when :or_asgn, :and_asgn
-          true
-        when :send
-          BINARY_OPERATORS.include?(receiver.children[1])
-        else
-          false
-        end
-      end
-
       # Delegate to emitter
       #
       # @param [Class:Emitter] emitter
@@ -108,48 +100,7 @@ module Unparser
       # @api private
       #
       def run(emitter)
-        emitter.emit(node, self)
-      end
-
-      # Perform non index dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def non_index_dispatch
-        if binary?
-          run(Binary)
-          return
-        elsif unary?
-          run(Unary)
-          return
-        end
-        regular_dispatch
-      end
-
-      # Perform regular dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def regular_dispatch
-        emit_receiver
-        emit_selector
-        emit_arguments
-      end
-
-      # Return receiver
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      def emit_receiver
-        return unless first_child
-        emit_unambiguous_receiver
-        write(T_DOT)
+        emitter.new(node, self).write_to_buffer
       end
 
       # Test for unary operator implemented as method
