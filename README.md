@@ -11,6 +11,8 @@ This library is in early development stage and still has some bugs/missing featu
 Nevertheless it is able to regenerate it own source and serves well for
 [mutant](https://github.cm/mbj/mutant) mutators and the in-memory vendoring for self hosting mutant.
 
+This library dropped the reproduction of 1.8 syntax in the 0.1.0 release.
+
 Usage
 -----
 
