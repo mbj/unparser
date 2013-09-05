@@ -108,7 +108,7 @@ module Unparser
       # @api private
       #
       def run(emitter)
-        emitter.emit(node, buffer, self)
+        emitter.emit(node, self)
       end
 
       # Perform non index dispatch

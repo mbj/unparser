@@ -20,7 +20,7 @@ module Unparser
       node = Parser::AST::Node.new(:empty)
     end
     buffer = Buffer.new
-    Emitter.visit(node, buffer)
+    Emitter.emitter(node, Emitter::Root.new(buffer)).write_to_buffer
     buffer.content
   end
 

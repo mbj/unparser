@@ -3,7 +3,7 @@ module Unparser
   # Emitter base class
   class Emitter
     include Adamantium::Flat, AbstractType, Constants
-    include Equalizer.new(:node, :buffer, :parent)
+    include Concord.new(:node, :parent)
 
     # Registry for node emitters
     REGISTRY = {}
@@ -77,49 +77,40 @@ module Unparser
     end
     private_class_method :handle
 
-    # Emit node into buffer
+    # Trigger write to buffer
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def write_to_buffer
+      dispatch
+      self
+    end
+    memoize :write_to_buffer
+
+    # Emit node
     #
     # @return [self]
     #
     # @api private
     #
     def self.emit(*arguments)
-      new(*arguments)
-      self
+      new(*arguments).write_to_buffer
     end
 
-    # Initialize object
-    #
-    # @param [Parser::AST::Node] node
-    # @param [Buffer] buffer
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def initialize(node, buffer, parent)
-      @node, @buffer, @parent = node, buffer, parent
-      dispatch
-    end
-
-    private_class_method :new
-
-    # Visit node
-    #
-    # @param [Parser::AST::Node] node
-    # @param [Buffer] buffer
+    # Return emitter
     #
     # @return [Emitter]
     #
     # @api private
     #
-    def self.visit(node, buffer, parent = Root)
+    def self.emitter(node, parent)
       type = node.type
-      emitter = REGISTRY.fetch(type) do
+      klass = REGISTRY.fetch(type) do
         raise ArgumentError, "No emitter for node: #{type.inspect}"
       end
-      emitter.emit(node, buffer, parent)
-      self
+      klass.new(node, parent)
     end
 
     # Dispatch node
@@ -138,23 +129,31 @@ module Unparser
     #
     attr_reader :node
 
+    # Test if node is emitted as terminated expression
+    #
+    # @return [false]
+    #   if emitted node is unambigous
+    #
+    # @return [true]
+    #
+    # @api private
+    #
+    def terminated?
+      TERIMINATED.include?(node.type)
+    end
+
+  protected
+
     # Return buffer
     #
     # @return [Buffer] buffer
     #
     # @api private
     #
-    attr_reader :buffer
-    protected :buffer
-
-    # Return parent emitter
-    #
-    # @return [Parent]
-    #
-    # @api private
-    #
-    attr_reader :parent
-    protected :parent
+    def buffer
+      parent.buffer
+    end
+    memoize :buffer, :freezer => :noop
 
   private
 
@@ -189,7 +188,19 @@ module Unparser
     # @api private
     #
     def visit(node)
-      self.class.visit(node, buffer, self)
+      emitter(node).write_to_buffer
+    end
+
+    # Return emitter for node
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [Emitter]
+    #
+    # @api private
+    #
+    def emitter(node)
+      self.class.emitter(node, self)
     end
 
     # Emit delimited body

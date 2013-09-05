@@ -3,13 +3,14 @@ module Unparser
     # Base class for binary emitters
     class Binary < self
 
-      handle :or, :and
       children :left, :right
 
       MAP = {
         :or => T_OR,
         :and => T_AND
       }.freeze
+
+      handle *MAP.keys
 
     private
 

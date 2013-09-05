@@ -1,7 +1,7 @@
 module Unparser
   class Emitter
-    Root = ::Class.new(self) do
-      def initialize(); end
-    end.send(:new)
-  end
-end
+    class Root < self
+      include Concord::Public.new(:buffer)
+    end # Root
+  end # Emitter
+end # Unparser

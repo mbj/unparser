@@ -27,7 +27,7 @@ module Unparser
 
       handle :const
 
-      children :parent, :name
+      children :scope, :name
 
     private
 
@@ -38,7 +38,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        emit_parent
+        emit_scope
         write(name.to_s)
       end
 
@@ -48,10 +48,10 @@ module Unparser
       #
       # @api private
       #
-      def emit_parent
-        return unless parent
-        visit(parent)
-        if parent.type != :cbase
+      def emit_scope
+        return unless scope
+        visit(scope)
+        if scope.type != :cbase
           write(T_DCL)
         end
       end
