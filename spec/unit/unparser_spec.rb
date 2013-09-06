@@ -331,6 +331,27 @@ describe Unparser do
       assert_source '$var.bar'
       assert_source '"".bar'
       assert_source 'defined?(@foo).bar'
+      assert_source 'break.foo'
+      assert_source 'next.foo'
+      assert_source 'super(a).foo'
+      assert_source 'super.foo'
+      assert_source 'nil.foo'
+      assert_source ':sym.foo'
+      assert_source '1.foo'
+      assert_source '1.0.foo'
+      assert_source '[].foo'
+      assert_source '{}.foo'
+      assert_source 'false.foo'
+      assert_source 'true.foo'
+      assert_source 'self.foo'
+      assert_source 'yield(a).foo'
+      assert_source 'yield.foo'
+      assert_source 'Foo::Bar.foo'
+      assert_source '::BAZ.foo'
+      assert_source 'array[i].foo'
+      assert_source '(array[i] = 1).foo'
+      assert_source 'array[1..2].foo'
+      assert_source '(a.attribute ||= foo).bar'
 
       assert_source <<-RUBY
         begin
@@ -348,27 +369,6 @@ describe Unparser do
         class << self
         end.bar
       RUBY
-
-      assert_source 'break.foo'
-      assert_source 'next.foo'
-      assert_source 'super(a).foo'
-      assert_source 'super.foo'
-      assert_source 'nil.foo'
-      assert_source '1.foo'
-      assert_source '1.0.foo'
-      assert_source '[].foo'
-      assert_source '{}.foo'
-      assert_source 'false.foo'
-      assert_source 'true.foo'
-      assert_source 'self.foo'
-      assert_source 'yield(a).foo'
-      assert_source 'yield.foo'
-      assert_source 'Foo::Bar.foo'
-      assert_source '::BAZ.foo'
-      assert_source 'array[i].foo'
-      assert_source '(array[i] = 1).foo'
-      assert_source 'array[1..2].foo'
-      assert_source '(a.attribute ||= foo).bar'
 
       assert_source <<-RUBY
         def self.foo
