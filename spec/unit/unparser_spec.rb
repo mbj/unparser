@@ -334,6 +334,7 @@ describe Unparser do
       assert_source 'break.foo'
       assert_source 'next.foo'
       assert_source 'super(a).foo'
+      assert_source 'a || return'
       assert_source 'super.foo'
       assert_source 'nil.foo'
       assert_source ':sym.foo'
