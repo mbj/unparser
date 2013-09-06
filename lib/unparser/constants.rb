@@ -78,7 +78,7 @@ module Unparser
     TERMINATED = [
       :int, :float, :self, :kwbegin, :const, :regexp, :args, :lvar,
       :ivar, :gvar, :cvar, :if, :case, :module, :class, :sclass, :super,
-      :yield, :zsuper, :break, :next, :defined?, :str, :block
+      :yield, :zsuper, :break, :next, :defined?, :str, :block, :while, :loop, :until
     ].to_set
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|

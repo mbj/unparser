@@ -363,6 +363,21 @@ describe Unparser do
       assert_source '(a.attribute ||= foo).bar'
 
       assert_source <<-RUBY
+        until foo
+        end.bar
+      RUBY
+
+      assert_source <<-RUBY
+        while foo
+        end.bar
+      RUBY
+
+      assert_source <<-RUBY
+        loop do
+        end.bar
+      RUBY
+
+      assert_source <<-RUBY
         class Foo
         end.bar
       RUBY
