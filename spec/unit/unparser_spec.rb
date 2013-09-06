@@ -1010,10 +1010,10 @@ describe Unparser do
     end
 
     context 'binary operator' do
-       assert_source 'a || (break(foo))'
-       assert_source '(break(foo)) || (a)'
-       assert_source '(a || b).foo'
-       assert_source 'a || (b || c)'
+      assert_source 'a || (break(foo))'
+      assert_source '(break(foo)) || a'
+      assert_source '(a || b).foo'
+      assert_source 'a || (b || c)'
     end
 
     { :or => :'||', :and => :'&&' }.each do |word, symbol|
