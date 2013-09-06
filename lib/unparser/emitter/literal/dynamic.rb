@@ -15,9 +15,7 @@ module Unparser
         #
         def dispatch
           util = self.class
-          parentheses(util::OPEN, util::CLOSE) do
-            visit(dynamic_body)
-          end
+          visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
         end
 
         # Return dynamic body

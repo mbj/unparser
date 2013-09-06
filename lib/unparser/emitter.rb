@@ -202,11 +202,40 @@ module Unparser
     #
     def visit_terminated(node)
       emitter = emitter(node)
-      unless emitter.terminated?
-        parentheses { emitter.write_to_buffer }
-        return
+      maybe_parentheses(!emitter.terminated?) do
+        emitter.write_to_buffer
       end
       emitter.write_to_buffer
+    end
+
+    # Visit within parentheses
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def visit_parentheses(node, *arguments)
+      parentheses(*arguments) do
+        visit(node)
+      end
+    end
+
+    # Call block in optional parentheses
+    #
+    # @param [true, false] flag
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def maybe_parentheses(flag)
+      if flag
+        parentheses { yield }
+      else
+        yield
+      end
     end
 
     # Return emitter for node

@@ -45,9 +45,7 @@ module Unparser
       #
       def emit_arguments
         return if arguments.children.empty?
-        parentheses do
-          visit(arguments)
-        end
+        visit_parentheses(arguments)
       end
 
       # Instance def emitter

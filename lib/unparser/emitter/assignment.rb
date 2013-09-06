@@ -134,9 +134,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if parent_type == :mlhs
-            parentheses { delimited(children) }
-          else
+          maybe_parentheses(parent_type == :mlhs) do
             delimited(children)
           end
         end

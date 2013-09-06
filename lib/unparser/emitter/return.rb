@@ -17,20 +17,8 @@ module Unparser
       #
       def dispatch
         write(K_RETURN)
-        emit_argument
-      end
-
-      # Emit argument
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_argument
         return unless argument
-        parentheses do
-          visit(argument)
-        end
+        visit_parentheses(argument)
       end
 
     end # Return

@@ -93,7 +93,7 @@ module Unparser
         # @api private
         #
         def emit_interpolated_segment(node)
-          parentheses(OPEN, CLOSE) { visit(node) }
+          visit_parentheses(node, OPEN, CLOSE)
         end
 
         # Dynamic string body

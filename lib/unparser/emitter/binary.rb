@@ -10,7 +10,7 @@ module Unparser
         :and => T_AND
       }.freeze
 
-      handle *MAP.keys
+      handle(*MAP.keys)
 
       # Test if expression is terminated
       #

@@ -14,9 +14,11 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_NEXT)
-        return if children.empty?
-        parentheses { visit(children.first) }
+        maybe_parentheses(parent_type == :or || parent_type == :and) do
+          write(K_NEXT)
+          return if children.empty?
+          visit_parentheses(children.first)
+        end
       end
 
     end # Next

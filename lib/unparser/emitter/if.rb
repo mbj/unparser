@@ -34,7 +34,7 @@ module Unparser
       # @api private
       #
       def unless?
-        !if_branch
+        !if_branch && else_branch
       end
 
       # Return keyword
@@ -64,8 +64,13 @@ module Unparser
       # @api private
       #
       def emit_if_branch
-        return unless if_branch
-        visit_indented(if_branch)
+        if if_branch
+          visit_indented(if_branch)
+        end
+
+        if !if_branch && !else_branch
+          nl
+        end
       end
 
       # Emit else branch

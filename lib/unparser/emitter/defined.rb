@@ -17,9 +17,7 @@ module Unparser
       #
       def dispatch
         write(K_DEFINED)
-        parentheses do
-          visit(subject)
-        end
+        visit_parentheses(subject)
       end
 
     end # Defined
