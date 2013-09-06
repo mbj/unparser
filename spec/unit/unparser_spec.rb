@@ -355,6 +355,8 @@ describe Unparser do
       assert_source 'super.foo'
       assert_source 'yield(a).foo'
       assert_source 'yield.foo'
+      assert_source 'Foo::Bar.foo'
+      assert_source '::BAZ.foo'
       assert_source 'array[i].foo'
       assert_source '(array[i] = 1).foo'
       assert_source 'array[1..2].foo'
