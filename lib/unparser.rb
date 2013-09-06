@@ -15,12 +15,14 @@ module Unparser
   #
   # @api private
   #
-  def self.unparse(node)
+  def self.unparse(node, comments = [])
     if node.nil?
       node = Parser::AST::Node.new(:empty)
     end
     buffer = Buffer.new
-    Emitter.emitter(node, Emitter::Root.new(buffer)).write_to_buffer
+    comment_enumerator = CommentEnumerator.new(comments)
+    root = Emitter::Root.new(buffer, comment_enumerator)
+    Emitter.emitter(node, root).write_to_buffer
     buffer.content
   end
 
@@ -42,6 +44,7 @@ module Unparser
 end # Unparser
 
 require 'unparser/buffer'
+require 'unparser/comment_enumerator'
 require 'unparser/constants'
 require 'unparser/emitter'
 require 'unparser/emitter/literal'

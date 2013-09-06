@@ -84,7 +84,7 @@ module Unparser
     # @api private
     #
     def write_to_buffer
-      dispatch
+      emit_surrounding_comments { dispatch }
       self
     end
     memoize :write_to_buffer
@@ -154,6 +154,11 @@ module Unparser
       parent.buffer
     end
     memoize :buffer, :freezer => :noop
+
+    def comment_enumerator
+      parent.comment_enumerator
+    end
+    memoize :comment_enumerator, :freezer => :noop
 
   private
 
@@ -346,6 +351,44 @@ module Unparser
       buffer.unindent
     end
 
+    def emit_surrounding_comments
+      loc = node.location
+      return yield if loc.nil?
+
+      if buffer.fresh_line?
+        comments_before = comment_enumerator.take_before(loc.expression.begin_pos)
+        comments_before.each do |comment|
+          if comment.type == :document
+            buffer.append_without_prefix(comment.text)
+          else
+            write(comment.text)
+            nl
+          end
+        end
+      end
+
+      yield
+
+      node_range = loc.expression
+      eol_comments = comment_enumerator.take_up_to_line(node_range.end.line)
+      comments_after, eol_comments = eol_comments.partition(&:document?)
+      eol_comments.each do |comment|
+        buffer.append_to_end_of_line(WS + comment.text)
+      end
+
+      last_pos_emitted = if eol_comments.empty?
+                           node_range.end_pos
+                         else
+                           [node_range.end_pos, eol_comments.last.location.expression.end_pos].max
+                         end
+
+      comments_after.concat comment_enumerator.take_all_contiguous_after(last_pos_emitted)
+      comments_after.each do |comment|
+        indented = !comment.document?
+        buffer.append_suffix_line(indented, comment.text.chomp)
+      end
+    end
+
     # Emit non nil body
     #
     # @param [Parser::AST::Node] node
@@ -384,7 +427,7 @@ module Unparser
     #   if parent is present
     #
     # @return [nil]
-    #   otherwiseo
+    #   otherwise
     #
     # @api private
     #
