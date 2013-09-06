@@ -353,6 +353,14 @@ describe Unparser do
       assert_source 'next.foo'
       assert_source 'super(a).foo'
       assert_source 'super.foo'
+      assert_source 'nil.foo'
+      assert_source '1.foo'
+      assert_source '1.0.foo'
+      assert_source '[].foo'
+      assert_source '{}.foo'
+      assert_source 'false.foo'
+      assert_source 'true.foo'
+      assert_source 'self.foo'
       assert_source 'yield(a).foo'
       assert_source 'yield.foo'
       assert_source 'Foo::Bar.foo'
@@ -361,6 +369,16 @@ describe Unparser do
       assert_source '(array[i] = 1).foo'
       assert_source 'array[1..2].foo'
       assert_source '(a.attribute ||= foo).bar'
+
+      assert_source <<-RUBY
+        def self.foo
+        end.bar
+      RUBY
+
+      assert_source <<-RUBY
+        def foo
+        end.bar
+      RUBY
 
       assert_source <<-RUBY
         until foo
