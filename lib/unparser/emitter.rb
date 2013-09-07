@@ -353,10 +353,11 @@ module Unparser
 
     def emit_surrounding_comments
       loc = node.location
-      return yield if loc.nil?
+      node_range = loc.expression if loc
+      return yield if node_range.nil?
 
       if buffer.fresh_line?
-        comments_before = comment_enumerator.take_before(loc.expression.begin_pos)
+        comments_before = comment_enumerator.take_before(node_range.begin_pos)
         comments_before.each do |comment|
           if comment.type == :document
             buffer.append_without_prefix(comment.text)
@@ -369,7 +370,6 @@ module Unparser
 
       yield
 
-      node_range = loc.expression
       eol_comments = comment_enumerator.take_up_to_line(node_range.end.line)
       comments_after, eol_comments = eol_comments.partition(&:document?)
       eol_comments.each do |comment|
