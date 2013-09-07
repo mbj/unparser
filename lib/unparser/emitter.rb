@@ -121,14 +121,6 @@ module Unparser
     #
     abstract_method :dispatch
 
-    # Return node
-    #
-    # @return [Parser::AST::Node] node
-    #
-    # @api private
-    #
-    attr_reader :node
-
     # Test if node is emitted as terminated expression
     #
     # @return [false]
