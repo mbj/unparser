@@ -863,7 +863,7 @@ describe Unparser do
       context 'class' do
         assert_source <<-RUBY
           class TestClass
-          end
+          end # TestClass
         RUBY
 
         assert_source <<-RUBY
@@ -879,22 +879,22 @@ describe Unparser do
 
         assert_source <<-RUBY
           class SomeNameSpace::TestClass
-          end
+          end # SomeNameSpace::TestClass
         RUBY
 
         assert_source <<-RUBY
           class Some::Name::Space::TestClass
-          end
+          end # Some::Name::Space::TestClass
         RUBY
 
         assert_source <<-RUBY
           class TestClass < Object
-          end
+          end # TestClass
         RUBY
 
         assert_source <<-RUBY
           class TestClass < SomeNameSpace::Object
-          end
+          end # TestClass
         RUBY
 
         assert_source <<-RUBY
@@ -902,12 +902,12 @@ describe Unparser do
             def foo
               :bar
             end
-          end
+          end # TestClass
         RUBY
 
         assert_source <<-RUBY
           class ::TestClass
-          end
+          end # ::TestClass
         RUBY
       end
 
@@ -915,17 +915,17 @@ describe Unparser do
 
         assert_source <<-RUBY
           module TestModule
-          end
+          end # TestModule
         RUBY
 
         assert_source <<-RUBY
           module SomeNameSpace::TestModule
-          end
+          end # SomeNameSpace::TestModule
         RUBY
 
         assert_source <<-RUBY
           module Some::Name::Space::TestModule
-          end
+          end # Some::Name::Space::TestModule
         RUBY
 
         assert_source <<-RUBY
@@ -933,7 +933,7 @@ describe Unparser do
             def foo
               :bar
             end
-          end
+          end # TestModule
         RUBY
 
       end

@@ -396,6 +396,16 @@ module Unparser
       Parser::AST::Node.new(type, *children)
     end
 
+    # Helper to introduce comment
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def comment
+     write(WS, COMMENT, WS)
+    end
+
     # Emitter that fully relies on parser source maps
     class SourceMap < self
 

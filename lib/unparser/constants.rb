@@ -12,6 +12,8 @@ module Unparser
       ** %
     ).map(&:to_sym).to_set
 
+    COMMENT = '#'.freeze
+
     WS       = ' '
     NL       = "\n"
     T_DOT    = '.'
