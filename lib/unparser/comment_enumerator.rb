@@ -14,22 +14,19 @@ module Unparser
       eol_comments
     end
 
-    def take_while
-      array = []
-      until @comments.empty?
-        bool = yield @comments.first
-        break unless bool
-        array << @comments.shift
-      end
-      array
-    end
-
     def take_all
       take_while { true }
     end
 
     def take_before(position)
       take_while { |comment| comment.location.expression.end_pos <= position }
+    end
+
+  private
+
+    def take_while
+      number_to_take = @comments.index {|comment| !yield(comment) } || @comments.size
+      @comments.shift(number_to_take)
     end
 
     def take_up_to_line(line)
