@@ -1225,6 +1225,12 @@ describe Unparser do
       RUBY
 
       assert_source <<-RUBY
+        def noop
+          # do nothing
+        end
+      RUBY
+
+      assert_source <<-RUBY
         =begin
           block comment
         =end
