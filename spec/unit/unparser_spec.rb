@@ -24,17 +24,6 @@ describe Unparser do
       end
     end
 
-    def parse_with_comments(input, parser_class)
-      parser = parser_class.new
-      source_buffer = Parser::Source::Buffer.new('(string)')
-      if parser_class.name == 'Parser::Ruby18'
-        source_buffer.raw_source = input
-      else
-        source_buffer.source = input
-      end
-      parser.parse_with_comments(source_buffer)
-    end
-
     def self.strip(ruby)
       lines = ruby.lines
       line = lines.first
@@ -47,7 +36,7 @@ describe Unparser do
     end
 
     def assert_round_trip(input, parser_class)
-      ast, comments = parse_with_comments(input, parser_class)
+      ast, comments = parser_class.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       generated.should eql(input)
     end
@@ -57,7 +46,7 @@ describe Unparser do
         it "should generate #{ast.inspect} as #{expected} under #{version}" do
           comments = []
           if ast.kind_of?(String)
-            ast, comments = parse_with_comments(ast, parser_class)
+            ast, comments = parser_class.parse_with_comments(input)
           end
           generated = Unparser.unparse(ast, comments)
           generated.should eql(expected)
@@ -69,13 +58,13 @@ describe Unparser do
       with_versions(versions) do |version, parser_class|
         it "should generate #{ast_or_string.inspect} as #{expected} under #{version}" do
           ast, comments = if ast_or_string.kind_of?(String)
-                            parse_with_comments(ast_or_string, parser_class)
+                            parser_class.parse_with_comments(ast_or_string)
                           else
                             [ast_or_string, []]
                           end
           generated = Unparser.unparse(ast, comments)
           generated.should eql(expected)
-          ast, comments = parse_with_comments(generated, parser_class)
+          ast, comments = parser_class.parse_with_comments(generated)
           Unparser.unparse(ast, comments).should eql(expected)
         end
       end
