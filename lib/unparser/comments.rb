@@ -6,14 +6,14 @@ module Unparser
 
     def consume(node, attribute_name)
       return unless node.location
-      @last_source_range_written = node.location.public_send(attribute_name)
+      @last_range_consumed = node.location.public_send(attribute_name)
     end
 
     def take_eol_comments
-      return [] if @last_source_range_written.nil?
-      comments = take_up_to_line @last_source_range_written.end.line
+      return [] if @last_range_consumed.nil?
+      comments = take_up_to_line(@last_range_consumed.end.line)
       doc_comments, eol_comments = comments.partition(&:document?)
-      doc_comments.reverse.each {|comment| @comments.unshift comment }
+      doc_comments.reverse_each {|comment| @comments.unshift(comment) }
       eol_comments
     end
 
