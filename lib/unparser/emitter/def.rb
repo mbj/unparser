@@ -32,7 +32,7 @@ module Unparser
       def dispatch
         write(K_DEF, WS)
         emit_name
-        comment_enumerator.last_source_range_written = node.loc.name
+        comments.last_source_range_written = node.loc.name
         emit_arguments
         emit_body
         k_end

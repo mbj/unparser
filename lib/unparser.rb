@@ -7,21 +7,22 @@ module Unparser
 
   EMPTY_STRING = ''.freeze
 
-  # Unparse ast into string
+  # Unparse an AST (and, optionally, comments) into a string
   #
   # @param [Parser::Node, nil] node
+  # @param [Array] comment_array
   #
   # @return [String]
   #
   # @api private
   #
-  def self.unparse(node, comments = [])
+  def self.unparse(node, comment_array = [])
     if node.nil?
       node = Parser::AST::Node.new(:empty)
     end
     buffer = Buffer.new
-    comment_enumerator = CommentEnumerator.new(comments)
-    root = Emitter::Root.new(buffer, comment_enumerator)
+    comments = Comments.new(comment_array)
+    root = Emitter::Root.new(buffer, comments)
     Emitter.emitter(node, root).write_to_buffer
     buffer.content
   end
@@ -44,7 +45,7 @@ module Unparser
 end # Unparser
 
 require 'unparser/buffer'
-require 'unparser/comment_enumerator'
+require 'unparser/comments'
 require 'unparser/constants'
 require 'unparser/emitter'
 require 'unparser/emitter/literal'

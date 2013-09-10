@@ -1,5 +1,5 @@
 module Unparser
-  class CommentEnumerator
+  class Comments
     def initialize(comments)
       @comments = comments.dup
     end

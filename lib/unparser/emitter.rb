@@ -86,7 +86,7 @@ module Unparser
     def write_to_buffer
       emit_comments_before if buffer.fresh_line?
       dispatch
-      comment_enumerator.last_source_range_written = node.location.expression if node.location
+      comments.last_source_range_written = node.location.expression if node.location
       emit_eof_comments if parent.is_a?(Root)
       self
     end
@@ -158,10 +158,10 @@ module Unparser
     end
     memoize :buffer, :freezer => :noop
 
-    def comment_enumerator
-      parent.comment_enumerator
+    def comments
+      parent.comments
     end
-    memoize :comment_enumerator, :freezer => :noop
+    memoize :comments, :freezer => :noop
 
   private
 
@@ -300,7 +300,7 @@ module Unparser
       loc = node.location
       range = loc.send(source_part) if loc.respond_to?(source_part)
       return if range.nil?
-      comments_before = comment_enumerator.take_before(range.begin_pos)
+      comments_before = comments.take_before(range.begin_pos)
       unless comments_before.empty?
         emit_comments(comments_before)
         buffer.nl
@@ -308,23 +308,23 @@ module Unparser
     end
 
     def emit_eol_comments
-      comment_enumerator.take_eol_comments.each do |comment|
+      comments.take_eol_comments.each do |comment|
         write(WS, comment.text)
       end
     end
 
     def emit_eof_comments
       emit_eol_comments
-      comments_left = comment_enumerator.take_all
+      comments_left = comments.take_all
       unless comments_left.empty?
         buffer.nl
         emit_comments(comments_left)
       end
     end
 
-    def emit_comments(comments)
-      max = comments.size - 1
-      comments.each_with_index do |comment, index|
+    def emit_comments(comment_array)
+      max = comment_array.size - 1
+      comment_array.each_with_index do |comment, index|
         if comment.type == :document
           buffer.append_without_prefix(comment.text.chomp)
         else

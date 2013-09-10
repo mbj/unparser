@@ -19,7 +19,7 @@ module Unparser
       def dispatch
         visit(send)
         write(WS, K_DO)
-        comment_enumerator.last_source_range_written = node.loc.begin
+        comments.last_source_range_written = node.loc.begin
         emit_block_arguments
         emit_body
         k_end
