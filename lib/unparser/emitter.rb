@@ -86,7 +86,7 @@ module Unparser
     def write_to_buffer
       emit_comments_before if buffer.fresh_line?
       dispatch
-      comments.last_source_range_written = node.location.expression if node.location
+      comments.consume(node, :expression)
       emit_eof_comments if parent.is_a?(Root)
       self
     end

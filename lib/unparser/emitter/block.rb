@@ -19,7 +19,7 @@ module Unparser
       def dispatch
         visit(send)
         write(WS, K_DO)
-        comments.last_source_range_written = node.loc.begin
+        comments.consume(node, :begin)
         emit_block_arguments
         emit_body
         k_end

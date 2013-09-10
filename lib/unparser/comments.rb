@@ -4,7 +4,10 @@ module Unparser
       @comments = comments.dup
     end
 
-    attr_writer :last_source_range_written
+    def consume(node, attribute_name)
+      return unless node.location
+      @last_source_range_written = node.location.public_send(attribute_name)
+    end
 
     def take_eol_comments
       return [] if @last_source_range_written.nil?
