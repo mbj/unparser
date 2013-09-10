@@ -32,6 +32,14 @@ module Unparser
       self
     end
 
+    # Append a string without an indentation prefix
+    #
+    # @param [String] string
+    #
+    # @return [self]
+    #
+    # @api private
+    #
     def append_without_prefix(string)
       @content << string
       self
@@ -70,6 +78,16 @@ module Unparser
       self
     end
 
+    # Test for a fresh line
+    #
+    # @return [true]
+    #   if the buffer content ends with a fresh line
+    #
+    # @return [false]
+    #   otherwise
+    #
+    # @api private
+    #
     def fresh_line?
       @content.empty? || @content[-1] == NL
     end

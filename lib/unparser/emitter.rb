@@ -158,6 +158,12 @@ module Unparser
     end
     memoize :buffer, :freezer => :noop
 
+    # Return comments
+    #
+    # @return [Comments] comments
+    #
+    # @api private
+    #
     def comments
       parent.comments
     end
@@ -296,6 +302,14 @@ module Unparser
       buffer.nl
     end
 
+    # Write comments that appeared before source_part in the source
+    #
+    # @param [Symbol] source_part
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def emit_comments_before(source_part = :expression)
       comments_before = comments.take_before(node, source_part)
       unless comments_before.empty?
@@ -304,12 +318,24 @@ module Unparser
       end
     end
 
+    # Write comments end-of-line comments
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def emit_eol_comments
       comments.take_eol_comments.each do |comment|
         write(WS, comment.text)
       end
     end
 
+    # Write comments end-of-file comments
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def emit_eof_comments
       emit_eol_comments
       comments_left = comments.take_all
@@ -319,6 +345,14 @@ module Unparser
       end
     end
 
+    # Write each comment to a separate line
+    #
+    # @param [Array] comment_array
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
     def emit_comments(comment_array)
       max = comment_array.size - 1
       comment_array.each_with_index do |comment, index|
