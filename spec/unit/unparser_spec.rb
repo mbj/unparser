@@ -25,6 +25,7 @@ describe Unparser do
     end
 
     def self.strip(ruby)
+      return ruby if ruby.empty?
       lines = ruby.lines
       line = lines.first
       match = /\A[ ]*/.match(line)
@@ -55,6 +56,8 @@ describe Unparser do
     end
 
     def self.assert_generates(ast_or_string, expected, versions = RUBIES)
+      ast_or_string = strip(ast_or_string) if ast_or_string.is_a?(String)
+      expected = strip(expected)
       with_versions(versions) do |version, parser_class|
         it "should generate #{ast_or_string.inspect} as #{expected} under #{version}" do
           ast, comments = if ast_or_string.kind_of?(String)
@@ -1234,9 +1237,31 @@ describe Unparser do
         end
       RUBY
 
-      assert_generates "1 + # first\n  2 # second", "1 + 2 # first # second"
-      assert_generates "1 +\n# first\n  2 # second", "1 + 2 # first # second"
-      assert_generates "1 +\n=begin\n  block comment\n=end\n  2", "1 + 2\n=begin\n  block comment\n=end"
+      assert_generates(<<-RUBY, <<-RUBY)
+        1 + # first
+          2 # second
+      RUBY
+        1 + 2 # first # second
+      RUBY
+      assert_generates(<<-RUBY, <<-RUBY)
+        1 +
+          # first
+          2 # second
+      RUBY
+        1 + 2 # first # second
+      RUBY
+      assert_generates(<<-RUBY, <<-RUBY)
+        1 +
+        =begin
+          block comment
+        =end
+          2
+      RUBY
+        1 + 2
+        =begin
+          block comment
+        =end
+      RUBY
     end
   end
 end
