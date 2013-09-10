@@ -318,7 +318,7 @@ module Unparser
       end
     end
 
-    # Write comments end-of-line comments
+    # Write end-of-line comments
     #
     # @return [undefined]
     #
@@ -330,7 +330,7 @@ module Unparser
       end
     end
 
-    # Write comments end-of-file comments
+    # Write end-of-file comments
     #
     # @return [undefined]
     #
