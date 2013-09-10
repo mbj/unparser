@@ -4,9 +4,9 @@ module Unparser
       @comments = comments.dup
     end
 
-    def consume(node, attribute_name)
+    def consume(node, source_part)
       return unless node.location
-      @last_range_consumed = node.location.public_send(attribute_name)
+      @last_range_consumed = node.location.public_send(source_part)
     end
 
     def take_eol_comments
@@ -21,8 +21,11 @@ module Unparser
       take_while { true }
     end
 
-    def take_before(position)
-      take_while { |comment| comment.location.expression.end_pos <= position }
+    def take_before(node, source_part)
+      loc = node.location
+      range = loc.public_send(source_part) if loc.respond_to?(source_part)
+      return [] if range.nil?
+      take_while { |comment| comment.location.expression.end_pos <= range.begin_pos }
     end
 
   private

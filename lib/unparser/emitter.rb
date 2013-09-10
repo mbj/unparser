@@ -297,10 +297,7 @@ module Unparser
     end
 
     def emit_comments_before(source_part = :expression)
-      loc = node.location
-      range = loc.send(source_part) if loc.respond_to?(source_part)
-      return if range.nil?
-      comments_before = comments.take_before(range.begin_pos)
+      comments_before = comments.take_before(node, source_part)
       unless comments_before.empty?
         emit_comments(comments_before)
         buffer.nl
