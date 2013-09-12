@@ -23,7 +23,7 @@ module Unparser
     #
     # @return [undefined]
     #
-    def consume(node, source_part)
+    def consume(node, source_part = :expression)
       return unless node.location
       @last_range_consumed = node.location.public_send(source_part)
     end

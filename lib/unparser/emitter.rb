@@ -86,7 +86,7 @@ module Unparser
     def write_to_buffer
       emit_comments_before if buffer.fresh_line?
       dispatch
-      comments.consume(node, :expression)
+      comments.consume(node)
       emit_eof_comments if parent.is_a?(Root)
       self
     end
