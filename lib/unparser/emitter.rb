@@ -124,14 +124,6 @@ module Unparser
     #
     abstract_method :dispatch
 
-    # Return node
-    #
-    # @return [Parser::AST::Node] node
-    #
-    # @api private
-    #
-    attr_reader :node
-
     # Test if node is emitted as terminated expression
     #
     # @return [false]
@@ -487,6 +479,16 @@ module Unparser
     #
     def s(type, *children)
       Parser::AST::Node.new(type, *children)
+    end
+
+    # Helper to introduce comment
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def comment
+     write(WS, COMMENT, WS)
     end
 
     # Emitter that fully relies on parser source maps
