@@ -84,7 +84,10 @@ module Unparser
     # @api private
     #
     def write_to_buffer
+      emit_comments_before if buffer.fresh_line?
       dispatch
+      comments.consume(node)
+      emit_eof_comments if parent.is_a?(Root)
       self
     end
     memoize :write_to_buffer
@@ -146,6 +149,17 @@ module Unparser
       parent.buffer
     end
     memoize :buffer, :freezer => :noop
+
+    # Return comments
+    #
+    # @return [Comments] comments
+    #
+    # @api private
+    #
+    def comments
+      parent.comments
+    end
+    memoize :comments, :freezer => :noop
 
   private
 
@@ -276,7 +290,71 @@ module Unparser
     # @api private
     #
     def nl
+      emit_eol_comments
       buffer.nl
+    end
+
+    # Write comments that appeared before source_part in the source
+    #
+    # @param [Symbol] source_part
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_comments_before(source_part = :expression)
+      comments_before = comments.take_before(node, source_part)
+      unless comments_before.empty?
+        emit_comments(comments_before)
+        buffer.nl
+      end
+    end
+
+    # Write end-of-line comments
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_eol_comments
+      comments.take_eol_comments.each do |comment|
+        write(WS, comment.text)
+      end
+    end
+
+    # Write end-of-file comments
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_eof_comments
+      emit_eol_comments
+      comments_left = comments.take_all
+      unless comments_left.empty?
+        buffer.nl
+        emit_comments(comments_left)
+      end
+    end
+
+    # Write each comment to a separate line
+    #
+    # @param [Array] comment_array
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def emit_comments(comment_array)
+      max = comment_array.size - 1
+      comment_array.each_with_index do |comment, index|
+        if comment.type == :document
+          buffer.append_without_prefix(comment.text.chomp)
+        else
+          write(comment.text)
+        end
+        buffer.nl if index < max
+      end
     end
 
     # Write strings into buffer
@@ -298,6 +376,9 @@ module Unparser
     # @api private
     #
     def k_end
+      buffer.indent
+      emit_comments_before(:end)
+      buffer.unindent
       write(K_END)
     end
 
@@ -334,7 +415,9 @@ module Unparser
     def indented
       buffer = self.buffer
       buffer.indent
+      nl
       yield
+      nl
       buffer.unindent
     end
 
@@ -348,7 +431,9 @@ module Unparser
     #
     def emit_body(body = self.body)
       unless body
+        buffer.indent
         nl
+        buffer.unindent
         return
       end
       visit_indented(body)
@@ -376,7 +461,7 @@ module Unparser
     #   if parent is present
     #
     # @return [nil]
-    #   otherwiseo
+    #   otherwise
     #
     # @api private
     #
@@ -396,14 +481,19 @@ module Unparser
       Parser::AST::Node.new(type, *children)
     end
 
-    # Helper to introduce comment
+    # Helper to introduce an end-of-line comment
     #
     # @return [undefined]
     #
     # @api private
     #
-    def comment
-     write(WS, COMMENT, WS)
+    def eol_comment
+      write(WS)
+      comment = buffer.capture_content do
+        write(COMMENT, WS)
+        yield
+      end
+      comments.skip_eol_comment(comment)
     end
 
     # Emitter that fully relies on parser source maps

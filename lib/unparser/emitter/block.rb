@@ -19,6 +19,7 @@ module Unparser
       def dispatch
         visit(send)
         write(WS, K_DO)
+        comments.consume(node, :begin)
         emit_block_arguments
         emit_body
         k_end

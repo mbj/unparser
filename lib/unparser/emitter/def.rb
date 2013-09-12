@@ -32,6 +32,7 @@ module Unparser
       def dispatch
         write(K_DEF, WS)
         emit_name
+        comments.consume(node, :name)
         emit_arguments
         emit_body
         k_end

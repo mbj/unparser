@@ -21,8 +21,7 @@ module Unparser
         emit_body
         k_end
         if parent_type != :send
-          comment
-          visit(name)
+          eol_comment { visit(name) }
         end
       end
 
