@@ -48,8 +48,7 @@ module Unparser
       take_while { true }
     end
 
-    # Take comments that appeared in the source before the specified part of
-    # the node
+    # Take comments appear in the source before the specified part of the node
     #
     # @param [Parser::AST::Node] node
     # @param [Symbol] source_part
@@ -79,6 +78,8 @@ module Unparser
     # Take comments up to the line number
     #
     # @param [Fixnum] line
+    #
+    # @return [Array]
     #
     def take_up_to_line(line)
       take_while { |comment| comment.location.expression.line <= line }
