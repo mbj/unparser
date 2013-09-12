@@ -481,14 +481,19 @@ module Unparser
       Parser::AST::Node.new(type, *children)
     end
 
-    # Helper to introduce comment
+    # Helper to introduce an end-of-line comment
     #
     # @return [undefined]
     #
     # @api private
     #
-    def comment
-     write(WS, COMMENT, WS)
+    def eol_comment
+      write(WS)
+      comment = buffer.capture_content do
+        write(COMMENT, WS)
+        yield
+      end
+      comments.skip_eol_comment(comment)
     end
 
     # Emitter that fully relies on parser source maps

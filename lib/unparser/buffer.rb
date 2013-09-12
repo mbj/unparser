@@ -102,6 +102,18 @@ module Unparser
       @content.dup.freeze
     end
 
+    # Capture the content written to the buffer within the block
+    #
+    # @return [String]
+    #
+    # @api private
+    #
+    def capture_content
+      size_before = @content.size
+      yield
+      @content[size_before..-1]
+    end
+
   private
 
     # Write prefix
