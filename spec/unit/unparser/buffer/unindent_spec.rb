@@ -7,8 +7,10 @@ describe Unparser::Buffer, '#unindent' do
 
   it 'unindents two chars' do
     object.append('foo')
+    object.nl
     object.indent
     object.append('bar')
+    object.nl
     object.unindent
     object.append('baz')
     expect(object.content).to eql("foo\n  bar\nbaz")

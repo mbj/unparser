@@ -159,7 +159,7 @@ module Unparser
         assignment? && !arguments?
       end
 
-      # Test for assigment
+      # Test for assignment
       #
       # @return [true]
       #   if node represents attribute / element assignment

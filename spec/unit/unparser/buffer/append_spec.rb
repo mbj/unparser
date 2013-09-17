@@ -13,6 +13,7 @@ describe Unparser::Buffer, '#append' do
   # Yeah duplicate, mutant will be improved ;)
   it 'should prefix with indentation if line is empty' do
     object.append('foo')
+    object.nl
     object.indent
     object.append('bar')
     object.append('baz')
