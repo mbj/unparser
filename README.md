@@ -45,10 +45,11 @@ Installation
 
 Install the gem `unparser` via your prefered method.
 
-Credits
--------
+People
+------
 
 * [Markus Schirp (mbj)](https://github.com/mbj) Author
+* [Trent Ogren](https://github.com/misfo) Adding comment reproduction
 
 Contributing
 -------------
