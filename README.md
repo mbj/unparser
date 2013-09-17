@@ -21,6 +21,15 @@ require 'unparser'
 Unparser.unparse(your_ast) # => "the code"
 ```
 
+To preserve the comments from the source:
+
+```ruby
+require 'parser/current'
+require 'unparser'
+ast, comments = Parser::CurrentRuby.parse_with_comments(your_source)
+Unparser.unparse(ast, comments) # => "the code # with comments"
+```
+
 Equivalent vs identical:
 
 ```ruby
