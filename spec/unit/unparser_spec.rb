@@ -1040,6 +1040,7 @@ describe Unparser do
       assert_source 'a &&= b'
       assert_source 'a ||= 2'
       assert_source '(a ||= 2).bar'
+      assert_source '(h ||= {})[k] = v'
     end
 
     context 'flip flops' do
