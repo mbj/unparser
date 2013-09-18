@@ -58,7 +58,7 @@ People
 ------
 
 * [Markus Schirp (mbj)](https://github.com/mbj) Author
-* [Trent Ogren](https://github.com/misfo) Adding comment reproduction
+* [Trent Ogren (misfo)](https://github.com/misfo) Adding comment reproduction
 
 Contributing
 -------------
