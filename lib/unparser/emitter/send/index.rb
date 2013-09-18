@@ -17,16 +17,6 @@ module Unparser
           emit_arguments
         end
 
-        # Emit block within square brackets
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def brackets(&block)
-          parentheses(*INDEX_PARENS, &block)
-        end
-
         # Emit receiver
         #
         # @return [undefined]
@@ -49,7 +39,7 @@ module Unparser
           # @api private
           #
           def emit_arguments
-            brackets do
+            parentheses(*INDEX_PARENS) do
               delimited(arguments)
             end
           end
@@ -66,7 +56,7 @@ module Unparser
           #
           def emit_arguments
             index, *assignment = arguments
-            brackets do
+            parentheses(*INDEX_PARENS) do
               delimited([index])
             end
             return if assignment.empty? # mlhs
