@@ -15,6 +15,7 @@ module Unparser
     def initialize(comments)
       @comments = comments.dup
       @eol_text_to_skip = nil
+      @last_range_consumed = nil
     end
 
     # Consume part or all of the node
