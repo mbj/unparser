@@ -116,6 +116,8 @@ module Unparser
 
   private
 
+    INDENT_SPACE = '  '.freeze
+
     # Write prefix
     #
     # @return [String]
@@ -123,7 +125,7 @@ module Unparser
     # @api private
     #
     def prefix
-      @content << '  '*@indent
+      @content << INDENT_SPACE * @indent
     end
 
   end # Buffer
