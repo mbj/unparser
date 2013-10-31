@@ -844,7 +844,6 @@ describe Unparser do
           end
         RUBY
 
-
         assert_source <<-'RUBY'
           def self.foo
             bar
@@ -1078,7 +1077,6 @@ describe Unparser do
           bar
         end
       RUBY
-
 
       assert_source <<-'RUBY'
         case foo
