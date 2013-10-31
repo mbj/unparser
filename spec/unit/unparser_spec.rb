@@ -108,7 +108,8 @@ describe Unparser do
         assert_source '`foo`'
         assert_source '`foo#{@bar}`'
         assert_generates  '%x(\))', '`)`'
-       #assert_generates  '%x(`)', '`\``'
+        # FIXME: Research into this one!
+        # assert_generates  '%x(`)', '`\``'
         assert_source '`"`'
       end
 
