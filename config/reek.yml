@@ -63,13 +63,7 @@ NestedIterators:
   enabled: true
   max_allowed_nesting: 1
 TooManyStatements:
-  max_statements: 5
-  exclude:
-  - Unparser#self.unparse # 6 statements
-  - Unparser::Emitter::Block#dispatch # 6 statements
-  - Unparser::Emitter::Def#dispatch # 6 statements
-  - Unparser::Emitter::Class#dispatch # 6 statements
-  - Unparser::Comments#take_eol_comments # 6 statements
+  max_statements: 6
   enabled: true
 DuplicateMethodCall:
   allow_calls: []
@@ -93,6 +87,7 @@ UncommunicativeVariableName:
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
   exclude:
+  - Unparser::Emitter # FIXME
   - Unparser::Comments # FIXME
   - Unparser::Emitter::Send # TODO Fixme
   - Unparser::Emitter::If
