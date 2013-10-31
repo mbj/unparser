@@ -48,6 +48,10 @@ LineLength:
 SymbolName:
   Enabled: false
 
+# False positive in unparser source
+OneLineConditional:
+  Enabled: false
+
 Documentation:
   Enabled: false
 
