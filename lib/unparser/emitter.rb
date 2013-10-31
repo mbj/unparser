@@ -429,7 +429,7 @@ module Unparser
     #
     # @api private
     #
-    def emit_body(body = self.body)
+    def emit_body(body = body)
       unless body
         buffer.indent
         nl
