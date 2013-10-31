@@ -7,6 +7,8 @@ module Unparser
 
   EMPTY_STRING = ''.freeze
 
+  EMPTY_ARRAY = [].freeze
+
   # Unparse an AST (and, optionally, comments) into a string
   #
   # @param [Parser::Node, nil] node

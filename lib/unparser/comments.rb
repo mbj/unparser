@@ -66,10 +66,13 @@ module Unparser
     # @return [Array]
     #
     def take_before(node, source_part)
-      loc = node.location
-      range = loc.public_send(source_part) if loc.respond_to?(source_part)
-      return [] if range.nil?
-      take_while { |comment| comment.location.expression.end_pos <= range.begin_pos }
+      location = node.location
+      if location.respond_to?(source_part)
+        range = location.public_send(source_part)
+        take_while { |comment| comment.location.expression.end_pos <= range.begin_pos }
+      else
+        EMPTY_ARRAY
+      end
     end
 
   private
