@@ -14,8 +14,7 @@ module Unparser
     #
     def initialize(comments)
       @comments = comments.dup
-      @eol_text_to_skip = nil
-      @last_range_consumed = nil
+      @last_range_consumed = @eol_text_to_skip = nil
     end
 
     # Consume part or all of the node
@@ -47,7 +46,7 @@ module Unparser
     def take_eol_comments
       text_to_skip = @eol_text_to_skip
       @eol_text_to_skip = nil
-      return [] if @last_range_consumed.nil?
+      return [] unless @last_range_consumed
       comments = take_up_to_line(@last_range_consumed.end.line)
       eol_comments = unshift_documents(comments)
       eol_comments.reject {|comment| comment.text == text_to_skip }
