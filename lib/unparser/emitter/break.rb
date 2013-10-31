@@ -16,7 +16,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        maybe_parentheses(parent_type == :or || parent_type == :and) do
+        conditional_parentheses(parent_type == :or || parent_type == :and) do
           write(K_BREAK)
           return unless arguments
           visit_parentheses(arguments)

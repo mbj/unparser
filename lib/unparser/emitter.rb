@@ -208,7 +208,7 @@ module Unparser
     #
     def visit_terminated(node)
       emitter = emitter(node)
-      maybe_parentheses(!emitter.terminated?) do
+      conditional_parentheses(!emitter.terminated?) do
         emitter.write_to_buffer
       end
       emitter.write_to_buffer
@@ -236,7 +236,7 @@ module Unparser
     #
     # @api private
     #
-    def maybe_parentheses(flag)
+    def conditional_parentheses(flag)
       if flag
         parentheses { yield }
       else
