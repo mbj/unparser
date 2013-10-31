@@ -8,7 +8,7 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {}
 
-    NOINDENT = [:rescue, :ensure].to_set
+    NOINDENT = [:rescue, :ensure].to_set.freeze
 
     DEFAULT_DELIMITER = ', '.freeze
 
