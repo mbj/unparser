@@ -1,9 +1,6 @@
 module Unparser
 
   # Holds the comments that remain to be emitted
-  #
-  # @api private
-  #
   class Comments
 
     # Initialize object
@@ -49,7 +46,7 @@ module Unparser
       return [] unless @last_range_consumed
       comments = take_up_to_line(@last_range_consumed.end.line)
       eol_comments = unshift_documents(comments)
-      eol_comments.reject {|comment| comment.text == text_to_skip }
+      eol_comments.reject { |comment| comment.text == text_to_skip }
     end
 
     # Take all remaining comments
@@ -83,7 +80,7 @@ module Unparser
     # @return [Array]
     #
     def take_while
-      number_to_take = @comments.index {|comment| !yield(comment) } || @comments.size
+      number_to_take = @comments.index { |comment| !yield(comment) } || @comments.size
       @comments.shift(number_to_take)
     end
 
@@ -105,8 +102,9 @@ module Unparser
     #
     def unshift_documents(comments)
       doc_comments, other_comments = comments.partition(&:document?)
-      doc_comments.reverse_each {|comment| @comments.unshift(comment) }
+      doc_comments.reverse_each { |comment| @comments.unshift(comment) }
       other_comments
     end
-  end
-end
+
+  end # Comments
+end # Unparser
