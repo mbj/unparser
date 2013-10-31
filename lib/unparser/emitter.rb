@@ -148,7 +148,7 @@ module Unparser
     def buffer
       parent.buffer
     end
-    memoize :buffer, :freezer => :noop
+    memoize :buffer, freezer: :noop
 
     # Return comments
     #
@@ -159,7 +159,7 @@ module Unparser
     def comments
       parent.comments
     end
-    memoize :comments, :freezer => :noop
+    memoize :comments, freezer: :noop
 
   private
 

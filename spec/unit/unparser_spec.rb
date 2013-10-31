@@ -1023,7 +1023,7 @@ describe Unparser do
       assert_source 'a || (b || c)'
     end
 
-    { :or => :'||', :and => :'&&' }.each do |word, symbol|
+    { or: :'||', and: :'&&' }.each do |word, symbol|
       assert_generates "a #{word} break foo", "a #{symbol} (break(foo))"
       assert_generates "a #{word} next foo", "a #{symbol} (next(foo))"
     end

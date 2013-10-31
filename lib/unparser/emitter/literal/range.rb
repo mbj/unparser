@@ -5,8 +5,8 @@ module Unparser
       class Range < self
 
         TOKENS = IceNine.deep_freeze(
-          :irange => '..',
-          :erange => '...'
+          irange: '..',
+          erange: '...'
         )
 
         handle(*TOKENS.keys)

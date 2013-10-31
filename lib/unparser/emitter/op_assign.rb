@@ -7,8 +7,8 @@ module Unparser
       children :target, :expression
 
       MAP = IceNine.deep_freeze(
-        :and_asgn => '&&=',
-        :or_asgn  => '||='
+        and_asgn: '&&=',
+        or_asgn:  '||='
       )
 
       handle(*MAP.keys)

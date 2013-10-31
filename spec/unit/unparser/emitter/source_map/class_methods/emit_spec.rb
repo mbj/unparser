@@ -7,9 +7,9 @@ describe Unparser::Emitter::SourceMap, '.emit' do
 
   let(:node) do
     double('Node',
-      :type => :foo,
-      :location => double('SourceMap',
-        :expression => double('SourceRange', :source => 'foo')
+      type: :foo,
+      location: double('SourceMap',
+        expression: double('SourceRange', source: 'foo')
       )
     )
   end

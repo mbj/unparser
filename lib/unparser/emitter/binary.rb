@@ -6,8 +6,8 @@ module Unparser
       children :left, :right
 
       MAP = {
-        :or => T_OR,
-        :and => T_AND
+        or:  T_OR,
+        and: T_AND
       }.freeze
 
       handle(*MAP.keys)

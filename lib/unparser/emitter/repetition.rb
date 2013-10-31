@@ -9,8 +9,8 @@ module Unparser
       children :condition, :body
 
       MAP = {
-        :while_post => K_WHILE,
-        :until_post => K_UNTIL
+        while_post: K_WHILE,
+        until_post: K_UNTIL
       }.freeze
 
       handle(*MAP.keys)
@@ -32,8 +32,8 @@ module Unparser
     class Repetition < self
 
       MAP = {
-        :while => K_WHILE,
-        :until => K_UNTIL
+        while: K_WHILE,
+        until: K_UNTIL
       }.freeze
 
       handle(*MAP.keys)

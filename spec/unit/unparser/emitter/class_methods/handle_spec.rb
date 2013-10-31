@@ -12,6 +12,6 @@ describe Unparser::Emitter, '.handle' do
   end
 
   it 'should register emitter' do
-    expect { subject }.to change { Unparser::Emitter::REGISTRY }.from({}).to(:foo => class_under_test)
+    expect { subject }.to change { Unparser::Emitter::REGISTRY }.from({}).to(foo: class_under_test)
   end
 end

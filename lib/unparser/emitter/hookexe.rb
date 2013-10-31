@@ -4,8 +4,8 @@ module Unparser
     class Hookexe < self
 
       MAP = {
-        :preexe  => K_PREEXE,
-        :postexe => K_POSTEXE
+        preexe:  K_PREEXE,
+        postexe: K_POSTEXE
       }.freeze
 
       handle(*MAP.keys)
