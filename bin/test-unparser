@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 trap('INT') do |status|
-  exit! 128+status
+  exit! 128 + status
 end
 
 require 'unparser'
