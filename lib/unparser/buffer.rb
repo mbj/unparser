@@ -52,7 +52,7 @@ module Unparser
     # @api private
     #
     def indent
-      @indent+=1
+      @indent += 1
       self
     end
 
@@ -63,7 +63,7 @@ module Unparser
     # @api private
     #
     def unindent
-      @indent-=1
+      @indent -= 1
       self
     end
 
