@@ -40,7 +40,7 @@ module Unparser
           # @api private
           #
           def dispatch
-            if(source == macro)
+            if source == macro
               write(macro)
               return
             end
