@@ -65,6 +65,7 @@ NestedIterators:
 TooManyStatements:
   max_statements: 5
   exclude:
+  - Unparser#self.unparse # 6 statements
   - Unparser::Emitter::Block#dispatch # 6 statements
   - Unparser::Emitter::Def#dispatch # 6 statements
   - Unparser::Emitter::Class#dispatch # 6 statements
