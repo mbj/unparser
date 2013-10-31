@@ -106,6 +106,7 @@ DataClump:
 ControlParameter:
   exclude:
     - Unparser::Emitter#emit_body # false positive
+    - Unparser::Emitter#conditional_parentheses # Intentionally a control structure like helper
   enabled: true
 NilCheck:
   enabled: false
