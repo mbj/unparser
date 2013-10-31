@@ -22,8 +22,9 @@ module Unparser
     # @return [undefined]
     #
     def consume(node, source_part = :expression)
-      return unless node.location
-      @last_range_consumed = node.location.public_send(source_part)
+      location = node.location
+      return unless location
+      @last_range_consumed = location.public_send(source_part)
     end
 
     # Skip any EOL comment with the specified text next time they're taken
