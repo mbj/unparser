@@ -1244,6 +1244,7 @@ describe Unparser do
       RUBY
         1 + 2 # first # second
       RUBY
+
       assert_generates(<<-RUBY, <<-RUBY)
         1 +
           # first
@@ -1251,6 +1252,7 @@ describe Unparser do
       RUBY
         1 + 2 # first # second
       RUBY
+
       assert_generates(<<-RUBY, <<-RUBY)
         1 +
         =begin
@@ -1263,6 +1265,7 @@ describe Unparser do
           block comment
         =end
       RUBY
+
     end
   end
 end
