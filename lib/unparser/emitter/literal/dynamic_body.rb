@@ -77,11 +77,11 @@ module Unparser
         #
         def emit_str_segment(node)
           util = self.class
-          str = node.children.first
-          str = str.
-            gsub(util::DELIMITER, util::REPLACEMENT).
-            gsub(REPLACEMENTS, ESCAPES)
-          write(str)
+          string = node.children.first
+          segment = string
+            .gsub(util::DELIMITER, util::REPLACEMENT)
+            .gsub(REPLACEMENTS, ESCAPES)
+          write(segment)
         end
 
         # Emit interpolated segment
