@@ -13,14 +13,14 @@ ARGV.each do |file|
   generated = Unparser.unparse(node)
   unparsed  = Parser::CurrentRuby.parse(generated)
   unless unparsed == node
-    $stderr.puts "Node:"
+    $stderr.puts 'Node:'
     $stderr.puts node.inspect
-    $stderr.puts "Unparsed-Node:"
+    $stderr.puts 'Unparsed-Node:'
     $stderr.puts unparsed.inspect
-    $stderr.puts "Original:"
+    $stderr.puts 'Original:'
     $stderr.puts source
-    $stderr.puts "Generated:"
+    $stderr.puts 'Generated:'
     $stderr.puts generated
-    fail "BUG!"
+    fail 'BUG!'
   end
 end

@@ -15,14 +15,14 @@ describe Unparser::Comments, '#skip_eol_comment' do
 
   it 'should skip the specified comment only for one subsequent take' do
     object.consume(ast, :name)
-    object.skip_eol_comment("# comment")
+    object.skip_eol_comment('# comment')
     expect(object.take_eol_comments).to eql([])
     object.consume(ast, :end)
     expect(object.take_eol_comments).to eql([comments[1]])
   end
 
   it 'should not skip comments with different text' do
-    object.skip_eol_comment("# not the comment")
+    object.skip_eol_comment('# not the comment')
     object.consume(ast, :end)
     expect(object.take_eol_comments).to eql(comments)
   end
