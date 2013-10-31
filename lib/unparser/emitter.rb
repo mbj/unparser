@@ -169,7 +169,7 @@ module Unparser
     #
     # @api private
     #
-    def parentheses(open=M_PO, close=M_PC)
+    def parentheses(open = M_PO, close = M_PC)
       write(open)
       yield
       write(close)
