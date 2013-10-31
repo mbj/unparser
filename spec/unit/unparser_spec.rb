@@ -27,8 +27,7 @@ describe Unparser do
     def self.strip(ruby)
       return ruby if ruby.empty?
       lines = ruby.lines
-      line = lines.first
-      match = /\A[ ]*/.match(line)
+      match = /\A[ ]*/.match(lines.first)
       length = match[0].length
       source = lines.map do |line|
         line[(length..-1)]
