@@ -339,15 +339,15 @@ module Unparser
 
     # Write each comment to a separate line
     #
-    # @param [Array] comment_array
+    # @param [Array] comments
     #
     # @return [undefined]
     #
     # @api private
     #
-    def emit_comments(comment_array)
-      max = comment_array.size - 1
-      comment_array.each_with_index do |comment, index|
+    def emit_comments(comments)
+      max = comments.size - 1
+      comments.each_with_index do |comment, index|
         if comment.type == :document
           buffer.append_without_prefix(comment.text.chomp)
         else
