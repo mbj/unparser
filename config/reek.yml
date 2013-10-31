@@ -69,6 +69,7 @@ TooManyStatements:
   - Unparser::Emitter::Block#dispatch # 6 statements
   - Unparser::Emitter::Def#dispatch # 6 statements
   - Unparser::Emitter::Class#dispatch # 6 statements
+  - Unparser::Comments#take_eol_comments # 6 statements
   enabled: true
 DuplicateMethodCall:
   allow_calls: []
