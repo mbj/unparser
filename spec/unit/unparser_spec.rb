@@ -252,11 +252,11 @@ describe Unparser do
     end
 
     context 'return' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         return
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         return(1)
       RUBY
     end
@@ -273,58 +273,58 @@ describe Unparser do
       assert_source 'foo(&block)'
       assert_source 'foo(*arguments)'
       assert_source 'foo(*arguments)'
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo(1) do
           nil
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo do |a, b|
           nil
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo do |a, *b|
           nil
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo do |a, *|
           nil
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo do
           bar
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo.bar(*args)
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo.bar do |(a, b), c|
           d
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo.bar do |(a, b)|
           d
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo.bar do
         end.baz
       RUBY
@@ -360,64 +360,64 @@ describe Unparser do
       assert_source 'array[1..2].foo'
       assert_source '(a.attribute ||= foo).bar'
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
         rescue
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when bar
         end.baz
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         class << self
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         def self.foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         def foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         until foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         while foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         loop do
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         class Foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         module Foo
         end.bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         if foo
         end.baz
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         local = 1
         local.bar
       RUBY
@@ -427,11 +427,11 @@ describe Unparser do
       assert_source 'foo.bar(*args, foo)'
       assert_source 'foo.bar(foo, *args)'
       assert_source 'foo.bar(foo, *args, &block)'
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo(bar, *args)
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo(*args, &block)
       RUBY
 
@@ -444,12 +444,12 @@ describe Unparser do
     context 'begin; end' do
       assert_generates s(:begin), ''
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo
         bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
           bar
@@ -458,7 +458,7 @@ describe Unparser do
     end
 
     context 'begin / rescue / ensure' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         ensure
@@ -467,7 +467,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         rescue
@@ -475,7 +475,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           begin
             foo
@@ -488,7 +488,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
           bar
@@ -498,7 +498,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         rescue Exception
@@ -506,7 +506,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         rescue => bar
@@ -514,7 +514,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         rescue Exception, Other => bar
@@ -522,20 +522,20 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
         rescue Exception => e
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
         rescue
         ensure
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         rescue Exception => bar
@@ -543,7 +543,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue SomeError, *bar
@@ -551,7 +551,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue SomeError, *bar => exception
@@ -559,7 +559,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue *bar
@@ -567,14 +567,14 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue LoadError
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue
@@ -583,7 +583,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           bar
         rescue *bar => exception
@@ -595,7 +595,7 @@ describe Unparser do
     context 'super' do
       assert_source 'super'
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         super do
           foo
         end
@@ -603,7 +603,7 @@ describe Unparser do
 
       assert_source 'super()'
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         super() do
           foo
         end
@@ -611,7 +611,7 @@ describe Unparser do
 
       assert_source 'super(a)'
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         super(a) do
           foo
         end
@@ -619,7 +619,7 @@ describe Unparser do
 
       assert_source 'super(a, b)'
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         super(a, b) do
           foo
         end
@@ -634,7 +634,7 @@ describe Unparser do
     end
 
     context 'BEGIN' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         BEGIN {
           foo
         }
@@ -642,7 +642,7 @@ describe Unparser do
     end
 
     context 'END' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         END {
           foo
         }
@@ -650,11 +650,11 @@ describe Unparser do
     end
 
     context 'alias' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         alias $foo $bar
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         alias :foo :bar
       RUBY
     end
@@ -674,19 +674,19 @@ describe Unparser do
     end
 
     context 'if statement' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         if /foo/
           bar
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         if 3
           9
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         if 4
           5
         else
@@ -694,19 +694,19 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         unless 3
           nil
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         unless 3
           9
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         if foo
         end
       RUBY
@@ -715,18 +715,18 @@ describe Unparser do
     context 'def' do
       context 'on instance' do
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo
             bar
           ensure
@@ -734,7 +734,7 @@ describe Unparser do
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo
             bar
           rescue
@@ -742,95 +742,95 @@ describe Unparser do
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar, baz)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar = true)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar, baz = true)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY, %w(1.9 2.0)
+        assert_source <<-'RUBY', %w(1.9 2.0)
           def foo(bar, baz = true, foo)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY, %w(2.1)
+        assert_source <<-'RUBY', %w(2.1)
           def foo(bar: 1)
           end
         RUBY
 
-        assert_source <<-RUBY, %w(2.0)
+        assert_source <<-'RUBY', %w(2.0)
           def foo(**bar)
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(*)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(*bar)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar, *baz)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(baz = true, *bor)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(baz = true, *bor, &block)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar, baz = true, *bor)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(&block)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo(bar, &block)
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def foo
             bar
             baz
@@ -839,26 +839,26 @@ describe Unparser do
       end
 
       context 'on singleton' do
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def self.foo
           end
         RUBY
 
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def self.foo
             bar
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def self.foo
             bar
             baz
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           def Foo.bar
             bar
           end
@@ -867,43 +867,43 @@ describe Unparser do
       end
 
       context 'class' do
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class TestClass
           end # TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class << some_object
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class << some_object
             the_body
           end
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class SomeNameSpace::TestClass
           end # SomeNameSpace::TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class Some::Name::Space::TestClass
           end # Some::Name::Space::TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class TestClass < Object
           end # TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class TestClass < SomeNameSpace::Object
           end # TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class TestClass
             def foo
               :bar
@@ -911,7 +911,7 @@ describe Unparser do
           end # TestClass
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           class ::TestClass
           end # ::TestClass
         RUBY
@@ -919,22 +919,22 @@ describe Unparser do
 
       context 'module' do
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           module TestModule
           end # TestModule
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           module SomeNameSpace::TestModule
           end # SomeNameSpace::TestModule
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           module Some::Name::Space::TestModule
           end # Some::Name::Space::TestModule
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           module TestModule
             def foo
               :bar
@@ -964,23 +964,23 @@ describe Unparser do
       end
 
       context 'defined?' do
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           defined?(@foo)
         RUBY
 
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           defined?(Foo)
         RUBY
       end
     end
 
     context 'lambda' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         lambda do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         lambda do |a, b|
           a
         end
@@ -988,11 +988,11 @@ describe Unparser do
     end
 
     context 'match operators' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         /bar/ =~ foo
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         foo =~ /bar/
       RUBY
     end
@@ -1045,7 +1045,7 @@ describe Unparser do
 
     context 'flip flops' do
       context 'inclusive' do
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           if (i == 4)..(i == 4)
             foo
           end
@@ -1053,7 +1053,7 @@ describe Unparser do
       end
 
       context 'exclusive' do
-        assert_source <<-RUBY
+        assert_source <<-'RUBY'
           if (i == 4)...(i == 4)
             foo
           end
@@ -1062,7 +1062,7 @@ describe Unparser do
     end
 
     context 'case statement' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case
         when bar
           baz
@@ -1071,7 +1071,7 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when bar
         when baz
@@ -1080,7 +1080,7 @@ describe Unparser do
       RUBY
 
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when bar
           baz
@@ -1089,21 +1089,21 @@ describe Unparser do
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when bar, baz
           :other
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when *bar
           :value
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         case foo
         when bar
           baz
@@ -1114,19 +1114,19 @@ describe Unparser do
     end
 
     context 'for' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         for a in bar do
           baz
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         for a, *b in bar do
           baz
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         for a, b in bar do
           baz
         end
@@ -1143,7 +1143,7 @@ describe Unparser do
     end
 
     context 'loop' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         loop do
           foo
         end
@@ -1151,20 +1151,20 @@ describe Unparser do
     end
 
     context 'post conditions' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
         end while baz
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
           bar
         end until baz
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         begin
           foo
           bar
@@ -1173,12 +1173,12 @@ describe Unparser do
     end
 
     context 'while' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         while false
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         while false
           3
         end
@@ -1186,12 +1186,12 @@ describe Unparser do
     end
 
     context 'until' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         until false
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         until false
           3
         end
@@ -1199,16 +1199,16 @@ describe Unparser do
     end
 
     context 'comments' do
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         # comment before
         a_line_of_code
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         a_line_of_code # comment after
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         nested do # first
           # second
           something # comment
@@ -1217,13 +1217,13 @@ describe Unparser do
         # last
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         def noop
           # do nothing
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<-'RUBY'
         =begin
           block comment
         =end
@@ -1238,14 +1238,14 @@ describe Unparser do
         end
       RUBY
 
-      assert_generates(<<-RUBY, <<-RUBY)
+      assert_generates(<<-'RUBY', <<-'RUBY')
         1 + # first
           2 # second
       RUBY
         1 + 2 # first # second
       RUBY
 
-      assert_generates(<<-RUBY, <<-RUBY)
+      assert_generates(<<-'RUBY', <<-'RUBY')
         1 +
           # first
           2 # second
@@ -1253,7 +1253,7 @@ describe Unparser do
         1 + 2 # first # second
       RUBY
 
-      assert_generates(<<-RUBY, <<-RUBY)
+      assert_generates(<<-'RUBY', <<-'RUBY')
         1 +
         =begin
           block comment
