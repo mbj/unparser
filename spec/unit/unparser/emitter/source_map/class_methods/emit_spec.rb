@@ -6,11 +6,15 @@ describe Unparser::Emitter::SourceMap, '.emit' do
   let(:buffer)  { Unparser::Buffer.new      }
 
   let(:node) do
-    double('Node',
+    location = double(
+      'SourceMap',
+      expression: double('SourceRange', source: 'foo')
+    )
+
+    double(
+      'Node',
       type: :foo,
-      location: double('SourceMap',
-        expression: double('SourceRange', source: 'foo')
-      )
+      location: location
     )
   end
 
