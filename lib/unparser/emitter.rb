@@ -175,16 +175,6 @@ module Unparser
       write(close)
     end
 
-    # Emit nodes source map
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit_source_map
-      SourceMap.emit(node, buffer)
-    end
-
     # Visit node
     #
     # @param [Parser::AST::Node] node
@@ -496,23 +486,5 @@ module Unparser
       comments.skip_eol_comment(comment)
     end
 
-    # Emitter that fully relies on parser source maps
-    class SourceMap < self
-
-      # Perform dispatch
-      #
-      # @param [Node] node
-      # @param [Buffer] buffer
-      #
-      # @return [self]
-      #
-      # @api private
-      #
-      def self.emit(node, buffer)
-        buffer.append(node.location.expression.source)
-        self
-      end
-
-    end # SourceMap
   end # Emitter
 end # Unparser
