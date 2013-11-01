@@ -91,6 +91,5 @@ module Unparser
       end
     end.to_set.freeze
 
-
   end # Constants
 end # Unparser
