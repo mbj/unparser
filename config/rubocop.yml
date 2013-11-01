@@ -41,6 +41,9 @@ AccessControl:
 LineLength:
   Max: 113  # TODO: lower to 79 once the rubocop branch in shared/Gemfile is removed
 
+ClassLength:
+  Max: 196
+
 # Disabled because of indenting with private keyword in class bodies.
 IndentationWidth:
   Enabled: false
