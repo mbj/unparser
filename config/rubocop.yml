@@ -45,6 +45,10 @@ LineLength:
 IndentationWidth:
   Enabled: false
 
+# I like raise more
+SignalException:
+  Enabled: false
+
 # Disable Symbol cop because unparse has to prodice "WIERD" symbols in his specs
 #
 # I'd love I could ignore a specific occurance.
