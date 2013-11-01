@@ -41,6 +41,10 @@ AccessControl:
 LineLength:
   Max: 113  # TODO: lower to 79 once the rubocop branch in shared/Gemfile is removed
 
+# Disabled because of indenting with private keyword in class bodies.
+IndentationWidth:
+  Enabled: false
+
 # Disable Symbol cop because unparse has to prodice "WIERD" symbols in his specs
 #
 # I'd love I could ignore a specific occurance.
