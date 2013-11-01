@@ -60,7 +60,6 @@ module Unparser
         # Constant assignment emitter
         class Constant < self
 
-
           handle :casgn
 
           children :base, :name, :right_node
