@@ -1,3 +1,7 @@
+# v0.1.5 2013-11-01
+
+* Fix crash with comment reproduction.
+
 # v0.1.4 2013-11-01
 
 * Code cleanups.
