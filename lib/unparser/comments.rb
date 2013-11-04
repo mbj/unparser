@@ -67,7 +67,7 @@ module Unparser
     #
     def take_before(node, source_part)
       location = node.location
-      if location
+      if location.respond_to?(source_part)
         range = location.public_send(source_part)
         take_while { |comment| comment.location.expression.end_pos <= range.begin_pos }
       else
