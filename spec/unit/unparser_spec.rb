@@ -28,9 +28,9 @@ describe Unparser do
       return ruby if ruby.empty?
       lines = ruby.lines
       match = /\A[ ]*/.match(lines.first)
-      length = match[0].length
+      range = match[0].length .. -1
       source = lines.map do |line|
-        line[(length..-1)]
+        line[range]
       end.join
       source.chomp
     end
