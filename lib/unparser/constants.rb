@@ -12,7 +12,7 @@ module Unparser
       ** %
     ).map(&:to_sym).to_set
 
-    COMMENT = '#'.freeze
+    COMMENT = '#'
 
     WS       = ' '
     NL       = "\n"
