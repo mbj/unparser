@@ -5,7 +5,7 @@ describe Unparser::Buffer, '#indent' do
 
   subject { object.indent }
 
-  it 'should indent with two chars' do
+  it 'should indent with two spaces' do
     object.append('foo')
     object.nl
     object.indent

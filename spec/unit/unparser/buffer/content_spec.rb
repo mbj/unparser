@@ -16,7 +16,7 @@ describe Unparser::Buffer, '#content' do
       first  = object.content
       second = object.content
       expect(first).to eql(second)
-      expect(first).to_not be(second)
+      expect(first).not_to be(second)
     end
   end
 
