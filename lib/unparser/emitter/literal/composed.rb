@@ -5,6 +5,7 @@ module Unparser
       # Emitter for hash keyvalue pair
       class HashPair < self
         HASHROCKET = ' => '.freeze
+        COLON      = ': '.freeze
 
         handle :pair
 
@@ -17,7 +18,12 @@ module Unparser
         # @api private
         #
         def dispatch
-          delimited(children, HASHROCKET)
+          key_emitter = emitter(first_child)
+          if key_emitter.is_a?(Primitive::Inspect::Symbol) && key_emitter.safe_without_quotes?
+            delimited(children, COLON)
+          else
+            delimited(children, HASHROCKET)
+          end
         end
 
       end # HashPair

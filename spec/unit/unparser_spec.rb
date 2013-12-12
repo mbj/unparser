@@ -177,6 +177,12 @@ describe Unparser do
         assert_source '{}'
         assert_source '{1 => 2}'
         assert_source '{1 => 2, 3 => 4}'
+
+        context 'with symbol keys' do
+          pending do
+            assert_source '{a: 1, b: 2}'
+          end
+        end
       end
     end
 
