@@ -123,10 +123,6 @@ module Unparser
     # @api private
     #
     abstract_method :dispatch
-    
-    # Dispatch node for using as a hash key
-    # (alias for a usual dispatch by default)
-    alias_method :dispatch_hash_key, :dispatch
 
     # Test if node is emitted as terminated expression
     #

@@ -30,14 +30,18 @@ module Unparser
 
             handle :sym
 
-            # Hash key form of a symbol (`sym:` instead of `:sym`)
-            # 
-            # @return [String]
-            # 
+            # Dispatch value (without colon if representing a hash key)
+            #
+            # @return [undefined]
+            #
             # @api private
-            # 
-            def dispatch_hash_key
-              "#{value}:"
+            #
+            def dispatch
+              if parent.is_a?(HashPair) && parent.key.eql?(node)
+                buffer.append(value.to_s)
+              else
+                buffer.append(value.inspect)
+              end
             end
 
             # Is this symbol safe to use without quoting?

@@ -9,6 +9,15 @@ module Unparser
 
         handle :pair
 
+        # AST node corresponding to the key
+        # 
+        # @return [undefined]
+        # 
+        # @api private
+        # 
+        alias_method :key, :first_child
+        public :key
+
       private
 
         # Perform dispatch
@@ -18,7 +27,8 @@ module Unparser
         # @api private
         #
         def dispatch
-          key_emitter = emitter(first_child)
+          key_emitter = emitter(key)
+          
           if key_emitter.is_a?(Primitive::Inspect::Symbol) && key_emitter.safe_without_quotes?
             delimited(children, COLON)
           else
