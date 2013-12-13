@@ -34,6 +34,9 @@ module Unparser
     M_PO  = '('
     M_PC  = ')'
 
+    SNGL_QUOTE = "'"
+    DBL_QUOTE  = '"'
+
     K_DO       = 'do'
     K_DEF      = 'def'
     K_END      = 'end'

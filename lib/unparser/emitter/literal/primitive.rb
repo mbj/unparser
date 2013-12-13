@@ -55,7 +55,7 @@ module Unparser
             # @api private
             # 
             def safe_without_quotes?
-              value.inspect[1] != '"'
+              value.inspect[1] != DBL_QUOTE
             end
 
           end
