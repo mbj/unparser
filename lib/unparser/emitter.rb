@@ -14,6 +14,16 @@ module Unparser
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
+    # Return node type
+    #
+    # @return [Symbol]
+    #
+    # @api private
+    #
+    def node_type
+      node.type
+    end
+
     # Define remaining children
     #
     # @param [Enumerable<Symbol>] names
@@ -456,7 +466,7 @@ module Unparser
     # @api private
     #
     def parent_type
-      parent && parent.node && parent.node.type
+      parent.node_type
     end
 
     # Helper for building nodes

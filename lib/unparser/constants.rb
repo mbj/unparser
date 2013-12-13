@@ -2,17 +2,19 @@ module Unparser
   # All unparser constants maybe included in other libraries.
   module Constants
 
+    # All unary operators of the ruby language
     UNARY_OPERATORS = %w(
       ! ~ -@ +@
     ).map(&:to_sym).to_set
 
+    # All binary operators of the ruby language
     BINARY_OPERATORS = %w(
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
       ** %
     ).map(&:to_sym).to_set
 
-    COMMENT = '#'.freeze
+    COMMENT = '#'
 
     WS       = ' '
     NL       = "\n"
@@ -37,6 +39,7 @@ module Unparser
     SNGL_QUOTE = "'"
     DBL_QUOTE  = '"'
 
+    # Kewords
     K_DO       = 'do'
     K_DEF      = 'def'
     K_END      = 'end'
@@ -80,12 +83,16 @@ module Unparser
     K_FILE     = '__FILE__'
     K_THEN     = 'then'
 
-    TERMINATED = [
-      :int, :float, :self, :kwbegin, :const, :regexp, :args, :lvar,
-      :ivar, :gvar, :cvar, :if, :case, :module, :class, :sclass, :super,
-      :yield, :zsuper, :break, :next, :defined?, :str, :block, :while, :loop, :until,
-      :def, :defs, :true, :false, :nil, :array, :hash, :sym, :return
-    ].to_set
+    # Nodes that can be emitted in tokens that terminate their expression.
+    #
+    # These nodes dont require parentheses to be exactly reproduced in context of a more complex expression.
+    #
+    TERMINATED = %w(
+      int float self kwbegin const regexp args lvar
+      ivar gvar cvar if case module class sclass super
+      yield zsuper break next defined? str block while loop until
+      def defs true false nil array hash sym return
+    ).map(&:to_sym).to_set
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze
