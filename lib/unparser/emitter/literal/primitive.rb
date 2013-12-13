@@ -37,14 +37,14 @@ module Unparser
             # @api private
             #
             def dispatch
-              if parent.is_a?(HashPair) && parent.key.eql?(node)
+              if parent.is_a?(HashPair) && parent.key.eql?(node) && safe_without_quotes?
                 buffer.append(value.to_s)
               else
-                buffer.append(value.inspect)
+                super
               end
             end
 
-            # Is this symbol safe to use without quoting?
+            # Test if this symbol is safe to use without quoting
             # 
             # @return [true]
             #   if the symbol is safe

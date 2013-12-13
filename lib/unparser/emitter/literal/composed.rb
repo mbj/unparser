@@ -9,9 +9,13 @@ module Unparser
 
         handle :pair
 
-        # AST node corresponding to the key
+        # Return the AST node representing the key
         # 
-        # @return [undefined]
+        # @return [Parser::AST::Node]
+        #   if present
+        #
+        # @return [nil]
+        #   otherwise
         # 
         # @api private
         # 
