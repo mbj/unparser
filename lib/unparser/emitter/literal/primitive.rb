@@ -12,7 +12,7 @@ module Unparser
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 
-          handle :float, :sym, :int
+          handle :float, :int
 
         private
 
@@ -24,6 +24,40 @@ module Unparser
           #
           def dispatch
             buffer.append(value.inspect)
+          end
+
+          class Symbol < self
+
+            handle :sym
+
+            # Dispatch value (without colon if representing a hash key)
+            #
+            # @return [undefined]
+            #
+            # @api private
+            #
+            def dispatch
+              if parent.is_a?(HashPair) && parent.key.eql?(node) && safe_without_quotes?
+                buffer.append(value.to_s)
+              else
+                super
+              end
+            end
+
+            # Test if this symbol is safe to use without quoting
+            # 
+            # @return [true]
+            #   if the symbol is safe
+            # 
+            # @return [false]
+            #   otherwise
+            # 
+            # @api private
+            # 
+            def safe_without_quotes?
+              value.inspect[1] != DBL_QUOTE
+            end
+
           end
 
         end # Inspect

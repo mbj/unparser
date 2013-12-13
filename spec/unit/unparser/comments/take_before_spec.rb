@@ -17,11 +17,11 @@ describe Unparser::Comments, '#take_before' do
       RUBY
     end
 
-    it 'should return no comments none are before the node' do
+    it 'should return no comments if none are before the node' do
       expect(object.take_before(ast, :expression)).to eql([])
     end
 
-    it 'should only the comments that are before the specified part of the node' do
+    it 'should return only the comments that are before the specified part of the node' do
       expect(object.take_before(ast, :end)).to eql(comments.first(2))
       expect(object.take_all).to eql([comments[2]])
     end
@@ -36,11 +36,11 @@ describe Unparser::Comments, '#take_before' do
       RUBY
     end
 
-    it 'should return no comments none are before the node' do
+    it 'should return no comments if none are before the node' do
       expect(object.take_before(ast, :expression)).to eql([])
     end
 
-    it 'should only the comments that are before the specified part of the node' do
+    it 'should return only the comments that are before the specified part of the node' do
       expect(object.take_before(ast, :end)).to eql([])
     end
   end

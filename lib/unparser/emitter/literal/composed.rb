@@ -5,8 +5,22 @@ module Unparser
       # Emitter for hash keyvalue pair
       class HashPair < self
         HASHROCKET = ' => '.freeze
+        COLON      = ': '.freeze
 
         handle :pair
+
+        # Return the AST node representing the key
+        # 
+        # @return [Parser::AST::Node]
+        #   if present
+        #
+        # @return [nil]
+        #   otherwise
+        # 
+        # @api private
+        # 
+        alias_method :key, :first_child
+        public :key
 
       private
 
@@ -17,7 +31,11 @@ module Unparser
         # @api private
         #
         def dispatch
-          delimited(children, HASHROCKET)
+          if key.type == :sym && emitter(key).safe_without_quotes?
+            delimited(children, COLON)
+          else
+            delimited(children, HASHROCKET)
+          end
         end
 
       end # HashPair

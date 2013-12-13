@@ -36,7 +36,10 @@ module Unparser
     M_PO  = '('
     M_PC  = ')'
 
-    # Kewords
+    SNGL_QUOTE = "'"
+    DBL_QUOTE  = '"'
+
+    # Keywords
     K_DO       = 'do'
     K_DEF      = 'def'
     K_END      = 'end'
