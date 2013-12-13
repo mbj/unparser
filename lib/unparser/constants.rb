@@ -39,7 +39,7 @@ module Unparser
     SNGL_QUOTE = "'"
     DBL_QUOTE  = '"'
 
-    # Kewords
+    # Keywords
     K_DO       = 'do'
     K_DEF      = 'def'
     K_END      = 'end'
