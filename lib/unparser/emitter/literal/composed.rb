@@ -31,9 +31,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          key_emitter = emitter(key)
-          
-          if key_emitter.is_a?(Primitive::Inspect::Symbol) && key_emitter.safe_without_quotes?
+          if key.type == :sym && emitter(key).safe_without_quotes?
             delimited(children, COLON)
           else
             delimited(children, HASHROCKET)
