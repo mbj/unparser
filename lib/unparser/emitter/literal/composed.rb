@@ -65,6 +65,37 @@ module Unparser
           DELIMITER = ', '.freeze
 
           handle :hash
+
+          # Perform dispatch
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch
+            if children.empty?
+              super
+            else
+              emit_with_spaces
+            end
+          end
+
+        private
+
+          # Emit the hash with spaces
+          # after `{` and before `}`
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_with_spaces
+            parentheses(OPEN, CLOSE) do
+              ws
+              delimited(children, DELIMITER)
+              ws
+            end
+          end
         end # Hash
 
         # Array literal emitter

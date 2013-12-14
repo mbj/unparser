@@ -135,7 +135,7 @@ describe Unparser do
 
       context 'dynamic string' do
         assert_source %q("foo#{@bar}")
-        assert_source     %q("fo\no#{bar}b\naz")
+        assert_source %q("fo\no#{bar}b\naz")
       end
 
       context 'dynamic symbol' do
@@ -175,13 +175,13 @@ describe Unparser do
 
       context 'hash' do
         assert_source '{}'
-        assert_source '{1 => 2}'
-        assert_source '{1 => 2, 3 => 4}'
+        assert_source '{ 1 => 2 }'
+        assert_source '{ 1 => 2, 3 => 4 }'
 
         context 'with symbol keys' do
-          assert_source '{a: 1, b: 2}'
-          assert_source '{a: :a}'
-          assert_source '{:"a b" => 1}'
+          assert_source '{ a: 1, b: 2 }'
+          assert_source '{ a: :a }'
+          assert_source '{ :"a b" => 1 }'
         end
       end
     end
