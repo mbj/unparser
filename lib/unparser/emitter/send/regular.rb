@@ -4,20 +4,6 @@ module Unparser
       # Emitter for "regular" receiver.selector(arguments...) case
       class Regular < self
 
-        # Return the last argument
-        #
-        # @return [Parser::AST::Node]
-        #   if present
-        #
-        # @return [nil]
-        #   otherwise
-        #
-        # @api private
-        #
-        def last_argument
-          children.last
-        end
-
       private
 
         # Perform regular dispatch
