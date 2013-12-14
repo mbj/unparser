@@ -40,6 +40,7 @@ module Unparser
 
       end # HashPair
 
+      # Hash literal emitter
       class Hash < self
 
         OPEN      = '{'.freeze
