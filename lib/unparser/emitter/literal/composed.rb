@@ -9,18 +9,7 @@ module Unparser
 
         handle :pair
 
-        # Return the AST node representing the key
-        #
-        # @return [Parser::AST::Node]
-        #   if present
-        #
-        # @return [nil]
-        #   otherwise
-        #
-        # @api private
-        #
-        alias_method :key, :first_child
-        public :key
+        children :key, :value
 
       private
 
@@ -31,11 +20,22 @@ module Unparser
         # @api private
         #
         def dispatch
-          if key.type == :sym && emitter(key).safe_without_quotes?
-            delimited(children, COLON)
+          if key.type == :sym && key.children.first.inspect[1] != DBL_QUOTE
+            emit_19_style_symbol
           else
             delimited(children, HASHROCKET)
           end
+        end
+
+        # Emit ruby 19 style symbol
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_19_style_symbol
+          write(key.children.first.to_s, COLON)
+          visit(value)
         end
 
       end # HashPair
