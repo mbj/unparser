@@ -40,8 +40,13 @@ module Unparser
 
       end # HashPair
 
-      # Base class for compound literal emitters
-      class Compound < self
+      class Hash < self
+
+        OPEN      = '{'.freeze
+        CLOSE     = '}'.freeze
+        DELIMITER = ', '.freeze
+
+        handle :hash
 
       private
 
@@ -52,31 +57,53 @@ module Unparser
         # @api private
         #
         def dispatch
-          util = self.class
-          parentheses(util::OPEN, util::CLOSE) do
-            delimited(children, util::DELIMITER)
+          if children.empty?
+            write(OPEN, CLOSE)
+          else
+            emit_hash_body
           end
         end
 
-        # Hash literal emitter
-        class Hash < self
-          OPEN      = '{'.freeze
-          CLOSE     = '}'.freeze
-          DELIMITER = ', '.freeze
+        # Emit hash body
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_hash_body
+          parentheses(OPEN, CLOSE) do
+            write(WS)
+            delimited(children, DELIMITER)
+            write(WS)
+          end
+        end
 
-          handle :hash
-        end # Hash
+      end # Hash
 
-        # Array literal emitter
-        class Array < self
-          OPEN      = '['.freeze
-          CLOSE     = ']'.freeze
-          DELIMITER = ', '.freeze
+      # Array literal emitter
+      class Array < self
+        OPEN      = '['.freeze
+        CLOSE     = ']'.freeze
+        DELIMITER = ', '.freeze
 
-          handle :array
-        end # Array
+        handle :array
 
-      end # Compound
+      private
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          parentheses(OPEN, CLOSE) do
+            delimited(children, DELIMITER)
+          end
+        end
+
+      end # Array
+
     end # Literal
   end # Emitter
 end # Unparser
