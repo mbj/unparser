@@ -45,15 +45,15 @@ module Unparser
             end
 
             # Test if this symbol is safe to use without quoting
-            # 
+            #
             # @return [true]
             #   if the symbol is safe
-            # 
+            #
             # @return [false]
             #   otherwise
-            # 
+            #
             # @api private
-            # 
+            #
             def safe_without_quotes?
               value.inspect[1] != DBL_QUOTE
             end

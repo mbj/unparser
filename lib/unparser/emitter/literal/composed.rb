@@ -10,15 +10,15 @@ module Unparser
         handle :pair
 
         # Return the AST node representing the key
-        # 
+        #
         # @return [Parser::AST::Node]
         #   if present
         #
         # @return [nil]
         #   otherwise
-        # 
+        #
         # @api private
-        # 
+        #
         alias_method :key, :first_child
         public :key
 
