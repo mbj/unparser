@@ -128,7 +128,7 @@ module Unparser
       # @api private
       #
       def binary?
-        BINARY_OPERATORS.include?(selector) && arguments.length == 1 && arguments.first.type != :splat
+        BINARY_OPERATORS.include?(selector) && arguments.one? && arguments.first.type != :splat
       end
 
       # Emit selector
