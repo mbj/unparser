@@ -61,21 +61,21 @@ module Unparser
           #
           def dispatch
             if parent_type == :send && parent.last_argument.eql?(node)
-              dispatch_without_quotes
+              dispatch_without_braces
             else
-              dispatch_with_quotes
+              dispatch_with_braces
             end
           end
 
         private
 
-          # Perform usual dispatch with quotes
+          # Perform usual dispatch with braces
           #
           # @return [undefined]
           #
           # @api private
           #
-          def dispatch_with_quotes
+          def dispatch_with_braces
             if children.empty?
               emit_braces
             else
@@ -83,14 +83,14 @@ module Unparser
             end
           end
 
-          # Perform dispatch without quotes
+          # Perform dispatch without braces
           # (when hash is the last argument in a method call)
           #
           # @return [undefined]
           #
           # @api private
           #
-          def dispatch_without_quotes
+          def dispatch_without_braces
             if children.empty?
               # TODO: omit the hash altogether
               emit_braces
