@@ -45,19 +45,6 @@ module Unparser
 
       private
 
-        # Perform dispatch
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def dispatch
-          util = self.class
-          parentheses(util::OPEN, util::CLOSE) do
-            delimited(children, util::DELIMITER)
-          end
-        end
-
         # Hash literal emitter
         class Hash < self
           OPEN      = '{'.freeze
@@ -74,13 +61,23 @@ module Unparser
           #
           def dispatch
             if children.empty?
-              super
+              emit_braces
             else
-              emit_with_spaces
+              emit_children_and_braces
             end
           end
 
         private
+
+          # Emit empty braces without spaces inside
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_braces
+            parentheses(OPEN, CLOSE)
+          end
 
           # Emit the hash with spaces
           # after `{` and before `}`
@@ -89,12 +86,22 @@ module Unparser
           #
           # @api private
           #
-          def emit_with_spaces
+          def emit_children_and_braces
             parentheses(OPEN, CLOSE) do
               ws
-              delimited(children, DELIMITER)
+              emit_children
               ws
             end
+          end
+
+          # Emit hash pairs without braces
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_children
+            delimited(children, DELIMITER)
           end
         end # Hash
 
@@ -105,6 +112,18 @@ module Unparser
           DELIMITER = ', '.freeze
 
           handle :array
+
+          # Perform dispatch
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch
+            parentheses(OPEN, CLOSE) do
+              delimited(children, DELIMITER)
+            end
+          end
         end # Array
 
       end # Compound
