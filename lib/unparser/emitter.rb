@@ -181,7 +181,7 @@ module Unparser
     #
     def parentheses(open = M_PO, close = M_PC)
       write(open)
-      yield if block_given?
+      yield
       write(close)
     end
 
