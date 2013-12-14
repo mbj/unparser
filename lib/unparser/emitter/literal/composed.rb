@@ -10,15 +10,15 @@ module Unparser
         handle :pair
 
         # Return the AST node representing the key
-        # 
+        #
         # @return [Parser::AST::Node]
         #   if present
         #
         # @return [nil]
         #   otherwise
-        # 
+        #
         # @api private
-        # 
+        #
         alias_method :key, :first_child
         public :key
 
@@ -60,6 +60,22 @@ module Unparser
           # @api private
           #
           def dispatch
+            if parent_type == :send && parent.last_argument.eql?(node)
+              dispatch_without_quotes
+            else
+              dispatch_with_quotes
+            end
+          end
+
+        private
+
+          # Perform usual dispatch with quotes
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch_with_quotes
             if children.empty?
               emit_braces
             else
@@ -67,7 +83,21 @@ module Unparser
             end
           end
 
-        private
+          # Perform dispatch without quotes
+          # (when hash is the last argument in a method call)
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch_without_quotes
+            if children.empty?
+              # TODO: omit the hash altogether
+              emit_braces
+            else
+              emit_children
+            end
+          end
 
           # Emit empty braces without spaces inside
           #
