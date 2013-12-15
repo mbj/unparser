@@ -91,18 +91,6 @@ module Unparser
       end
       memoize :string_selector
 
-      # Delegate to emitter
-      #
-      # @param [Class:Emitter] emitter
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def run(emitter)
-        emitter.new(node, self).write_to_buffer
-      end
-
       # Test for unary operator implemented as method
       #
       # @return [true]
@@ -196,6 +184,7 @@ module Unparser
       def arguments
         children[2..-1]
       end
+      memoize :arguments
 
       # Emit arguments
       #
@@ -204,11 +193,7 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        args = arguments
-        return if args.empty?
-        parentheses do
-          delimited(args)
-        end
+        run(Arguments, s(:arguments, arguments))
       end
 
     end # Send

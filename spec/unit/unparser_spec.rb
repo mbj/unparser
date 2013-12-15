@@ -445,6 +445,10 @@ describe Unparser do
       assert_source 'foo.bar(:baz, &baz)'
       assert_source 'foo.bar=(:baz)'
       assert_source 'self.foo=(:bar)'
+
+      assert_source 'foo.bar(baz: boz)'
+      assert_source 'foo.bar(foo, "baz" => boz)'
+      assert_source 'foo.bar({ foo: boz }, boz)'
     end
 
     context 'begin; end' do

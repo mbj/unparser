@@ -496,5 +496,17 @@ module Unparser
       comments.skip_eol_comment(comment)
     end
 
+    # Delegate to emitter
+    #
+    # @param [Class:Emitter] emitter
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def run(emitter, node = node)
+      emitter.new(node, self).write_to_buffer
+    end
+
   end # Emitter
 end # Unparser
