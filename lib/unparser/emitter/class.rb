@@ -47,6 +47,8 @@ module Unparser
 
       children :object, :body
 
+    private
+
       # Perform dispatch
       #
       # @return [undefined]
