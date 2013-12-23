@@ -9,6 +9,8 @@ module Unparser
     #
     # @return [undefined]
     #
+    # @api private
+    #
     def initialize(comments)
       @comments = comments.dup
       @last_range_consumed = @eol_text_to_skip = nil
@@ -20,6 +22,8 @@ module Unparser
     # @param [Symbol] source_part
     #
     # @return [undefined]
+    #
+    # @api private
     #
     def consume(node, source_part = :expression)
       location = node.location
@@ -33,6 +37,8 @@ module Unparser
     #
     # @return [undefined]
     #
+    # @api private
+    #
     def skip_eol_comment(comment_text)
       @eol_text_to_skip = comment_text
     end
@@ -40,6 +46,8 @@ module Unparser
     # Take end-of-line comments
     #
     # @return [Array]
+    #
+    # @api private
     #
     def take_eol_comments
       text_to_skip = @eol_text_to_skip
@@ -54,6 +62,8 @@ module Unparser
     #
     # @return [Array]
     #
+    # @api private
+    #
     def take_all
       take_while { true }
     end
@@ -64,6 +74,8 @@ module Unparser
     # @param [Symbol] source_part
     #
     # @return [Array]
+    #
+    # @api private
     #
     def take_before(node, source_part)
       location = node.location
@@ -83,6 +95,8 @@ module Unparser
     #
     # @return [Array]
     #
+    # @api private
+    #
     def take_while
       number_to_take = @comments.index { |comment| !yield(comment) } || @comments.size
       @comments.shift(number_to_take)
@@ -94,6 +108,8 @@ module Unparser
     #
     # @return [Array]
     #
+    # @api private
+    #
     def take_up_to_line(line)
       take_while { |comment| comment.location.expression.line <= line }
     end
@@ -103,6 +119,8 @@ module Unparser
     # @param [Array] comments
     #
     # @return [Array]
+    #
+    # @api private
     #
     def unshift_documents(comments)
       doc_comments, other_comments = comments.partition(&:document?)

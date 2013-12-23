@@ -17,7 +17,7 @@ module Unparser
           #
           # @return [undefined]
           #
-          # @api privateo
+          # @api private
           #
           def dispatch
             delimited(children, HASHROCKET)
@@ -39,7 +39,7 @@ module Unparser
           #
           # @return [undefined]
           #
-          # @api privateo
+          # @api private
           #
           def dispatch
             write(key.children.first.to_s, COLON)
@@ -69,6 +69,12 @@ module Unparser
           delimited(effective_body, DELIMITER)
         end
 
+        # Return effective body
+        #
+        # @return [Enumerable<Parser::AST::Node>]
+        #
+        # @api private
+        #
         def effective_body
           children.map do |pair|
             s(:pair_rocket, pair.children)
