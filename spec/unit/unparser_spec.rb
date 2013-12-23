@@ -179,8 +179,8 @@ describe Unparser do
         assert_source '{ 1 => 2, 3 => 4 }'
 
         context 'with symbol keys' do
-          assert_source '{ a: 1, b: 2 }'
-          assert_source '{ a: :a }'
+          assert_source '{ :a => 1, :b => 2 }'
+          assert_source '{ :a => :a }'
           assert_source '{ :"a b" => 1 }'
         end
       end
@@ -446,9 +446,9 @@ describe Unparser do
       assert_source 'foo.bar=(:baz)'
       assert_source 'self.foo=(:bar)'
 
-      assert_source 'foo.bar(baz: boz)'
+      assert_source 'foo.bar(:baz => boz)'
       assert_source 'foo.bar(foo, "baz" => boz)'
-      assert_source 'foo.bar({ foo: boz }, boz)'
+      assert_source 'foo.bar({ :foo => boz }, boz)'
     end
 
     context 'begin; end' do
