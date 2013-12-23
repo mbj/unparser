@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('parser',        '~> 2.0.0')
   s.add_dependency('concord',       '~> 0.1.4')
-  s.add_dependency('adamantium',    '~> 0.1.0')
+  s.add_dependency('adamantium',    '~> 0.1')
   s.add_dependency('equalizer',     '~> 0.0.7')
   s.add_dependency('abstract_type', '~> 0.0.7')
 end
