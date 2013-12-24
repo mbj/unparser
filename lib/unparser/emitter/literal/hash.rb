@@ -54,6 +54,7 @@ module Unparser
       class HashBody < self
 
         DELIMITER = ', '.freeze
+        BAREWORD = /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\z/
 
         handle :hash_body
 
@@ -78,7 +79,7 @@ module Unparser
         def effective_body
           children.map do |pair|
             key, value = *pair
-            if key.type == :sym && key.children.first.to_s =~ /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\Z/
+            if key.type == :sym && key.children.first.to_s =~ BAREWORD
               s(:pair_colon, pair.children)
             else
               s(:pair_rocket, pair.children)
