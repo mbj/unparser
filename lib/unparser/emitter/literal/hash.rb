@@ -54,7 +54,7 @@ module Unparser
       class HashBody < self
 
         DELIMITER = ', '.freeze
-        BAREWORD = /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\z/
+        BAREWORD = /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\z/.freeze
 
         handle :hash_body
 
