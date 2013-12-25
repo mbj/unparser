@@ -78,7 +78,7 @@ module Unparser
         #
         def effective_body
           children.map do |pair|
-            key, value = *pair
+            key, _ = *pair
             if key.type == :sym && key.children.first.to_s =~ BAREWORD
               s(:pair_colon, pair.children)
             else
