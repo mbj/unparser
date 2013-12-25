@@ -19,62 +19,45 @@ describe Unparser do
 
     def self.with_versions(versions)
       versions.each do |version|
-        parser = parser_for_ruby_version(version)
-        yield version, parser
+        yield parser_for_ruby_version(version)
       end
     end
 
-    def self.strip(ruby)
-      return ruby if ruby.empty?
-      lines = ruby.lines
-      match = /\A[ ]*/.match(lines.first)
-      range = match[0].length .. -1
-      source = lines.map do |line|
-        line[range]
-      end.join
-      source.chomp
-    end
-
-    def assert_round_trip(input, parser_class)
-      ast, comments = parser_class.parse_with_comments(input)
+    def assert_round_trip(input, parser)
+      ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       generated.should eql(input)
     end
 
-    def self.assert_generates_one_way(ast, expected, versions = RUBIES)
-      with_versions(versions) do |version, parser_class|
-        it "should generate #{ast.inspect} as #{expected} under #{version}" do
-          comments = []
-          if ast.kind_of?(String)
-            ast, comments = parser_class.parse_with_comments(input)
-          end
-          generated = Unparser.unparse(ast, comments)
-          generated.should eql(expected)
-        end
-      end
+    def assert_generates_from_string(parser, string, expected)
+      string = strip(string)
+      ast_with_comments = parser.parse_with_comments(string)
+      assert_generates_from_ast(parser, ast_with_comments, expected)
+    end
+
+    def assert_generates_from_ast(parser, ast_with_comments, expected)
+      generated = Unparser.unparse(*ast_with_comments)
+      generated.should eql(expected)
+      ast, comments = parser.parse_with_comments(generated)
+      Unparser.unparse(ast, comments).should eql(expected)
     end
 
     def self.assert_generates(ast_or_string, expected, versions = RUBIES)
-      ast_or_string = strip(ast_or_string) if ast_or_string.is_a?(String)
-      expected = strip(expected)
-      with_versions(versions) do |version, parser_class|
-        it "should generate #{ast_or_string.inspect} as #{expected} under #{version}" do
-          ast, comments = if ast_or_string.kind_of?(String)
-                            parser_class.parse_with_comments(ast_or_string)
-                          else
-                            [ast_or_string, []]
-                          end
-          generated = Unparser.unparse(ast, comments)
-          generated.should eql(expected)
-          ast, comments = parser_class.parse_with_comments(generated)
-          Unparser.unparse(ast, comments).should eql(expected)
+      with_versions(versions) do |parser|
+        it "should generate #{ast_or_string.inspect} as #{expected} under #{parser.inspect}" do
+          if ast_or_string.kind_of?(String)
+            expected = strip(expected)
+            assert_generates_from_string(parser, ast_or_string, expected)
+          else
+            assert_generates_from_ast(parser, [ast_or_string, []], expected)
+          end
         end
       end
     end
 
     def self.assert_round_trip(input, versions = RUBIES)
-      with_versions(versions) do |version, parser|
-        it "should round trip #{input.inspect} under #{version}" do
+      with_versions(versions) do |parser|
+        it "should round trip #{input.inspect} under #{parser.inspect}" do
           assert_round_trip(input, parser)
         end
       end
@@ -254,7 +237,6 @@ describe Unparser do
         assert_source '$a, $b = 1, 2'
         assert_source 'a, b = foo'
         assert_source 'a, (b, c) = 1, [2, 3]'
-        assert_generates_one_way s(:mlhs, s(:lvasgn, :a), s(:lvasgn, :b)), 'a, b'
       end
     end
 
