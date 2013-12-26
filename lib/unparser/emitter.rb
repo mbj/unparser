@@ -211,7 +211,6 @@ module Unparser
       conditional_parentheses(!emitter.terminated?) do
         emitter.write_to_buffer
       end
-      emitter.write_to_buffer
     end
 
     # Visit within parentheses
