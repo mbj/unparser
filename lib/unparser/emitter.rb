@@ -480,21 +480,6 @@ module Unparser
       Parser::AST::Node.new(type, *children)
     end
 
-    # Helper to introduce an end-of-line comment
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def eol_comment
-      write(WS)
-      comment = buffer.capture_content do
-        write(COMMENT, WS)
-        yield
-      end
-      comments.skip_eol_comment(comment)
-    end
-
     # Delegate to emitter
     #
     # @param [Class:Emitter] emitter

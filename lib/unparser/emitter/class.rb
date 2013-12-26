@@ -21,9 +21,6 @@ module Unparser
         emit_superclass
         emit_body
         k_end
-        unless parent_type == :send
-          eol_comment { visit(name) }
-        end
       end
 
       # Emit superclass
