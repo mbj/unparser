@@ -13,7 +13,7 @@ module Unparser
     #
     def initialize(comments)
       @comments = comments.dup
-      @last_range_consumed = @eol_text_to_skip = nil
+      @last_range_consumed = nil
     end
 
     # Consume part or all of the node
@@ -31,18 +31,6 @@ module Unparser
       @last_range_consumed = location.public_send(source_part)
     end
 
-    # Skip any EOL comment with the specified text next time they're taken
-    #
-    # @param [String] comment_text
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def skip_eol_comment(comment_text)
-      @eol_text_to_skip = comment_text
-    end
-
     # Take end-of-line comments
     #
     # @return [Array]
@@ -50,12 +38,9 @@ module Unparser
     # @api private
     #
     def take_eol_comments
-      text_to_skip = @eol_text_to_skip
-      @eol_text_to_skip = nil
       return [] unless @last_range_consumed
       comments = take_up_to_line(@last_range_consumed.end.line)
-      eol_comments = unshift_documents(comments)
-      eol_comments.reject { |comment| comment.text == text_to_skip }
+      unshift_documents(comments)
     end
 
     # Take all remaining comments
