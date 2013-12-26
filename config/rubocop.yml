@@ -89,3 +89,11 @@ TrivialAccessors:
 # Do not prefer do/end over {} for multiline blocks
 Blocks:
   Enabled: false
+
+# I like to have an empty line before closing the currently opened body
+EmptyLinesAroundBody:
+  Enabled: false
+
+# I like my style more
+AccessModifierIndentation:
+  Enabled: false
