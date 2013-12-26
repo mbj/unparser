@@ -1,10 +1,8 @@
 module Unparser
   class Emitter
     class Send
-      # Emitter for "regular" receiver.selector(arguments...) case
-      class Regular < self
-
-      private
+      # Emitter for send as attribute assignment
+      class AttributeAssignment < self
 
         # Perform regular dispatch
         #
@@ -15,22 +13,21 @@ module Unparser
         def dispatch
           emit_receiver
           emit_selector
-          emit_arguments
+          visit_terminated(arguments.first)
         end
 
         # Emit receiver
         #
-        # @return [undefined]
+        # @return [Parser::AST::Node]
         #
         # @api private
         #
         def emit_receiver
-          return unless first_child
           visit_terminated(receiver)
           write(T_DOT)
         end
 
-      end # Regular
+      end # AttributeAssignment
     end # Send
   end # Emitter
 end # Unparser

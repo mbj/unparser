@@ -71,10 +71,12 @@ module Unparser
       # @api private
       #
       def non_index_emitter
-        if binary?
+        if binary_operator?
           Binary
-        elsif unary?
+        elsif unary_operator?
           Unary
+        elsif attribute_assignment?
+          AttributeAssignment
         else
           Regular
         end
@@ -101,7 +103,7 @@ module Unparser
       #
       # @api private
       #
-      def unary?
+      def unary_operator?
         UNARY_OPERATORS.include?(selector)
       end
 
@@ -115,7 +117,7 @@ module Unparser
       #
       # @api private
       #
-      def binary?
+      def binary_operator?
         BINARY_OPERATORS.include?(selector) && arguments.one? && arguments.first.type != :splat
       end
 
@@ -149,6 +151,8 @@ module Unparser
 
       # Test for assignment
       #
+      # FIXME: This also returns true for <= operator!
+      #
       # @return [true]
       #   if node represents attribute / element assignment
       #
@@ -159,6 +163,19 @@ module Unparser
       #
       def assignment?
         string_selector[-1] == ASSIGN_SUFFIX
+      end
+
+      # Test for attribute assignment
+      #
+      # @return [true]
+      #   if node represetns and attribute assignment
+      #
+      # @return [false]
+      #
+      # @api private
+      #
+      def attribute_assignment?
+        !BINARY_OPERATORS.include?(selector) && !UNARY_OPERATORS.include?(selector) && assignment? && !mlhs?
       end
 
       # Test for empty arguments
