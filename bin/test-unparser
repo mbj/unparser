@@ -9,6 +9,22 @@ require 'parser/current'
 require 'mutant'
 require 'optparse'
 
+class Processor < Parser::AST::Processor
+  def self.call(node)
+    new.process(node)
+  end
+
+  # Filter out unneded parentheses unparser (still) generates.
+  def on_begin(node)
+    children = node.children
+    if children.one?
+      process(children.first)
+    else
+      process_regular_node(node)
+    end
+  end
+end
+
 # Class to create diffs from source code
 class Differ < Mutant::Differ
 
@@ -63,7 +79,7 @@ class Unparse
     memoize :generated_source
 
     def generated_ast
-      Parser::CurrentRuby.parse(generated_source)
+      Processor.call(Parser::CurrentRuby.parse(generated_source))
     end
     memoize :generated_ast
 
