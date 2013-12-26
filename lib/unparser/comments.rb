@@ -38,7 +38,7 @@ module Unparser
     # @api private
     #
     def take_eol_comments
-      return [] unless @last_range_consumed
+      return EMPTY_ARRAY unless @last_range_consumed
       comments = take_up_to_line(@last_range_consumed.end.line)
       unshift_documents(comments)
     end
