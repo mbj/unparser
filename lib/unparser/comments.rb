@@ -91,7 +91,7 @@ module Unparser
 
     # Take comments while the provided block returns true
     #
-    # @yield [comment]
+    # @yield [Parser::Source::Comment]
     #
     # @return [Array]
     #
