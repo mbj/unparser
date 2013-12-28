@@ -1,4 +1,4 @@
-* Create an AST preprocessor that creates virtual nodes, 
+* Create an AST preprocessor that creates virtual nodes,
   removing the need for explicit backreferencing and special cases in the emitter
   classes.
 * Remove duplicated logic with empty or non empty bodies
