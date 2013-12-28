@@ -9,14 +9,9 @@ module SpecHelper
   end
 
   def strip(source)
-    return source if source.empty?
-    lines = source.lines
-    match = /\A[ ]*/.match(lines.first)
-    range = match[0].length .. -1
-    source = lines.map do |line|
-      line[range]
-    end.join
-    source.chomp
+    source = source.rstrip
+    indent = source.scan(/^\s*/).min_by(&:length)
+    source.gsub(/^#{indent}/, '')
   end
 
 end
