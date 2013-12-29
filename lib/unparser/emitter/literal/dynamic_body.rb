@@ -63,7 +63,7 @@ module Unparser
 
         ESCAPES = ::Hash[Parser::Lexer::ESCAPES.invert.map do |key, value|
           [key, "\\#{value}"]
-        end].freeze
+        end.reject { |key, value| key == ' '}].freeze
 
         REPLACEMENTS = ::Regexp.union(ESCAPES.keys)
 

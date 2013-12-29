@@ -57,7 +57,7 @@ describe Unparser do
 
     def self.assert_round_trip(input, versions = RUBIES)
       with_versions(versions) do |parser|
-        it "should round trip #{input.inspect} under #{parser.inspect}" do
+        it "should round trip #{input} under #{parser.inspect}" do
           assert_round_trip(input, parser)
         end
       end
@@ -85,6 +85,10 @@ describe Unparser do
         assert_source %q("foo#{1}bar")
         assert_source %q("\"#{@a}")
         assert_source %q("\\\\#{}")
+        assert_source %q("foo bar")
+        assert_source %q("foo\nbar")
+        assert_source %q("foo bar #{}")
+        assert_source %q("foo\nbar #{}")
       end
 
       context 'execute string' do
