@@ -38,6 +38,9 @@ FeatureEnvy:
   - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
   - Unparser::Emitter::Send#binary_receiver?
   - Unparser::Emitter#visit_terminated
+  - Unparser::CLI#add_options
+  - Unparser::CLI::Source#error_report
+  - Unparser::Comments#take_before
   enabled: true
 ClassVariable:
   exclude: []
@@ -65,6 +68,8 @@ NestedIterators:
 TooManyStatements:
   max_statements: 6
   enabled: true
+  exclude:
+  - Unparser::CLI::Source#error_report
 DuplicateMethodCall:
   allow_calls: []
   exclude: []
