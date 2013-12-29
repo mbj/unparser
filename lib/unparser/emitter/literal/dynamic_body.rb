@@ -61,9 +61,9 @@ module Unparser
           emit_interpolated_segment(node)
         end
 
-        ESCAPES = IceNine.deep_freeze(
-          "\n" => '\n'
-        )
+        ESCAPES = ::Hash[Parser::Lexer::ESCAPES.invert.map do |key, value|
+          [key, "\\#{value}"]
+        end].freeze
 
         REPLACEMENTS = ::Regexp.union(ESCAPES.keys)
 
@@ -79,8 +79,8 @@ module Unparser
           util = self.class
           string = node.children.first
           segment = string
-            .gsub(util::DELIMITER, util::REPLACEMENT)
             .gsub(REPLACEMENTS, ESCAPES)
+            .gsub(util::DELIMITER, util::REPLACEMENT)
           write(segment)
         end
 
@@ -112,7 +112,7 @@ module Unparser
           handle :dyn_regexp_body
 
           DELIMITER   = '/'.freeze
-          REPLACEMENT = '/'.freeze
+          REPLACEMENT = '\/'.freeze
 
         end # Regexp
 

@@ -44,7 +44,7 @@ describe Unparser do
 
     def self.assert_generates(ast_or_string, expected, versions = RUBIES)
       with_versions(versions) do |parser|
-        it "should generate #{ast_or_string.inspect} as #{expected} under #{parser.inspect}" do
+        it "should generate #{ast_or_string} as #{expected} under #{parser.inspect}" do
           if ast_or_string.kind_of?(String)
             expected = strip(expected)
             assert_generates_from_string(parser, ast_or_string, expected)
@@ -80,10 +80,11 @@ describe Unparser do
 
       context 'string' do
         assert_generates %q("foo" "bar"), %q("foobar")
-        assert_generates %q(%Q(foo"#{@bar})), %q("foo\"#{@bar}")
+        assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
         assert_source %q("\"")
         assert_source %q("foo#{1}bar")
         assert_source %q("\"#{@a}")
+        assert_source %q("\\\\#{}")
       end
 
       context 'execute string' do
