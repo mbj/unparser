@@ -69,7 +69,7 @@ module Unparser
       # @api private
       #
       def original_ast
-        Parser::CurrentRuby.parse(original_source)
+        Preprocessor.run(Parser::CurrentRuby.parse(original_source))
       end
       memoize :original_ast
 
