@@ -442,6 +442,7 @@ describe Unparser do
       assert_source 'foo.bar(baz: boz)'
       assert_source 'foo.bar(foo, "baz" => boz)'
       assert_source 'foo.bar({ foo: boz }, boz)'
+      assert_source 'foo.bar(foo, {})'
     end
 
     context 'begin; end' do
