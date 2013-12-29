@@ -9,7 +9,7 @@ module Unparser
         class Rocket < self
           HASHROCKET = ' => '.freeze
 
-          handle :pair_rocket
+          handle :pair_rocket, :pair
 
         private
 
