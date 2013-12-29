@@ -75,7 +75,7 @@ module Unparser
           def emit_left
             if base
               visit(base)
-              write(T_DCL)
+              write(T_DCL) if base.type != :cbase
             end
             write(name.to_s)
           end

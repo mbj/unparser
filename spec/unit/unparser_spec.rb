@@ -222,6 +222,7 @@ describe Unparser do
         assert_source '$a = 1'
         assert_source 'CONST = 1'
         assert_source 'Name::Spaced::CONST = 1'
+        assert_source '::Foo = ::Bar'
       end
 
       context 'multiple' do
