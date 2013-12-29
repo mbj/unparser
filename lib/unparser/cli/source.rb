@@ -30,10 +30,8 @@ module Unparser
           generated_ast.inspect.lines.map(&:chomp)
         )
         report << 'Original:'
-        report << original_ast.inspect
         report << original_source
         report << 'Generated:'
-        report << generated_ast.inspect
         report << generated_source
         report.join("\n")
       end
