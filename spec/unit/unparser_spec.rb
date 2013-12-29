@@ -1212,6 +1212,16 @@ describe Unparser do
         # last
       RUBY
 
+      assert_generates <<-'RUBY', <<-'RUBY'
+        foo if bar
+        # comment
+      RUBY
+        if bar
+          foo
+        end
+        # comment
+      RUBY
+
       assert_source <<-'RUBY'
         def noop
           # do nothing

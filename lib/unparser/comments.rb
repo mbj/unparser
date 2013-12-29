@@ -3,6 +3,20 @@ module Unparser
   # Holds the comments that remain to be emitted
   class Comments
 
+    # Proxy to singleton
+    #
+    # NOTICE:
+    #   Delegating to stateless helpers is a pattern I saw many times in our code.
+    #   Maybe we should make another helper module? include SingletonDelegator.new(:source_range) ?
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def source_range(*arguments)
+      self.class.source_range(*arguments)
+    end
+
     # Initialize object
     #
     # @param [Array] comments
@@ -26,9 +40,10 @@ module Unparser
     # @api private
     #
     def consume(node, source_part = :expression)
-      location = node.location
-      return unless location
-      @last_range_consumed = location.public_send(source_part)
+      range = source_range(node, source_part)
+      if range
+        @last_range_consumed = range
+      end
     end
 
     # Take end-of-line comments
@@ -63,12 +78,33 @@ module Unparser
     # @api private
     #
     def take_before(node, source_part)
-      location = node.location
-      if location.respond_to?(source_part)
-        range = location.public_send(source_part)
+      range = source_range(node, source_part)
+      if range
         take_while { |comment| comment.location.expression.end_pos <= range.begin_pos }
       else
         EMPTY_ARRAY
+      end
+    end
+
+    # Return source location part
+    #
+    # FIXME: This method should not be needed. It does to much inline signalling.
+    #
+    # @param [Parser::AST::Node] node
+    # @param [Symbol] part
+    #
+    # @return [Parser::Source::Range]
+    #   if present
+    #
+    # @return [nil]
+    #   otherwise
+    #
+    # @api private
+    #
+    def self.source_range(node, part)
+      location = node.location
+      if location && location.respond_to?(part)
+        location.public_send(part)
       end
     end
 
