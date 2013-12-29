@@ -37,6 +37,9 @@ module Unparser
     def initialize(arguments)
       @sources = []
 
+      @success   = true
+      @fail_fast = false
+
       opts = OptionParser.new do |builder|
         add_options(builder)
       end
@@ -51,8 +54,6 @@ module Unparser
       file_names.each do |file_name|
         @sources << Source::File.new(file_name)
       end
-
-      @exit_success = true
     end
 
     # Add options
@@ -69,6 +70,9 @@ module Unparser
       builder.on('-e', '--evaluate SOURCE') do |original_source|
         @sources << Source::String.new(original_source)
       end
+      builder.on('--fail-fast') do
+        @fail_fast = true
+      end
     end
 
     # Return exit status
@@ -80,9 +84,12 @@ module Unparser
     def exit_status
       @sources.each do |source|
         process_source(source)
+        if @fail_fast
+          break unless @success
+        end
       end
 
-      @exit_success ? EXIT_SUCCESS : EXIT_FAILURE
+      @success ? EXIT_SUCCESS : EXIT_FAILURE
     end
 
   private
@@ -101,8 +108,9 @@ module Unparser
       else
         puts source.error_report
         puts "Error: #{source.identification}"
-        @exit_success = false
+        @success = false
       end
     end
+
   end # CLI
 end # Unparser
