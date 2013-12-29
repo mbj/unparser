@@ -1,6 +1,7 @@
 require 'unparser'
 require 'devtools/spec_helper'
 
+require 'parser/current'
 require 'parser/ruby21'
 
 module SpecHelper

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'parser/current'
 
 describe Unparser::Comments, '#consume' do
 
