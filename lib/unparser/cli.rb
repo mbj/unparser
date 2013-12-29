@@ -9,6 +9,9 @@ module Unparser
   # Unparser CLI implementation
   class CLI
 
+    EXIT_SUCCESS = 0
+    EXIT_FAILURE = 1
+
     # Unparser CLI specific differ
     class Differ < Mutant::Differ
 
@@ -87,7 +90,8 @@ module Unparser
     #
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
-      builder.separator('').on('-e', '--evaluate SOURCE') do |original_source|
+      builder.separator('')
+      builder.on('-e', '--evaluate SOURCE') do |original_source|
         @sources << Source::String.new(original_source)
       end
     end
@@ -102,6 +106,8 @@ module Unparser
       @sources.each do |source|
         process_source(source)
       end
+
+      @exit_success ? EXIT_SUCCESS : EXIT_FAILURE
     end
 
   private

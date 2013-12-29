@@ -6,4 +6,4 @@ end
 
 require 'unparser/cli'
 
-Unparser::CLI.run(ARGV)
+exit Unparser::CLI.run(ARGV)
