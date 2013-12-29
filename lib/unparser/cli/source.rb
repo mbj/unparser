@@ -25,7 +25,10 @@ module Unparser
       #
       def error_report
         report = []
-        report << Differ.run(original_ast.inspect.lines.map(&:chomp), generated_ast.inspect.lines.map(&:chomp))
+        report << Differ.call(
+          original_ast.inspect.lines.map(&:chomp),
+          generated_ast.inspect.lines.map(&:chomp)
+        )
         report << 'Original:'
         report << original_ast.inspect
         report << original_source

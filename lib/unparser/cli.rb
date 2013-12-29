@@ -4,6 +4,7 @@ require 'optparse'
 
 require 'unparser/cli/preprocessor'
 require 'unparser/cli/source'
+require 'unparser/cli/differ'
 
 module Unparser
   # Unparser CLI implementation
@@ -11,32 +12,6 @@ module Unparser
 
     EXIT_SUCCESS = 0
     EXIT_FAILURE = 1
-
-    # Unparser CLI specific differ
-    class Differ < Mutant::Differ
-
-      def self.run(*arguments)
-        new(*arguments).colorized_diff
-      end
-
-      # Return source diff
-      #
-      # @return [String]
-      #   if there is a diff
-      #
-      # @return [nil]
-      #   otherwise
-      #
-      # @api private
-      #
-      def diff
-        diffs.map do |piece|
-          Diff::LCS::Hunk.new(old, new, piece, max_length, old.length - new.length).diff(:unified) << "\n"
-        end.join
-      end
-      memoize :diff
-
-    end # Differ
 
     # Run CLI
     #
