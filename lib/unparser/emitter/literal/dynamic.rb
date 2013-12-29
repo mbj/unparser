@@ -15,7 +15,29 @@ module Unparser
         #
         def dispatch
           util = self.class
-          visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
+          if interpolation?
+            visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
+          else
+            max = children.length - 1
+            children.each_with_index do |child, index|
+              visit(child)
+              write(WS) if index < max
+            end
+          end
+        end
+
+        # Test for interpolation
+        #
+        # @return [true]
+        #   if dynamic component was interpolated
+        #
+        # @return [false]
+        #   otherwise
+        #
+        # @api private
+        #
+        def interpolation?
+          children.any? { |child| child.type != :str }
         end
 
         # Return dynamic body

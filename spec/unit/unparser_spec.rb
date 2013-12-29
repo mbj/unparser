@@ -79,7 +79,7 @@ describe Unparser do
       end
 
       context 'string' do
-        assert_generates %q("foo" "bar"), %q("foobar")
+        assert_source %q("foo" "bar")
         assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
         assert_source %q("\"")
         assert_source %q("foo#{1}bar")
