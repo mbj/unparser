@@ -1,4 +1,5 @@
 require 'abstract_type'
+require 'procto'
 require 'concord'
 require 'parser/all'
 
