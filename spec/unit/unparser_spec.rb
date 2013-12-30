@@ -141,6 +141,7 @@ describe Unparser do
         assert_generates '%r(/)', '/\//'
         assert_generates '%r(\))', '/)/'
         assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
+        assert_source '/\/\//x'
       end
 
       context 'dynamic symbol' do

@@ -95,7 +95,7 @@ module Unparser
         def delimiter
           location = node.location
           return DELIMITER unless location
-          location.expression.source[-1]
+          location.end.source[-1]
         end
         memoize :delimiter
 
