@@ -62,6 +62,22 @@ module Unparser
         node.children
       end
 
+      # Return mapped children
+      #
+      # @return [Array<Parser::Ast::Node>]
+      #
+      # @api private
+      #
+      def mapped_children
+        children.map do |node|
+          if node.kind_of?(Parser::AST::Node)
+            visit(node)
+          else
+            node
+          end
+        end
+      end
+
       # Noop preprocessor that just passes through noode.
       class Noop < self
 
@@ -72,16 +88,35 @@ module Unparser
         # @api private
         #
         def result
-          mapped_children = children.map do |node|
-            if node.kind_of?(Parser::AST::Node)
-              visit(node)
-            else
-              node
-            end
-          end
           Parser::AST::Node.new(node.type, mapped_children)
         end
       end # Noop
+
+      # Preprocessor for dynamic string nodes. Collapses adjacent string segments into one.
+      class Dstr < self
+
+        register :dstr
+
+        # Return preprocessor result
+        #
+        # @return [Parser::AST::Node]
+        #
+        # @api private
+        #
+        def result
+          collapsed_children = mapped_children.chunk do |item|
+            item.type
+          end.each_with_object([]) do |(type, nodes), aggregate|
+            if type == :str
+              aggregate << Parser::AST::Node.new(:str, [nodes.map(&:children).map(&:first).join])
+            else
+              aggregate.concat(nodes)
+            end
+          end
+          Parser::AST::Node.new(:dstr, collapsed_children)
+        end
+
+      end # Begin
 
       # Preprocessor for begin nodes. Removes begin nodes with one child.
       #
