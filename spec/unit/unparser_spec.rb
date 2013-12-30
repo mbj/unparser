@@ -116,6 +116,12 @@ describe Unparser do
         assert_source "/\n/"
         assert_source '/\n/'
         assert_source "/\n/x"
+        assert_source <<-RUBY
+          if foo
+            /
+            /
+          end
+        RUBY
         assert_generates '%r(/)', '/\//'
         assert_generates '%r(\))', '/)/'
         assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'

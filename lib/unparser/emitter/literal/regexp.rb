@@ -46,7 +46,7 @@ module Unparser
         def write_body(node)
           case node.type
           when :str
-            write(escape(node).children.first)
+            buffer.append_without_prefix(escape(node).children.first)
           else
             visit(s(:interpolated, [node]))
           end
