@@ -113,7 +113,11 @@ module Unparser
               aggregate.concat(nodes)
             end
           end
-          Parser::AST::Node.new(:dstr, collapsed_children)
+          if collapsed_children.all? { |node| node.type == :str }
+            Parser::AST::Node.new(:str, [collapsed_children.map(&:children).map(&:first).join])
+          else
+            Parser::AST::Node.new(:dstr, collapsed_children)
+          end
         end
 
       end # Begin
