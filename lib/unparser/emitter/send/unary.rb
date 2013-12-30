@@ -20,7 +20,7 @@ module Unparser
         def dispatch
           name = selector
           write(MAP.fetch(name, name).to_s)
-          visit(receiver)
+          visit_terminated(receiver)
         end
 
       end # Unary
