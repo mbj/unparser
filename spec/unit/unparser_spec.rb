@@ -89,6 +89,17 @@ describe Unparser do
         assert_source %q("foo\nbar")
         assert_source %q("foo bar #{}")
         assert_source %q("foo\nbar #{}")
+        # Within indentation
+        assert_generates <<-'RUBY', <<-'RUBY'
+          if foo
+            "
+            "
+          end
+        RUBY
+          if foo
+            "\n" "  "
+          end
+        RUBY
       end
 
       context 'execute string' do
@@ -116,6 +127,7 @@ describe Unparser do
         assert_source "/\n/"
         assert_source '/\n/'
         assert_source "/\n/x"
+        # Within indentation
         assert_source <<-RUBY
           if foo
             /

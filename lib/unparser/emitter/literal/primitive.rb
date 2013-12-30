@@ -23,7 +23,7 @@ module Unparser
           # @api private
           #
           def dispatch
-            buffer.append(value.inspect)
+            write(value.inspect)
           end
 
         end # Inspect
