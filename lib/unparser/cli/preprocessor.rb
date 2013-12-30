@@ -15,13 +15,14 @@ module Unparser
 
       # Run preprocessor for node
       #
-      # @param
+      # @param [Parser::AST::Node, nil] node
       #
-      # @return [Parser::AST::Node]
+      # @return [Parser::AST::Node, nil]
       #
       # @api private
       #
       def self.run(node)
+        return if node.nil?
         REGISTRY.fetch(node.type, Noop).new(node).result
       end
 
