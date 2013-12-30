@@ -18,11 +18,7 @@ module Unparser
           if interpolation?
             visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
           else
-            max = children.length - 1
-            children.each_with_index do |child, index|
-              visit(child)
-              write(WS) if index < max
-            end
+            delimited(children, WS)
           end
         end
 

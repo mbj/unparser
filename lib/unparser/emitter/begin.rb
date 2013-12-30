@@ -15,12 +15,7 @@ module Unparser
       # @api private
       #
       def emit_inner
-        childs = children
-        max = childs.length - 1
-        childs.each_with_index do |child, index|
-          visit(child)
-          nl if index < max
-        end
+        delimited(children, NL)
       end
 
       # Emitter for implicit begins
