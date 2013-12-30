@@ -75,10 +75,10 @@ describe Unparser do
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
-        assert_generates '?c', '"c"'
       end
 
       context 'string' do
+        assert_generates '?c', '"c"'
         assert_source %q("foo" "bar")
         assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
         assert_source %q("\"")
@@ -93,13 +93,17 @@ describe Unparser do
         assert_generates <<-'RUBY', <<-'RUBY'
           if foo
             "
+            #{foo}
             "
           end
         RUBY
           if foo
-            "\n" "  "
+            "\n  #{foo}\n  "
           end
         RUBY
+
+        assert_source %q("foo#{@bar}")
+        assert_source %q("fo\no#{bar}b\naz")
       end
 
       context 'execute string' do
@@ -137,11 +141,6 @@ describe Unparser do
         assert_generates '%r(/)', '/\//'
         assert_generates '%r(\))', '/)/'
         assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
-      end
-
-      context 'dynamic string' do
-        assert_source %q("foo#{@bar}")
-        assert_source     %q("fo\no#{bar}b\naz")
       end
 
       context 'dynamic symbol' do
