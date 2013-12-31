@@ -43,13 +43,6 @@ IndentationWidth:
 SignalException:
   Enabled: false
 
-# Disable Symbol cop because unparse has to prodice "WIERD" symbols in his specs
-#
-# I'd love I could ignore a specific occurance.
-#
-SymbolName:
-  Enabled: false
-
 # False positive in unparser source
 OneLineConditional:
   Enabled: false
