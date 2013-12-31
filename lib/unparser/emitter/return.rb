@@ -5,8 +5,6 @@ module Unparser
 
       handle :return
 
-      children :argument
-
     private
 
       # Perform dispatch
@@ -17,8 +15,10 @@ module Unparser
       #
       def dispatch
         write(K_RETURN)
-        return unless argument
-        visit_parentheses(argument)
+        if children.any?
+          ws
+          delimited(children)
+        end
       end
 
     end # Return

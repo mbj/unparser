@@ -270,7 +270,11 @@ describe Unparser do
       RUBY
 
       assert_source <<-'RUBY'
-        return(1)
+        return 1
+      RUBY
+
+      assert_source <<-'RUBY'
+        return 1, 2
       RUBY
     end
 
