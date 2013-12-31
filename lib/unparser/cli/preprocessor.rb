@@ -3,7 +3,7 @@ module Unparser
 
     # CLI Specific preprocessor used for equivalency testing
     class Preprocessor
-      include AbstractType, Concord.new(:node), Procto.call(:result)
+      include Adamantium::Flat, AbstractType, Concord.new(:node), Procto.call(:result)
 
       # Return preprocessor result
       #
@@ -105,22 +105,41 @@ module Unparser
         # @api private
         #
         def result
-          chunks = mapped_children.chunk do |item|
-            item.type
+          if collapsed_children.all? { |node| node.type == :str }
+            Parser::AST::Node.new(:str, [collapsed_children.map(&:children).map(&:first).join])
+          else
+            node.updated(nil, collapsed_children)
           end
+        end
 
-          collapsed_children = chunks.each_with_object([]) do |(type, nodes), aggregate|
+      private
+
+        # Return collapsed children
+        #
+        # @return [Array<Parser::AST::Node>]
+        #
+        # @api private
+        #
+        def collapsed_children
+          chunked_children.each_with_object([]) do |(type, nodes), aggregate|
             if type == :str
               aggregate << Parser::AST::Node.new(:str, [nodes.map(&:children).map(&:first).join])
             else
               aggregate.concat(nodes)
             end
           end
+        end
+        memoize :collapsed_children
 
-          if collapsed_children.all? { |node| node.type == :str }
-            Parser::AST::Node.new(:str, [collapsed_children.map(&:children).map(&:first).join])
-          else
-            node.updated(nil, collapsed_children)
+        # Return chunked children
+        #
+        # @return [Array<Parser::AST::Node>]
+        #
+        # @api private
+        #
+        def chunked_children
+          chunks = mapped_children.chunk do |item|
+            item.type
           end
         end
 
