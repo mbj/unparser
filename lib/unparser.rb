@@ -50,6 +50,7 @@ module Unparser
 end # Unparser
 
 require 'unparser/buffer'
+require 'unparser/node_helpers'
 require 'unparser/comments'
 require 'unparser/constants'
 require 'unparser/emitter'

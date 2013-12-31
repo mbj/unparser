@@ -4,7 +4,7 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include Adamantium::Flat, AbstractType, Constants
+    include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)
 
     # Registry for node emitters
@@ -470,18 +470,6 @@ module Unparser
     #
     def parent_type
       parent.node_type
-    end
-
-    # Helper for building nodes
-    #
-    # @param [Symbol]
-    #
-    # @return [Parser::AST::Node]
-    #
-    # @api private
-    #
-    def s(type, *children)
-      Parser::AST::Node.new(type, *children)
     end
 
     # Delegate to emitter

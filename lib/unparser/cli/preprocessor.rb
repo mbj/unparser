@@ -5,7 +5,7 @@ module Unparser
 
     # CLI Specific preprocessor used for equivalency testing
     class Preprocessor
-      include Adamantium::Flat, AbstractType, Concord.new(:node), Procto.call(:result)
+      include Adamantium::Flat, NodeHelpers, AbstractType, Concord.new(:node), Procto.call(:result)
 
       # Return preprocessor result
       #
@@ -53,18 +53,6 @@ module Unparser
       #
       def visit(node)
         self.class.run(node)
-      end
-
-      # Helper to instantiate new nodes
-      #
-      # @param [Symbol] type
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      def s(type, *children)
-        Parser::AST::Node.new(type, children)
       end
 
       # Return children
