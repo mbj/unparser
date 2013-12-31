@@ -1,26 +1,28 @@
 # -*- encoding: utf-8 -*-
 
-Gem::Specification.new do |s|
-  s.name     = 'unparser'
-  s.version  = '0.1.6'
+Gem::Specification.new do |gem|
+  gem.name     = 'unparser'
+  gem.version  = '0.1.6'
 
-  s.authors  = ['Markus Schirp']
-  s.email    = 'mbj@schir-dso.com'
-  s.summary  = 'Generate equivalent source for parser gem AST nodes'
-  s.description = s.summary
-  s.homepage = 'http://github.com/mbj/unparser'
-  s.license  = 'MIT'
+  gem.authors  = ['Markus Schirp']
+  gem.email    = 'mbj@schir-dso.com'
+  gem.summary  = 'Generate equivalent source for parser gem AST nodes'
+  gem.description = gem.summary
+  gem.homepage = 'http://github.com/mbj/unparser'
+  gem.license  = 'MIT'
 
-  s.files            = `git ls-files`.split("\n")
-  s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
-  s.require_paths    = %w(lib)
-  s.extra_rdoc_files = %w(README.md)
-  s.executables      = [ 'unparser' ]
+  gem.files            = `git ls-files`.split("\n")
+  gem.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
+  gem.require_paths    = %w(lib)
+  gem.extra_rdoc_files = %w(README.md)
+  gem.executables      = [ 'unparser' ]
 
-  s.add_dependency('parser',        '~> 2.1.0')
-  s.add_dependency('procto',        '~> 0.0.2')
-  s.add_dependency('concord',       '~> 0.1.4')
-  s.add_dependency('adamantium',    '~> 0.1')
-  s.add_dependency('equalizer',     '~> 0.0.7')
-  s.add_dependency('abstract_type', '~> 0.0.7')
+  gem.required_ruby_version
+
+  gem.add_dependency('parser',        '~> 2.1.0')
+  gem.add_dependency('procto',        '~> 0.0.2')
+  gem.add_dependency('concord',       '~> 0.1.4')
+  gem.add_dependency('adamantium',    '~> 0.1')
+  gem.add_dependency('equalizer',     '~> 0.0.7')
+  gem.add_dependency('abstract_type', '~> 0.0.7')
 end
