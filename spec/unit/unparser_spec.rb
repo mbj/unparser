@@ -376,6 +376,9 @@ describe Unparser do
       assert_source 'foo.bar=(baz || foo)'
       assert_source 'foo.bar=baz.bar'
       assert_source 'foo << (bar * baz)'
+      assert_source <<-'RUBY'
+        foo ||= (a, _ = b)
+      RUBY
 
       assert_source <<-'RUBY'
         begin

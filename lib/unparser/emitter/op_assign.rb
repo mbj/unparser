@@ -24,7 +24,7 @@ module Unparser
       def dispatch
         visit(target)
         write(WS, MAP.fetch(node.type), WS)
-        visit(expression)
+        visit_terminated(expression)
       end
 
     end # BinaryAssign
