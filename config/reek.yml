@@ -36,6 +36,7 @@ LongParameterList:
 FeatureEnvy:
   exclude:
   - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
+  - :Unparser::Emitter::Send::Arguments#effective_arguments # False positive
   - Unparser::Emitter::Send#binary_receiver?
   - Unparser::Emitter#visit_terminated
   - Unparser::CLI#add_options
