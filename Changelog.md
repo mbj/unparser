@@ -1,3 +1,10 @@
+# v0.1.6 2013-12-31
+
+* Emit 1.9 style hashes where possible: https://github.com/mbj/unparser/pull/23
+* Fix invalid quoting of hash keys: https://github.com/mbj/unparser/issues/22
+* Fix crash on take before introduced by code refactorings: https://github.com/mbj/unparser/issues/20
+* Fix crash on comment reproduction https://github.com/mbj/unparser/issues/17
+
 # v0.1.5 2013-11-01
 
 * Fix crash with comment reproduction.
