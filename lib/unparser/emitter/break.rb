@@ -3,7 +3,7 @@
 module Unparser
   class Emitter
     # Emitter for break nodes
-    class Break < self
+    class Break < Return
 
       handle :break
 
