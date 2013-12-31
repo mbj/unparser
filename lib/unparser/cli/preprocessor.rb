@@ -55,6 +55,18 @@ module Unparser
         self.class.run(node)
       end
 
+      # Helper to instantiate new nodes
+      #
+      # @param [Symbol] type
+      #
+      # @return [Parser::AST::Node]
+      #
+      # @api private
+      #
+      def s(type, *children)
+        Parser::AST::Node.new(type, children)
+      end
+
       # Return children
       #
       # @return [Array<Parser::AST::Node>]
@@ -91,7 +103,7 @@ module Unparser
         # @api private
         #
         def result
-          Parser::AST::Node.new(node.type, mapped_children)
+          s(node.type, *mapped_children)
         end
       end # Noop
 
@@ -108,7 +120,7 @@ module Unparser
         #
         def result
           if collapsed_children.all? { |node| node.type == :str }
-            Parser::AST::Node.new(:str, [collapsed_children.map(&:children).map(&:first).join])
+            s(:str, collapsed_children.map { |node| node.children.first }.join)
           else
             node.updated(nil, collapsed_children)
           end
@@ -125,7 +137,7 @@ module Unparser
         def collapsed_children
           chunked_children.each_with_object([]) do |(type, nodes), aggregate|
             if type == :str
-              aggregate << Parser::AST::Node.new(:str, [nodes.map(&:children).map(&:first).join])
+              aggregate << s(:str, nodes.map { |node| node.children.first }.join)
             else
               aggregate.concat(nodes)
             end

@@ -26,17 +26,13 @@ module Unparser
       # @api private
       #
       def error_report
-        report = []
-        report << Differ.call(
+        diff = Differ.call(
           original_ast.inspect.lines.map(&:chomp),
           generated_ast.inspect.lines.map(&:chomp)
         )
-        report << 'Original:'
-        report << original_source
-        report << 'Generated:'
-        report << generated_source
-        report.join("\n")
+        "#{diff}\nOriginal:\n#{original_source}\nGenerated:\n#{generated_source}"
       end
+      memoize :error_report
 
     private
 
