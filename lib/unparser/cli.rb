@@ -44,12 +44,7 @@ module Unparser
         add_options(builder)
       end
 
-      file_names =
-        begin
-          opts.parse!(arguments)
-        rescue OptionParser::ParseError => error
-          raise(Error, error.message, error.backtrace)
-        end
+      file_names = opts.parse!(arguments)
 
       file_names.each do |file_name|
         @sources << Source::File.new(file_name)

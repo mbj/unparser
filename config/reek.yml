@@ -96,6 +96,7 @@ RepeatedConditional:
   - Unparser::Comments # FIXME
   - Unparser::Emitter::Send # TODO Fixme
   - Unparser::Emitter::If
+  - Unparser::CLI # False positive
   enabled: true
   max_ifs: 1
 DataClump:
