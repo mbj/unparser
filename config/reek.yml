@@ -65,7 +65,7 @@ NestedIterators:
   exclude:
   - Unparser::Emitter#self.children
   - Unparser::Emitter::Literal::Regexp#dispatch
-  - Unparser::Emitter::Return
+  - Unparser::Emitter#emit_break_return_arguments
   enabled: true
   max_allowed_nesting: 1
 TooManyStatements:
