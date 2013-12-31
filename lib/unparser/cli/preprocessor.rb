@@ -105,15 +105,18 @@ module Unparser
         # @api private
         #
         def result
-          collapsed_children = mapped_children.chunk do |item|
+          chunks = mapped_children.chunk do |item|
             item.type
-          end.each_with_object([]) do |(type, nodes), aggregate|
+          end
+
+          collapsed_children = chunks.each_with_object([]) do |(type, nodes), aggregate|
             if type == :str
               aggregate << Parser::AST::Node.new(:str, [nodes.map(&:children).map(&:first).join])
             else
               aggregate.concat(nodes)
             end
           end
+
           if collapsed_children.all? { |node| node.type == :str }
             Parser::AST::Node.new(:str, [collapsed_children.map(&:children).map(&:first).join])
           else
