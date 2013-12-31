@@ -15,11 +15,21 @@ module Unparser
       #
       def dispatch
         write(K_RETURN)
+        emit_arguments
+      end
+
+      # Emit arguments
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_arguments
         return if children.empty?
         head, *tail = children
         parentheses { visit(head) }
         tail.each do |node|
-          write(', ')
+          write(DEFAULT_DELIMITER)
           parentheses { visit(node) }
         end
       end
