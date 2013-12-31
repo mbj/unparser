@@ -270,11 +270,21 @@ describe Unparser do
       RUBY
 
       assert_source <<-'RUBY'
-        return 1
+        return(1)
       RUBY
 
       assert_source <<-'RUBY'
-        return 1, 2
+        return(1), (2)
+      RUBY
+
+      assert_generates <<-'RUBY', <<-'RUBY'
+        return(a ? b : c)
+      RUBY
+        return(if a
+          b
+        else
+          c
+        end)
       RUBY
     end
 

@@ -16,8 +16,12 @@ module Unparser
       def dispatch
         write(K_RETURN)
         if children.any?
-          ws
-          delimited(children)
+          head, *tail = children
+          parentheses { visit(head) }
+          tail.each do |node|
+            write(', ')
+            parentheses { visit(node) }
+          end
         end
       end
 
