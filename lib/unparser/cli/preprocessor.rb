@@ -140,7 +140,7 @@ module Unparser
         # @api private
         #
         def chunked_children
-          chunks = mapped_children.chunk do |item|
+          mapped_children.chunk do |item|
             item.type
           end
         end
