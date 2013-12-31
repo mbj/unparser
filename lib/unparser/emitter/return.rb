@@ -15,13 +15,12 @@ module Unparser
       #
       def dispatch
         write(K_RETURN)
-        if children.any?
-          head, *tail = children
-          parentheses { visit(head) }
-          tail.each do |node|
-            write(', ')
-            parentheses { visit(node) }
-          end
+        return if children.empty?
+        head, *tail = children
+        parentheses { visit(head) }
+        tail.each do |node|
+          write(', ')
+          parentheses { visit(node) }
         end
       end
 
