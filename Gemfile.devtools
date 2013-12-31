@@ -58,9 +58,3 @@ end
 group :benchmarks do
   gem 'rbench', '~> 0.2.3'
 end
-
-platform :jruby do
-  group :jruby do
-    gem 'jruby-openssl', '~> 0.8.5'
-  end
-end
