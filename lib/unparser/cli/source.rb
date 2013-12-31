@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Unparser
   class CLI
     # Source representation for CLI sources

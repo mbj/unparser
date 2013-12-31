@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Unparser
   # All unparser constants maybe included in other libraries.
   module Constants

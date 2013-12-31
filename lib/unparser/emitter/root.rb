@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Unparser
   class Emitter
     # Root emitter a special case

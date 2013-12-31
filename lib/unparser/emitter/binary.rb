@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Unparser
   class Emitter
     # Base class for binary emitters
