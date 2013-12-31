@@ -61,9 +61,11 @@ module Unparser
           emit_interpolated_segment(node)
         end
 
-        ESCAPES = ::Hash[Parser::Lexer::ESCAPES.invert.map do |key, value|
-          [key, "\\#{value}"]
-        end.reject { |key, value| key == ' '}].freeze
+        pairs = Parser::Lexer::ESCAPES.invert.map do |key, value|
+          [key, "\\#{value}"] unless key == WS
+        end.compact
+
+        ESCAPES = ::Hash[pairs]
 
         REPLACEMENTS = ::Regexp.union(ESCAPES.keys)
 
