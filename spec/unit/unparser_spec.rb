@@ -207,11 +207,6 @@ describe Unparser do
       assert_source '::TOPLEVEL::CONST'
     end
 
-    context 'break' do
-      assert_source 'break'
-      assert_source 'break(a)'
-    end
-
     context 'next' do
       assert_source 'next'
       assert_source 'next(bar)'
@@ -288,6 +283,12 @@ describe Unparser do
           c
         end)
       RUBY
+    end
+
+    context 'break' do
+      assert_source 'break'
+      assert_source 'break(a)'
+      assert_source 'break(a), (b)'
     end
 
     context 'send' do

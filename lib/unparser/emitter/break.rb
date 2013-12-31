@@ -7,8 +7,6 @@ module Unparser
 
       handle :break
 
-      children :arguments
-
     private
 
       # Perform dispatch
@@ -20,8 +18,23 @@ module Unparser
       def dispatch
         conditional_parentheses(parent_type == :or || parent_type == :and) do
           write(K_BREAK)
-          return unless arguments
-          visit_parentheses(arguments)
+          emit_arguments
+        end
+      end
+
+      # Emit arguments
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_arguments
+        return if children.empty?
+        head, *tail = children
+        parentheses { visit(head) }
+        tail.each do |node|
+          write(DEFAULT_DELIMITER)
+          parentheses { visit(node) }
         end
       end
 
