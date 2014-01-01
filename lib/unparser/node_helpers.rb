@@ -11,7 +11,7 @@ module Unparser
     #
     # @api private
     #
-    def s(type, children)
+    def s(type, children = [])
       Parser::AST::Node.new(type, children)
     end
 

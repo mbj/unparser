@@ -4,7 +4,7 @@ module Unparser
   class CLI
     # Source representation for CLI sources
     class Source
-      include AbstractType, Adamantium::Flat
+      include AbstractType, Adamantium::Flat, NodeHelpers
 
       # Test if source could be unparsed successfully
       #
@@ -90,7 +90,7 @@ module Unparser
       # @api private
       #
       def generated_ast
-        Preprocessor.run(parse(generated_source))
+        Preprocessor.run(parse(generated_source)) || s(:empty)
       rescue Parser::SyntaxError
         nil
       end
@@ -103,7 +103,7 @@ module Unparser
       # @api private
       #
       def original_ast
-        Preprocessor.run(parse(original_source))
+        Preprocessor.run(parse(original_source)) || s(:empty)
       rescue Parser::SyntaxError
         nil
       end
