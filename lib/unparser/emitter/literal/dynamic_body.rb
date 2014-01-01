@@ -67,6 +67,8 @@ module Unparser
           [key, "\\#{value}"] unless key == WS
         end.compact
 
+        pairs << ['#{', '\#{']
+
         ESCAPES = ::Hash[pairs]
 
         REPLACEMENTS = ::Regexp.union(ESCAPES.keys)

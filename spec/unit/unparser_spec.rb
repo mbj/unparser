@@ -91,6 +91,8 @@ describe Unparser do
         assert_source %q("foo\nbar")
         assert_source %q("foo bar #{}")
         assert_source %q("foo\nbar #{}")
+        assert_source %q("#{}\#{}")
+        assert_source %q("\#{}#{}")
         # Within indentation
         assert_generates <<-'RUBY', <<-'RUBY'
           if foo
