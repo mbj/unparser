@@ -11,7 +11,7 @@ module Unparser
 
       RESCUE_BODIES_RANGE = (1..-2).freeze
 
-      EMBEDDED_TYPES = [:def, :defs, :kwbegin].to_set.freeze
+      EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
 
     private
 

@@ -776,6 +776,16 @@ describe Unparser do
 
         assert_source <<-'RUBY'
           def foo
+            foo
+          rescue
+            bar
+          ensure
+            baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def foo
             bar
           ensure
             baz

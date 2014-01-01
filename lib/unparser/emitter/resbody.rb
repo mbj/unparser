@@ -49,7 +49,6 @@ module Unparser
 
       class Embedded < self
 
-
       private
 
         # Perform dispatch
