@@ -632,6 +632,10 @@ describe Unparser do
           baz
         end
       RUBY
+
+      assert_source 'foo rescue(bar)'
+      assert_source 'foo rescue(return(bar))'
+      assert_source 'x = foo rescue(return(bar))'
     end
 
     context 'super' do
@@ -772,6 +776,14 @@ describe Unparser do
           def foo
             bar
           ensure
+            baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def self.foo
+            bar
+          rescue
             baz
           end
         RUBY

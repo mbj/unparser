@@ -5,49 +5,91 @@ module Unparser
     # Emitter for rescue body nodes
     class Resbody < self
 
-      handle :resbody
+        children :exception, :assignment, :body
 
-      children :exception, :assignment, :body
+      class Standalone < self
 
-    private
+      private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(K_RESCUE)
-        emit_exception
-        emit_assignment
-        emit_body
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          write(K_RESCUE)
+          parentheses { visit(body) }
+        end
+
+        # Emit exception
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_exception
+          return unless exception
+          ws
+          delimited(exception.children)
+        end
+
+        # Emit assignment
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_assignment
+          return unless assignment
+          write(WS, T_ASR, WS)
+          visit(assignment)
+        end
       end
 
-      # Emit exception
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_exception
-        return unless exception
-        ws
-        delimited(exception.children)
-      end
+      class Embedded < self
 
-      # Emit assignment
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_assignment
-        return unless assignment
-        write(WS, T_ASR, WS)
-        visit(assignment)
-      end
 
-    end # Resbody
+      private
+
+        # Perform dispatch
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def dispatch
+          write(K_RESCUE)
+          emit_exception
+          emit_assignment
+          emit_body
+        end
+
+        # Emit exception
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_exception
+          return unless exception
+          ws
+          delimited(exception.children)
+        end
+
+        # Emit assignment
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_assignment
+          return unless assignment
+          write(WS, T_ASR, WS)
+          visit(assignment)
+        end
+
+      end # Resbody
+    end
   end # Emitter
 end # Unparser

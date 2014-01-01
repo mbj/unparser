@@ -7,7 +7,11 @@ module Unparser
 
       handle :rescue
 
-      children :body
+      children :body, :rescue_body
+
+      RESCUE_BODIES_RANGE = (1..-2).freeze
+
+      EMBEDDED_TYPES = [:def, :defs, :kwbegin].to_set.freeze
 
     private
 
@@ -18,13 +22,53 @@ module Unparser
       # @api private
       #
       def dispatch
+        if standalone?
+          emit_standalone
+        else
+          emit_embedded
+        end
+      end
+
+      # Test if rescue node ist standalone
+      #
+      # @return [true]
+      #   if rescue node is standalone
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def standalone?
+        !EMBEDDED_TYPES.include?(parent_type) && body
+      end
+
+      # Emit standalone form
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_standalone
+        visit(body)
+        ws
+        run(Resbody::Standalone, rescue_body)
+      end
+
+      # Emit embedded form
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_embedded
         if body
           visit_indented(body)
         else
           nl
         end
         rescue_bodies.each do |child|
-          visit(child)
+          run(Resbody::Embedded, child)
         end
         emit_else
       end
@@ -36,7 +80,7 @@ module Unparser
       # @api private
       #
       def rescue_bodies
-        children[1..-2]
+        children[RESCUE_BODIES_RANGE]
       end
 
       # Emit else
