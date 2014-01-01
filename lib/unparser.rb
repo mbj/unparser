@@ -4,6 +4,7 @@ require 'abstract_type'
 require 'procto'
 require 'concord'
 require 'parser/all'
+require 'parser/current'
 
 # Library namespace
 module Unparser

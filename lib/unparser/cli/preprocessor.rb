@@ -91,8 +91,9 @@ module Unparser
         # @api private
         #
         def result
-          s(node.type, *mapped_children)
+          s(node.type, mapped_children)
         end
+
       end # Noop
 
       # Preprocessor for dynamic string nodes. Collapses adjacent string segments into one.
@@ -108,7 +109,7 @@ module Unparser
         #
         def result
           if collapsed_children.all? { |node| node.type == :str }
-            s(:str, collapsed_children.map { |node| node.children.first }.join)
+            s(:str, [collapsed_children.map { |node| node.children.first }.join])
           else
             node.updated(nil, collapsed_children)
           end
@@ -125,7 +126,7 @@ module Unparser
         def collapsed_children
           chunked_children.each_with_object([]) do |(type, nodes), aggregate|
             if type == :str
-              aggregate << s(:str, nodes.map { |node| node.children.first }.join)
+              aggregate << s(:str, [nodes.map { |node| node.children.first }.join])
             else
               aggregate.concat(nodes)
             end

@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require 'unparser'
-require 'mutant'
 require 'optparse'
 
 require 'unparser/cli/preprocessor'
@@ -46,10 +45,14 @@ module Unparser
         add_options(builder)
       end
 
-      file_names = opts.parse!(arguments)
+      arguments = opts.parse!(arguments)
 
-      file_names.each do |file_name|
-        @sources << Source::File.new(file_name)
+      arguments.each do |name|
+        if File.directory?(name)
+          add_directory(name)
+        else
+          add_file(name)
+        end
       end
     end
 
@@ -106,6 +109,32 @@ module Unparser
         puts source.error_report
         puts "Error: #{source.identification}"
         @success = false
+      end
+    end
+
+    # Add file
+    #
+    # @param [String] file_name
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def add_file(file_name)
+      @sources << Source::File.new(file_name)
+    end
+
+    # Add directory
+    #
+    # @param [String] directory_name
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def add_directory(directory_name)
+      Dir.glob(File.join(directory_name, '**/*.rb')).each do |file_name|
+        add_file(file_name)
       end
     end
 
