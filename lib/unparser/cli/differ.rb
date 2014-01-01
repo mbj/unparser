@@ -4,7 +4,7 @@ module Unparser
   class CLI
     # Class to create diffs from source code
     class Differ
-      include Adamantium::Flat, Concord.new(:old, :new)
+      include Adamantium::Flat, Concord.new(:old, :new), Procto.call(:colorized_diff)
 
       # Return source diff
       #
@@ -34,7 +34,6 @@ module Unparser
       # @api private
       #
       def colorized_diff
-        return unless diff
         diff.lines.map do |line|
           self.class.colorize_line(line)
         end.join
