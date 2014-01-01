@@ -17,9 +17,26 @@ module Unparser
       # @api private
       #
       def diff
-        diffs.map do |piece|
-          Diff::LCS::Hunk.new(old, new, piece, max_length, old.length - new.length).diff(:unified) << "\n"
-        end.join
+        output = ""
+        lines = 5
+        hunk = oldhunk = nil
+        file_length_difference = new.length - old.length
+        diffs.each do |piece|
+          begin
+            hunk = Diff::LCS::Hunk.new(old, new, piece, lines, file_length_difference)
+            file_length_difference = hunk.file_length_difference
+
+            next unless oldhunk
+            next if (lines > 0) && hunk.merge(oldhunk)
+
+            output << oldhunk.diff(:unified) << "\n"
+          ensure
+            oldhunk = hunk
+          end
+        end
+        output << oldhunk.diff(:unified) << "\n"
+
+        output
       end
       memoize :diff
 
