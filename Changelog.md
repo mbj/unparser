@@ -1,3 +1,7 @@
+# v0.1.7 2013-12-31
+
+* Add back support for root nodes of type resbody https://github.com/mbj/unparser/issues/24
+
 # v0.1.6 2013-12-31
 
 * Emit 1.9 style hashes where possible: https://github.com/mbj/unparser/pull/23
