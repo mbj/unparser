@@ -4,17 +4,30 @@ module Unparser
   # All unparser constants maybe included in other libraries.
   module Constants
 
+    # Return frozen symbol set from enumerable
+    #
+    # @param [Enumerable]
+    #
+    # @return [Set<Symbol>]
+    #
+    # @api private
+    #
+    def self.symbol_set(enumerable)
+      enumerable.map(&:to_sym).freeze
+    end
+    private_class_method :symbol_set
+
     # All unary operators of the ruby language
-    UNARY_OPERATORS = %w(
+    UNARY_OPERATORS = symbol_set %w(
       ! ~ -@ +@
-    ).map(&:to_sym).to_set
+    )
 
     # All binary operators of the ruby language
-    BINARY_OPERATORS = %w(
+    BINARY_OPERATORS = symbol_set %w(
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
       ** %
-    ).map(&:to_sym).to_set
+    )
 
     COMMENT = '#'
 
@@ -89,12 +102,27 @@ module Unparser
     #
     # These nodes dont require parentheses to be exactly reproduced in context of a more complex expression.
     #
-    TERMINATED = %w(
+    TERMINATED = symbol_set %w(
       int float self kwbegin const regexp args lvar
       ivar gvar cvar if case module class sclass super
       yield zsuper break next defined? str block while loop until
       def defs true false nil array hash sym return
-    ).map(&:to_sym).to_set
+    )
+
+    # Set of nodes local variables get reset
+    LOCAL_VARIABLE_RESET_BOUNDARY_NODES = symbol_set %w(
+      def defs module class sclass
+    )
+
+    # Set of nodes local variables do not pubble through
+    LOCAL_VARIABLE_CHILD_BOUNDARY_NODES = LOCAL_VARIABLE_RESET_BOUNDARY_NODES + [:block]
+
+    # Set of nodes that assign a local variable
+    LOCAL_VARIABLE_ASSIGNMENT_NODES = symbol_set %w(lvasgn arg optarg)
+
+    DEFAULT_DELIMITER = ', '.freeze
+
+    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze

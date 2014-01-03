@@ -246,6 +246,53 @@ describe Unparser do
         assert_source '::Foo = ::Bar'
       end
 
+      context 'lvar introduction from condition' do
+        assert_source 'foo = bar while foo'
+        assert_source 'foo = bar until foo'
+        assert_source <<-'RUBY'
+          foo = exp
+          while foo
+            foo = bar
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          while foo
+            foo = bar
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          each do |bar|
+            while foo
+              foo = bar
+            end
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def foo
+            foo = bar while foo != baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          each do |baz|
+            while foo
+              foo = bar
+            end
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          each do |foo|
+            while foo
+              foo = bar
+            end
+          end
+        RUBY
+      end
+
       context 'multiple' do
         assert_source 'a, b = 1, 2'
         assert_source 'a, *foo = 1, 2'
