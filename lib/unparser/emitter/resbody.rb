@@ -9,6 +9,8 @@ module Unparser
 
       class Standalone < self
 
+        handle :resbody
+
       private
 
         # Perform dispatch
