@@ -39,7 +39,7 @@ module Unparser
     # @api private
     #
     def initialize(arguments)
-      @sources = []
+      @sources, @ignore = [], []
 
       @success   = true
       @fail_fast = false
@@ -70,6 +70,9 @@ module Unparser
       builder.separator('')
       builder.on('-e', '--evaluate SOURCE') do |original_source|
         @sources << Source::String.new(original_source)
+      end
+      builder.on('--ignore FILE') do |file|
+        @ignore << file
       end
       builder.on('--fail-fast') do
         @fail_fast = true
@@ -122,7 +125,9 @@ module Unparser
     # @api private
     #
     def add_file(file_name)
-      @sources << Source::File.new(file_name)
+      unless @ignore.include?(file_name)
+        @sources << Source::File.new(file_name)
+      end
     end
 
     # Add directory
