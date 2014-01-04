@@ -57,13 +57,38 @@ module Unparser
           # @api private
           #
           def emit_arguments
-            index, *assignment = arguments
-            parentheses(*INDEX_PARENS) do
-              delimited([index])
+            if arguments.one?
+              emit_mlhs_arguments
+            else
+              emit_normal_arguments
             end
-            return if assignment.empty? # mlhs
+          end
+
+          # Emit mlhs arguments
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_mlhs_arguments
+            parentheses(*INDEX_PARENS) do
+              delimited(arguments)
+            end
+          end
+
+          # Emit normal arguments
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_normal_arguments
+            *indices, value = arguments
+            parentheses(*INDEX_PARENS) do
+              delimited(indices)
+            end
             write(WS, T_ASN, WS)
-            delimited(assignment)
+            visit(value)
           end
 
         end # Assign

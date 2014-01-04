@@ -1091,6 +1091,7 @@ describe Unparser do
       context 'element assignment' do
         assert_source 'array[index] = value'
         assert_source 'array[*index] = value'
+        assert_source 'array[a, b] = value'
 
         %w(+ - * / % & | || &&).each do |operator|
           context "with #{operator}" do
