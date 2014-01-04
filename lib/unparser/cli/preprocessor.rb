@@ -163,11 +163,40 @@ module Unparser
         #
         def result
           location = node.location
-          if location && location.begin.source.start_with?('%r')
-            Parser::CurrentRuby.parse(Unparser.unparse(node))
+          unless location && location.begin.source.start_with?('%r')
+            node.updated(nil, correctly_quoted_children)
           else
             node
           end
+        end
+
+        # Return correctly quoted children
+        #
+        # @return [Array<Parser::AST::Node>]
+        #
+        # @api private
+        #
+        def correctly_quoted_children
+          children.map do |child|
+            if child.type == :str
+              quote_str_child(child)
+            else
+              child
+            end
+          end
+        end
+
+        # Quote child correctly
+        #
+        # @param [Parser::AST::Node] node
+        #
+        # @return [Parser::AST::Node] node
+        #
+        # @api private
+        #
+        def quote_str_child(child)
+          value = child.children.first.gsub('\/', '/')
+          s(:str, [value])
         end
       end
 
