@@ -1154,6 +1154,8 @@ describe Unparser do
     end
 
     context 'binary operator' do
+      assert_source 'a || (return(foo))'
+      assert_source '(return(foo)) || a'
       assert_source 'a || (break(foo))'
       assert_source '(break(foo)) || a'
       assert_source '(a || b).foo'
@@ -1161,6 +1163,7 @@ describe Unparser do
     end
 
     { or: :'||', and: :'&&' }.each do |word, symbol|
+      assert_generates "a #{word} return foo", "a #{symbol} (return(foo))"
       assert_generates "a #{word} break foo", "a #{symbol} (break(foo))"
       assert_generates "a #{word} next foo", "a #{symbol} (next(foo))"
     end

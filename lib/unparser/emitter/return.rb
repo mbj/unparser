@@ -16,8 +16,10 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(K_RETURN)
-        emit_break_return_arguments
+        conditional_parentheses((parent_type == :or || parent_type == :and) && children.any?) do
+          write(K_RETURN)
+          emit_break_return_arguments
+        end
       end
 
       # Emit break or return arguments
