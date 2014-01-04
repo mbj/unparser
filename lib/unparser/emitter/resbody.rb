@@ -7,6 +7,7 @@ module Unparser
 
         children :exception, :assignment, :body
 
+      # Emitter for resbody in standalone form
       class Standalone < self
 
         handle :resbody
@@ -49,6 +50,7 @@ module Unparser
         end
       end
 
+      # Emitter for resbody in keyworkd-embedded form
       class Embedded < self
 
       private
