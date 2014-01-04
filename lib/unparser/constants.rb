@@ -109,17 +109,6 @@ module Unparser
       def defs true false nil array hash sym return
     )
 
-    # Set of nodes local variables get reset
-    LOCAL_VARIABLE_RESET_BOUNDARY_NODES = symbol_set %w(
-      def defs module class sclass
-    )
-
-    # Set of nodes local variables do not pubble through
-    LOCAL_VARIABLE_CHILD_BOUNDARY_NODES = LOCAL_VARIABLE_RESET_BOUNDARY_NODES + [:block]
-
-    # Set of nodes that assign a local variable
-    LOCAL_VARIABLE_ASSIGNMENT_NODES = symbol_set %w(lvasgn arg optarg)
-
     DEFAULT_DELIMITER = ', '.freeze
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))

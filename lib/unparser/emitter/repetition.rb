@@ -70,34 +70,8 @@ module Unparser
       #
       def postcontrol?
         return false unless body
-        root = parent_path.find { |node| LOCAL_VARIABLE_RESET_BOUNDARY_NODES.include?(node.type) } || parent_path.last || node
-
-        original = AST.local_variable_scope(root)
-        without  = AST.local_variable_scope(AST.remove_node(root, body))
-
-        difference = original - without
-
-        condition_use = AST.local_variable_use(condition)
-
-        difference.any? && difference == condition_use
+        AST.first_assignment_in_body_and_used_in_condition?(local_variable_root, body, condition)
       end
-
-      # Return parent path
-      #
-      # @return [Array<Node>]
-      #
-      # @api private
-      #
-      def parent_path
-        aggregate = []
-        current = parent
-        while current.node
-          aggregate << current.node
-          current = current.parent
-        end
-        aggregate
-      end
-      memoize :parent_path
 
       # Emit keyword
       #

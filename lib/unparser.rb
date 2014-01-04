@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'set'
 require 'abstract_type'
 require 'procto'
 require 'concord'
@@ -28,7 +29,7 @@ module Unparser
     end
     buffer = Buffer.new
     comments = Comments.new(comment_array)
-    root = Emitter::Root.new(buffer, comments)
+    root = Emitter::Root.new(Parser::AST::Node.new(:root, [node]), buffer, comments)
     Emitter.emitter(node, root).write_to_buffer
     buffer.content
   end
@@ -55,6 +56,7 @@ require 'unparser/node_helpers'
 require 'unparser/comments'
 require 'unparser/constants'
 require 'unparser/ast'
+require 'unparser/ast/local_variable_scope'
 require 'unparser/emitter'
 require 'unparser/emitter/literal'
 require 'unparser/emitter/literal/primitive'

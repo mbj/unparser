@@ -18,6 +18,48 @@ module Unparser
       # @api private
       #
       def dispatch
+        if postcondition?
+          emit_postcondition
+        else
+          emit_normal
+        end
+      end
+
+      # Test for postcondition
+      #
+      # @return [true]
+      #   if node must be emitted in postconditin style
+      #
+      # @return [false]
+      #   otherwise
+      #
+      def postcondition?
+        return false unless !!if_branch ^ !!else_branch
+
+        body = if_branch || else_branch
+
+        AST.first_assignment_in_body_and_used_in_condition?(local_variable_root, body, condition)
+      end
+
+      # Emit in postcondition style
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_postcondition
+        visit(if_branch || else_branch)
+        write(WS, keyword, WS)
+        emit_condition
+      end
+
+      # Emit in normal style
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_normal
         write(keyword, WS)
         emit_condition
         emit_if_branch

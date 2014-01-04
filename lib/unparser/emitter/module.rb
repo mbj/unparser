@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for module nodes
     class Module < self
+      include LocalVariableRoot
 
       handle :module
 

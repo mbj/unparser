@@ -805,6 +805,22 @@ describe Unparser do
         if foo
         end
       RUBY
+
+      assert_source <<-'RUBY'
+        foo = bar if foo
+      RUBY
+
+      assert_source <<-'RUBY'
+        foo = bar unless foo
+      RUBY
+
+      assert_source <<-'RUBY'
+        each do |foo|
+          unless foo
+            foo = bar
+          end
+        end
+      RUBY
     end
 
     context 'def' do

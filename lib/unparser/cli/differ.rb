@@ -6,6 +6,8 @@ module Unparser
     class Differ
       include Adamantium::Flat, Concord.new(:old, :new), Procto.call(:colorized_diff)
 
+      CONTEXT_LINES = 5
+
       # Return source diff
       #
       # @return [String]
@@ -17,17 +19,15 @@ module Unparser
       # @api private
       #
       def diff
-        output = ""
-        lines = 5
+        output = ''
         hunk = oldhunk = nil
         file_length_difference = new.length - old.length
         diffs.each do |piece|
           begin
-            hunk = Diff::LCS::Hunk.new(old, new, piece, lines, file_length_difference)
+            hunk = Diff::LCS::Hunk.new(old, new, piece, CONTEXT_LINES, file_length_difference)
             file_length_difference = hunk.file_length_difference
 
-            next unless oldhunk
-            next if (lines > 0) && hunk.merge(oldhunk)
+            next if !oldhunk || hunk.merge(oldhunk)
 
             output << oldhunk.diff(:unified) << "\n"
           ensure

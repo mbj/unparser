@@ -34,7 +34,6 @@ module Unparser
       end
       memoize :error_report
 
-
     private
 
       # Return generated source
@@ -55,14 +54,13 @@ module Unparser
       # @api private
       #
       def error_report_with_parser_error
-        unless original_ast
-          return "Parsing of original source failed:\n#{original_source}"
+        if !original_ast
+          "Parsing of original source failed:\n#{original_source}"
+        elsif !generated_ast
+          "Parsing of generated source failed:\n" \
+          "Original-AST:\n#{original_ast.inspect}\n" \
+          "Source:\n#{generated_source}"
         end
-
-        unless generated_ast
-          return "Parsing of generated source failed:\nOriginal-AST:#{original_ast.inspect}\nSource:\n#{generated_source}"
-        end
-
       end
 
       # Return error report with AST difference

@@ -7,6 +7,30 @@ module Unparser
     include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)
 
+    module LocalVariableRoot
+
+      # Return local variable root
+      #
+      # @return [Parser::AST::Node]
+      #
+      # @api private
+      #
+      def local_variable_root
+        node
+      end
+
+    end
+
+    # Return local variable root
+    #
+    # @return [Parser::AST::Node]
+    #
+    # @api private
+    #
+    def local_variable_root
+      parent.local_variable_root
+    end
+
     # Registry for node emitters
     REGISTRY = {}
 
@@ -15,6 +39,14 @@ module Unparser
     DEFAULT_DELIMITER = ', '.freeze
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
+
+    # Return assigned lvars
+    #
+    # @return [Array<Symbol>]
+    #
+    # @api private
+    #
+    abstract_method :local_variables
 
     # Return node type
     #

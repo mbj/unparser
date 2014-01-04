@@ -1,74 +1,81 @@
 module Unparser
   # Namespace for AST processing tools
   module AST
-    include Constants
 
-    FIRST_CHILD                   = lambda { |node| node.children.first }
-    TAUTOLOGY                     = lambda { |node| true }.freeze
-    LOCAL_VARIABLE_CHILD_BOUNDARY = lambda { |node| !LOCAL_VARIABLE_CHILD_BOUNDARY_NODES.include?(node.type) }
-    LOCAL_VARIABLE_RESET_BOUNDARY = lambda { |node| !LOCAL_VARIABLE_RESET_BOUNDARY_NODES.include?(node.type) }
+    FIRST_CHILD = ->(node) { node.children.first }.freeze
+    TAUTOLOGY   = ->(node) { true }.freeze
 
-    # Return local variable use
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [Set<Symbol>]
-    #
-    # @api private
-    #
-    def self.local_variable_use(node, condition = LOCAL_VARIABLE_CHILD_BOUNDARY)
-      unless condition.call(node)
-        node = node.updated(:root)
-      end
-      Enumerator.new(
-        node,
-        condition,
-      ).type(:lvar).map(&FIRST_CHILD).to_set
-    end
-
-    # Return local variable scope
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [Set<Symbol>]
-    #
-    # @api private
-    #
-    def self.local_variable_scope(node, condition = LOCAL_VARIABLE_CHILD_BOUNDARY)
-      unless condition.call(node)
-        node = node.updated(:root)
-      end
-      Enumerator.new(
-        node,
-        condition,
-      ).types(LOCAL_VARIABLE_ASSIGNMENT_NODES).map(&FIRST_CHILD).to_set
-    end
-
-    # Remove a node from AST by object identity!
+    # Test if local variable was first at given assignment
     #
     # @param [Parser::AST::Node] root
-    # @param [Parser::AST::Node] neddle
+    # @param [Parser::AST::Node] assignment
     #
-    # @return [Parser::AST::Node]
-    #   if neddle was removed in child or not present
+    # @return [true]
+    #   if local variable was firstly introduced in body
     #
-    # @return [nil]
-    #   if neddle was equal to root
+    # @return [false]
+    #   otherwise
     #
     # @api private
     #
-    def self.remove_node(root, neddle)
-      return Parser::AST::Node.new(:empty, []) if root.equal?(neddle)
-
-      mapped_children = root.children.map do |child|
-        if child.kind_of?(Parser::AST::Node)
-          remove_node(child, neddle)
-        else
-          child
+    def self.first_assignment?(root, assignment)
+      name = assignment.children.first
+      AST::LocalVariableScope.each(root) do |node, current, before|
+        if node.equal?(assignment) && current.include?(name) && !before.include?(name)
+          return true
         end
       end
 
-      root.updated(nil, mapped_children)
+      false
+    end
+
+    # Test if local variables where first assigned in body and read by conditional
+    #
+    # @param [Parser::AST::Node] root
+    # @param [Parser::AST::Node] conditional
+    # @param [Parser::AST::Node] body
+    #
+    def self.first_assignment_in_body_and_used_in_condition?(root, body, condition)
+      condition_reads = local_variables_read_in_scope(condition)
+
+      candidates = AST.local_variable_assignments_in_scope(body).select do |node|
+        name = node.children.first
+        condition_reads.include?(name)
+      end
+
+      candidates.any? do |node|
+        first_assignment?(root, node)
+      end
+    end
+
+    # Return local variables that get assigned in scope
+    #
+    # @param [Parser::AST::Node]
+    #
+    # @return [Set<Symbol>]
+    #
+    # @api private
+    #
+    def self.local_variable_assignments_in_scope(node)
+      Enumerator.new(
+        node,
+        LocalVariableScope.method(:not_reset_scope?),
+      ).types(LocalVariableScope::ASSIGN_NODES)
+    end
+
+    # Return local variables read
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [Set<Symbol>]
+    #
+    # @api private
+    #
+    def self.local_variables_read_in_scope(node)
+      Enumerator.new(
+        node,
+        LocalVariableScope.method(:not_reset_scope?),
+      ).type(:lvar).map(&FIRST_CHILD).to_set
     end
 
     # AST enumerator
@@ -100,23 +107,7 @@ module Unparser
       #
       def each(&block)
         return to_enum unless block_given?
-        return unless node
         Walker.call(node, controller, &block)
-      end
-
-      # Return local variable intersection
-      #
-      # @param [Param::AST::Node] condition
-      # @param [Param::AST::Node] body
-      #
-      # @return [Set<Symbol>]
-      #
-      # @api private
-      #
-      def self.local_variable_intersection(condition, body)
-        reads = AST::Enumerator.local_variables_read(condition)
-        writes = AST::Enumerator.local_variables_assigned(body)
-        reads.intersection(writes)
       end
 
       # Return nodes selected by types
@@ -141,30 +132,6 @@ module Unparser
       #
       def type(type)
         select { |node| node.type == type }
-      end
-
-      # Return the names of local variables assigned
-      #
-      # @param [Parser::AST::Node] node
-      #
-      # @return [Set<Symbol>]
-      #
-      # @api private
-      #
-      def self.local_variables_assigned(node)
-        set(type(node, :lvasgn).map { |node| node.children.first })
-      end
-
-      # Return the names of local variables read
-      #
-      # @param [Parser::AST::Node] node
-      #
-      # @return [Set<Symbol>]
-      #
-      # @api private
-      #
-      def self.local_variables_read(node)
-        set(type(node, :lvar).map { |node| node.children.first })
       end
 
       # Return frozne set of objects
@@ -199,8 +166,6 @@ module Unparser
     # Controlled AST walker walking the AST in deeth first search with pre order
     class Walker
       include Concord.new(:block, :controller)
-
-      TAUTOLOGY = lambda { |node| true }
 
       # Call ast walker
       #
