@@ -71,6 +71,9 @@ module Unparser
       builder.on('-e', '--evaluate SOURCE') do |original_source|
         @sources << Source::String.new(original_source)
       end
+      builder.on('--skip-until FILE') do |file|
+        @skip_until = file
+      end
       builder.on('--ignore FILE') do |file|
         @ignore << file
       end
@@ -125,6 +128,13 @@ module Unparser
     # @api private
     #
     def add_file(file_name)
+      if @skip_until
+        if @skip_until == file_name
+          @skip_until = nil
+        else
+          return
+        end
+      end
       unless @ignore.include?(file_name)
         @sources << Source::File.new(file_name)
       end
