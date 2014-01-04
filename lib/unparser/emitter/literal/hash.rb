@@ -45,7 +45,7 @@ module Unparser
           #
           def dispatch
             write(key.children.first.to_s, COLON)
-            visit(value)
+            visit_terminated(value)
           end
 
         end # Colon
