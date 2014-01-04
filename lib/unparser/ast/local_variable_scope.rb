@@ -24,8 +24,17 @@ module Unparser
         @stack = [Set.new]
       end
 
+      # Enumerate each node with its local variable scope
+      #
+      # @param [Parser::AST::Node] node
+      #
+      # @return [self]
+      #
+      # @api private
+      #
       def self.each(node, &block)
         new.each(node, &block)
+        self
       end
 
       # Test for local variable scope reset
