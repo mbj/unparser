@@ -138,6 +138,10 @@ module Unparser
           conditional_parentheses(parent_type == :mlhs) do
             delimited(children)
           end
+
+          if children.one? && children.first.type != :splat
+            write(',')
+          end
         end
 
       end # MLHS
