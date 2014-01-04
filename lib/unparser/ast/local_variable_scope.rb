@@ -12,7 +12,7 @@ module Unparser
       #
       # FIXME: Kwargs are missing.
       #
-      ASSIGN_NODES = [:lvasgn, :arg, :optarg].freeze
+      ASSIGN_NODES = [:lvasgn, :arg, :optarg, :restarg].freeze
 
       # Initialize object
       #

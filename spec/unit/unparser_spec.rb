@@ -815,6 +815,14 @@ describe Unparser do
       RUBY
 
       assert_source <<-'RUBY'
+        def foo(*foo)
+          unless foo
+            foo = bar
+          end
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
         each do |foo|
           unless foo
             foo = bar
