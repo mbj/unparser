@@ -33,9 +33,11 @@ module Unparser
         hunks.each_with_object([]) do |hunk, output|
           last = output.last
 
-          if !last || !hunk.merge(last)
-            output << hunk
+          if last && hunk.merge(last)
+            output.pop
           end
+
+          output << hunk
         end
       end
 
