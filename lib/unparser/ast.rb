@@ -35,6 +35,8 @@ module Unparser
     # @param [Parser::AST::Node] conditional
     # @param [Parser::AST::Node] body
     #
+    # @api private
+    #
     def self.first_assignment_in_body_and_used_in_condition?(root, body, condition)
       condition_reads = local_variables_read_in_scope(condition)
 

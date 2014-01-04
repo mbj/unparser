@@ -33,6 +33,8 @@ module Unparser
       # @return [false]
       #   otherwise
       #
+      # @api private
+      #
       def postcondition?
         return false unless !!if_branch ^ !!else_branch
 

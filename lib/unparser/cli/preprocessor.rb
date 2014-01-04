@@ -49,6 +49,8 @@ module Unparser
       #
       # @param [Parser::AST::Node]
       #
+      # @return [undefined]
+      #
       # @api private
       #
       def visit(node)

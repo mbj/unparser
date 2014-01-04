@@ -84,6 +84,8 @@ module Unparser
       #
       # @param [Parser::AST::Node]
       #
+      # @return [undefined]
+      #
       # @api private
       #
       def visit(node, &block)
@@ -101,6 +103,8 @@ module Unparser
       # Record local variable state
       #
       # @param [Parser::AST::Node]
+      #
+      # @return [undefined]
       #
       # @api private
       #
@@ -162,6 +166,11 @@ module Unparser
       end
 
       # Pop lvar scope from stack
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
       def pop
         @stack.pop
       end
