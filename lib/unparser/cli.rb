@@ -48,9 +48,7 @@ module Unparser
         add_options(builder)
       end
 
-      arguments = opts.parse!(arguments)
-
-      arguments.each do |name|
+      opts.parse!(arguments).each do |name|
         if File.directory?(name)
           add_directory(name)
         else
