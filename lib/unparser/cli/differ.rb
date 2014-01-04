@@ -8,6 +8,37 @@ module Unparser
 
       CONTEXT_LINES = 5
 
+      # Return hunks
+      #
+      # @return [Array<Diff::LCS::Hunk>]
+      #
+      # @api private
+      #
+      def hunks
+        file_length_difference = new.length - old.length
+        diffs.map do |piece|
+          hunk = Diff::LCS::Hunk.new(old, new, piece, CONTEXT_LINES, file_length_difference)
+          file_length_difference = hunk.file_length_difference
+          hunk
+        end
+      end
+
+      # Return collapsed hunks
+      #
+      # @return [Enumerable<Diff::LCS::Hunk>]
+      #
+      # @api private
+      #
+      def collapsed_hunks
+        hunks.each_with_object([]) do |hunk, output|
+          last = output.last
+
+          if !last || !hunk.merge(last)
+            output << hunk
+          end
+        end
+      end
+
       # Return source diff
       #
       # @return [String]
@@ -20,21 +51,10 @@ module Unparser
       #
       def diff
         output = ''
-        hunk = oldhunk = nil
-        file_length_difference = new.length - old.length
-        diffs.each do |piece|
-          begin
-            hunk = Diff::LCS::Hunk.new(old, new, piece, CONTEXT_LINES, file_length_difference)
-            file_length_difference = hunk.file_length_difference
 
-            next if !oldhunk || hunk.merge(oldhunk)
-
-            output << oldhunk.diff(:unified) << "\n"
-          ensure
-            oldhunk = hunk
-          end
+        collapsed_hunks.each do |hunk|
+          output << hunk.diff(:unified) << "\n"
         end
-        output << oldhunk.diff(:unified) << "\n"
 
         output
       end
