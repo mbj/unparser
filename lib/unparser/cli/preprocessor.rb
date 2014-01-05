@@ -108,6 +108,7 @@ module Unparser
 
         register :dstr
         register :regexp
+        register :xstr
 
         # Return preprocessor result
         #
