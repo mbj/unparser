@@ -1056,6 +1056,25 @@ describe Unparser do
         RUBY
 
         assert_source <<-'RUBY'
+          def (foo do |bar|
+          end).bar
+            bar
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def (foo(1)).bar
+            bar
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def (Foo::Bar.baz).bar
+            baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
           def (Foo::Bar).bar
             baz
           end

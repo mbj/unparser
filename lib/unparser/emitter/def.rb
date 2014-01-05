@@ -89,7 +89,7 @@ module Unparser
         # @api private
         #
         def emit_name
-          conditional_parentheses(subject_needs_parens?) do
+          conditional_parentheses(!subject_without_parens?) do
             visit(subject)
           end
           write(T_DOT, name.to_s)
@@ -105,9 +105,18 @@ module Unparser
         #
         # @api private
         #
-        def subject_needs_parens?
-          first_subject_child = subject.children.first
-          subject.type == :const && first_subject_child && first_subject_child.type == :const
+        def subject_without_parens?
+          case subject.type
+          when :self
+            true
+          when :const
+            !subject.children.first
+          when :send
+            receiver, _, *arguments = *subject
+            !receiver && arguments.empty?
+          else
+            false
+          end
         end
 
       end # Singleton
