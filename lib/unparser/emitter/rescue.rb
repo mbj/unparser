@@ -23,7 +23,7 @@ module Unparser
       #
       def dispatch
         if standalone?
-          if parent_type == :rescue
+          if parent_type == :rescue || parent_type == :ensure
             indented { emit_standalone }
           else
             emit_standalone
@@ -44,7 +44,11 @@ module Unparser
       # @api private
       #
       def standalone?
-        !EMBEDDED_TYPES.include?(parent_type) && body
+        if parent_type == :ensure
+          !parent.node.children.first.equal?(node)
+        else
+          !EMBEDDED_TYPES.include?(parent_type) && body
+        end
       end
 
       # Emit standalone form

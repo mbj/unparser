@@ -29,7 +29,8 @@ describe Unparser do
       ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       generated.should eql(input)
-      parser.parse_with_comments(generated)
+      generated_ast, commetns = parser.parse_with_comments(generated)
+      expect(ast == generated_ast).to be(true)
     end
 
     def assert_generates_from_string(parser, string, expected)
@@ -887,6 +888,14 @@ describe Unparser do
             bar
           ensure
             baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          begin
+            foo
+          ensure
+            bar rescue(nil)
           end
         RUBY
 
