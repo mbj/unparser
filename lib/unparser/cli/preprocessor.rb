@@ -25,10 +25,12 @@ module Unparser
       #
       def self.run(node)
         return if node.nil?
-        REGISTRY.fetch(node.type, Noop).new(node).result
+        REGISTRY.fetch(node.type, [Noop]).reduce(node) do |node, processor|
+          processor.call(node)
+        end
       end
 
-      REGISTRY = {}
+      REGISTRY = Hash.new { |hash, key| hash[key] = [] }
 
       # Register preprocessor
       #
@@ -39,7 +41,7 @@ module Unparser
       # @api private
       #
       def self.register(type)
-        REGISTRY[type] = self
+        REGISTRY[type] << self
       end
       private_class_method :register
 
@@ -86,6 +88,9 @@ module Unparser
       # Noop preprocessor that just passes through noode.
       class Noop < self
 
+        register :int
+        register :str
+
         # Return preprocessor result
         #
         # @return [Parser::AST::Node]
@@ -99,9 +104,10 @@ module Unparser
       end # Noop
 
       # Preprocessor for dynamic string nodes. Collapses adjacent string segments into one.
-      class Dstr < self
+      class CollapseStrChildren < self
 
         register :dstr
+        register :regexp
 
         # Return preprocessor result
         #
@@ -177,7 +183,7 @@ module Unparser
         # @api private
         #
         def correctly_quoted_children
-          children.map do |child|
+          visited_children.map do |child|
             if child.type == :str
               quote_str_child(child)
             else
