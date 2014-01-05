@@ -128,6 +128,8 @@ module Unparser
 
       private
 
+        NO_COMMA = [:splat, :restarg]
+
         # Perform dispatch
         #
         # @return [undefined]
@@ -139,7 +141,7 @@ module Unparser
             delimited(children)
           end
 
-          if children.one? && children.first.type != :splat
+          if children.one? && !NO_COMMA.include?(children.first.type)
             write(',')
           end
         end
