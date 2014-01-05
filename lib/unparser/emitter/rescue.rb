@@ -13,7 +13,7 @@ module Unparser
 
       EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
 
-      INDENT_STANDALONE = [:module, :class, :sclass, :rescue, :ensure].to_set.freeze
+      NOINDENT_STANDALONE_RESCUE = [:root, :begin, :lvasgn, :ivasgn].to_set.freeze
 
     private
 
@@ -25,7 +25,7 @@ module Unparser
       #
       def dispatch
         if standalone?
-          if INDENT_STANDALONE.include?(parent_type)
+          unless NOINDENT_STANDALONE_RESCUE.include?(parent_type)
             indented { emit_standalone }
           else
             emit_standalone
