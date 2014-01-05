@@ -1039,6 +1039,25 @@ describe Unparser do
             baz
           end
         RUBY
+
+        assert_source <<-'RUBY'
+          def (Foo::Bar).bar
+            baz
+          end
+        RUBY
+
+
+        assert_source <<-'RUBY'
+          def Foo.bar
+            baz
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def foo.bar
+            baz
+          end
+        RUBY
       end
 
       context 'on singleton' do

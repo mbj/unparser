@@ -89,8 +89,25 @@ module Unparser
         # @api private
         #
         def emit_name
-          visit(subject)
+          conditional_parentheses(subject_needs_parens?) do
+            visit(subject)
+          end
           write(T_DOT, name.to_s)
+        end
+
+        # Test if subject needs parentheses
+        #
+        # @return [true]
+        #   if subject needs parentheses
+        #
+        # @return [false]
+        #   otherwise
+        #
+        # @api private
+        #
+        def subject_needs_parens?
+          first_subject_child = subject.children.first
+          subject.type == :const && first_subject_child && first_subject_child.type == :const
         end
 
       end # Singleton
