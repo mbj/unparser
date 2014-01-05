@@ -37,6 +37,22 @@ module Unparser
         self
       end
 
+      # Test for local variable inherited scope reset
+      #
+      # @param [Parser::AST::Node] node
+      #
+      # @return [true]
+      #   if local variable scope must NOT be reset
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def self.not_close_scope?(node)
+        !CLOSE_NODES.include?(node.type)
+      end
+
       # Test for local variable scope reset
       #
       # @param [Parser::AST::Node] node

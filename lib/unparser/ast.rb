@@ -100,7 +100,7 @@ module Unparser
     def self.local_variables_read_in_scope(node)
       Enumerator.new(
         node,
-        LocalVariableScope.method(:not_reset_scope?),
+        LocalVariableScope.method(:not_close_scope?),
       ).type(:lvar).map(&FIRST_CHILD).to_set
     end
 

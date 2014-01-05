@@ -275,6 +275,21 @@ describe Unparser do
           end
         RUBY
 
+        # Ugly I know. But its correct :D
+        #
+        # if foo { |pair| }
+        #   pair = :foo
+        #   foo
+        # end
+        assert_source <<-'RUBY'
+          if foo do |pair|
+            pair
+          end
+            pair = :foo
+            foo
+          end
+        RUBY
+
         assert_source <<-'RUBY'
           while foo
             foo = bar
