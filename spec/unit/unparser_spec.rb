@@ -29,6 +29,7 @@ describe Unparser do
       ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       generated.should eql(input)
+      parser.parse_with_comments(generated)
     end
 
     def assert_generates_from_string(parser, string, expected)
@@ -213,6 +214,18 @@ describe Unparser do
     context 'next' do
       assert_source 'next'
       assert_source 'next(bar)'
+
+      assert_generates <<-'RUBY', <<-'RUBY'
+        foo do |bar|
+          bar =~ // || next
+          baz
+        end
+      RUBY
+        foo do |bar|
+          (bar =~ //) || (next)
+          baz
+        end
+      RUBY
     end
 
     context 'retry' do

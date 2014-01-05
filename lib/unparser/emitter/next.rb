@@ -18,8 +18,9 @@ module Unparser
       def dispatch
         conditional_parentheses(parent_type == :or || parent_type == :and) do
           write(K_NEXT)
-          return if children.empty?
-          visit_parentheses(children.first)
+          unless children.empty?
+            visit_parentheses(children.first)
+          end
         end
       end
 
