@@ -163,8 +163,8 @@ module Unparser
         #
         def result
           location = node.location
-          unless location && location.begin.source.start_with?('%r')
-            node.updated(nil, correctly_quoted_children)
+          if location && location.begin.source.start_with?('%r')
+            s(:regexp, correctly_quoted_children)
           else
             node
           end
@@ -195,8 +195,9 @@ module Unparser
         # @api private
         #
         def quote_str_child(child)
-          value = child.children.first.gsub('\/', '/')
-          s(:str, [value])
+          original = child.children.first
+          modified = Unparser.transquote(child.children.first, ')', '/')
+          s(:str, [modified])
         end
       end
 

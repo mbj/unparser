@@ -74,7 +74,11 @@ module Unparser
           original_ast.inspect.lines.map(&:chomp),
           generated_ast.inspect.lines.map(&:chomp)
         )
-        "#{diff}\nOriginal:\n#{original_source}\nGenerated:\n#{generated_source}"
+        "#{diff}\n" \
+        "Original-Source:\n#{original_source}\n" \
+        "Original-AST:\n#{original_ast.inspect}\n" \
+        "Generated-Source:\n#{generated_source}\n" \
+        "Generated-AST:\n#{generated_ast.inspect}\n"
       end
 
       # Return generated AST
