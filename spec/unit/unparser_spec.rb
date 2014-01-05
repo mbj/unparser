@@ -653,6 +653,24 @@ describe Unparser do
       RUBY
 
       assert_source <<-'RUBY'
+        class << self
+          undef :bar rescue(nil)
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        module Foo
+          undef :bar rescue(nil)
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        class Foo
+          undef :bar rescue(nil)
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
         begin
         rescue Exception => e
         end
