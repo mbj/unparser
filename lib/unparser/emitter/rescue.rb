@@ -23,7 +23,11 @@ module Unparser
       #
       def dispatch
         if standalone?
-          emit_standalone
+          if parent_type == :rescue
+            indented { emit_standalone }
+          else
+            emit_standalone
+          end
         else
           emit_embedded
         end

@@ -595,6 +595,13 @@ describe Unparser do
 
       assert_source <<-'RUBY'
         begin
+          raise(Exception) rescue(foo = bar)
+        rescue Exception
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        begin
           foo
           bar
         rescue
