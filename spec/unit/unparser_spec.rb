@@ -747,6 +747,7 @@ describe Unparser do
 
     context 'undef' do
       assert_source 'undef :foo'
+      assert_source 'undef :foo, :bar'
     end
 
     context 'BEGIN' do
