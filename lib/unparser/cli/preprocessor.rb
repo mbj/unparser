@@ -67,13 +67,13 @@ module Unparser
         node.children
       end
 
-      # Return mapped children
+      # Return visited children
       #
       # @return [Array<Parser::Ast::Node>]
       #
       # @api private
       #
-      def mapped_children
+      def visited_children
         children.map do |node|
           if node.kind_of?(Parser::AST::Node)
             visit(node)
@@ -93,7 +93,7 @@ module Unparser
         # @api private
         #
         def result
-          s(node.type, mapped_children)
+          s(node.type, visited_children)
         end
 
       end # Noop
@@ -143,7 +143,7 @@ module Unparser
         # @api private
         #
         def chunked_children
-          mapped_children.chunk do |item|
+          visited_children.chunk do |item|
             item.type
           end
         end
