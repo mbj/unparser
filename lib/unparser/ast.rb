@@ -29,6 +29,30 @@ module Unparser
       false
     end
 
+    # Test if local variable is defined for given node
+    #
+    # @param [Parser::AST::Node] root
+    # @param [Parser::AST::Node] node
+    # @param [Symbol] name
+    #
+    # @return [true]
+    #   if local variable is defined
+    #
+    # @return [đalse]
+    #   otherwise
+    #
+    # @api private
+    #
+    def self.local_variable_defined_for_node?(root, node, name)
+      AST::LocalVariableScope.each(root) do |child, current, before|
+        if child.equal?(node) && current.include?(name)
+          return true
+        end
+      end
+
+      false
+    end
+
     # Test if local variables where first assigned in body and read by conditional
     #
     # @param [Parser::AST::Node] root

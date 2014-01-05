@@ -261,6 +261,10 @@ describe Unparser do
         assert_source '::Foo = ::Bar'
       end
 
+      context 'lvar assigned from method with same name' do
+        assert_source 'foo = foo()'
+      end
+
       context 'lvar introduction from condition' do
         assert_source 'foo = bar while foo'
         assert_source 'foo = bar until foo'
