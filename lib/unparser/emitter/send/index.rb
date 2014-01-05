@@ -57,7 +57,10 @@ module Unparser
           # @api private
           #
           def emit_arguments
-            if arguments.one?
+            case arguments.length
+            when 0
+              emit_regular_with_empty_args
+            when 1
               emit_mlhs_arguments
             else
               emit_normal_arguments
@@ -89,6 +92,16 @@ module Unparser
             end
             write(WS, T_ASN, WS)
             visit(value)
+          end
+
+          # Emit regular with empty ars
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_regular_with_empty_args
+            write(T_DOT, '[]=()')
           end
 
         end # Assign
