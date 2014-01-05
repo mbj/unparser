@@ -128,7 +128,7 @@ module Unparser
 
       private
 
-        NO_COMMA = [:splat, :restarg]
+        NO_COMMA = [:splat, :restarg, :mlhs]
 
         # Perform dispatch
         #
