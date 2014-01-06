@@ -214,23 +214,6 @@ describe Unparser do
       assert_source '::TOPLEVEL::CONST'
     end
 
-    context 'next' do
-      assert_source 'next'
-      assert_source 'next(bar)'
-
-      assert_generates <<-'RUBY', <<-'RUBY'
-        foo do |bar|
-          bar =~ // || next
-          baz
-        end
-      RUBY
-        foo do |bar|
-          (bar =~ //) || (next)
-          baz
-        end
-      RUBY
-    end
-
     context 'retry' do
       assert_source 'retry'
     end
@@ -348,29 +331,37 @@ describe Unparser do
       end
     end
 
-    context 'return' do
-      assert_source 'return'
-      assert_source 'return(1)'
-      assert_source 'return(1), (2)'
-      assert_source 'return *foo'
-      assert_source 'return *foo, bar'
+    %w(next return break).each do |keyword|
 
-      assert_generates <<-'RUBY', <<-'RUBY'
-        return(a ? b : c)
-      RUBY
-        return(if a
-          b
-        else
-          c
-        end)
-      RUBY
+      context keyword do
+        assert_source "#{keyword}"
+        assert_source "#{keyword} 1"
+        assert_source "#{keyword} 2, 3"
+        assert_source "#{keyword} *nil"
+        assert_source "#{keyword} *foo, bar"
 
-    end
+        assert_generates <<-RUBY, <<-RUBY
+          foo do |bar|
+            bar =~ // || #{keyword}
+            baz
+          end
+        RUBY
+          foo do |bar|
+            (bar =~ //) || #{keyword}
+            baz
+          end
+        RUBY
 
-    context 'break' do
-      assert_source 'break'
-      assert_source 'break(a)'
-      assert_source 'break(a), (b)'
+        assert_generates <<-RUBY, <<-RUBY
+          #{keyword}(a ? b : c)
+        RUBY
+          #{keyword} (if a
+            b
+          else
+            c
+          end)
+        RUBY
+      end
     end
 
     context 'send' do
@@ -761,8 +752,8 @@ describe Unparser do
       RUBY
 
       assert_source 'foo rescue(bar)'
-      assert_source 'foo rescue(return(bar))'
-      assert_source 'x = foo rescue(return(bar))'
+      assert_source 'foo rescue(return bar)'
+      assert_source 'x = foo rescue(return bar)'
     end
 
     context 'super' do
@@ -1292,18 +1283,18 @@ describe Unparser do
     end
 
     context 'binary operator' do
-      assert_source 'a || (return(foo))'
-      assert_source '(return(foo)) || a'
-      assert_source 'a || (break(foo))'
-      assert_source '(break(foo)) || a'
+      assert_source 'a || (return foo)'
+      assert_source '(return foo) || a'
+      assert_source 'a || (break foo)'
+      assert_source '(break foo) || a'
       assert_source '(a || b).foo'
       assert_source 'a || (b || c)'
     end
 
     { or: :'||', and: :'&&' }.each do |word, symbol|
-      assert_generates "a #{word} return foo", "a #{symbol} (return(foo))"
-      assert_generates "a #{word} break foo", "a #{symbol} (break(foo))"
-      assert_generates "a #{word} next foo", "a #{symbol} (next(foo))"
+      assert_generates "a #{word} return foo", "a #{symbol} (return foo)"
+      assert_generates "a #{word} break foo", "a #{symbol} (break foo)"
+      assert_generates "a #{word} next foo", "a #{symbol} (next foo)"
     end
 
     context 'expansion of shortcuts' do
