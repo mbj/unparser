@@ -333,6 +333,7 @@ describe Unparser do
         assert_source 'a, *foo = 1, 2'
         assert_source 'a, * = 1, 2'
         assert_source '*foo = 1, 2'
+        assert_source '*a = []'
         assert_source '@a, @b = 1, 2'
         assert_source 'a.foo, a.bar = 1, 2'
         assert_source 'a[0, 2]'

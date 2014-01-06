@@ -113,7 +113,12 @@ module Unparser
           right = children.last
           case right.type
           when :array
-            delimited(right.children)
+            children = right.children
+            if children.empty?
+              write('[]')
+            else
+              delimited(children)
+            end
           else
             visit(right)
           end
