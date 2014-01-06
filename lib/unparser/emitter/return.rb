@@ -30,11 +30,15 @@ module Unparser
       #
       def emit_break_return_arguments
         return if children.empty?
+        splat = children.any? { |child| child.type == :splat }
+        if splat
+          ws
+        end
         head, *tail = children
-        parentheses { visit(head) }
+        conditional_parentheses(!splat) { visit(head) }
         tail.each do |node|
           write(DEFAULT_DELIMITER)
-          parentheses { visit(node) }
+          conditional_parentheses(!splat) { visit(node) }
         end
       end
 

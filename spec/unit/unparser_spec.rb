@@ -177,7 +177,7 @@ describe Unparser do
 
       context 'array' do
         assert_source '[1, 2]'
-        assert_source '[1, (), 2]'
+        assert_source '[1, (), n2]'
         assert_source '[1]'
         assert_source '[]'
         assert_source '[1, *@foo]'
@@ -349,17 +349,11 @@ describe Unparser do
     end
 
     context 'return' do
-      assert_source <<-'RUBY'
-        return
-      RUBY
-
-      assert_source <<-'RUBY'
-        return(1)
-      RUBY
-
-      assert_source <<-'RUBY'
-        return(1), (2)
-      RUBY
+      assert_source 'return'
+      assert_source 'return(1)'
+      assert_source 'return(1), (2)'
+      assert_source 'return *foo'
+      assert_source 'return *foo, bar'
 
       assert_generates <<-'RUBY', <<-'RUBY'
         return(a ? b : c)
@@ -370,6 +364,7 @@ describe Unparser do
           c
         end)
       RUBY
+
     end
 
     context 'break' do
