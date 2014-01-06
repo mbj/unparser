@@ -30,7 +30,6 @@ module Unparser
       #
       def terminated?
         [
-          Unary,
           Index::Reference,
           Regular
         ].include?(effective_emitter)

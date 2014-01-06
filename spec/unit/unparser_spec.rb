@@ -1403,12 +1403,13 @@ describe Unparser do
 
     context 'unary operators' do
       assert_source '!1'
-      assert_source '!!1'
-      assert_source '!!(foo || bar)'
+      assert_source '!(!1)'
+      assert_source '!(!(foo || bar))'
       assert_source '!(!1).baz'
       assert_source '~a'
       assert_source '-a'
       assert_source '+a'
+      assert_source '-(-a).foo'
     end
 
     context 'loop' do
