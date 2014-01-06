@@ -177,6 +177,7 @@ describe Unparser do
 
       context 'array' do
         assert_source '[1, 2]'
+        assert_source '[1, (), 2]'
         assert_source '[1]'
         assert_source '[]'
         assert_source '[1, *@foo]'
@@ -329,20 +330,20 @@ describe Unparser do
       end
 
       context 'multiple' do
-        assert_source 'a, b = 1, 2'
-        assert_source 'a, *foo = 1, 2'
-        assert_source 'a, * = 1, 2'
-        assert_source '*foo = 1, 2'
+        assert_source 'a, b = [1, 2]'
+        assert_source 'a, *foo = [1, 2]'
+        assert_source 'a, * = [1, 2]'
+        assert_source '*foo = [1, 2]'
         assert_source '*a = []'
-        assert_source '@a, @b = 1, 2'
-        assert_source 'a.foo, a.bar = 1, 2'
+        assert_source '@a, @b = [1, 2]'
+        assert_source 'a.foo, a.bar = [1, 2]'
         assert_source 'a[0, 2]'
-        assert_source 'a[0], a[1] = 1, 2'
-        assert_source 'a[*foo], a[1] = 1, 2'
-        assert_source '@@a, @@b = 1, 2'
-        assert_source '$a, $b = 1, 2'
+        assert_source 'a[0], a[1] = [1, 2]'
+        assert_source 'a[*foo], a[1] = [1, 2]'
+        assert_source '@@a, @@b = [1, 2]'
+        assert_source '$a, $b = [1, 2]'
         assert_source 'a, b = foo'
-        assert_source 'a, (b, c) = 1, [2, 3]'
+        assert_source 'a, (b, c) = [1, [2, 3]]'
         assert_source 'a, = foo'
       end
     end

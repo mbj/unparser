@@ -117,7 +117,9 @@ module Unparser
             if children.empty?
               write('[]')
             else
+              write('[')
               delimited(children)
+              write(']')
             end
           else
             visit(right)

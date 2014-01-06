@@ -25,7 +25,7 @@ module Unparser
 
         handle :begin
 
-        EMPTY_PARENS = [:pair_rocket].to_set.freeze
+        EMPTY_PARENS = [:pair_rocket, :array].to_set.freeze
 
       private
 
