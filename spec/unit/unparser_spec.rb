@@ -375,6 +375,7 @@ describe Unparser do
       assert_source 'foo(1)'
       assert_source 'foo(bar)'
       assert_source 'foo(&block)'
+      assert_source 'foo(&(foo || bar))'
       assert_source 'foo(*arguments)'
       assert_source 'foo(*arguments)'
       assert_source <<-'RUBY'

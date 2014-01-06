@@ -213,7 +213,7 @@ module Unparser
       #
       def dispatch
         write(T_AMP)
-        visit(name)
+        visit_terminated(name)
       end
 
     end # BlockPass
