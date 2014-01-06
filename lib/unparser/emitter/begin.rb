@@ -25,6 +25,8 @@ module Unparser
 
         handle :begin
 
+        EMPTY_PARENS = [:pair_rocket].to_set.freeze
+
       private
 
         # Perform dispatch
@@ -34,7 +36,11 @@ module Unparser
         # @api private
         #
         def dispatch
-          emit_inner
+          if children.empty? && EMPTY_PARENS.include?(parent_type)
+            write('()')
+          else
+            emit_inner
+          end
         end
 
       end # Implicit

@@ -187,6 +187,7 @@ describe Unparser do
 
       context 'hash' do
         assert_source '{}'
+        assert_source '{ () => () }'
         assert_source '{ 1 => 2 }'
         assert_source '{ 1 => 2, 3 => 4 }'
 
