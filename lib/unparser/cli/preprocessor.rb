@@ -150,9 +150,7 @@ module Unparser
         # @api private
         #
         def chunked_children
-          visited_children.chunk do |item|
-            item.type
-          end
+          visited_children.chunk(&:type)
         end
 
       end # Begin
