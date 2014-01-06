@@ -76,6 +76,7 @@ describe Unparser do
         assert_generates s(:int,  1),  '1'
         assert_generates s(:int, -1), '-1'
         assert_source '1'
+        assert_source '++1'
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
