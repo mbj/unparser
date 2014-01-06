@@ -979,6 +979,18 @@ describe Unparser do
         RUBY
 
         assert_source <<-'RUBY'
+          def foo(bar = ())
+            bar
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
+          def foo(bar = (baz
+          nil))
+          end
+        RUBY
+
+        assert_source <<-'RUBY'
           def foo(bar = true)
             bar
           end

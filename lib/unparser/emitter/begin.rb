@@ -25,7 +25,7 @@ module Unparser
 
         handle :begin
 
-        EMPTY_PARENS = [:pair_rocket, :array].to_set.freeze
+        EMPTY_PARENS = [:pair_rocket, :array, :optarg].to_set.freeze
 
       private
 
@@ -39,8 +39,20 @@ module Unparser
           if children.empty? && EMPTY_PARENS.include?(parent_type)
             write('()')
           else
-            emit_inner
+            conditional_parentheses(parent_type == :optarg) do
+              emit_inner
+            end
           end
+        end
+
+        # Emit inner delimited by semicolons
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_inner_semi
+          delimited(children, ';')
         end
 
       end # Implicit
