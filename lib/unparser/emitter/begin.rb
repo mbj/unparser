@@ -25,7 +25,7 @@ module Unparser
 
         handle :begin
 
-        EMPTY_PARENS = [:pair_rocket, :array, :optarg].to_set.freeze
+        NON_EMPTY_PARENS = [:root, :dstr, :dyn_str_body].to_set.freeze
 
       private
 
@@ -36,7 +36,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if children.empty? && EMPTY_PARENS.include?(parent_type)
+          if children.empty? && !NON_EMPTY_PARENS.include?(parent_type)
             write('()')
           else
             conditional_parentheses(parent_type == :optarg) do
