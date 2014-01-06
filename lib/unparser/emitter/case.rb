@@ -60,7 +60,7 @@ module Unparser
       def emit_condition
         return unless condition
         write(WS)
-        visit(condition)
+        visit_terminated(condition)
       end
 
     end # Case

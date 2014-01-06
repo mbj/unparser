@@ -501,6 +501,14 @@ describe Unparser do
       RUBY
 
       assert_source <<-'RUBY'
+        case (def foo
+        end
+        :bar)
+        when bar
+        end.baz
+      RUBY
+
+      assert_source <<-'RUBY'
         case foo
         when bar
         end.baz
