@@ -30,6 +30,8 @@ module Unparser
 
       handle :args
 
+      SHADOWARGS = ->(node) { node.type == :shadowarg }.freeze
+
     private
 
       # Perform dispatch
@@ -39,15 +41,39 @@ module Unparser
       # @api private
       #
       def dispatch
-        mapped = children.map do |child|
+        delimited(normal_arguments)
+        unless shadowargs.empty?
+          write('; ')
+          delimited(shadowargs)
+        end
+      end
+
+      # Return normal arguments
+      #
+      # @return [Enumerable<Parser::AST::Node>]
+      #
+      # @api private
+      #
+      def normal_arguments
+        children.reject(&SHADOWARGS).map do |child|
           if child.type == :mlhs
             Parser::AST::Node.new(:arg_expr, [child])
           else
             child
           end
         end
-        delimited(mapped)
       end
+
+      # Return shadow args
+      #
+      # @return [Enumerable<Parser::AST::Node>]
+      #
+      # @api private
+      #
+      def shadowargs
+        children.select(&SHADOWARGS)
+      end
+      memoize :shadowargs
 
     end # Arguments
 
@@ -178,7 +204,7 @@ module Unparser
     # Argument emitter
     class Argument < self
 
-      handle :arg
+      handle :arg, :shadowarg
 
       children :name
 

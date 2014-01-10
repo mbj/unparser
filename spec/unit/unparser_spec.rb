@@ -29,7 +29,7 @@ describe Unparser do
       ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       generated.should eql(input)
-      generated_ast, commetns = parser.parse_with_comments(generated)
+      generated_ast, comments = parser.parse_with_comments(generated)
       expect(ast == generated_ast).to be(true)
     end
 
@@ -421,6 +421,21 @@ describe Unparser do
       assert_source <<-'RUBY'
         foo.bar do |(a, b), c|
           d
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        foo.bar do |*a; b|
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        foo.bar do |a; b|
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        foo.bar do |; a, b|
         end
       RUBY
 
@@ -1100,7 +1115,6 @@ describe Unparser do
             baz
           end
         RUBY
-
 
         assert_source <<-'RUBY'
           def Foo.bar
