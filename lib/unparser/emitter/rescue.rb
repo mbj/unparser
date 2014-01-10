@@ -25,10 +25,10 @@ module Unparser
       #
       def dispatch
         if standalone?
-          unless NOINDENT_STANDALONE_RESCUE.include?(parent_type)
-            indented { emit_standalone }
-          else
+          if NOINDENT_STANDALONE_RESCUE.include?(parent_type)
             emit_standalone
+          else
+            indented { emit_standalone }
           end
         else
           emit_embedded
