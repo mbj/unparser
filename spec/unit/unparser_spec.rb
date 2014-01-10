@@ -128,6 +128,7 @@ describe Unparser do
         assert_source ':foo'
         assert_source ':"A B"'
         assert_source ':"A\"B"'
+        assert_source ':""'
       end
 
       context 'regexp' do

@@ -20,7 +20,7 @@ module Unparser
           if interpolation?
             visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
           else
-            delimited(children, WS)
+            emit_non_interpolated
           end
         end
 
@@ -54,6 +54,18 @@ module Unparser
           OPEN = CLOSE = '"'.freeze
           handle :dstr
 
+        private
+
+          # Emit non interpolated form
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_non_interpolated
+            delimited(children, WS)
+          end
+
         end # String
 
         # Dynamic symbol literal emitter
@@ -63,6 +75,18 @@ module Unparser
           CLOSE = '"'.freeze
 
           handle :dsym
+
+        private
+
+          # Emit non interpolated form
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_non_interpolated
+            visit_parentheses(dynamic_body, OPEN, CLOSE)
+          end
 
         end # Symbol
 
