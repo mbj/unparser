@@ -39,7 +39,7 @@ module Unparser
     # @api private
     #
     def initialize(arguments)
-      @sources, @ignore = [], []
+      @sources, @ignore = [], Set.new
 
       @success   = true
       @fail_fast = false
@@ -49,11 +49,7 @@ module Unparser
       end
 
       opts.parse!(arguments).each do |name|
-        if File.directory?(name)
-          add_directory(name)
-        else
-          add_file(name)
-        end
+        @sources.concat(sources(name))
       end
     end
 
@@ -71,11 +67,11 @@ module Unparser
       builder.on('-e', '--evaluate SOURCE') do |original_source|
         @sources << Source::String.new(original_source)
       end
-      builder.on('--skip-until FILE') do |file|
-        @skip_until = file
+      builder.on('--start-with FILE') do |file|
+        @start_with = sources(file).first
       end
       builder.on('--ignore FILE') do |file|
-        @ignore << file
+        @ignore.merge(sources(file))
       end
       builder.on('--fail-fast') do
         @fail_fast = true
@@ -89,7 +85,8 @@ module Unparser
     # @api private
     #
     def exit_status
-      @sources.each do |source|
+      effective_sources.each do |source|
+        next if @ignore.include?(source)
         process_source(source)
         if @fail_fast
           break unless @success
@@ -119,39 +116,47 @@ module Unparser
       end
     end
 
-    # Add file
+    # Return effective sources
     #
-    # @param [String] file_name
-    #
-    # @return [undefined]
+    # @return [Enumerable<CLI::Source>]
     #
     # @api private
     #
-    def add_file(file_name)
-      if @skip_until
-        if @skip_until == file_name
-          @skip_until = nil
-        else
-          return
+    def effective_sources
+      if @start_with
+        reject = true
+        @sources.reject do |source|
+          if reject && source == @start_with
+            reject = false
+          end
+
+          reject
         end
-      end
-      unless @ignore.include?(file_name)
-        @sources << Source::File.new(file_name)
+      else
+        @sources
       end
     end
 
-    # Add directory
+    # Return sources for file name
     #
-    # @param [String] directory_name
+    # @param [String] file_name
     #
-    # @return [undefined]
+    # @return [Enumerable<CLI::Source>]
     #
     # @api private
     #
-    def add_directory(directory_name)
-      Dir.glob(File.join(directory_name, '**/*.rb')).each do |file_name|
-        add_file(file_name)
-      end
+    def sources(file_name)
+      files =
+        case
+        when File.directory?(file_name)
+          Dir.glob(File.join(file_name, '**/*.rb'))
+        when File.file?(file_name)
+          [file_name]
+        else
+          Dir.glob(file_name)
+        end
+
+      files.map(&Source::File.method(:new))
     end
 
   end # CLI
