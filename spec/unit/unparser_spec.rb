@@ -1250,6 +1250,10 @@ describe Unparser do
         assert_source <<-'RUBY'
           defined?(Foo)
         RUBY
+
+        assert_source <<-'RUBY'
+          defined?((a, b = [1, 2]))
+        RUBY
       end
     end
 
