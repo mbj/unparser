@@ -38,7 +38,7 @@ module Unparser
     # @return [true]
     #   if local variable is defined
     #
-    # @return [đalse]
+    # @return [false]
     #   otherwise
     #
     # @api private
