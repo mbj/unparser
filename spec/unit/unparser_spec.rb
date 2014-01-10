@@ -582,6 +582,11 @@ describe Unparser do
       assert_generates s(:begin), ''
 
       assert_source <<-'RUBY'
+        begin
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
         foo
         bar
       RUBY
