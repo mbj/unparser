@@ -779,31 +779,29 @@ describe Unparser do
         end)
       RUBY
 
-      pending 'parser-2.1.3 bug' do
-        assert_source <<-'RUBY'
-          super do
-            foo
-          end
-        RUBY
+      assert_source <<-'RUBY'
+        super do
+          foo
+        end
+      RUBY
 
-        assert_source <<-'RUBY'
-          super a do
-            foo
-          end
-        RUBY
+      assert_source <<-'RUBY'
+        super(a) do
+          foo
+        end
+      RUBY
 
-        assert_source <<-'RUBY'
-          super() do
-            foo
-          end
-        RUBY
+      assert_source <<-'RUBY'
+        super() do
+          foo
+        end
+      RUBY
 
-        assert_source <<-'RUBY'
-          super(a, b) do
-            foo
-          end
-        RUBY
-      end
+      assert_source <<-'RUBY'
+        super(a, b) do
+          foo
+        end
+      RUBY
 
     end
 
