@@ -51,6 +51,7 @@ module Unparser
 
 end # Unparser
 
+require 'unparser/strip_helper'
 require 'unparser/buffer'
 require 'unparser/node_helpers'
 require 'unparser/comments'
