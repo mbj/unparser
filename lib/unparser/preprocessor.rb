@@ -98,7 +98,7 @@ module Unparser
       # @api private
       #
       def result
-        n(node.type, visited_children)
+        node.updated(nil, visited_children)
       end
 
     end # Noop

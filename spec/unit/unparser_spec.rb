@@ -1504,84 +1504,82 @@ describe Unparser do
       RUBY
     end
 
-    pending 'comments' do
-      assert_source <<-'RUBY'
-        # comment before
-        a_line_of_code
-      RUBY
+    assert_source <<-'RUBY'
+      # comment before
+      a_line_of_code
+    RUBY
 
-      assert_source <<-'RUBY'
-        a_line_of_code # comment after
-      RUBY
+    assert_source <<-'RUBY'
+      a_line_of_code # comment after
+    RUBY
 
-      assert_source <<-'RUBY'
-        nested do # first
-          # second
-          something # comment
-          # another
-        end
-        # last
-      RUBY
+    assert_source <<-'RUBY'
+      nested do # first
+        # second
+        something # comment
+        # another
+      end
+      # last
+    RUBY
 
-      assert_generates <<-'RUBY', <<-'RUBY'
-        foo if bar
-        # comment
-      RUBY
-        if bar
-          foo
-        end
-        # comment
-      RUBY
+    assert_generates <<-'RUBY', <<-'RUBY'
+      foo if bar
+      # comment
+    RUBY
+      if bar
+        foo
+      end
+      # comment
+    RUBY
 
-      assert_source <<-'RUBY'
-        def noop
-          # do nothing
-        end
-      RUBY
+    assert_source <<-'RUBY'
+      def noop
+        # do nothing
+      end
+    RUBY
 
-      assert_source <<-'RUBY'
-        =begin
-          block comment
-        =end
-        nested do
-        =begin
-        another block comment
-        =end
-          something
-        =begin
-        last block comment
-        =end
-        end
-      RUBY
+    assert_source <<-'RUBY'
+      =begin
+        block comment
+      =end
+      nested do
+      =begin
+      another block comment
+      =end
+        something
+      =begin
+      last block comment
+      =end
+      end
+    RUBY
 
-      assert_generates(<<-'RUBY', <<-'RUBY')
-        1 + # first
-          2 # second
-      RUBY
-        1 + 2 # first # second
-      RUBY
+    assert_generates(<<-'RUBY', <<-'RUBY')
+      1 + # first
+        2 # second
+    RUBY
+      1 + 2 # first # second
+    RUBY
 
-      assert_generates(<<-'RUBY', <<-'RUBY')
-        1 +
-          # first
-          2 # second
-      RUBY
-        1 + 2 # first # second
-      RUBY
+    assert_generates(<<-'RUBY', <<-'RUBY')
+      1 +
+        # first
+        2 # second
+    RUBY
+      1 + 2 # first # second
+    RUBY
 
-      assert_generates(<<-'RUBY', <<-'RUBY')
-        1 +
-        =begin
-          block comment
-        =end
-          2
-      RUBY
-        1 + 2
-        =begin
-          block comment
-        =end
-      RUBY
+    assert_generates(<<-'RUBY', <<-'RUBY')
+      1 +
+      =begin
+        block comment
+      =end
+        2
+    RUBY
+      1 + 2
+      =begin
+        block comment
+      =end
+    RUBY
 
-    end
   end
 end
