@@ -106,9 +106,11 @@ UncommunicativeVariableName:
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
   exclude:
+  # TODO:
   - Unparser::Comments
+  # False positives
   - Unparser::Emitter::If
-  - Unparser::CLI # False positive
+  - Unparser::CLI
   enabled: true
   max_ifs: 1
 DataClump:
@@ -118,8 +120,9 @@ DataClump:
   min_clump_size: 3
 ControlParameter:
   exclude:
-    - Unparser::Emitter#emit_body # false positive
-    - Unparser::Emitter#conditional_parentheses # Intentionally a control structure like helper
+    # False positive:
+    - Unparser::Emitter#emit_body
+    - Unparser::Emitter#conditional_parentheses
   enabled: true
 NilCheck:
   enabled: false
