@@ -32,21 +32,6 @@ module Unparser
     buffer.content
   end
 
-  # Transquote string
-  #
-  # @param [String] raw_quoted
-  # @param [String] current_delimiter
-  # @param [String] target_delimiter
-  #
-  # @return [String]
-  #
-  # @api private
-  #
-  def self.transquote(raw_quoted, current_delimiter, target_delimiter)
-    raw = raw_quoted.gsub("\\#{current_delimiter}", current_delimiter)
-    raw.gsub(target_delimiter, "\\#{target_delimiter}").freeze
-  end
-
 end # Unparser
 
 require 'unparser/strip_helper'
