@@ -23,8 +23,8 @@ module Unparser
     #
     def self.run(node)
       return EMPTY if node.nil?
-      REGISTRY.fetch(node.type, [Noop]).reduce(node) do |node, processor|
-        processor.call(node)
+      REGISTRY.fetch(node.type, [Noop]).reduce(node) do |current, processor|
+        processor.call(current)
       end
     end
 
