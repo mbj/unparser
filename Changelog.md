@@ -1,3 +1,7 @@
+# v0.1.8 2013-01-xx
+
+* Fix all bugs found while round tripping rubyspec.
+
 # v0.1.7 2013-12-31
 
 * Add back support for root nodes of type resbody https://github.com/mbj/unparser/issues/24
