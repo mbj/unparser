@@ -106,9 +106,7 @@ UncommunicativeVariableName:
   - !ruby/regexp /[A-Z]/
 RepeatedConditional:
   exclude:
-  - Unparser::Emitter # FIXME
-  - Unparser::Comments # FIXME
-  - Unparser::Emitter::Send # TODO Fixme
+  - Unparser::Comments
   - Unparser::Emitter::If
   - Unparser::CLI # False positive
   enabled: true
