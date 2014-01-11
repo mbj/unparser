@@ -5,7 +5,7 @@ rvm:
   - 2.0.0
   - ruby
   - jruby
-  - rbx
+  - rbx-head
 notifications:
   irc:
     channels:
