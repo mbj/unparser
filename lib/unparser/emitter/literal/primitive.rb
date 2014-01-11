@@ -14,7 +14,7 @@ module Unparser
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 
-          handle :float, :sym, :str
+          handle :sym, :str
 
         private
 
@@ -30,9 +30,9 @@ module Unparser
 
         end # Inspect
 
-        class Int < self
+        class Numeric < self
 
-          handle :int
+          handle :int, :float
 
         private
 
@@ -47,7 +47,8 @@ module Unparser
               write(value.inspect)
             end
           end
-        end
+
+        end # Numeric
 
         # Literal emitter with macro regeneration base class
         class MacroSafe < self

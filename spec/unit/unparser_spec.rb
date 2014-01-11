@@ -1296,6 +1296,7 @@ describe Unparser do
     context 'binary operator methods' do
       %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
         assert_source "(-1) #{operator} 2"
+        assert_source "(-1.2) #{operator} 2"
         assert_source "left.#{operator}(*foo)"
         assert_source "left.#{operator}(a, b)"
         assert_source "self #{operator} b"

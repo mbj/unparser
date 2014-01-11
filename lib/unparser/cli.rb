@@ -149,11 +149,11 @@ module Unparser
       files =
         case
         when File.directory?(file_name)
-          Dir.glob(File.join(file_name, '**/*.rb'))
+          Dir.glob(File.join(file_name, '**/*.rb')).sort
         when File.file?(file_name)
           [file_name]
         else
-          Dir.glob(file_name)
+          Dir.glob(file_name).sort
         end
 
       files.map(&Source::File.method(:new))
