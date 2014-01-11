@@ -24,7 +24,7 @@ module Unparser
       def dispatch
         conditional_parentheses((parent_type == :or || parent_type == :and) && children.any?) do
           write(MAP.fetch(node.type))
-          emit_arguments
+          emit_arguments if children.any?
         end
       end
 
@@ -35,7 +35,6 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        return if children.empty?
         ws
         head, *tail = children
         emit_argument(head)
