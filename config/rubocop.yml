@@ -5,9 +5,6 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
-  Excludes:
-    - '**/vendor/**'
-    - '**/benchmarks/**'
 
 # Avoid parameter lists longer than five parameters.
 ParameterLists:
