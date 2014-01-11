@@ -211,11 +211,25 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        if arguments.empty? && receiver.nil? && AST.local_variable_defined_for_node?(local_variable_root, node, selector)
+        if arguments.empty? && receiver.nil? && local_variable_clash?
           write('()')
         else
           run(Arguments, n(:arguments, arguments))
         end
+      end
+
+      # Test for local variable clash
+      #
+      # @return [true]
+      #   if selector clashes with a local variable
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def local_variable_clash?
+        AST.local_variable_defined_for_node?(local_variable_root, node, selector)
       end
 
     end # Send
