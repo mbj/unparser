@@ -112,7 +112,7 @@ module Unparser
           when :const
             !subject.children.first
           when :send
-            receiver, _, *arguments = *subject
+            receiver, _selector, *arguments = *subject
             !receiver && arguments.empty?
           else
             false

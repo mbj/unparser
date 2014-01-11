@@ -10,7 +10,8 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 TooManyInstanceVariables:
-  exclude: []
+  exclude:
+  - Unparser::CLI
   enabled: true
   max_instance_variables: 3
 TooManyMethods:
@@ -21,6 +22,7 @@ TooManyMethods:
 UncommunicativeMethodName:
   accept:
   - s
+  - n
   exclude: []
   enabled: true
   reject:
@@ -117,5 +119,6 @@ NilCheck:
   enabled: false
 LongYieldList:
   max_params: 1
-  exclude: []
+  exclude:
+  - Unparser::AST::LocalVariableScope#visit
   enabled: true

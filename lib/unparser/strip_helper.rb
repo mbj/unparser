@@ -15,8 +15,7 @@ module Unparser
     # @api private
     #
     def strip(source)
-      source = source.rstrip
-      indent = source.scan(INDENT_PATTERN).min_by(&:length)
+      indent = source.rstrip.scan(INDENT_PATTERN).min_by(&:length)
       source.gsub(/^#{indent}/, '')
     end
 
