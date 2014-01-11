@@ -8,7 +8,7 @@ rvm:
   - rbx
 matrix:
   allowed_failures:
-    rvm: rbx
+    - rvm: rbx
 notifications:
   irc:
     channels:
