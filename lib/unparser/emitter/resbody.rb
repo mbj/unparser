@@ -10,8 +10,6 @@ module Unparser
       # Emitter for resbody in standalone form
       class Standalone < self
 
-        handle :resbody
-
       private
 
         # Perform dispatch
@@ -52,6 +50,8 @@ module Unparser
 
       # Emitter for resbody in keyworkd-embedded form
       class Embedded < self
+
+        handle :resbody
 
       private
 
