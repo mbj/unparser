@@ -5,7 +5,10 @@ rvm:
   - 2.0.0
   - ruby
   - jruby
-  - rbx-head
+  - rbx
+matrix:
+  allowed_failures:
+    rvm: rbx
 notifications:
   irc:
     channels:
