@@ -5,7 +5,6 @@ require 'optparse'
 require 'diff/lcs'
 require 'diff/lcs/hunk'
 
-require 'unparser/cli/preprocessor'
 require 'unparser/cli/source'
 require 'unparser/cli/differ'
 require 'unparser/cli/color'
