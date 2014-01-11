@@ -78,12 +78,13 @@ module Unparser
 
         # Return escaped child
         #
+        # @param [Parser::AST::Node] child
+        #
         # @return [Parser::AST::Node]
         #
         # @api private
         #
         def escape(child)
-          return child unless child.type == :str
           source = child.children.first
           Parser::AST::Node.new(:str, [Unparser.transquote(source, delimiter, DELIMITER)])
         end
