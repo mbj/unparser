@@ -90,6 +90,8 @@ module Unparser
 
         handle :masgn
 
+        PARENS = IceNine.deep_freeze(%w([ ]))
+
       private
 
         # Emit left
@@ -114,12 +116,8 @@ module Unparser
           case right.type
           when :array
             children = right.children
-            if children.empty?
-              write('[]')
-            else
-              write('[')
+            parentheses(*PARENS) do
               delimited(children)
-              write(']')
             end
           else
             visit(right)
