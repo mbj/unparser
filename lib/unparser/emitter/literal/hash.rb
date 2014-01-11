@@ -82,9 +82,9 @@ module Unparser
           children.map do |pair|
             key, _value = *pair
             if key.type == :sym && key.children.first.to_s =~ BAREWORD
-              s(:pair_colon, pair.children)
+              n(:pair_colon, pair.children)
             else
-              s(:pair_rocket, pair.children)
+              n(:pair_rocket, pair.children)
             end
           end
         end

@@ -214,7 +214,7 @@ module Unparser
         if arguments.empty? && receiver.nil? && AST.local_variable_defined_for_node?(local_variable_root, node, selector)
           write('()')
         else
-          run(Arguments, s(:arguments, arguments))
+          run(Arguments, n(:arguments, arguments))
         end
       end
 

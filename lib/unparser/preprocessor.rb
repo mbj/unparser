@@ -96,7 +96,7 @@ module Unparser
       # @api private
       #
       def result
-        s(node.type, visited_children)
+        n(node.type, visited_children)
       end
 
     end # Noop
@@ -129,7 +129,7 @@ module Unparser
       def collapsed_children
         chunked_children.each_with_object([]) do |(type, nodes), aggregate|
           if type == :str
-            aggregate << s(:str, [nodes.map { |node| node.children.first }.join])
+            aggregate << s(:str, nodes.map { |node| node.children.first }.join)
           else
             aggregate.concat(nodes)
           end
@@ -166,7 +166,34 @@ module Unparser
           node
         end
       end
+
     end # CompactDSTR
+
+    class Inifnity < self
+
+      register :float
+      register :int
+
+      NEG_INFINITY = Float::INFINITY - 1
+
+      # Return preprocessor result
+      #
+      # @param [Parser::AST::Node]
+      #
+      # @api pirvate
+      #
+      def result
+        value = node.children.first
+        case value
+        when Float::INFINITY
+          s(:const, s(:const, nil, :Float), :INFINITY)
+        when -NEG_INFINITY
+          s(:send, s(:const, s(:const, nil, :Float), :INFINITY), :-@)
+        else
+          node
+        end
+      end
+    end
 
     # Preprocessor for begin nodes. Removes begin nodes with one child.
     #

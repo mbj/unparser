@@ -80,6 +80,8 @@ describe Unparser do
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
+        assert_generates '10e10000000000', 'Float::INFINITY'
+        assert_generates '-10e10000000000', '-Float::INFINITY'
       end
 
       context 'string' do
@@ -173,6 +175,9 @@ describe Unparser do
       context 'float' do
         assert_source '-0.1'
         assert_source '0.1'
+        assert_source '0.1'
+        assert_generates '10.2e10000000000', 'Float::INFINITY'
+        assert_generates '-10.2e10000000000', '-Float::INFINITY'
         assert_generates s(:float, -0.1), '-0.1'
         assert_generates s(:float, 0.1), '0.1'
       end

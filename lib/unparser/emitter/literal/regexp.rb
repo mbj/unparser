@@ -50,7 +50,7 @@ module Unparser
           when :str
             buffer.append_without_prefix(escape(node).children.first)
           else
-            visit(s(:interpolated, [node]))
+            visit(s(:interpolated, node))
           end
         end
 

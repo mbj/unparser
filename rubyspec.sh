@@ -10,4 +10,6 @@ exec bundle exec bin/unparser ../rubyspec --fail-fast       \
   --ignore '../rubyspec/core/encoding/compatible_spec.rb'   \
   --ignore '../rubyspec/core/io/readpartial_spec.rb'        \
   --ignore '../rubyspec/core/env/element_reference_spec.rb' \
+  --ignore '../rubyspec/core/dir/pwd_spec.rb'               \
+  --ignore '../rubyspec/core/string/casecmp_spec.rb'        \
   $*
