@@ -24,9 +24,7 @@ module Unparser
   # @api private
   #
   def self.unparse(node, comment_array = [])
-    if node.nil?
-      node = Parser::AST::Node.new(:empty)
-    end
+    node = Preprocessor.run(node)
     buffer = Buffer.new
     comments = Comments.new(comment_array)
     root = Emitter::Root.new(Parser::AST::Node.new(:root, [node]), buffer, comments)
@@ -54,6 +52,7 @@ end # Unparser
 require 'unparser/strip_helper'
 require 'unparser/buffer'
 require 'unparser/node_helpers'
+require 'unparser/preprocessor'
 require 'unparser/comments'
 require 'unparser/constants'
 require 'unparser/ast'

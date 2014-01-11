@@ -13,7 +13,7 @@ module Unparser
 
       EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
 
-      NOINDENT_STANDALONE_RESCUE = [:root, :begin, :lvasgn, :ivasgn].to_set.freeze
+      NOINDENT_STANDALONE_RESCUE = [:root, :begin, :pair_rocket, :pair_colon, :lvasgn, :ivasgn].to_set.freeze
 
     private
 

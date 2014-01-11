@@ -92,7 +92,7 @@ module Unparser
       # @api private
       #
       def generated_ast
-        Preprocessor.run(parse(generated_source)) || s(:empty)
+        Preprocessor.run(parse(generated_source))
       rescue Parser::SyntaxError
         nil
       end
@@ -105,7 +105,7 @@ module Unparser
       # @api private
       #
       def original_ast
-        Preprocessor.run(parse(original_source)) || s(:empty)
+        Preprocessor.run(parse(original_source))
       rescue Parser::SyntaxError
         nil
       end

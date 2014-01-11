@@ -84,7 +84,7 @@ describe Unparser do
 
       context 'string' do
         assert_generates '?c', '"c"'
-        assert_source %q("foo" "bar")
+        assert_generates %q("foo" "bar"), %q("foobar")
         assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
         assert_source %q("\"")
         assert_source %q("foo#{1}bar")
@@ -233,8 +233,8 @@ describe Unparser do
 
     context 'magic keywords' do
       assert_generates '__ENCODING__', 'Encoding::UTF_8'
-      assert_source '__FILE__'
-      assert_source '__LINE__'
+      assert_generates '__FILE__', '"(string)"'
+      assert_generates '__LINE__', '1'
     end
 
     context 'assignment' do
@@ -585,8 +585,8 @@ describe Unparser do
 
       assert_source 'foo.bar(&baz)'
       assert_source 'foo.bar(:baz, &baz)'
-      assert_source 'foo.bar=(:baz)'
-      assert_source 'self.foo=(:bar)'
+      assert_source 'foo.bar=:baz'
+      assert_source 'self.foo=:bar'
 
       assert_source 'foo.bar(baz: boz)'
       assert_source 'foo.bar(foo, "baz" => boz)'
@@ -1159,7 +1159,7 @@ describe Unparser do
       context 'class' do
         assert_source <<-'RUBY'
           class TestClass
-          end # TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
@@ -1175,22 +1175,22 @@ describe Unparser do
 
         assert_source <<-'RUBY'
           class SomeNameSpace::TestClass
-          end # SomeNameSpace::TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
           class Some::Name::Space::TestClass
-          end # Some::Name::Space::TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
           class TestClass < Object
-          end # TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
           class TestClass < SomeNameSpace::Object
-          end # TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
@@ -1198,12 +1198,12 @@ describe Unparser do
             def foo
               :bar
             end
-          end # TestClass
+          end
         RUBY
 
         assert_source <<-'RUBY'
           class ::TestClass
-          end # ::TestClass
+          end
         RUBY
       end
 
@@ -1211,17 +1211,17 @@ describe Unparser do
 
         assert_source <<-'RUBY'
           module TestModule
-          end # TestModule
+          end
         RUBY
 
         assert_source <<-'RUBY'
           module SomeNameSpace::TestModule
-          end # SomeNameSpace::TestModule
+          end
         RUBY
 
         assert_source <<-'RUBY'
           module Some::Name::Space::TestModule
-          end # Some::Name::Space::TestModule
+          end
         RUBY
 
         assert_source <<-'RUBY'
@@ -1229,7 +1229,7 @@ describe Unparser do
             def foo
               :bar
             end
-          end # TestModule
+          end
         RUBY
 
       end
@@ -1295,7 +1295,7 @@ describe Unparser do
 
     context 'binary operator methods' do
       %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
-        assert_source "1 #{operator} 2"
+        assert_source "(-1) #{operator} 2"
         assert_source "left.#{operator}(*foo)"
         assert_source "left.#{operator}(a, b)"
         assert_source "self #{operator} b"
@@ -1498,7 +1498,7 @@ describe Unparser do
       RUBY
     end
 
-    context 'comments' do
+    pending 'comments' do
       assert_source <<-'RUBY'
         # comment before
         a_line_of_code
