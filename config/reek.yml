@@ -38,13 +38,18 @@ LongParameterList:
 FeatureEnvy:
   exclude:
   - Unparser::Emitter::Literal::Regexp#escape # TODO Fixme!
-  - Unparser::Emitter::Send::Arguments#effective_arguments # False positive
   - Unparser::Emitter::Send#binary_receiver?
   - Unparser::Emitter#visit_terminated
   - Unparser::CLI#add_options
   - Unparser::CLI::Source#error_report
   - Unparser::CLI::Preprocessor::Dstr#collapsed_children
   - Unparser::Comments#take_before
+  # False positives
+  - Unparser::CLI::Differ#collapsed_hunks
+  - Unparser::Emitter::Send::Arguments#effective_arguments
+  # Helper methods, false positive
+  - Unparser::StripHelper#strip
+  - Unparser::CLI#sources
   enabled: true
 ClassVariable:
   exclude: []
@@ -84,7 +89,10 @@ DuplicateMethodCall:
   max_calls: 1
 UtilityFunction:
   max_helper_calls: 1
-  exclude: []
+  exclude:
+  # Intent to be helper methods
+  - Unparser::StripHelper#strip
+  - Unparser::CLI#sources
   enabled: true
 Attribute:
   exclude: []
