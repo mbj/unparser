@@ -7,6 +7,7 @@ module Unparser
       # Emitter for regexp literals
       class Regexp < self
         DELIMITER = '/'.freeze
+        ESCAPED_DELIMITER = '\/'.freeze
 
         handle :regexp
 
@@ -86,21 +87,8 @@ module Unparser
         #
         def escape(child)
           source = child.children.first
-          Parser::AST::Node.new(:str, [Unparser.transquote(source, delimiter, DELIMITER)])
+          s(:str, source.gsub(DELIMITER, ESCAPED_DELIMITER))
         end
-
-        # Return closing delimiter
-        #
-        # @return [String]
-        #
-        # @api private
-        #
-        def delimiter
-          location = node.location
-          return DELIMITER unless location
-          location.end.source[-1]
-        end
-        memoize :delimiter
 
       end # Regexp
 
