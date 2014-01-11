@@ -5,12 +5,14 @@ unparser
 [![Dependency Status](https://gemnasium.com/mbj/unparser.png)](https://gemnasium.com/mbj/unparser)
 [![Code Climate](https://codeclimate.com/github/mbj/unparser.png)](https://codeclimate.com/github/mbj/unparser)
 
-Generate equivalent source for ASTs from whitequarks awesome [parser](https://github.com/whitequark/parser).
+Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 
 This library is able to reproduce 100% of ruby 1.9 and 2.0 syntax. Including its own source code.
+
 It serves well for [mutant](https://github.cm/mbj/mutant) mutators and the in-memory vendoring for self hosting.
 
-This library dropped the reproduction of 1.8 syntax in the 0.1.0 release. It currently does not have support for 2.1 specific syntax.
+This library dropped the reproduction of 1.8 syntax in the 0.1.0 release.
+It currently does not have support for 2.1 specific syntax.
 
 Usage
 -----
