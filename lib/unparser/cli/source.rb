@@ -26,10 +26,13 @@ module Unparser
       # @api private
       #
       def error_report
-        if original_ast && generated_ast
+        case
+        when original_ast && generated_ast
           error_report_with_ast_diff
-        else
-          error_report_with_parser_error
+        when !original_ast
+          error_report_original
+        when !generated_ast
+          error_report_generated
         end
       end
       memoize :error_report
@@ -47,20 +50,33 @@ module Unparser
       end
       memoize :generated_source
 
-      # Return error report with parser error
+      # Return error report for parsing original
       #
       # @return [String]
       #
       # @api private
       #
-      def error_report_with_parser_error
-        if !original_ast
-          "Parsing of original source failed:\n#{original_source}"
-        elsif !generated_ast
-          "Parsing of generated source failed:\n" \
-          "Original-AST:\n#{original_ast.inspect}\n" \
-          "Source:\n#{generated_source}"
-        end
+      def error_report_original
+        strip(<<-MESSAGE)
+          Parsing of original source failed:
+          #{original_source}
+        MESSAGE
+      end
+
+      # Return error report for parsing generated
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def error_report_generated
+        strip(<<-MESSAGE)
+          Parsing of generated source failed:
+          Original-AST:
+          #{original_ast.inspect}
+          Source:
+          #{generated_source}
+        MESSAGE
       end
 
       # Return error report with AST difference
@@ -70,15 +86,26 @@ module Unparser
       # @api private
       #
       def error_report_with_ast_diff
-        diff = Differ.call(
+        strip(<<-MESSAGE)
+          #{diff}
+          Original-Source:\n#{original_source}
+          Original-AST:\n#{original_ast.inspect}
+          Generated-Source:\n#{generated_source}
+          Generated-AST:\n#{generated_ast.inspect}
+        MESSAGE
+      end
+
+      # Return ast diff
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def ast_diff
+        Differ.call(
           original_ast.inspect.lines.map(&:chomp),
           generated_ast.inspect.lines.map(&:chomp)
         )
-        "#{diff}\n" \
-        "Original-Source:\n#{original_source}\n" \
-        "Original-AST:\n#{original_ast.inspect}\n" \
-        "Generated-Source:\n#{generated_source}\n" \
-        "Generated-AST:\n#{generated_ast.inspect}\n"
       end
 
       # Return generated AST
