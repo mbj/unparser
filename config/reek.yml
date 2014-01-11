@@ -69,6 +69,7 @@ NestedIterators:
   - Unparser::Emitter::Literal::Regexp#dispatch
   - Unparser::Emitter::Return#emit_break_return_arguments
   - Unparser::CLI::Preprocessor::Dstr#collapsed_children
+  - Unparser::Preprocessor::CollapseStrChildren#collapsed_children
   enabled: true
   max_allowed_nesting: 1
 TooManyStatements:

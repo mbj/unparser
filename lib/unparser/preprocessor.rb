@@ -151,6 +151,7 @@ module Unparser
 
     end # CollapseStrChildren
 
+    # Preprocessor eliminating unneded dstr nodes
     class CompactDSTR < self
 
       register :dstr
@@ -171,7 +172,8 @@ module Unparser
 
     end # CompactDSTR
 
-    class Inifnity < self
+    # Preprocessor transforming numeric nodes with infinity as value to round trippable aequivalent.
+    class Infinity < self
 
       register :float
       register :int

@@ -30,6 +30,7 @@ module Unparser
 
         end # Inspect
 
+        # Emiter for numeric literals
         class Numeric < self
 
           handle :int, :float
