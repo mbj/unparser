@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Unparser
   # Helpers for stripping source
   module StripHelper

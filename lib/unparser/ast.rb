@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Unparser
   # Namespace for AST processing tools
   module AST

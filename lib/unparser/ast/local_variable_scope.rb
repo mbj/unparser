@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Unparser
   module AST
     # Local variable scope enumerator
