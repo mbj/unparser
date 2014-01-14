@@ -1,8 +1,12 @@
-# v0.1.8 2013-01-xx
+# v0.1.9 2014-01-14
+
+* Fix emit of proc { |(a) }
+
+# v0.1.8 2014-01-11
 
 * Fix all bugs found while round tripping rubyspec.
 
-# v0.1.7 2013-12-31
+# v0.1.7 2014-01-03
 
 * Add back support for root nodes of type resbody https://github.com/mbj/unparser/issues/24
 
