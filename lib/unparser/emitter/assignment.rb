@@ -146,7 +146,7 @@ module Unparser
             delimited(children)
           end
 
-          if children.one? && !NO_COMMA.include?(children.first.type)
+          if children.one? && !NO_COMMA.include?(children.first.type) && parent_type != :arg_expr
             write(',')
           end
         end
