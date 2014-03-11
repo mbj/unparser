@@ -503,9 +503,9 @@ describe Unparser do
       assert_source '(array[i] = 1).foo'
       assert_source 'array[1..2].foo'
       assert_source '(a.attribute ||= foo).bar'
-      assert_source 'foo.bar=baz[1]'
-      assert_source 'foo.bar=(baz || foo)'
-      assert_source 'foo.bar=baz.bar'
+      assert_source 'foo.bar = baz[1]'
+      assert_source 'foo.bar = (baz || foo)'
+      assert_source 'foo.bar = baz.bar'
       assert_source 'foo << (bar * baz)'
       assert_source <<-'RUBY'
         foo ||= (a, _ = b)
@@ -596,8 +596,8 @@ describe Unparser do
 
       assert_source 'foo.bar(&baz)'
       assert_source 'foo.bar(:baz, &baz)'
-      assert_source 'foo.bar=:baz'
-      assert_source 'self.foo=:bar'
+      assert_source 'foo.bar = :baz'
+      assert_source 'self.foo = :bar'
 
       assert_source 'foo.bar(baz: boz)'
       assert_source 'foo.bar(foo, "baz" => boz)'

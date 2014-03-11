@@ -14,9 +14,12 @@ module Unparser
         #
         def dispatch
           emit_receiver
-          emit_selector
+          emit_attribute
+          emit_operator
           visit_terminated(arguments.first)
         end
+
+      private
 
         # Emit receiver
         #
@@ -27,6 +30,36 @@ module Unparser
         def emit_receiver
           visit_terminated(receiver)
           write(T_DOT)
+        end
+
+        # Emit attribute
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_attribute
+          write(attribute_name)
+        end
+
+        # Emit assignment operator
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_operator
+          write(WS, T_ASN, WS)
+        end
+
+        # Return attribute name
+        #
+        # @return [String]
+        #
+        # @api private
+        #
+        def attribute_name
+          string_selector[0..-2]
         end
 
       end # AttributeAssignment
