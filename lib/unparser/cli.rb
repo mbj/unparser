@@ -42,6 +42,7 @@ module Unparser
 
       @success   = true
       @fail_fast = false
+      @verbose   = false
 
       opts = OptionParser.new do |builder|
         add_options(builder)
@@ -68,6 +69,9 @@ module Unparser
       end
       builder.on('--start-with FILE') do |file|
         @start_with = sources(file).first
+      end
+      builder.on('-v', '--verbose') do |file|
+        @verbose = true
       end
       builder.on('--ignore FILE') do |file|
         @ignore.merge(sources(file))
@@ -107,9 +111,10 @@ module Unparser
     #
     def process_source(source)
       if source.success?
+        puts source.report if @verbose
         puts "Success: #{source.identification}"
       else
-        puts source.error_report
+        puts source.report
         puts "Error: #{source.identification}"
         @success = false
       end

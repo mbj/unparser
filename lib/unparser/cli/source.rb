@@ -25,17 +25,17 @@ module Unparser
       #
       # @api private
       #
-      def error_report
+      def report
         case
         when original_ast && generated_ast
-          error_report_with_ast_diff
+          report_with_ast_diff
         when !original_ast
-          error_report_original
+          report_original
         when !generated_ast
-          error_report_generated
+          report_generated
         end
       end
-      memoize :error_report
+      memoize :report
 
     private
 
@@ -50,13 +50,27 @@ module Unparser
       end
       memoize :generated_source
 
+      # Return stripped source
+      #
+      # @param [String] string
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def strip(source)
+        source = source.rstrip
+        indent = source.scan(/^\s*\n/).first[0..-2]
+        source.gsub(/^#{indent}/, '')
+      end
+
       # Return error report for parsing original
       #
       # @return [String]
       #
       # @api private
       #
-      def error_report_original
+      def report_original
         strip(<<-MESSAGE)
           Parsing of original source failed:
           #{original_source}
@@ -69,7 +83,7 @@ module Unparser
       #
       # @api private
       #
-      def error_report_generated
+      def report_generated
         strip(<<-MESSAGE)
           Parsing of generated source failed:
           Original-AST:
@@ -85,9 +99,9 @@ module Unparser
       #
       # @api private
       #
-      def error_report_with_ast_diff
+      def report_with_ast_diff
         strip(<<-MESSAGE)
-          #{diff}
+          #{ast_diff}
           Original-Source:\n#{original_source}
           Original-AST:\n#{original_ast.inspect}
           Generated-Source:\n#{generated_source}
