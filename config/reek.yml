@@ -17,6 +17,7 @@ TooManyInstanceVariables:
 TooManyMethods:
   exclude:
   - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses
+  - Unparser::CLI::Source # 11 methods
   enabled: true
   max_methods: 10
 UncommunicativeMethodName:
@@ -41,7 +42,7 @@ FeatureEnvy:
   - Unparser::CLI::Differ#collapsed_hunks
   - Unparser::Emitter::Send::Arguments#effective_arguments
   # Helper methods, false positive
-  - Unparser::StripHelper#strip
+  - Unparser::CLI::Source#strip
   - Unparser::CLI#sources
   enabled: true
 ClassVariable:
@@ -73,7 +74,7 @@ TooManyStatements:
   max_statements: 6
   enabled: true
   exclude:
-  - Unparser::CLI::Source#error_report
+  - Unparser::CLI#add_options
 DuplicateMethodCall:
   allow_calls: []
   exclude: []
@@ -83,7 +84,7 @@ UtilityFunction:
   max_helper_calls: 1
   exclude:
   # Intent to be helper methods
-  - Unparser::StripHelper#strip
+  - Unparser::CLI::Source#strip
   - Unparser::CLI#sources
   enabled: true
 Attribute:

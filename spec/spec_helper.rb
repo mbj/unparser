@@ -20,8 +20,6 @@ module SpecHelper
 end
 
 RSpec.configure do |config|
-  config.extend(Unparser::StripHelper)
-  config.include(Unparser::StripHelper)
   config.include(SpecHelper)
   config.extend(SpecHelper)
 end
