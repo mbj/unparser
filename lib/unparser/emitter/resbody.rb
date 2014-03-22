@@ -5,7 +5,7 @@ module Unparser
     # Emitter for rescue body nodes
     class Resbody < self
 
-        children :exception, :assignment, :body
+      children :exception, :assignment, :body
 
       # Emitter for resbody in standalone form
       class Standalone < self

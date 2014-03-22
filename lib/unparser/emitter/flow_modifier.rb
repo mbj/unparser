@@ -8,7 +8,7 @@ module Unparser
       MAP = {
         return: K_RETURN,
         next:   K_NEXT,
-        break:  K_BREAK,
+        break:  K_BREAK
       }
 
       handle(*MAP.keys)

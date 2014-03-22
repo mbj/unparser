@@ -7,7 +7,7 @@ module Unparser
 
       MAP = IceNine.deep_freeze(
         iflipflop: '..',
-        eflipflop: '...',
+        eflipflop: '...'
       ).freeze
 
       handle(*MAP.keys)
