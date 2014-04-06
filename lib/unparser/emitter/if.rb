@@ -36,7 +36,7 @@ module Unparser
       # @api private
       #
       def postcondition?
-        return false unless !!if_branch ^ !!else_branch
+        return false unless !if_branch.nil? ^ !else_branch.nil?
 
         body = if_branch || else_branch
 
