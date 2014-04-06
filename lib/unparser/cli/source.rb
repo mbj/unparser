@@ -92,7 +92,7 @@ module Unparser
       #
       def strip(source)
         source = source.rstrip
-        indent = source.scan(/^\s*/).min_by(&:length)
+        indent = source.scan(/^\s*/).first
         source.gsub(/^#{indent}/, '')
       end
 
@@ -137,7 +137,7 @@ module Unparser
           Original-AST:
           #{original_ast.inspect}
           Source:
-          #{generated}
+          #{generated.source}
         MESSAGE
       end
 
