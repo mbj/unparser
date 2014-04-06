@@ -53,7 +53,7 @@ Summary: unparser does not reproduce your source! It produces equivalent source.
 Testing:
 --------
 
-Unparser currently successfully round trips almost all ruby code around.
+Unparser currently successfully round trips almost all ruby code around. Using MRI-2.0.0.
 If there is a non round trippable example that is NOT subjected to known [Limitations](#limitations).
 please report a bug.
 
@@ -62,8 +62,11 @@ On CI unparser is currently tested against rubyspec with minor [excludes](https:
 Limitations:
 ------------
 
-Sources parsed with magic encoding headers other than UTF-8 and that have literal strings 
+Source parsed with magic encoding headers other than UTF-8 and that have literal strings.
 where parts can be represented in UTF-8 will fail to get reproduced.
+
+Please note: If you are on 1.9.3 and use UTF-8 encoded source via the magic encoding header: 
+Unparser does not reproduce these.
 
 A fix might be possible and requires some guessing or parser metadata the raw AST does not carry.
 
