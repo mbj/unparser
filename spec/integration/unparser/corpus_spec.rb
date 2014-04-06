@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe 'Unparser on ruby corpus' do
@@ -91,7 +93,13 @@ describe 'Unparser on ruby corpus' do
               s(:key_symbolize, :name,     s(:guard, s(:primitive, String))),
               s(:key_symbolize, :exclude,  s(:map, s(:guard, s(:primitive, String))))
             ),
-            s(:load_attribute_hash, Morpher::Evaluator::Transformer::Domain::Param.new(Project, [:repo_uri, :name, :exclude]))
+            s(:load_attribute_hash,
+              # NOTE: The domain param has no DSL currently!
+              Morpher::Evaluator::Transformer::Domain::Param.new(
+                Project,
+                [:repo_uri, :name, :exclude]
+              )
+            )
           )
         )
       )
