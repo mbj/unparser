@@ -152,7 +152,7 @@ module Unparser
           #{ast_diff}
           Original-Source:\n#{original_source}
           Original-AST:\n#{original_ast.inspect}
-          Generated-Source:\n#{generated}
+          Generated-Source:\n#{generated.source}
           Generated-AST:\n#{generated_ast.inspect}
         MESSAGE
       end

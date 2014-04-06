@@ -64,8 +64,8 @@ module Unparser
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
       builder.separator('')
-      builder.on('-e', '--evaluate SOURCE') do |original_source|
-        @sources << Source::String.new(original_source)
+      builder.on('-e', '--evaluate SOURCE') do |source|
+        @sources << Source::String.new(source)
       end
       builder.on('--start-with FILE') do |file|
         @start_with = sources(file).first
