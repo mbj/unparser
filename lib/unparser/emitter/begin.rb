@@ -45,16 +45,6 @@ module Unparser
           end
         end
 
-        # Emit inner delimited by semicolons
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_inner_semi
-          delimited(children, ';')
-        end
-
       end # Implicit
 
       # Emitter for explicit begins
