@@ -75,6 +75,7 @@ TooManyStatements:
   enabled: true
   exclude:
   - Unparser::CLI#add_options
+  - Unparser::CLI#initialize
 DuplicateMethodCall:
   allow_calls: []
   exclude: []
