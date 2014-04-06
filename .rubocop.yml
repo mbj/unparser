@@ -5,3 +5,4 @@ AllCops:
     - 'Gemfile.devtools'
     - 'vendor/**'
     - 'benchmarks/**'
+    - 'tmp/**'
