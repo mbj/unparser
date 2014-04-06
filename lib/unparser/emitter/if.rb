@@ -28,7 +28,7 @@ module Unparser
       # Test for postcondition
       #
       # @return [true]
-      #   if node must be emitted in postconditin style
+      #   if node must be emitted in postcondition style
       #
       # @return [false]
       #   otherwise
