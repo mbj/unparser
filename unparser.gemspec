@@ -19,10 +19,10 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version
 
-  gem.add_dependency('parser',        '~> 2.1.0')
+  gem.add_dependency('parser',        '~> 2.1.7')
   gem.add_dependency('procto',        '~> 0.0.2')
   gem.add_dependency('concord',       '~> 0.1.4')
   gem.add_dependency('adamantium',    '~> 0.2.0')
-  gem.add_dependency('equalizer',     '~> 0.0.7')
+  gem.add_dependency('equalizer',     '~> 0.0.9')
   gem.add_dependency('abstract_type', '~> 0.0.7')
 end
