@@ -6,6 +6,33 @@ module Unparser
     class Source
       include AbstractType, Adamantium::Flat, NodeHelpers
 
+      class Generated
+        include Concord::Public.new(:source, :ast, :error)
+
+        # Test if source was generated successfully
+        #
+        # @return [Boolean]
+        #
+        # @api private
+        #
+        def success?
+          !error
+        end
+
+        # Build generateg source
+        #
+        # @param [Parser::AST::Node]
+        #
+        # @api private
+        #
+        def self.build(ast)
+          source = Unparser.unparse(ast)
+          new(source, ast, nil)
+        rescue => exception
+          new(nil, ast, exception)
+        end
+      end
+
       # Test if source could be unparsed successfully
       #
       # @return [true]
@@ -16,7 +43,7 @@ module Unparser
       # @api private
       #
       def success?
-        original_ast && generated_ast && original_ast == generated_ast
+        generated.success? && original_ast && generated_ast && original_ast == generated_ast
       end
 
       # Return error report
@@ -31,8 +58,12 @@ module Unparser
           report_with_ast_diff
         when !original_ast
           report_original
+        when !generated.success?
+          report_unparser
         when !generated_ast
           report_generated
+        else
+          raise
         end
       end
       memoize :report
@@ -45,10 +76,10 @@ module Unparser
       #
       # @api private
       #
-      def generated_source
-        Unparser.unparse(original_ast)
+      def generated
+        Source::Generated.build(original_ast)
       end
-      memoize :generated_source
+      memoize :generated
 
       # Return stripped source
       #
@@ -60,8 +91,7 @@ module Unparser
       #
       def strip(source)
         source = source.rstrip
-        indent = source.scan(/^\s*\n/).first[0..-2]
-        source.gsub(/^#{indent}/, '')
+        source.gsub(/^\s*/, '')
       end
 
       # Return error report for parsing original
@@ -77,6 +107,22 @@ module Unparser
         MESSAGE
       end
 
+      # Report unparser bug
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def report_unparser
+        message = ['Unparsing parsed AST failed']
+        error = generated.error
+        message << error
+        error.backtrace.take(20).each(&message.method(:<<))
+        message << 'Original-AST:'
+        message << original_ast.inspect
+        message.join("\n")
+      end
+
       # Return error report for parsing generated
       #
       # @return [String]
@@ -89,7 +135,7 @@ module Unparser
           Original-AST:
           #{original_ast.inspect}
           Source:
-          #{generated_source}
+          #{generated}
         MESSAGE
       end
 
@@ -104,7 +150,7 @@ module Unparser
           #{ast_diff}
           Original-Source:\n#{original_source}
           Original-AST:\n#{original_ast.inspect}
-          Generated-Source:\n#{generated_source}
+          Generated-Source:\n#{generated}
           Generated-AST:\n#{generated_ast.inspect}
         MESSAGE
       end
@@ -133,7 +179,7 @@ module Unparser
       # @api private
       #
       def generated_ast
-        Preprocessor.run(parse(generated_source))
+        generated.success? && Preprocessor.run(parse(generated.source))
       rescue Parser::SyntaxError
         nil
       end
