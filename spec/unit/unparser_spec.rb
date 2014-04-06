@@ -794,6 +794,19 @@ describe Unparser do
       assert_source 'foo rescue(bar)'
       assert_source 'foo rescue(return bar)'
       assert_source 'x = foo rescue(return bar)'
+
+      %w(while until if).each do |keyword|
+        assert_source <<-RUBY
+          #{keyword} (foo rescue(false))
+          end
+        RUBY
+      end
+
+      assert_source <<-'RUBY'
+        case (foo rescue(false))
+        when true
+        end
+      RUBY
     end
 
     context 'super' do
@@ -1363,7 +1376,7 @@ describe Unparser do
     context 'flip flops' do
       context 'inclusive' do
         assert_source <<-'RUBY'
-          if (i == 4)..(i == 4)
+          if ((i == 4)..(i == 4))
             foo
           end
         RUBY
@@ -1371,7 +1384,7 @@ describe Unparser do
 
       context 'exclusive' do
         assert_source <<-'RUBY'
-          if (i == 4)...(i == 4)
+          if ((i == 4)...(i == 4))
             foo
           end
         RUBY

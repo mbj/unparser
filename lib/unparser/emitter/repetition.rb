@@ -91,7 +91,7 @@ module Unparser
       #
       def emit_normal
         emit_keyword
-        visit(condition)
+        visit_terminated(condition)
         emit_body
         k_end
       end

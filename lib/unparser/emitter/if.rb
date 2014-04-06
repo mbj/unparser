@@ -100,7 +100,7 @@ module Unparser
       # @api private
       #
       def emit_condition
-        visit(condition)
+        visit_terminated(condition)
       end
 
       # Emit if branch
