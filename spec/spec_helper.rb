@@ -1,6 +1,10 @@
-# encoding: utf-8
+# encoding: UTF-8
 
+require 'yaml'
+require 'pathname'
 require 'unparser'
+require 'anima'
+require 'morpher'
 require 'devtools/spec_helper'
 
 require 'parser/current'
