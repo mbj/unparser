@@ -2,6 +2,7 @@
 - name: rubyspec
   repo_uri: 'https://github.com/rubyspec/rubyspec.git'
   exclude:
+    # Binary encoded source subjected to limitations see Readme
     - core/array/pack/{b,h,u}_spec.rb
     - language/versions/*1.8*
     - core/array/pack/shared/float.rb
@@ -19,3 +20,4 @@
     - core/string/unpack/shared/float.rb
     - core/string/unpack/shared/integer.rb
     - core/symbol/casecmp_spec.rb
+    - optional/capi/integer_spec.rb

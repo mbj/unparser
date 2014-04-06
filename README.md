@@ -50,6 +50,15 @@ Parser::CurrentRuby.parse(generated) == node # true, but identical AST
 
 Summary: unparser does not reproduce your source! It produces equivalent source.
 
+Testing:
+--------
+
+Unparser currently successfully round trips almost all ruby code around.
+If there is a non round trippable example that is NOT subjected to known [#limitations](Limitations) 
+please report a bug.
+
+On CI unparser is currently tested against rubyspec with minor excludes.
+
 Limitations:
 ------------
 
@@ -57,7 +66,6 @@ Sources parsed with magic encoding headers other than UTF-8 and that have litera
 where parts can be represented in UTF-8 will fail to get reproduced.
 
 A fix might be possible and requires some guessing or parser metadata the raw AST does not carry.
-
 
 Example:
 
