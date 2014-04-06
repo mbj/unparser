@@ -50,6 +50,49 @@ Parser::CurrentRuby.parse(generated) == node # true, but identical AST
 
 Summary: unparser does not reproduce your source! It produces equivalent source.
 
+Limitations:
+------------
+
+Sources parsed with magic encoding headers other than UTF-8 and that have literal strings 
+where parts can be represented in UTF-8 will fail to get reproduced.
+
+A fix might be possible and requires some guessing or parser metadata the raw AST does not carry.
+
+
+Example:
+
+Original-Source:
+```ruby
+# -*- encoding: binary -*-
+
+"\x98\x76\xAB\xCD\x45\x32\xEF\x01\x01\x23\x45\x67\x89\xAB\xCD\xEF"
+```
+
+Original-AST:
+```
+(str "\x98v\xAB\xCDE2\xEF\x01\x01#Eg\x89\xAB\xCD\xEF")
+```
+
+Generated-Source:
+
+```ruby
+"\x98v\xAB\xCDE2\xEF\x01\x01#Eg\x89\xAB\xCD\xEF"
+```
+
+Generated-AST:
+
+```
+(str "\x98v\xAB\xCDE2\xEF\u0001\u0001#Eg\x89\xAB\xCD\xEF")
+```
+
+Diff:
+
+```
+@@ -1,2 +1,2 @@
+-(str "\x98v\xAB\xCDE2\xEF\x01\x01#Eg\x89\xAB\xCD\xEF")
++(str "\x98v\xAB\xCDE2\xEF\u0001\u0001#Eg\x89\xAB\xCD\xEF")
+```
+
 Installation
 ------------
 
