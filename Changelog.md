@@ -1,3 +1,8 @@
+# v0.1.10 2014-04-06
+
+* Fix emit of inline rescues in combination with control flow keywords.
+* Begin corpus testing on rake ci against rubyspec
+
 # v0.1.9 2014-01-14
 
 * Fix emit of proc { |(a) }
