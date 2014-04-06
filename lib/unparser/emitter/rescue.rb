@@ -49,7 +49,7 @@ module Unparser
         if parent_type == :ensure
           !parent.node.children.first.equal?(node)
         else
-          !EMBEDDED_TYPES.include?(parent_type) && body
+          !EMBEDDED_TYPES.include?(parent_type)
         end
       end
 
