@@ -92,7 +92,8 @@ module Unparser
       #
       def strip(source)
         source = source.rstrip
-        source.gsub(/^\s*/, '')
+        indent = source.scan(/^\s*/).min_by(&:length)
+        source.gsub(/^#{indent}/, '')
       end
 
       # Return error report for parsing original
