@@ -65,7 +65,7 @@ Limitations:
 Source parsed with magic encoding headers other than UTF-8 and that have literal strings.
 where parts can be represented in UTF-8 will fail to get reproduced.
 
-Please note: If you are on 1.9.3 and use UTF-8 encoded source via the magic encoding header: 
+Please note: If you are on 1.9.3 or any 1.9 mode ruby and use UTF-8 encoded source via the magic encoding header:
 Unparser does not reproduce these.
 
 A fix might be possible and requires some guessing or parser metadata the raw AST does not carry.
