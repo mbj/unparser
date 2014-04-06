@@ -30,7 +30,7 @@ module Unparser
       if @content[-1] == NL
         prefix
       end
-      @content << string
+      write(string)
       self
     end
 
@@ -43,7 +43,7 @@ module Unparser
     # @api private
     #
     def append_without_prefix(string)
-      @content << string
+      write(string)
       self
     end
 
@@ -76,7 +76,7 @@ module Unparser
     # @api private
     #
     def nl
-      @content << NL
+      write(NL)
       self
     end
 
@@ -127,7 +127,15 @@ module Unparser
     # @api private
     #
     def prefix
-      @content << INDENT_SPACE * @indent
+      write(INDENT_SPACE * @indent)
+    end
+
+    # Write to content buffer
+    #
+    # @param [String] fragment
+    #
+    def write(fragment)
+      @content << fragment
     end
 
   end # Buffer
