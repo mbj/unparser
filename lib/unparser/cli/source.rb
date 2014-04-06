@@ -6,6 +6,7 @@ module Unparser
     class Source
       include AbstractType, Adamantium::Flat, NodeHelpers
 
+      # Source state generated after first unparse
       class Generated
         include Concord::Public.new(:source, :ast, :error)
 
