@@ -724,6 +724,12 @@ describe Unparser do
 
       assert_source <<-'RUBY'
         begin
+        ensure
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        begin
         rescue
         ensure
         end
