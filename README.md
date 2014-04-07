@@ -104,6 +104,18 @@ Diff:
 +(str "\x98v\xAB\xCDE2\xEF\u0001\u0001#Eg\x89\xAB\xCD\xEF")
 ```
 
+Performance:
+------------
+
+Short story: Horrible. Long story: Current implementation of lvar scoping and detecting weird edge cases
+does infinite and very resource extensive backtracing. Performance grows exponential with amount of nodes.
+
+For [mutant](https://github.com/mbj/mutant), the primary reason this library was written it does currently not matter 
+as the subject of a mutation is currently an instance or singleton methods and these are small enough to avoid 
+the effect.
+
+A fix is possible and planned. This library is developed with correctnes > speed in mind.
+
 Installation
 ------------
 
