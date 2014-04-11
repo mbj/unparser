@@ -47,8 +47,8 @@ module Unparser
     #
     def self.local_variable_defined_for_node?(root, node, name)
       AST::LocalVariableScope.each(root) do |child, current, before|
-        if child.equal?(node) && current.include?(name)
-          return true
+        if child.equal?(node)
+          return current.include?(name)
         end
       end
 
