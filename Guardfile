@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+ENV['GUARD'] = '1'
+
 guard :bundler do
   watch('Gemfile')
 end
