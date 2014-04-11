@@ -7,73 +7,46 @@ module Unparser
     FIRST_CHILD = ->(node) { node.children.first }.freeze
     TAUTOLOGY   = ->(node) { true }.freeze
 
-    # Test if local variable was first at given assignment
-    #
-    # @param [Parser::AST::Node] root
-    # @param [Parser::AST::Node] assignment
-    #
-    # @return [true]
-    #   if local variable was firstly introduced in body
-    #
-    # @return [false]
-    #   otherwise
-    #
-    # @api private
-    #
-    def self.first_assignment?(root, assignment)
-      name = assignment.children.first
-      AST::LocalVariableScope.each(root) do |node, current, before|
-        if node.equal?(assignment) && current.include?(name) && !before.include?(name)
-          return true
-        end
-      end
+    RESET_NODES   = [:module, :class, :sclass, :def, :defs].freeze
+    INHERIT_NODES = [:block].freeze
+    CLOSE_NODES   = (RESET_NODES + INHERIT_NODES).freeze
 
-      false
-    end
-
-    # Test if local variable is defined for given node
+    # Nodes that assign a local variable
     #
-    # @param [Parser::AST::Node] root
+    # FIXME: Kwargs are missing.
+    #
+    ASSIGN_NODES = [:lvasgn, :arg, :optarg, :restarg].freeze
+
+    # Test for local variable inherited scope reset
+    #
     # @param [Parser::AST::Node] node
-    # @param [Symbol] name
     #
     # @return [true]
-    #   if local variable is defined
+    #   if local variable scope must NOT be reset
     #
     # @return [false]
     #   otherwise
     #
     # @api private
     #
-    def self.local_variable_defined_for_node?(root, node, name)
-      AST::LocalVariableScope.each(root) do |child, current, before|
-        if child.equal?(node)
-          return current.include?(name)
-        end
-      end
-
-      false
+    def self.not_close_scope?(node)
+      !CLOSE_NODES.include?(node.type)
     end
 
-    # Test if local variables where first assigned in body and read by conditional
+    # Test for local variable scope reset
     #
-    # @param [Parser::AST::Node] root
-    # @param [Parser::AST::Node] conditional
-    # @param [Parser::AST::Node] body
+    # @param [Parser::AST::Node] node
+    #
+    # @return [true]
+    #   if local variable scope must NOT be reset
+    #
+    # @return [false]
+    #   otherwise
     #
     # @api private
     #
-    def self.first_assignment_in_body_and_used_in_condition?(root, body, condition)
-      condition_reads = local_variables_read_in_scope(condition)
-
-      candidates = AST.local_variable_assignments_in_scope(body).select do |node|
-        name = node.children.first
-        condition_reads.include?(name)
-      end
-
-      candidates.any? do |node|
-        first_assignment?(root, node)
-      end
+    def self.not_reset_scope?(node)
+      !RESET_NODES.include?(node.type)
     end
 
     # Return local variables that get assigned in scope
@@ -84,11 +57,11 @@ module Unparser
     #
     # @api private
     #
-    def self.local_variable_assignments_in_scope(node)
+    def self.local_variable_assignments(node)
       Enumerator.new(
         node,
-        LocalVariableScope.method(:not_reset_scope?)
-      ).types(LocalVariableScope::ASSIGN_NODES)
+        method(:not_reset_scope?)
+      ).types(ASSIGN_NODES)
     end
 
     # Return local variables read
@@ -99,10 +72,10 @@ module Unparser
     #
     # @api private
     #
-    def self.local_variables_read_in_scope(node)
+    def self.local_variable_reads(node)
       Enumerator.new(
         node,
-        LocalVariableScope.method(:not_close_scope?)
+        method(:not_close_scope?)
       ).type(:lvar).map(&FIRST_CHILD).to_set
     end
 

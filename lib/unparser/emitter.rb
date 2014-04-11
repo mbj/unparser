@@ -15,8 +15,14 @@ module Unparser
       #
       # @api private
       #
-      def local_variable_root
-        node
+      def local_variable_scope
+        AST::LocalVariableScope.new(node)
+      end
+
+      def self.included(descendant)
+        descendant.class_eval do
+          memoize :local_variable_scope
+        end
       end
 
     end
@@ -27,8 +33,8 @@ module Unparser
     #
     # @api private
     #
-    def local_variable_root
-      parent.local_variable_root
+    def local_variable_scope
+      parent.local_variable_scope
     end
 
     # Registry for node emitters
