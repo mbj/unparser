@@ -1,3 +1,7 @@
+# v0.1.11 2014-04-11
+
+* Fix performance on local variable scope inspection
+
 # v0.1.10 2014-04-06
 
 * Fix emit of inline rescues in combination with control flow keywords.
