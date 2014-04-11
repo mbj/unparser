@@ -40,7 +40,7 @@ module Unparser
 
         body = if_branch || else_branch
 
-        AST.first_assignment_in_body_and_used_in_condition?(local_variable_root, body, condition)
+        local_variable_scope.first_assignment_in_body_and_used_in_condition?(body, condition)
       end
 
       # Emit in postcondition style

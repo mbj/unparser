@@ -2,19 +2,115 @@
 
 module Unparser
   module AST
-    # Local variable scope enumerator
+
+    # Calculated local variable scope for a given node
     class LocalVariableScope
+      include Enumerable, Adamantium, Concord.new(:node)
+
+      # Initialize object
+      #
+      # @param [Parser::AST::Node] node
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def initialize(node)
+        items = []
+        LocalVariableScopeEnumerator.each(node) do |*scope|
+          items << scope
+        end
+        @items = items
+        @node = node
+      end
+
+      # Test if local variable was first at given assignment
+      #
+      # @param [Parser::AST::Node] node
+      #
+      # @return [true]
+      #   if local variable was firstly introduced in body
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def first_assignment?(node)
+        name = node.children.first
+        match(node) do |current, before|
+          current.include?(name) && !before.include?(name)
+        end
+      end
+
+      # Test if local variable is defined for given node
+      #
+      # @param [Parser::AST::Node] node
+      # @param [Symbol] name
+      #
+      # @return [true]
+      #   if local variable is defined
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def local_variable_defined_for_node?(node, name)
+        match(node) do |current|
+          current.include?(name)
+        end
+      end
+
+      # Test if local variables where first assigned in body and read by conditional
+      #
+      # @param [Parser::AST::Node] conditional
+      # @param [Parser::AST::Node] body
+      #
+      # @api private
+      #
+      def first_assignment_in_body_and_used_in_condition?(body, condition)
+        condition_reads = AST.local_variable_reads(condition)
+
+        candidates = AST.local_variable_assignments(body).select do |node|
+          name = node.children.first
+          condition_reads.include?(name)
+        end
+
+        candidates.any? do |node|
+          first_assignment?(node)
+        end
+      end
+
+    private
+
+      # Match node
+      #
+      # @param [Parser::AST::Node] node
+      #   if block given
+      #
+      # @return [true]
+      #   if found an matched
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
+      def match(neddle)
+        @items.each do |node, current, before|
+          if node.equal?(neddle)
+            return yield(current, before)
+          end
+        end
+        false
+      end
+
+    end # LocalVariableScope
+
+    # Local variable scope enumerator
+    class LocalVariableScopeEnumerator
       include Enumerable
-
-      RESET_NODES   = [:module, :class, :sclass, :def, :defs].freeze
-      INHERIT_NODES = [:block].freeze
-      CLOSE_NODES   = (RESET_NODES + INHERIT_NODES).freeze
-
-      # Nodes that assign a local variable
-      #
-      # FIXME: Kwargs are missing.
-      #
-      ASSIGN_NODES = [:lvasgn, :arg, :optarg, :restarg].freeze
 
       # Initialize object
       #
@@ -37,38 +133,6 @@ module Unparser
       def self.each(node, &block)
         new.each(node, &block)
         self
-      end
-
-      # Test for local variable inherited scope reset
-      #
-      # @param [Parser::AST::Node] node
-      #
-      # @return [true]
-      #   if local variable scope must NOT be reset
-      #
-      # @return [false]
-      #   otherwise
-      #
-      # @api private
-      #
-      def self.not_close_scope?(node)
-        !CLOSE_NODES.include?(node.type)
-      end
-
-      # Test for local variable scope reset
-      #
-      # @param [Parser::AST::Node] node
-      #
-      # @return [true]
-      #   if local variable scope must NOT be reset
-      #
-      # @return [false]
-      #   otherwise
-      #
-      # @api private
-      #
-      def self.not_reset_scope?(node)
-        !RESET_NODES.include?(node.type)
       end
 
       # Enumerate local variable scope scope
@@ -109,7 +173,7 @@ module Unparser
       def visit(node, &block)
         before = current.dup
         enter(node)
-        yield node, current, before
+        yield node, current.dup, before
         node.children.each do |child|
           if child.kind_of?(Parser::AST::Node)
             visit(child, &block)
@@ -193,6 +257,6 @@ module Unparser
         @stack.pop
       end
 
-    end # LocalVariableScope
+    end # LocalVariableScopeEnumerator
   end # AST
 end # Unparser

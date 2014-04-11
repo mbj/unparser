@@ -7,6 +7,9 @@ describe 'Unparser on ruby corpus' do
     if RUBY_VERSION == '1.9.3'
       pending 'Corpus test not active for 1.9.3 because of limitations in encoding singalling, see Readme'
     end
+    if ENV['GUARD']
+      pending 'Do not execute corpus spec under guard'
+    end
   end
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
