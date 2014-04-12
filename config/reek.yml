@@ -121,11 +121,13 @@ ControlParameter:
     # False positive:
     - Unparser::Emitter#emit_body
     - Unparser::Emitter#conditional_parentheses
+    - Unparser::AST::LocalVariableScope#match
   enabled: true
 NilCheck:
   enabled: false
 LongYieldList:
   max_params: 1
   exclude:
-  - Unparser::AST::LocalVariableScope#visit
+  - Unparser::AST::LocalVariableScopeEnumerator#visit
+  - Unparser::AST::LocalVariableScope#match
   enabled: true
