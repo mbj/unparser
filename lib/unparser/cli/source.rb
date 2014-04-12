@@ -256,6 +256,23 @@ module Unparser
         memoize :original_source
 
       end # File
+
+      # Source passed in as node
+      class Node < self
+        include Concord.new(:original_ast)
+
+        # Return original source
+        #
+        # @return [String]
+        #
+        # @api private
+        #
+        def original_source
+          Unparser.unparse(original_ast)
+        end
+        memoize :original_source
+      end # Node
+
     end # Source
   end # CLI
 end # Unparser
