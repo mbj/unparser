@@ -1,3 +1,7 @@
+# v0.1.12 2014-04-13
+
+* Add support for 2.1 kwsplat
+
 # v0.1.11 2014-04-11
 
 * Fix performance on local variable scope inspection
@@ -9,7 +13,7 @@
 
 # v0.1.9 2014-01-14
 
-* Fix emit of proc { |(a) }
+* Fix emit of proc { |(a)| }
 
 # v0.1.8 2014-01-11
 
