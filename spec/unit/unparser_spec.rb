@@ -71,6 +71,22 @@ describe Unparser do
       assert_round_trip(strip(input), versions)
     end
 
+    context 'kwargs' do
+      assert_source <<-RUBY, %w(2.1)
+        def foo(bar:, baz:)
+        end
+      RUBY
+
+      assert_source <<-RUBY, %w(2.1)
+        foo(**bar)
+      RUBY
+
+      assert_source <<-RUBY, %w(2.1)
+        def foo(bar:, baz: "value")
+        end
+      RUBY
+    end
+
     context 'literal' do
       context 'fixnum' do
         assert_generates s(:int,  1),  '1'

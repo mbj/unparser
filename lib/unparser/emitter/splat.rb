@@ -3,6 +3,27 @@
 module Unparser
   class Emitter
     # Emitter for splats
+    class KwSplat < self
+
+      handle :kwsplat
+
+      children :subject
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        write(T_SPLAT, T_SPLAT)
+        visit(subject)
+      end
+    end
+
+    # Emitter for splats
     class Splat < self
 
       handle :splat
