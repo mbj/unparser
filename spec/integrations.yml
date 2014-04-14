@@ -1,4 +1,8 @@
 ---
+# Might not elaborate all 2.1 specific ASTs but the only 2.1 lib I know
+- name: chassis
+  repo_uri: 'https://github.com/ahawkins/chassis.git'
+  exclude: []
 - name: rubyspec
   repo_uri: 'https://github.com/rubyspec/rubyspec.git'
   exclude:
