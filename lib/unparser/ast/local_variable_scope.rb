@@ -21,7 +21,7 @@ module Unparser
           items << scope
         end
         @items = items
-        @node = node
+        super(node)
       end
 
       # Test if local variable was first at given assignment
