@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w(README.md)
   gem.executables      = [ 'unparser' ]
 
-  gem.required_ruby_version
+  gem.required_ruby_version = '>= 1.9.3'
 
   gem.add_dependency('parser',        '~> 2.1')
   gem.add_dependency('procto',        '~> 0.0.2')
