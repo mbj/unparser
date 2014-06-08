@@ -1,3 +1,7 @@
+# v0.1.13 2014-06-08
+
+* Add support for rubinius.
+
 # v0.1.12 2014-04-13
 
 * Add support for 2.1 kwsplat
