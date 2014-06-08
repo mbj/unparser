@@ -9,8 +9,6 @@ module Unparser
 
         children :value
 
-      private
-
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 

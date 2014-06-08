@@ -5,7 +5,7 @@ module Unparser
   module AST
 
     FIRST_CHILD = ->(node) { node.children.first }.freeze
-    TAUTOLOGY   = ->(node) { true }.freeze
+    TAUTOLOGY   = ->(_node) { true }.freeze
 
     RESET_NODES   = [:module, :class, :sclass, :def, :defs].freeze
     INHERIT_NODES = [:block].freeze
@@ -193,9 +193,8 @@ module Unparser
         return unless controller.call(node)
         block.call(node)
         node.children.each do |child|
-          if child.kind_of?(Parser::AST::Node)
-            call(child)
-          end
+          next unless child.kind_of?(Parser::AST::Node)
+          call(child)
         end
         self
       end

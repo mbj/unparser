@@ -70,7 +70,7 @@ module Unparser
       builder.on('--start-with FILE') do |file|
         @start_with = sources(file).first
       end
-      builder.on('-v', '--verbose') do |file|
+      builder.on('-v', '--verbose') do
         @verbose = true
       end
       builder.on('--ignore FILE') do |file|
@@ -91,9 +91,7 @@ module Unparser
       effective_sources.each do |source|
         next if @ignore.include?(source)
         process_source(source)
-        if @fail_fast
-          break unless @success
-        end
+        break unless @success if @fail_fast
       end
 
       @success ? EXIT_SUCCESS : EXIT_FAILURE

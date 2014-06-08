@@ -99,9 +99,7 @@ module Unparser
       #
       def match(neddle)
         @items.each do |node, current, before|
-          if node.equal?(neddle)
-            return yield(current, before)
-          end
+          return yield(current, before) if node.equal?(neddle)
         end
         false
       end
@@ -175,9 +173,7 @@ module Unparser
         enter(node)
         yield node, current.dup, before
         node.children.each do |child|
-          if child.kind_of?(Parser::AST::Node)
-            visit(child, &block)
-          end
+          visit(child, &block) if child.kind_of?(Parser::AST::Node)
         end
         leave(node)
       end
@@ -210,9 +206,7 @@ module Unparser
       # @api private
       #
       def leave(node)
-        if CLOSE_NODES.include?(node.type)
-          pop
-        end
+        pop if CLOSE_NODES.include?(node.type)
       end
 
       # Define a local variable on current stack

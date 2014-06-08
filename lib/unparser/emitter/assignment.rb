@@ -30,10 +30,9 @@ module Unparser
         #
         def emit_right
           right = right_node
-          if right
-            write(WS, T_ASN, WS)
-            visit(right)
-          end
+          return unless right
+          write(WS, T_ASN, WS)
+          visit(right)
         end
 
         abstract_method :emit_left
@@ -146,9 +145,7 @@ module Unparser
             delimited(children)
           end
 
-          if children.one? && !NO_COMMA.include?(children.first.type) && parent_type != :arg_expr
-            write(',')
-          end
+          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && parent_type != :arg_expr
         end
 
       end # MLHS

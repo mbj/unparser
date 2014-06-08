@@ -42,10 +42,9 @@ module Unparser
       #
       def dispatch
         delimited(normal_arguments)
-        unless shadowargs.empty?
-          write('; ')
-          delimited(shadowargs)
-        end
+        return if shadowargs.empty?
+        write('; ')
+        delimited(shadowargs)
       end
 
       # Return normal arguments

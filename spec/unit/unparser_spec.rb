@@ -134,7 +134,7 @@ describe Unparser do
       context 'execute string' do
         assert_source '`foo`'
         assert_source '`foo#{@bar}`'
-        assert_generates  '%x(\))', '`)`'
+        assert_generates '%x(\))', '`)`'
         # FIXME: Research into this one!
         # assert_generates  '%x(`)', '`\``'
         assert_source '`"`'
@@ -179,9 +179,9 @@ describe Unparser do
 
       context 'irange' do
         assert_generates '1..2', %q(1..2)
-        assert_source   '(0.0 / 0.0)..1'
-        assert_source   '1..(0.0 / 0.0)'
-        assert_source   '(0.0 / 0.0)..100'
+        assert_source '(0.0 / 0.0)..1'
+        assert_source '1..(0.0 / 0.0)'
+        assert_source '(0.0 / 0.0)..100'
       end
 
       context 'erange' do

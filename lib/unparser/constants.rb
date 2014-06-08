@@ -115,9 +115,8 @@ module Unparser
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze
-      if name.to_s.start_with?('K_')
-        keywords << value.to_sym
-      end
+      next unless name.to_s.start_with?('K_')
+      keywords << value.to_sym
     end.to_set.freeze
 
   end # Constants

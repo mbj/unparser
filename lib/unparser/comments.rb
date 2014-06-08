@@ -43,9 +43,7 @@ module Unparser
     #
     def consume(node, source_part = :expression)
       range = source_range(node, source_part)
-      if range
-        @last_range_consumed = range
-      end
+      @last_range_consumed = range if range
     end
 
     # Take end-of-line comments

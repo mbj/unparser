@@ -76,12 +76,12 @@ describe 'Unparser on ruby corpus' do
     # @api private
     #
     def system(arguments)
-      unless Kernel.system(*arguments)
-        if block_given?
-          yield
-        else
-          raise 'System command failed!'
-        end
+      return if Kernel.system(*arguments)
+
+      if block_given?
+        yield
+      else
+        raise 'System command failed!'
       end
     end
 

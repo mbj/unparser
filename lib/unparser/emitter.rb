@@ -345,10 +345,9 @@ module Unparser
     #
     def emit_comments_before(source_part = :expression)
       comments_before = comments.take_before(node, source_part)
-      unless comments_before.empty?
-        emit_comments(comments_before)
-        buffer.nl
-      end
+      return if comments_before.empty?
+      emit_comments(comments_before)
+      buffer.nl
     end
 
     # Write end-of-line comments
@@ -372,10 +371,9 @@ module Unparser
     def emit_eof_comments
       emit_eol_comments
       comments_left = comments.take_all
-      unless comments_left.empty?
-        buffer.nl
-        emit_comments(comments_left)
-      end
+      return if comments_left.empty?
+      buffer.nl
+      emit_comments(comments_left)
     end
 
     # Write each comment to a separate line

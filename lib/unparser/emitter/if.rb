@@ -114,9 +114,7 @@ module Unparser
           visit_indented(if_branch)
         end
 
-        if !if_branch && !else_branch
-          nl
-        end
+        nl if !if_branch && !else_branch
       end
 
       # Emit else branch
