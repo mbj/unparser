@@ -86,7 +86,11 @@ module Unparser
           # @api private
           #
           def emit_normal_arguments
-            *indices, value = arguments
+            # Workaround bug in RBX causes to crash here on
+            # *indices, value = arguments
+            #
+            # https://github.com/rubinius/rubinius/issues/3037
+            indices, value = arguments[0..-2], arguments.last
             parentheses(*INDEX_PARENS) do
               delimited(indices)
             end
