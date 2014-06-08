@@ -4,6 +4,8 @@ unparser
 [![Build Status](https://secure.travis-ci.org/mbj/unparser.png?branch=master)](http://travis-ci.org/mbj/unparser)
 [![Dependency Status](https://gemnasium.com/mbj/unparser.png)](https://gemnasium.com/mbj/unparser)
 [![Code Climate](https://codeclimate.com/github/mbj/unparser.png)](https://codeclimate.com/github/mbj/unparser)
+[![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
+[![Gittip](https://img.shields.io/gittip/mbj.svg)](https://gittip.com/mbj)
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 
