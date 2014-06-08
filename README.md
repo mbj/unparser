@@ -9,7 +9,7 @@ unparser
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 
-This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 (currently testing) syntax. Including its own source code.
+This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 syntax. Including its own source code.
 
 It serves well for [mutant](https://github.com/mbj/mutant) mutators and the in-memory vendoring for self hosting.
 
