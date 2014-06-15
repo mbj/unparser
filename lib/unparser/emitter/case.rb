@@ -8,6 +8,7 @@ module Unparser
       handle :case
 
       children :condition
+      define_group :whens, 1..-2
 
     private
 
@@ -46,7 +47,7 @@ module Unparser
       #
       def emit_whens
         nl
-        children[1..-2].each(&method(:visit))
+        whens.each(&method(:visit))
       end
 
       # Emit condition
@@ -67,6 +68,8 @@ module Unparser
     class When < self
 
       handle :when
+
+      define_group :captures, 0 .. -2
 
     private
 
@@ -90,9 +93,9 @@ module Unparser
       # @api private
       #
       def emit_captures
-        delimited(children[0..-2])
+        delimited(captures)
       end
 
-    end
+    end # When
   end # Emitter
 end # Unparser
