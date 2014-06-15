@@ -46,9 +46,7 @@ module Unparser
       #
       def emit_whens
         nl
-        children[1..-2].each do |child|
-          visit(child)
-        end
+        children[1..-2].each(&method(:visit))
       end
 
       # Emit condition

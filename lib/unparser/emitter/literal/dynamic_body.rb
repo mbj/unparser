@@ -42,9 +42,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          children.each do |node|
-            emit_segment(node)
-          end
+          children.each(&method(:emit_segment))
         end
 
         # Emit segment

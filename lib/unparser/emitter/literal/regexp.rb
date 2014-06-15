@@ -21,9 +21,7 @@ module Unparser
         #
         def dispatch
           parentheses(DELIMITER, DELIMITER) do
-            body.each do |child|
-              write_body(child)
-            end
+            body.each(&method(:write_body))
           end
           visit(children.last)
         end
