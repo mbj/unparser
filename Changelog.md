@@ -1,3 +1,7 @@
+# v0.1.14 2014-06-15
+
+* Fix emitter to correctly unparse foo[] = 1
+
 # v0.1.13 2014-06-08
 
 * Add support for rubinius.
