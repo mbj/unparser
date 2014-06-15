@@ -392,6 +392,7 @@ describe Unparser do
       assert_source 'self.foo'
       assert_source 'a.foo'
       assert_source 'A.foo'
+      assert_source 'foo[]'
       assert_source 'foo[1]'
       assert_source 'foo[*baz]'
       assert_source 'foo(1)'
@@ -515,9 +516,9 @@ describe Unparser do
       assert_source 'yield.foo'
       assert_source 'Foo::Bar.foo'
       assert_source '::BAZ.foo'
-      assert_source 'array[i].foo'
-      assert_source '(array[i] = 1).foo'
-      assert_source 'array[1..2].foo'
+      assert_source 'foo[i].foo'
+      assert_source '(foo[i] = 1).foo'
+      assert_source 'foo[1..2].foo'
       assert_source '(a.attribute ||= foo).bar'
       assert_source 'foo.bar = baz[1]'
       assert_source 'foo.bar = (baz || foo)'
@@ -1304,15 +1305,15 @@ describe Unparser do
       end
 
       context 'element assignment' do
-        assert_source 'array[index] = value'
-        assert_source 'array[*index] = value'
-        assert_source 'array[a, b] = value'
+        assert_source 'foo[index] = value'
+        assert_source 'foo[*index] = value'
+        assert_source 'foo[a, b] = value'
         assert_source 'array.[]=()'
 
         %w(+ - * / % & | || &&).each do |operator|
           context "with #{operator}" do
-            assert_source "array[index] #{operator}= 2"
-            assert_source "array[] #{operator}= 2"
+            assert_source "foo[index] #{operator}= 2"
+            assert_source "foo[] #{operator}= 2"
           end
         end
       end
