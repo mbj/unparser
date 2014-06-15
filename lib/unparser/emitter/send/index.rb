@@ -50,25 +50,6 @@ module Unparser
         # Emitter for assign to index nodes
         class Assign < self
 
-          def self.define_group(name, first, last)
-            range = first .. last
-            define_method(name) do
-              children[range]
-            end
-            memoize name
-
-            indice_method_name = "#{name}_indices"
-            define_method(indice_method_name) do
-              effective_last = if last < 0
-                                 children.length + last
-                               else
-                                 last
-                               end
-              first.start.upto(effective_last).to_a
-            end
-            memoize indice_method_name
-          end
-
           define_group(:indices, 2, -2)
           define_child(:value, -1)
 

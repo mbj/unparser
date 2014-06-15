@@ -6,6 +6,16 @@ module Unparser
   class Emitter
     include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)
+    extend DSL
+
+    # Registry for node emitters
+    REGISTRY = {}
+
+    NOINDENT = [:rescue, :ensure].to_set.freeze
+
+    DEFAULT_DELIMITER = ', '.freeze
+
+    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     module LocalVariableRoot
 
@@ -25,7 +35,7 @@ module Unparser
         end
       end
 
-    end
+    end # LocalVariableRoot
 
     # Return local variable root
     #
@@ -36,15 +46,6 @@ module Unparser
     def local_variable_scope
       parent.local_variable_scope
     end
-
-    # Registry for node emitters
-    REGISTRY = {}
-
-    NOINDENT = [:rescue, :ensure].to_set.freeze
-
-    DEFAULT_DELIMITER = ', '.freeze
-
-    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
     # Return assigned lvars
     #
@@ -63,54 +64,6 @@ module Unparser
     def node_type
       node.type
     end
-
-    # Define remaining children
-    #
-    # @param [Enumerable<Symbol>] names
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def self.define_remaining_children(names)
-      define_method(:remaining_children) do
-        children[names.length..-1]
-      end
-      private :remaining_children
-    end
-    private_class_method :define_remaining_children
-
-    # Define named child
-    #
-    # @param [Symbol] name
-    # @param [Fixnum] index
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def self.define_child(name, index)
-      define_method(name) do
-        children.at(index)
-      end
-      protected name
-    end
-    private_class_method :define_child
-
-    # Create name helpers
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def self.children(*names)
-      define_remaining_children(names)
-
-      names.each_with_index do |name, index|
-        define_child(name, index)
-      end
-    end
-    private_class_method :children
 
     # Register emitter for type
     #

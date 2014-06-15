@@ -9,7 +9,7 @@ module Unparser
 
       children :body, :rescue_body
 
-      RESCUE_BODIES_RANGE = (1..-2).freeze
+      define_group :rescue_bodies, 1, -2
 
       EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
 
@@ -81,16 +81,6 @@ module Unparser
           run(Resbody::Embedded, child)
         end
         emit_else
-      end
-
-      # Return rescue bodies
-      #
-      # @return [Enumerable<Parser::AST::Node>]
-      #
-      # @api private
-      #
-      def rescue_bodies
-        children[RESCUE_BODIES_RANGE]
       end
 
       # Emit else
