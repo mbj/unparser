@@ -38,7 +38,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        run(effective_emitter)
+        effective_emitter.new(node, parent).write_to_buffer
       end
 
       # Return effective emitter
@@ -129,7 +129,7 @@ module Unparser
       # @api private
       #
       def mlhs?
-        assignment? && !arguments?
+        parent_type.equal?(:mlhs)
       end
 
       # Test for assignment

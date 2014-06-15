@@ -1308,7 +1308,8 @@ describe Unparser do
         assert_source 'foo[index] = value'
         assert_source 'foo[*index] = value'
         assert_source 'foo[a, b] = value'
-        assert_source 'array.[]=()'
+        assert_source 'foo.[]=()'
+        assert_source 'foo[] = 1'
 
         %w(+ - * / % & | || &&).each do |operator|
           context "with #{operator}" do

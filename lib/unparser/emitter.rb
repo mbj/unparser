@@ -176,10 +176,7 @@ module Unparser
 
     # Test if node is emitted as terminated expression
     #
-    # @return [false]
-    #   if emitted node is unambigous
-    #
-    # @return [true]
+    # @return [Boolean]
     #
     # @api private
     #

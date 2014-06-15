@@ -6,7 +6,6 @@ module Unparser
     class Root < self
       include Concord::Public.new(:node, :buffer, :comments)
       include LocalVariableRoot
-
     end # Root
   end # Emitter
 end # Unparser

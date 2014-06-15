@@ -16,7 +16,7 @@ module Unparser
         #
         def dispatch
           emit_receiver
-          emit_arguments
+          emit_operation
         end
 
         # Emit receiver
@@ -40,7 +40,7 @@ module Unparser
           #
           # @api private
           #
-          def emit_arguments
+          def emit_operation
             parentheses(*INDEX_PARENS) do
               delimited(arguments)
             end
@@ -50,20 +50,43 @@ module Unparser
         # Emitter for assign to index nodes
         class Assign < self
 
+          def self.define_group(name, first, last)
+            range = first .. last
+            define_method(name) do
+              children[range]
+            end
+            memoize name
+
+            indice_method_name = "#{name}_indices"
+            define_method(indice_method_name) do
+              effective_last = if last < 0
+                                 children.length + last
+                               else
+                                 last
+                               end
+              first.start.upto(effective_last).to_a
+            end
+            memoize indice_method_name
+          end
+
+          define_group(:indices, 2, -2)
+          define_child(:value, -1)
+
           # Emit arguments
           #
           # @return [undefined]
           #
           # @api private
           #
-          def emit_arguments
-            case arguments.length
-            when 0
+          def emit_operation
+            if arguments.empty?
               emit_regular_with_empty_args
-            when 1
-              emit_mlhs_arguments
             else
-              emit_normal_arguments
+              if mlhs?
+                emit_mlhs_operation
+              else
+                emit_normal_operation
+              end
             end
           end
 
@@ -73,7 +96,7 @@ module Unparser
           #
           # @api private
           #
-          def emit_mlhs_arguments
+          def emit_mlhs_operation
             parentheses(*INDEX_PARENS) do
               delimited(arguments)
             end
@@ -85,12 +108,7 @@ module Unparser
           #
           # @api private
           #
-          def emit_normal_arguments
-            # Workaround bug in RBX causes to crash here on
-            # *indices, value = arguments
-            #
-            # https://github.com/rubinius/rubinius/issues/3037
-            indices, value = arguments[0..-2], arguments.last
+          def emit_normal_operation
             parentheses(*INDEX_PARENS) do
               delimited(indices)
             end
