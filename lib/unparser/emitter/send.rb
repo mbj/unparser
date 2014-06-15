@@ -14,8 +14,6 @@ module Unparser
       INDEX_ASSIGN    = :'[]='
       ASSIGN_SUFFIX   = '='.freeze
 
-      AMBIGOUS = [:irange, :erange].to_set.freeze
-
       children :receiver, :selector
 
       # Test for terminated expression
