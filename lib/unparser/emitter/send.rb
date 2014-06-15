@@ -18,11 +18,7 @@ module Unparser
 
       # Test for terminated expression
       #
-      # @return [true]
-      #   if send is terminated
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -94,11 +90,7 @@ module Unparser
 
       # Test for unary operator implemented as method
       #
-      # @return [true]
-      #   if node is a unary operator
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -108,11 +100,7 @@ module Unparser
 
       # Test for binary operator implemented as method
       #
-      # @return [true]
-      #   if node is a binary operator
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -136,11 +124,7 @@ module Unparser
 
       # Test for mlhs
       #
-      # @return [true]
-      #   if node is within an mlhs
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -152,11 +136,7 @@ module Unparser
       #
       # FIXME: This also returns true for <= operator!
       #
-      # @return [true]
-      #   if node represents attribute / element assignment
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
