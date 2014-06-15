@@ -9,7 +9,7 @@ module Unparser
 
       children :body, :rescue_body
 
-      define_group :rescue_bodies, 1, -2
+      define_group :rescue_bodies, 1..-2
 
       EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
 

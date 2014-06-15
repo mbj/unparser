@@ -50,7 +50,7 @@ module Unparser
         # Emitter for assign to index nodes
         class Assign < self
 
-          define_group(:indices, 2, -2)
+          define_group(:indices, 2..-2)
           define_child(:value, -1)
 
           # Emit arguments

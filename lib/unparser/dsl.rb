@@ -13,8 +13,9 @@ module Unparser
     # @api private
     #
     def define_remaining_children(names)
+      range = names.length .. -1
       define_method(:remaining_children) do
-        children[names.length..-1]
+        children[range]
       end
       private :remaining_children
     end
@@ -38,24 +39,35 @@ module Unparser
     # Define a group of children
     #
     # @param [Symbol] name
-    # @param [Fixum] first
-    #   the start index
-    # @param [Fixum] last
-    #   the optionally relative end index
+    # @param [Range] range
     #
     # @return [undefined]
     #
     # @pai private
     #
-    def define_group(name, first, last)
-      range = first .. last
+    def define_group(name, range)
       define_method(name) do
         children[range]
       end
-      memoize name
+      private(name)
+      memoize(name)
 
-      indice_method_name = "#{name}_indices"
-      define_method(indice_method_name) do
+      define_group_indices(name, range)
+    end
+
+    # Define group indices method
+    #
+    # @param [Symbol] name
+    # @param [Range] range
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def define_group_indices(name, range)
+      method_name = "#{name}_indices"
+
+      define_method(method_name) do
         effective_last = if last < 0
                            children.length + last
                          else
@@ -63,7 +75,8 @@ module Unparser
                          end
         first.start.upto(effective_last).to_a
       end
-      memoize indice_method_name
+      private(method_name)
+      memoize(method_name)
     end
 
     # Create name helpers
