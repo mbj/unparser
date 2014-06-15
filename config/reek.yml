@@ -17,7 +17,7 @@ TooManyInstanceVariables:
 TooManyMethods:
   exclude:
   - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses
-  - Unparser::Buffer  # TODO: 11 methods, mostly helpers for deduplicate sublcasses
+  - Unparser::Buffer  # 11 methods
   - Unparser::CLI::Source # 11 methods
   enabled: true
   max_methods: 10

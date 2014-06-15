@@ -51,32 +51,6 @@ module Unparser
       end
       private(name)
       memoize(name)
-
-      define_group_indices(name, range)
-    end
-
-    # Define group indices method
-    #
-    # @param [Symbol] name
-    # @param [Range] range
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def define_group_indices(name, range)
-      method_name = "#{name}_indices"
-
-      define_method(method_name) do
-        effective_last = if last < 0
-                           children.length + last
-                         else
-                           last
-                         end
-        first.start.upto(effective_last).to_a
-      end
-      private(method_name)
-      memoize(method_name)
     end
 
     # Create name helpers
