@@ -97,11 +97,7 @@ module Unparser
 
         # Test if subject needs parentheses
         #
-        # @return [true]
-        #   if subject needs parentheses
-        #
-        # @return [false]
-        #   otherwise
+        # @return [Boolean]
         #
         # @api private
         #

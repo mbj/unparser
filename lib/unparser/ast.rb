@@ -21,11 +21,7 @@ module Unparser
     #
     # @param [Parser::AST::Node] node
     #
-    # @return [true]
-    #   if local variable scope must NOT be reset
-    #
-    # @return [false]
-    #   otherwise
+    # @return [Boolean]
     #
     # @api private
     #
@@ -37,11 +33,7 @@ module Unparser
     #
     # @param [Parser::AST::Node] node
     #
-    # @return [true]
-    #   if local variable scope must NOT be reset
-    #
-    # @return [false]
-    #   otherwise
+    # @return [Boolean]
     #
     # @api private
     #

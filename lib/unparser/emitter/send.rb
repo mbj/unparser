@@ -146,10 +146,7 @@ module Unparser
 
       # Test for attribute assignment
       #
-      # @return [true]
-      #   if node represetns and attribute assignment
-      #
-      # @return [false]
+      # @return [Boolean]
       #
       # @api private
       #
@@ -159,11 +156,7 @@ module Unparser
 
       # Test for empty arguments
       #
-      # @return [true]
-      #   if arguments are empty
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -198,11 +191,7 @@ module Unparser
 
       # Test for local variable clash
       #
-      # @return [true]
-      #   if selector clashes with a local variable
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #

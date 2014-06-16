@@ -26,11 +26,7 @@ module Unparser
 
         # Test for interpolation
         #
-        # @return [true]
-        #   if dynamic component was interpolated
-        #
-        # @return [false]
-        #   otherwise
+        # @return [Boolean]
         #
         # @api private
         #

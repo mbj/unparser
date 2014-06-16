@@ -82,11 +82,7 @@ module Unparser
 
     # Test for a fresh line
     #
-    # @return [true]
-    #   if the buffer content ends with a fresh line
-    #
-    # @return [false]
-    #   otherwise
+    # @return [Boolean]
     #
     # @api private
     #

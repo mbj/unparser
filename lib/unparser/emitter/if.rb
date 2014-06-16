@@ -27,11 +27,7 @@ module Unparser
 
       # Test for postcondition
       #
-      # @return [true]
-      #   if node must be emitted in postcondition style
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -69,13 +65,9 @@ module Unparser
         k_end
       end
 
-      # Test for unless
+      # Test if AST can be emitted as unless
       #
-      # @return [true]
-      #   if to emit as unless
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #

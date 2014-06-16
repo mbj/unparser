@@ -37,11 +37,7 @@ module Unparser
 
       # Test if rescue node ist standalone
       #
-      # @return [true]
-      #   if rescue node is standalone
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #

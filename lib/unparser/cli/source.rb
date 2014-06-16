@@ -36,10 +36,7 @@ module Unparser
 
       # Test if source could be unparsed successfully
       #
-      # @return [true]
-      #   if source could be unparsed successfully
-      #
-      # @return [false]
+      # @return [Boolean]
       #
       # @api private
       #

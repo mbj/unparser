@@ -58,13 +58,9 @@ module Unparser
         end
       end
 
-      # Test for postcontrol
+      # Test if node must be emitted in postcontrol form
       #
-      # @return [true]
-      #   if repetition must be emitted as post control
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #

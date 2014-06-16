@@ -28,11 +28,7 @@ module Unparser
       #
       # @param [Parser::AST::Node] node
       #
-      # @return [true]
-      #   if local variable was firstly introduced in body
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -48,11 +44,7 @@ module Unparser
       # @param [Parser::AST::Node] node
       # @param [Symbol] name
       #
-      # @return [true]
-      #   if local variable is defined
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
@@ -89,11 +81,7 @@ module Unparser
       # @param [Parser::AST::Node] node
       #   if block given
       #
-      # @return [true]
-      #   if found an matched
-      #
-      # @return [false]
-      #   otherwise
+      # @return [Boolean]
       #
       # @api private
       #
