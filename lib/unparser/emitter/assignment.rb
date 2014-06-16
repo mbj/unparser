@@ -132,7 +132,7 @@ module Unparser
 
       private
 
-        NO_COMMA = [:splat, :restarg, :mlhs]
+        NO_COMMA = [:splat, :restarg, :mlhs].to_set.freeze
 
         # Perform dispatch
         #
