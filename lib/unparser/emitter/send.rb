@@ -105,7 +105,7 @@ module Unparser
       # @api private
       #
       def binary_operator?
-        BINARY_OPERATORS.include?(selector) && arguments.one? && arguments.first.type != :splat
+        BINARY_OPERATORS.include?(selector) && arguments.one? && !arguments.first.type.equal?(:splat)
       end
 
       # Emit selector
@@ -141,7 +141,7 @@ module Unparser
       # @api private
       #
       def assignment?
-        string_selector[-1] == ASSIGN_SUFFIX
+        string_selector[-1].eql?(ASSIGN_SUFFIX)
       end
 
       # Test for attribute assignment

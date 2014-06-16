@@ -128,7 +128,7 @@ module Unparser
       if @start_with
         reject = true
         @sources.reject do |source|
-          if reject && source == @start_with
+          if reject && source.eql?(@start_with)
             reject = false
           end
 

@@ -39,7 +39,7 @@ module Unparser
           if children.empty? && !NON_EMPTY_PARENS.include?(parent_type)
             write('()')
           else
-            conditional_parentheses(parent_type == :optarg) do
+            conditional_parentheses(parent_type.equal?(:optarg)) do
               emit_inner
             end
           end

@@ -30,7 +30,7 @@ module Unparser
 
       handle :args
 
-      SHADOWARGS = ->(node) { node.type == :shadowarg }.freeze
+      SHADOWARGS = ->(node) { node.type.equal?(:shadowarg) }.freeze
 
     private
 
@@ -55,7 +55,7 @@ module Unparser
       #
       def normal_arguments
         children.reject(&SHADOWARGS).map do |child|
-          if child.type == :mlhs
+          if child.type.equal?(:mlhs)
             Parser::AST::Node.new(:arg_expr, [child])
           else
             child

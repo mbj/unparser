@@ -22,7 +22,7 @@ module Unparser
         def dispatch
           name = selector
           write(MAP.fetch(name, name).to_s)
-          if receiver.type == :int && selector == :'+@' && receiver.children.first > 0
+          if receiver.type.equal?(:int) && selector.equal?(:'+@') && receiver.children.first > 0
             write('+')
           end
 

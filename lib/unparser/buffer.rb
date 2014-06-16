@@ -27,7 +27,7 @@ module Unparser
     # @api private
     #
     def append(string)
-      if @content[-1] == NL
+      if @content[-1].eql?(NL)
         prefix
       end
       write(string)
@@ -87,7 +87,7 @@ module Unparser
     # @api private
     #
     def fresh_line?
-      @content.empty? || @content[-1] == NL
+      @content.empty? || @content[-1].eql?(NL)
     end
 
     # Return content of buffer

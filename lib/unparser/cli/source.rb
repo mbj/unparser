@@ -41,7 +41,7 @@ module Unparser
       # @api private
       #
       def success?
-        generated.success? && original_ast && generated_ast && original_ast == generated_ast
+        generated.success? && original_ast && generated_ast && original_ast.eql?(generated_ast)
       end
 
       # Return error report

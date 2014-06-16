@@ -42,7 +42,7 @@ module Unparser
       # @api private
       #
       def standalone?
-        if parent_type == :ensure
+        if parent_type.equal?(:ensure)
           !parent.node.children.first.equal?(node)
         else
           !EMBEDDED_TYPES.include?(parent_type)

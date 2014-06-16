@@ -124,7 +124,7 @@ module Unparser
       # @api private
       #
       def type(type)
-        select { |node| node.type == type }
+        select { |node| node.type.equal?(type) }
       end
 
       # Return frozne set of objects

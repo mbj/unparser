@@ -32,7 +32,7 @@ module Unparser
         def effective_arguments
           last = children.length - 1
           children.each_with_index.map do |argument, index|
-            if last == index && argument.type == :hash && argument.children.any?
+            if last.equal?(index) && argument.type.equal?(:hash) && argument.children.any?
               argument.updated(:hash_body)
             else
               argument

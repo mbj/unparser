@@ -337,7 +337,7 @@ module Unparser
     def emit_comments(comments)
       max = comments.size - 1
       comments.each_with_index do |comment, index|
-        if comment.type == :document
+        if comment.type.equal?(:document)
           buffer.append_without_prefix(comment.text.chomp)
         else
           write(comment.text)

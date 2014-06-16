@@ -80,11 +80,11 @@ module Unparser
         #
         def effective_body
           children.map do |pair|
-            if pair.type == :kwsplat
+            if pair.type.equal?(:kwsplat)
               pair
             else
               key, _value = *pair
-              if key.type == :sym && key.children.first.to_s =~ BAREWORD
+              if key.type.equal?(:sym) && key.children.first.to_s =~ BAREWORD
                 n(:pair_colon, pair.children)
               else
                 n(:pair_rocket, pair.children)

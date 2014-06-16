@@ -31,7 +31,7 @@ module Unparser
         # @api private
         #
         def interpolation?
-          children.any? { |child| child.type != :str }
+          children.any? { |child| !child.type.equal?(:str) }
         end
 
         # Return dynamic body

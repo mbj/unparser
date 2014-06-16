@@ -53,7 +53,7 @@ module Unparser
       def emit_scope
         return unless scope
         visit(scope)
-        write(T_DCL) if scope.type != :cbase
+        write(T_DCL) if !scope.type.equal?(:cbase)
       end
     end
 

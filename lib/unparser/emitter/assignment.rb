@@ -141,11 +141,11 @@ module Unparser
         # @api private
         #
         def dispatch
-          conditional_parentheses(parent_type == :mlhs) do
+          conditional_parentheses(parent_type.equal?(:mlhs)) do
             delimited(children)
           end
 
-          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && parent_type != :arg_expr
+          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && !parent_type.equal?(:arg_expr)
         end
 
       end # MLHS

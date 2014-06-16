@@ -22,7 +22,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        conditional_parentheses((parent_type == :or || parent_type == :and) && children.any?) do
+        conditional_parentheses((parent_type.equal?(:or) || parent_type.equal?(:and)) && children.any?) do
           write(MAP.fetch(node.type))
           emit_arguments if children.any?
         end

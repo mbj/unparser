@@ -62,7 +62,7 @@ module Unparser
         end
 
         pairs = Parser::Lexer::ESCAPES.invert.map do |key, value|
-          [key, "\\#{value}"] unless key == WS
+          [key, "\\#{value}"] unless key.eql?(WS)
         end.compact
 
         pairs << ['#{', '\#{']

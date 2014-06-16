@@ -130,7 +130,7 @@ module Unparser
       #
       def collapsed_children
         chunked_children.each_with_object([]) do |(type, nodes), aggregate|
-          if type == :str
+          if type.equal?(:str)
             aggregate << s(:str, nodes.map { |node| node.children.first }.join)
           else
             aggregate.concat(nodes)
@@ -163,7 +163,7 @@ module Unparser
       # @api private
       #
       def result
-        if children.all? { |child| child.type == :str }
+        if children.all? { |child| child.type.equal?(:str) }
           node.updated(:str, [children.map { |child| child.children.first }.join])
         else
           node
