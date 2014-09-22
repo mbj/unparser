@@ -2,7 +2,7 @@
 
 group :development do
   gem 'rake',       '~> 10.3.2'
-  gem 'rspec',      '~> 3.0.0'
+  gem 'rspec',      '~> 3.1.0'
   gem 'rspec-its',  '~> 1.0.1'
   gem 'yard',       '~> 0.8.7.4'
 
@@ -43,8 +43,8 @@ group :metrics do
   gem 'yardstick', '~> 0.9.9'
 
   platforms :mri do
-    gem 'mutant',       '~> 0.6.0'
-    gem 'mutant-rspec', '~> 0.6.0'
+    gem 'mutant',       '~> 0.6.3'
+    gem 'mutant-rspec', '~> 0.6.3'
   end
 
   platforms :ruby_19, :ruby_20 do
