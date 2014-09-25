@@ -1,3 +1,7 @@
+# v0.1.15 2014-09-24
+
+* Handle syntax edge case for MRI 2.1.3 parser.
+
 # v0.1.14 2014-06-15
 
 * Fix emitter to correctly unparse foo[] = 1
