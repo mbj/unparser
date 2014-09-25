@@ -215,6 +215,9 @@ describe Unparser do
         assert_source '{ 1 => 2 }'
         assert_source '{ 1 => 2, 3 => 4 }'
 
+        # special case for 2.1.3
+        assert_source "{ foo: (if true\nend) }"
+
         context 'with symbol keys' do
           assert_source '{ a: (1 rescue(foo)), b: 2 }'
           assert_source '{ a: 1, b: 2 }'

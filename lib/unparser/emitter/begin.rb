@@ -27,6 +27,16 @@ module Unparser
 
         NON_EMPTY_PARENS = [:root, :dstr, :dyn_str_body].to_set.freeze
 
+        # Test if begin is terminated
+        #
+        # @return [Boolean]
+        #
+        # @api private
+        #
+        def terminated?
+          children.empty? && !NON_EMPTY_PARENS.include?(parent_type)
+        end
+
       private
 
         # Perform dispatch
@@ -36,7 +46,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if children.empty? && !NON_EMPTY_PARENS.include?(parent_type)
+          if terminated?
             write('()')
           else
             conditional_parentheses(parent_type.equal?(:optarg)) do

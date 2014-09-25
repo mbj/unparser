@@ -7,6 +7,23 @@ module Unparser
       # Abstract namespace class for hash pair emitters
       class HashPair < self
 
+        children :key, :value
+
+      private
+
+        # Emit value
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def emit_value
+          value_type = value.type
+          conditional_parentheses(value_type.equal?(:if)) do
+            visit_terminated(value)
+          end
+        end
+
         # Pair emitter that emits hash-rocket separated key values
         class Rocket < self
           HASHROCKET = ' => '.freeze
@@ -22,7 +39,9 @@ module Unparser
           # @api private
           #
           def dispatch
-            delimited(children, HASHROCKET)
+            visit(key)
+            write(HASHROCKET)
+            emit_value
           end
 
         end # Rocket
@@ -32,8 +51,6 @@ module Unparser
           COLON      = ': '.freeze
 
           handle :pair_colon
-
-          children :key, :value
 
         private
 
@@ -45,7 +62,7 @@ module Unparser
           #
           def dispatch
             write(key.children.first.to_s, COLON)
-            visit_terminated(value)
+            emit_value
           end
 
         end # Colon
