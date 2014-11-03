@@ -28,6 +28,39 @@ module Unparser
 
         end # Inspect
 
+        class Rational < self
+
+          handle :rational
+
+          RATIONAL_FORMAT = 'r'.freeze
+
+        private
+
+          # Dispatch value
+          #
+          # @return [undefined]
+          #
+          def dispatch
+            integer = value.to_i
+            float   = value.to_f
+
+            write_rational(integer.to_f.equal?(float) ? integer : float)
+          end
+
+          # Write rational format
+          #
+          # @param [#to_s]
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def write_rational(value)
+            write(value.to_s, RATIONAL_FORMAT)
+          end
+
+        end # Rational
+
         # Emiter for numeric literals
         class Numeric < self
 

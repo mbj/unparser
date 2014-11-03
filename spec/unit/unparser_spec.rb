@@ -88,16 +88,27 @@ describe Unparser do
     end
 
     context 'literal' do
-      context 'fixnum' do
+      context 'int' do
         assert_generates s(:int,  1),  '1'
         assert_generates s(:int, -1), '-1'
+        assert_generates '-0', '0'
         assert_source '1'
+        assert_source '-1'
         assert_source '++1'
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
         assert_generates '10e10000000000', 'Float::INFINITY'
         assert_generates '-10e10000000000', '-Float::INFINITY'
+      end
+
+      context 'rational' do
+        assert_source '1r', %w(2.1)
+        assert_generates '1.0r', '1r', %w(2.1)
+        assert_generates '-0r', '0r', %w(2.1)
+
+        assert_source '1.5r', %w(2.1)
+        assert_source '1.3r', %w(2.1)
       end
 
       context 'string' do
