@@ -165,6 +165,8 @@ describe Unparser do
         assert_source %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
         assert_source '/foo#{@bar}/'
         assert_source '/foo#{@bar}/imx'
+        assert_source '/#{"\x00"}/', %w(1.9)
+        assert_source '/#{"\u0000"}/', %w(2.0 2.1)
         assert_source "/\n/"
         assert_source '/\n/'
         assert_source "/\n/x"
