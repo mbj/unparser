@@ -32,7 +32,7 @@ module Unparser
           right = right_node
           return unless right
           write(WS, T_ASN, WS)
-          visit(right)
+          visit_terminated(right)
         end
 
         abstract_method :emit_left
@@ -132,7 +132,7 @@ module Unparser
 
       private
 
-        NO_COMMA = [:splat, :restarg, :mlhs].to_set.freeze
+        NO_COMMA = [:splat, :restarg].to_set.freeze
 
         # Perform dispatch
         #
@@ -143,9 +143,10 @@ module Unparser
         def dispatch
           conditional_parentheses(parent_type.equal?(:mlhs)) do
             delimited(children)
+            write(',') if children.one? && !NO_COMMA.include?(children.first.type) && parent_type.equal?(:mlhs)
           end
 
-          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && !parent_type.equal?(:arg_expr)
+          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && !(parent_type.equal?(:arg_expr) || parent_type.equal?(:mlhs))
         end
 
       end # MLHS

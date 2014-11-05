@@ -367,6 +367,8 @@ describe Unparser do
         assert_source 'a, b = foo'
         assert_source 'a, (b, c) = [1, [2, 3]]'
         assert_source 'a, = foo'
+        assert_source 'a = (b, c = 1)'
+        assert_source '(a,), b = 1'
       end
     end
 
@@ -826,7 +828,7 @@ describe Unparser do
 
       assert_source 'foo rescue(bar)'
       assert_source 'foo rescue(return bar)'
-      assert_source 'x = foo rescue(return bar)'
+      assert_source 'x = (foo rescue(return bar))'
 
       %w(while until if).each do |keyword|
         assert_source <<-RUBY

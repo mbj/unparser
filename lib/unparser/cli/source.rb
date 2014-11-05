@@ -131,6 +131,8 @@ module Unparser
       def report_generated
         strip(<<-MESSAGE)
           Parsing of generated source failed:
+          Original-source:
+          #{original_source}
           Original-AST:
           #{original_ast.inspect}
           Source:
