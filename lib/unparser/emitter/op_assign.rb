@@ -47,7 +47,7 @@ module Unparser
       def dispatch
         visit(first_child)
         emit_operator
-        visit(children[2])
+        visit_terminated(children[2])
       end
 
       # Emit operator

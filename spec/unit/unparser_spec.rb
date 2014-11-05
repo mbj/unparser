@@ -1317,6 +1317,7 @@ describe Unparser do
         %w(|= ||= &= &&= += -= *= /= **= %=).each do |op|
           assert_source "self.foo #{op} bar"
           assert_source "foo[key] #{op} bar"
+          assert_source "a #{op} (true\nfalse)"
         end
       end
 
