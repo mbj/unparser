@@ -18,6 +18,8 @@
     - core/io/readpartial_spec.rb
     - core/env/element_reference_spec.rb
     - core/dir/pwd_spec.rb
+    - core/regexp/shared/new_ascii_8bit.rb
+    - core/regexp/encoding_spec.rb
     - core/string/casecmp_spec.rb
     - core/string/unpack/{b,c,h,m,u,w}_spec.rb
     - core/string/unpack/b_spec.rb
