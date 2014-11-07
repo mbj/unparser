@@ -13,7 +13,7 @@ module Unparser
     # @api private
     #
     def define_remaining_children(names)
-      range = names.length .. -1
+      range = names.length..-1
       define_method(:remaining_children) do
         children[range]
       end

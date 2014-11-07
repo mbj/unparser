@@ -185,7 +185,7 @@ module Unparser
         return unless controller.call(node)
         block.call(node)
         node.children.each do |child|
-          next unless child.kind_of?(Parser::AST::Node)
+          next unless child.is_a?(Parser::AST::Node)
           call(child)
         end
         self

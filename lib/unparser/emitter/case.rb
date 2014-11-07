@@ -71,7 +71,7 @@ module Unparser
 
       handle :when
 
-      define_group :captures, 0 .. -2
+      define_group :captures, 0..-2
 
     private
 

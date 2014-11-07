@@ -124,7 +124,7 @@ module Unparser
           # @api private
           #
           def dispatch
-            conditional_parentheses(parent.kind_of?(Emitter::Send) && value < 0) do
+            conditional_parentheses(parent.is_a?(Emitter::Send) && value < 0) do
               write(value.inspect)
             end
           end

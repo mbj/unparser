@@ -70,9 +70,8 @@ module Unparser
       #
       def emit_single_argument
         ws
-        node = children.first
-        conditional_parentheses(PARENS.include?(node.type)) do
-          visit_plain(children.first)
+        conditional_parentheses(PARENS.include?(first_child.type)) do
+          visit_plain(first_child)
         end
       end
 

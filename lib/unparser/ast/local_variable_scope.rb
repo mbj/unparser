@@ -161,7 +161,7 @@ module Unparser
         enter(node)
         yield node, current.dup, before
         node.children.each do |child|
-          visit(child, &block) if child.kind_of?(Parser::AST::Node)
+          visit(child, &block) if child.is_a?(Parser::AST::Node)
         end
         leave(node)
       end

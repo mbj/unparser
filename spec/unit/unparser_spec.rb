@@ -60,7 +60,7 @@ describe Unparser do
     def self.assert_generates(ast_or_string, expected, versions = RUBIES)
       with_versions(versions) do |parser|
         it "should generate #{ast_or_string} as #{expected} under #{parser.inspect}" do
-          if ast_or_string.kind_of?(String)
+          if ast_or_string.is_a?(String)
             expected = strip(expected)
             assert_generates_from_string(parser, ast_or_string, expected)
           else
@@ -101,7 +101,7 @@ describe Unparser do
     context 'literal' do
       context 'int' do
         assert_generates '-0', '0'
-        assert_source    '++1'
+        assert_source '++1'
         assert_terminated '1'
         assert_unterminated '-1'
         assert_generates '0x1', '1'
@@ -121,32 +121,32 @@ describe Unparser do
       end
 
       context 'rational' do
-        %w[
+        %w(
           5i
           -5i
           0.6i
           -0.6i
           1000000000000000000000000000000i
           1ri
-        ].each do |expression|
+        ).each do |expression|
           assert_terminated(expression, %w(2.1))
         end
       end
 
       context 'string' do
         assert_generates '?c', '"c"'
-        assert_generates %q("foo" "bar"), %q("foobar")
-        assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
-        assert_terminated %q("\"")
-        assert_terminated %q("foo#{1}bar")
-        assert_terminated %q("\"#{@a}")
-        assert_terminated %q("\\\\#{}")
-        assert_terminated %q("foo bar")
-        assert_terminated %q("foo\nbar")
-        assert_terminated %q("foo bar #{}")
-        assert_terminated %q("foo\nbar #{}")
-        assert_terminated %q("#{}\#{}")
-        assert_terminated %q("\#{}#{}")
+        assert_generates '"foo" "bar"', '"foobar"'
+        assert_generates '%Q(foo"#{@bar})', '"foo\\"#{@bar}"'
+        assert_terminated '"\""'
+        assert_terminated '"foo#{1}bar"'
+        assert_terminated '"\"#{@a}"'
+        assert_terminated '"\\\\#{}"'
+        assert_terminated '"foo bar"'
+        assert_terminated '"foo\nbar"'
+        assert_terminated '"foo bar #{}"'
+        assert_terminated '"foo\nbar #{}"'
+        assert_terminated '"#{}\#{}"'
+        assert_terminated '"\#{}#{}"'
         # Within indentation
         assert_generates <<-'RUBY', <<-'RUBY'
           if foo
@@ -160,8 +160,8 @@ describe Unparser do
           end
         RUBY
 
-        assert_terminated %q("foo#{@bar}")
-        assert_terminated %q("fo\no#{bar}b\naz")
+        assert_terminated '"foo#{@bar}"'
+        assert_terminated '"fo\no#{bar}b\naz"'
       end
 
       context 'execute string' do
@@ -214,14 +214,14 @@ describe Unparser do
       end
 
       context 'irange' do
-        assert_generates '1..2', %q(1..2)
+        assert_unterminated '1..2'
         assert_unterminated '(0.0 / 0.0)..1'
         assert_unterminated '1..(0.0 / 0.0)'
         assert_unterminated '(0.0 / 0.0)..100'
       end
 
       context 'erange' do
-        assert_generates '1...2', %q(1...2)
+        assert_unterminated '1...2'
       end
 
       context 'float' do
@@ -242,7 +242,7 @@ describe Unparser do
         assert_terminated '[1, *@foo]'
         assert_terminated '[*@foo, 1]'
         assert_terminated '[*@foo, *@baz]'
-        assert_generates '%w(foo bar)', %q(["foo", "bar"])
+        assert_generates '%w(foo bar)', '["foo", "bar"]'
       end
 
       context 'hash' do

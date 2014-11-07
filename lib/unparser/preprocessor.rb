@@ -77,7 +77,7 @@ module Unparser
     #
     def visited_children
       children.map do |node|
-        if node.kind_of?(Parser::AST::Node)
+        if node.is_a?(Parser::AST::Node)
           visit(node)
         else
           node
@@ -159,7 +159,7 @@ module Unparser
 
       MAP = IceNine.deep_freeze(
         dstr: :str,
-        dsym: :sym,
+        dsym: :sym
       )
 
       # Return preprocessor result

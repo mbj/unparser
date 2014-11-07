@@ -147,6 +147,7 @@ module Unparser
       private
 
         NO_COMMA = [:splat, :restarg].to_set.freeze
+        PARENT_MLHS = [:mlhs, :masgn]
 
         # Perform dispatch
         #
@@ -157,9 +158,17 @@ module Unparser
         def dispatch
           delimited(children)
 
-          if children.one? && !NO_COMMA.include?(children.first.type) && (parent_type.equal?(:mlhs) || parent_type.equal?(:masgn))
-            write(',')
-          end
+          write(',') if children.one? && mlhs?
+        end
+
+        # Test for mlhs context
+        #
+        # @return [undefined]
+        #
+        # @api private
+        #
+        def mlhs?
+          !NO_COMMA.include?(first_child.type) && PARENT_MLHS.include?(parent_type)
         end
 
       end # MLHS
