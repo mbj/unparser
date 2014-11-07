@@ -1,5 +1,13 @@
 ---
-# Might not elaborate all 2.1 specific ASTs but the only 2.1 lib I know
+- name: anima
+  repo_uri: 'https://github.com/mbj/anima.git'
+  exclude: []
+- name: mutant
+  repo_uri: 'https://github.com/mbj/mutant.git'
+  exclude: []
+- name: yaks
+  repo_uri: 'https://github.com/plexus/yaks.git'
+  exclude: []
 - name: chassis
   repo_uri: 'https://github.com/ahawkins/chassis.git'
   exclude: []
