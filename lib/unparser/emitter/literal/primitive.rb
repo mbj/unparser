@@ -28,6 +28,53 @@ module Unparser
 
         end # Inspect
 
+        class Complex < self
+
+          handle :complex
+
+          RATIONAL_FORMAT = 'i'.freeze
+
+          MAP = IceNine.deep_freeze(
+            Float    => :float,
+            Rational => :rational,
+            Fixnum   => :int,
+            Bignum   => :int
+          )
+
+        private
+
+          # Dispatch value
+          #
+          # @return [undefined]
+          #
+          def dispatch
+            emit_imaginary
+            write(RATIONAL_FORMAT)
+          end
+
+          # Emit imaginary component
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def emit_imaginary
+            visit(imaginary_node)
+          end
+
+          # Return imaginary node
+          #
+          # @return [Parser::AST::Node]
+          #
+          # @api private
+          #
+          def imaginary_node
+            imaginary = value.imaginary
+            s(MAP.fetch(imaginary.class), imaginary)
+          end
+
+        end # Rational
+
         class Rational < self
 
           handle :rational

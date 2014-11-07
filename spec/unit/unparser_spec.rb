@@ -120,6 +120,19 @@ describe Unparser do
         assert_terminated '1.3r', %w(2.1)
       end
 
+      context 'rational' do
+        %w[
+          5i
+          -5i
+          0.6i
+          -0.6i
+          1000000000000000000000000000000i
+          1ri
+        ].each do |expression|
+          assert_terminated(expression, %w(2.1))
+        end
+      end
+
       context 'string' do
         assert_generates '?c', '"c"'
         assert_generates %q("foo" "bar"), %q("foobar")
