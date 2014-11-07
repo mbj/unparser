@@ -265,13 +265,7 @@ module Unparser
     # @api private
     #
     def delimited_plain(nodes, delimiter = DEFAULT_DELIMITER)
-      return if nodes.empty?
-      head, *tail = nodes
-      visit_plain(head)
-      tail.each do |node|
-        write(delimiter)
-        visit_plain(node)
-      end
+      delimited(nodes, delimiter, &method(:visit_plain))
     end
 
     # Emit delimited body
@@ -283,13 +277,14 @@ module Unparser
     #
     # @api private
     #
-    def delimited(nodes, delimiter = DEFAULT_DELIMITER)
+    def delimited(nodes, delimiter = DEFAULT_DELIMITER, &block)
       return if nodes.empty?
+      block ||= method(:visit)
       head, *tail = nodes
-      visit(head)
+      block.call(head)
       tail.each do |node|
         write(delimiter)
-        visit(node)
+        block.call(node)
       end
     end
 

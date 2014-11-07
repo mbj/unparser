@@ -69,11 +69,17 @@ module Unparser
 
     end # Arguments
 
-    # Emitter for block arguments
-    class Blockarg < self
+    # Emitter for block and kwrestarg arguments
+    class Morearg < self
       include Terminated
 
+      MAP = {
+        blockarg: T_AMP,
+        kwrestarg: T_DSPLAT
+      }
+
       handle :blockarg
+      handle :kwrestarg
 
       children :name
 
@@ -86,7 +92,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(T_AMP, name.to_s)
+        write(MAP.fetch(node_type), name.to_s)
       end
 
     end # Blockarg
@@ -112,27 +118,6 @@ module Unparser
         visit(value)
       end
     end
-
-    # Keyword rest argument emitter
-    class KeywordRest < self
-      include Terminated
-
-      handle :kwrestarg
-
-      children :name
-
-    private
-
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def dispatch
-        write(T_DSPLAT, name.to_s)
-      end
-    end # KeywordRest
 
     # Optional keyword argument emitter
     class KeywordOptional < self
