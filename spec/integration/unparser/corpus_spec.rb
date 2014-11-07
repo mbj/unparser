@@ -4,8 +4,8 @@ require 'spec_helper'
 
 describe 'Unparser on ruby corpus' do
   before do
-    if RUBY_VERSION == '1.9.3'
-      skip 'Corpus test not active for 1.9.3 because of limitations in encoding signalling, see Readme'
+    if RUBY_VERSION < '2.1.0'
+      skip 'Corpus test not active for < 2.1.0 because of limitations in encoding signalling, and absence of complex/rational literals see Readme'
     end
     if RUBY_ENGINE == 'jruby'
       skip 'Corpus test exhausts jruby heap space on travis'
