@@ -5,7 +5,8 @@ require 'spec_helper'
 describe 'Unparser on ruby corpus' do
   before do
     if RUBY_VERSION < '2.1.0'
-      skip 'Corpus test not active for < 2.1.0 because of limitations in encoding signalling, and absence of complex/rational literals see Readme'
+      # Limits in encodings and complex/rational literals
+      skip 'Corpus test not active for < 2.1.0'
     end
     if RUBY_ENGINE == 'jruby'
       skip 'Corpus test exhausts jruby heap space on travis'

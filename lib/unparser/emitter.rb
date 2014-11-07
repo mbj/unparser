@@ -425,6 +425,10 @@ module Unparser
     #
     # @api private
     #
+    # False positive:
+    #
+    # rubocop:disable MethodCallParentheses
+    #
     def indented
       buffer = buffer()
       buffer.indent
