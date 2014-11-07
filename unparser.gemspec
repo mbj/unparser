@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name     = 'unparser'
-  gem.version  = '0.1.15'
+  gem.version  = '0.1.16'
 
   gem.authors  = ['Markus Schirp']
   gem.email    = 'mbj@schir-dso.com'

@@ -1,3 +1,9 @@
+# v0.1.16 2014-11-07
+
+* Add emitter for complex and rational literals
+* Fix edge cases for MLHS
+* Fix differencies from 2.2.pre7 series of parser
+
 # v0.1.15 2014-09-24
 
 * Handle syntax edge case for MRI 2.1.3 parser.
