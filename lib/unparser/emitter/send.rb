@@ -16,17 +16,8 @@ module Unparser
 
       children :receiver, :selector
 
-      # Test for terminated expression
-      #
-      # @return [Boolean]
-      #
-      # @api private
-      #
       def terminated?
-        [
-          Index::Reference,
-          Regular
-        ].include?(effective_emitter)
+        effective_emitter.terminated?
       end
 
     private
@@ -38,7 +29,17 @@ module Unparser
       # @api private
       #
       def dispatch
-        effective_emitter.new(node, parent).write_to_buffer
+        effective_emitter.write_to_buffer
+      end
+
+      # Return effective emitter
+      #
+      # @return [Emitter]
+      #
+      # @api private
+      #
+      def effective_emitter
+        effective_emitter_class.new(node, parent)
       end
 
       # Return effective emitter
@@ -47,7 +48,7 @@ module Unparser
       #
       # @api private
       #
-      def effective_emitter
+      def effective_emitter_class
         case selector
         when INDEX_REFERENCE
           Index::Reference
@@ -57,7 +58,6 @@ module Unparser
           non_index_emitter
         end
       end
-      memoize :effective_emitter
 
       # Return non index emitter
       #
@@ -86,7 +86,6 @@ module Unparser
       def string_selector
         selector.to_s
       end
-      memoize :string_selector
 
       # Test for unary operator implemented as method
       #

@@ -27,7 +27,7 @@ module Unparser
           #
           def dispatch
             write(OPEN)
-            visit(subject)
+            visit_plain(subject)
             write(CLOSE)
           end
 

@@ -5,6 +5,7 @@ module Unparser
 
     # Emitter for postconditions
     class Post < self
+      include Unterminated
 
       handle :while_post, :until_post
 
@@ -32,6 +33,7 @@ module Unparser
 
     # Base class for while and until emitters
     class Repetition < self
+      include Terminated
 
       MAP = {
         while: K_WHILE,
@@ -87,7 +89,7 @@ module Unparser
       #
       def emit_normal
         emit_keyword
-        visit_terminated(condition)
+        visit(condition)
         emit_body
         k_end
       end
@@ -99,10 +101,10 @@ module Unparser
       # @api private
       #
       def emit_postcontrol
-        visit(body)
+        visit_plain(body)
         ws
         emit_keyword
-        visit(condition)
+        visit_plain(condition)
       end
 
     end # Repetition

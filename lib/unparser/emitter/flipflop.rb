@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for flip flops
     class FlipFlop < self
+      include Unterminated
 
       MAP = IceNine.deep_freeze(
         iflipflop: '..',
@@ -23,9 +24,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit_terminated(left)
+        visit(left)
         write(MAP.fetch(node.type))
-        visit_terminated(right)
+        visit(right)
       end
     end # FlipFLop
   end # Emitter

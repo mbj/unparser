@@ -17,6 +17,18 @@ module Unparser
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
 
+    module Unterminated
+      def terminated?
+        false
+      end
+    end
+
+    module Terminated
+      def terminated?
+        true
+      end
+    end
+
     module LocalVariableRoot
 
       # Return local variable root
@@ -133,9 +145,7 @@ module Unparser
     #
     # @api private
     #
-    def terminated?
-      TERMINATED.include?(node.type)
-    end
+    abstract_method :terminated?
 
   protected
 
@@ -183,12 +193,12 @@ module Unparser
     #
     # @api private
     #
-    def visit(node)
+    def visit_plain(node)
       emitter = emitter(node)
       emitter.write_to_buffer
     end
 
-    # Visit unambigous node
+    # Visit ambigous node
     #
     # @param [Parser::AST::Node] node
     #
@@ -196,7 +206,7 @@ module Unparser
     #
     # @api private
     #
-    def visit_terminated(node)
+    def visit(node)
       emitter = emitter(node)
       conditional_parentheses(!emitter.terminated?) do
         emitter.write_to_buffer
@@ -213,7 +223,7 @@ module Unparser
     #
     def visit_parentheses(node, *arguments)
       parentheses(*arguments) do
-        visit(node)
+        visit_plain(node)
       end
     end
 
@@ -243,6 +253,25 @@ module Unparser
     #
     def emitter(node)
       self.class.emitter(node, self)
+    end
+
+    # Emit delimited body
+    #
+    # @param [Enumerable<Parser::AST::Node>] nodes
+    # @param [String] delimiter
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def delimited_plain(nodes, delimiter = DEFAULT_DELIMITER)
+      return if nodes.empty?
+      head, *tail = nodes
+      visit_plain(head)
+      tail.each do |node|
+        write(delimiter)
+        visit_plain(node)
+      end
     end
 
     # Emit delimited body
@@ -402,7 +431,7 @@ module Unparser
     # @api private
     #
     def indented
-      buffer = self.buffer
+      buffer = buffer()
       buffer.indent
       nl
       yield
@@ -438,9 +467,9 @@ module Unparser
     #
     def visit_indented(node)
       if NOINDENT.include?(node.type)
-        visit(node)
+        visit_plain(node)
       else
-        indented { visit(node) }
+        indented { visit_plain(node) }
       end
     end
 

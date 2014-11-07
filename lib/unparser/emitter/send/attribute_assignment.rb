@@ -5,6 +5,7 @@ module Unparser
     class Send
       # Emitter for send as attribute assignment
       class AttributeAssignment < self
+        include Unterminated
 
         # Perform regular dispatch
         #
@@ -16,7 +17,7 @@ module Unparser
           emit_receiver
           emit_attribute
           emit_operator
-          visit_terminated(arguments.first)
+          visit(arguments.first)
         end
 
       private
@@ -28,7 +29,7 @@ module Unparser
         # @api private
         #
         def emit_receiver
-          visit_terminated(receiver)
+          visit(receiver)
           write(T_DOT)
         end
 

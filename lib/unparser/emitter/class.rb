@@ -4,7 +4,7 @@ module Unparser
   class Emitter
     # Emitter for class nodes
     class Class < self
-      include LocalVariableRoot
+      include LocalVariableRoot, Terminated
 
       handle :class
 
@@ -42,6 +42,7 @@ module Unparser
 
     # Emitter for sclass nodes
     class SClass  < self
+      include Terminated
 
       handle :sclass
 

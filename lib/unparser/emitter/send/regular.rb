@@ -5,6 +5,7 @@ module Unparser
     class Send
       # Emitter for "regular" receiver.selector(arguments...) case
       class Regular < self
+        include Terminated
 
       private
 
@@ -28,7 +29,7 @@ module Unparser
         #
         def emit_receiver
           return unless first_child
-          visit_terminated(receiver)
+          visit(receiver)
           write(T_DOT)
         end
 

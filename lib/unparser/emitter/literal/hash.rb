@@ -20,7 +20,7 @@ module Unparser
         def emit_value
           value_type = value.type
           conditional_parentheses(value_type.equal?(:if)) do
-            visit_terminated(value)
+            visit(value)
           end
         end
 

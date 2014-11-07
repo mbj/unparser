@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for rescue nodes
     class Rescue < self
+      include Unterminated
 
       handle :rescue
 
@@ -56,7 +57,7 @@ module Unparser
       # @api private
       #
       def emit_standalone
-        visit(body)
+        visit_plain(body)
         ws
         run(Resbody::Standalone, rescue_body)
       end

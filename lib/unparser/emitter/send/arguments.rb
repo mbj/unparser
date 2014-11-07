@@ -3,7 +3,6 @@
 module Unparser
   class Emitter
     class Send
-
       # Emitter for arguments of send nodes
       class Arguments < Emitter
 
@@ -19,7 +18,7 @@ module Unparser
           return if children.empty?
 
           parentheses do
-            delimited(effective_arguments)
+            delimited_plain(effective_arguments)
           end
         end
 

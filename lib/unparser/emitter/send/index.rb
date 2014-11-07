@@ -26,11 +26,12 @@ module Unparser
         # @api private
         #
         def emit_receiver
-          visit_terminated(first_child)
+          visit(first_child)
         end
 
         # Emitter for index reference nodes
         class Reference < self
+          include Terminated
 
         private
 
@@ -42,13 +43,26 @@ module Unparser
           #
           def emit_operation
             parentheses(*INDEX_PARENS) do
-              delimited(arguments)
+              delimited_plain(arguments)
             end
           end
         end # Reference
 
         # Emitter for assign to index nodes
         class Assign < self
+          include Unterminated
+
+          # Test if assign will be emitted terminated
+          #
+          # @return [Boolean]
+          #
+          # @api private
+          #
+          def terminated?
+            mlhs?
+          end
+
+        private
 
           define_group(:indices, 2..-2)
           define_child(:value, -1)

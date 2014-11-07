@@ -5,6 +5,7 @@ module Unparser
     class Literal
       # Abstract base class for literal range emitter
       class Range < self
+        include Unterminated
 
         TOKENS = IceNine.deep_freeze(
           irange: '..',
@@ -24,9 +25,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          visit_terminated(begin_node)
+          visit(begin_node)
           write(TOKENS.fetch(node.type))
-          visit_terminated(end_node)
+          visit(end_node)
         end
 
       end # Range

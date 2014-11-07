@@ -46,6 +46,17 @@ describe Unparser do
       Unparser.unparse(ast, comments).should eql(expected)
     end
 
+    def self.assert_unterminated(expression)
+      assert_source(expression)
+      assert_source("(#{expression}).foo")
+    end
+
+    def self.assert_terminated(expression, rubies = RUBIES)
+      assert_source(expression, rubies)
+      assert_source("foo(#{expression})", rubies)
+      assert_source("#{expression}.foo", rubies)
+    end
+
     def self.assert_generates(ast_or_string, expected, versions = RUBIES)
       with_versions(versions) do |parser|
         it "should generate #{ast_or_string} as #{expected} under #{parser.inspect}" do
@@ -89,12 +100,10 @@ describe Unparser do
 
     context 'literal' do
       context 'int' do
-        assert_generates s(:int,  1),  '1'
-        assert_generates s(:int, -1), '-1'
         assert_generates '-0', '0'
-        assert_source '1'
-        assert_source '-1'
-        assert_source '++1'
+        assert_source    '++1'
+        assert_terminated '1'
+        assert_unterminated '-1'
         assert_generates '0x1', '1'
         assert_generates '1_000', '1000'
         assert_generates '1e10',  '10000000000.0'
@@ -103,28 +112,28 @@ describe Unparser do
       end
 
       context 'rational' do
-        assert_source '1r', %w(2.1)
+        assert_terminated '1r', %w(2.1)
         assert_generates '1.0r', '1r', %w(2.1)
         assert_generates '-0r', '0r', %w(2.1)
 
-        assert_source '1.5r', %w(2.1)
-        assert_source '1.3r', %w(2.1)
+        assert_terminated '1.5r', %w(2.1)
+        assert_terminated '1.3r', %w(2.1)
       end
 
       context 'string' do
         assert_generates '?c', '"c"'
         assert_generates %q("foo" "bar"), %q("foobar")
         assert_generates %q(%Q(foo"#{@bar})), %q("foo\\"#{@bar}")
-        assert_source %q("\"")
-        assert_source %q("foo#{1}bar")
-        assert_source %q("\"#{@a}")
-        assert_source %q("\\\\#{}")
-        assert_source %q("foo bar")
-        assert_source %q("foo\nbar")
-        assert_source %q("foo bar #{}")
-        assert_source %q("foo\nbar #{}")
-        assert_source %q("#{}\#{}")
-        assert_source %q("\#{}#{}")
+        assert_terminated %q("\"")
+        assert_terminated %q("foo#{1}bar")
+        assert_terminated %q("\"#{@a}")
+        assert_terminated %q("\\\\#{}")
+        assert_terminated %q("foo bar")
+        assert_terminated %q("foo\nbar")
+        assert_terminated %q("foo bar #{}")
+        assert_terminated %q("foo\nbar #{}")
+        assert_terminated %q("#{}\#{}")
+        assert_terminated %q("\#{}#{}")
         # Within indentation
         assert_generates <<-'RUBY', <<-'RUBY'
           if foo
@@ -138,38 +147,38 @@ describe Unparser do
           end
         RUBY
 
-        assert_source %q("foo#{@bar}")
-        assert_source %q("fo\no#{bar}b\naz")
+        assert_terminated %q("foo#{@bar}")
+        assert_terminated %q("fo\no#{bar}b\naz")
       end
 
       context 'execute string' do
-        assert_source '`foo`'
-        assert_source '`foo#{@bar}`'
+        assert_terminated '`foo`'
+        assert_terminated '`foo#{@bar}`'
         assert_generates '%x(\))', '`)`'
         # FIXME: Research into this one!
         # assert_generates  '%x(`)', '`\``'
-        assert_source '`"`'
+        assert_terminated '`"`'
       end
 
       context 'symbol' do
         assert_generates s(:sym, :foo), ':foo'
         assert_generates s(:sym, :"A B"), ':"A B"'
-        assert_source ':foo'
-        assert_source ':"A B"'
-        assert_source ':"A\"B"'
-        assert_source ':""'
+        assert_terminated ':foo'
+        assert_terminated ':"A B"'
+        assert_terminated ':"A\"B"'
+        assert_terminated ':""'
       end
 
       context 'regexp' do
-        assert_source '/foo/'
-        assert_source %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
-        assert_source '/foo#{@bar}/'
-        assert_source '/foo#{@bar}/imx'
-        assert_source '/#{"\x00"}/', %w(1.9)
-        assert_source '/#{"\u0000"}/', %w(2.0 2.1)
-        assert_source "/\n/"
-        assert_source '/\n/'
-        assert_source "/\n/x"
+        assert_terminated '/foo/'
+        assert_terminated %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
+        assert_terminated '/foo#{@bar}/'
+        assert_terminated '/foo#{@bar}/imx'
+        assert_terminated '/#{"\x00"}/', %w(1.9)
+        assert_terminated '/#{"\u0000"}/', %w(2.0 2.1)
+        assert_terminated "/\n/"
+        assert_terminated '/\n/'
+        assert_terminated "/\n/x"
         # Within indentation
         assert_source <<-RUBY
           if foo
@@ -180,21 +189,21 @@ describe Unparser do
         assert_generates '%r(/)', '/\//'
         assert_generates '%r(\))', '/)/'
         assert_generates '%r(#{@bar}baz)', '/#{@bar}baz/'
-        assert_source '/\/\//x'
+        assert_terminated '/\/\//x'
       end
 
       context 'dynamic symbol' do
-        assert_source ':"foo#{bar}baz"'
-        assert_source ':"fo\no#{bar}b\naz"'
-        assert_source ':"#{bar}foo"'
-        assert_source ':"foo#{bar}"'
+        assert_terminated ':"foo#{bar}baz"'
+        assert_terminated ':"fo\no#{bar}b\naz"'
+        assert_terminated ':"#{bar}foo"'
+        assert_terminated ':"foo#{bar}"'
       end
 
       context 'irange' do
         assert_generates '1..2', %q(1..2)
-        assert_source '(0.0 / 0.0)..1'
-        assert_source '1..(0.0 / 0.0)'
-        assert_source '(0.0 / 0.0)..100'
+        assert_unterminated '(0.0 / 0.0)..1'
+        assert_unterminated '1..(0.0 / 0.0)'
+        assert_unterminated '(0.0 / 0.0)..100'
       end
 
       context 'erange' do
@@ -203,8 +212,8 @@ describe Unparser do
 
       context 'float' do
         assert_source '-0.1'
-        assert_source '0.1'
-        assert_source '0.1'
+        assert_terminated '0.1'
+        assert_terminated '0.1'
         assert_generates '10.2e10000000000', 'Float::INFINITY'
         assert_generates '-10.2e10000000000', '-Float::INFINITY'
         assert_generates s(:float, -0.1), '-0.1'
@@ -212,18 +221,18 @@ describe Unparser do
       end
 
       context 'array' do
-        assert_source '[1, 2]'
-        assert_source '[1, (), n2]'
-        assert_source '[1]'
-        assert_source '[]'
-        assert_source '[1, *@foo]'
-        assert_source '[*@foo, 1]'
-        assert_source '[*@foo, *@baz]'
+        assert_terminated '[1, 2]'
+        assert_terminated '[1, (), n2]'
+        assert_terminated '[1]'
+        assert_terminated '[]'
+        assert_terminated '[1, *@foo]'
+        assert_terminated '[*@foo, 1]'
+        assert_terminated '[*@foo, *@baz]'
         assert_generates '%w(foo bar)', %q(["foo", "bar"])
       end
 
       context 'hash' do
-        assert_source '{}'
+        assert_terminated '{}'
         assert_source '{ () => () }'
         assert_source '{ 1 => 2 }'
         assert_source '{ 1 => 2, 3 => 4 }'
@@ -232,7 +241,7 @@ describe Unparser do
         assert_source "{ foo: (if true\nend) }"
 
         context 'with symbol keys' do
-          assert_source '{ a: (1 rescue(foo)), b: 2 }'
+          assert_source '{ a: (1 rescue foo), b: 2 }'
           assert_source '{ a: 1, b: 2 }'
           assert_source '{ a: :a }'
           assert_source '{ :"a b" => 1 }'
@@ -242,30 +251,21 @@ describe Unparser do
     end
 
     context 'access' do
-      assert_source '@a'
-      assert_source '@@a'
-      assert_source '$a'
-      assert_source '$1'
-      assert_source '$`'
-      assert_source 'CONST'
-      assert_source 'SCOPED::CONST'
-      assert_source '::TOPLEVEL'
-      assert_source '::TOPLEVEL::CONST'
+      %w(@a @@a $a $1 $` CONST SCOPED::CONST ::TOPLEVEL ::TOPLEVEL::CONST).each do |expression|
+        assert_terminated(expression)
+      end
     end
 
-    context 'retry' do
-      assert_source 'retry'
-    end
-
-    context 'redo' do
-      assert_source 'redo'
+    context 'control keywords' do
+      %w(retry redo).each do |expression|
+        assert_terminated(expression)
+      end
     end
 
     context 'singletons' do
-      assert_source 'self'
-      assert_source 'true'
-      assert_source 'false'
-      assert_source 'nil'
+      %w(self true false nil).each do |expression|
+        assert_terminated(expression)
+      end
     end
 
     context 'magic keywords' do
@@ -276,17 +276,17 @@ describe Unparser do
 
     context 'assignment' do
       context 'single' do
-        assert_source 'a = 1'
-        assert_source '@a = 1'
-        assert_source '@@a = 1'
-        assert_source '$a = 1'
-        assert_source 'CONST = 1'
-        assert_source 'Name::Spaced::CONST = 1'
-        assert_source '::Foo = ::Bar'
+        assert_unterminated 'a = 1'
+        assert_unterminated '@a = 1'
+        assert_unterminated '@@a = 1'
+        assert_unterminated '$a = 1'
+        assert_unterminated 'CONST = 1'
+        assert_unterminated 'Name::Spaced::CONST = 1'
+        assert_unterminated '::Foo = ::Bar'
       end
 
       context 'lvar assigned from method with same name' do
-        assert_source 'foo = foo()'
+        assert_unterminated 'foo = foo()'
       end
 
       context 'lvar introduction from condition' do
@@ -352,34 +352,33 @@ describe Unparser do
       end
 
       context 'multiple' do
-        assert_source 'a, b = [1, 2]'
-        assert_source 'a, *foo = [1, 2]'
         assert_source 'a, * = [1, 2]'
-        assert_source '*foo = [1, 2]'
+        assert_source 'a, *foo = [1, 2]'
         assert_source '*a = []'
-        assert_source '@a, @b = [1, 2]'
-        assert_source 'a.foo, a.bar = [1, 2]'
-        assert_source 'a[0, 2]'
-        assert_source 'a[0], a[1] = [1, 2]'
-        assert_source 'a[*foo], a[1] = [1, 2]'
-        assert_source '@@a, @@b = [1, 2]'
-        assert_source '$a, $b = [1, 2]'
-        assert_source 'a, b = foo'
-        assert_source 'a, (b, c) = [1, [2, 3]]'
+        assert_source '*foo = [1, 2]'
         assert_source 'a, = foo'
-        assert_source 'a = (b, c = 1)'
-        assert_source '(a,), b = 1'
+        assert_unterminated 'a, b = [1, 2]'
+        assert_unterminated '@a, @b = [1, 2]'
+        assert_unterminated 'a.foo, a.bar = [1, 2]'
+        assert_unterminated 'a[0], a[1] = [1, 2]'
+        assert_unterminated 'a[*foo], a[1] = [1, 2]'
+        assert_unterminated '@@a, @@b = [1, 2]'
+        assert_unterminated '$a, $b = [1, 2]'
+        assert_unterminated 'a, b = foo'
+        assert_unterminated 'a, (b, c) = [1, [2, 3]]'
+        assert_unterminated 'a = (b, c = 1)'
+        assert_unterminated '(a,), b = 1'
       end
     end
 
     %w(next return break).each do |keyword|
 
       context keyword do
-        assert_source "#{keyword}"
-        assert_source "#{keyword} 1"
-        assert_source "#{keyword} 2, 3"
-        assert_source "#{keyword} *nil"
-        assert_source "#{keyword} *foo, bar"
+        assert_terminated "#{keyword}"
+        assert_unterminated "#{keyword} 1"
+        assert_unterminated "#{keyword} 2, 3"
+        assert_unterminated "#{keyword} *nil"
+        assert_unterminated "#{keyword} *foo, bar"
 
         assert_generates <<-RUBY, <<-RUBY
           foo do |bar|
@@ -406,19 +405,19 @@ describe Unparser do
     end
 
     context 'send' do
-      assert_source 'foo'
-      assert_source 'self.foo'
-      assert_source 'a.foo'
-      assert_source 'A.foo'
-      assert_source 'foo[]'
-      assert_source 'foo[1]'
-      assert_source 'foo[*baz]'
-      assert_source 'foo(1)'
-      assert_source 'foo(bar)'
-      assert_source 'foo(&block)'
-      assert_source 'foo(&(foo || bar))'
-      assert_source 'foo(*arguments)'
-      assert_source 'foo(*arguments)'
+      assert_terminated 'foo'
+      assert_terminated 'self.foo'
+      assert_terminated 'a.foo'
+      assert_terminated 'A.foo'
+      assert_terminated 'foo[]'
+      assert_terminated 'foo[1]'
+      assert_terminated 'foo[*baz]'
+      assert_terminated 'foo(1)'
+      assert_terminated 'foo(bar)'
+      assert_terminated 'foo(&block)'
+      assert_terminated 'foo(&(foo || bar))'
+      assert_terminated 'foo(*arguments)'
+      assert_terminated 'foo(*arguments)'
       assert_source <<-'RUBY'
         foo do
         end
@@ -508,40 +507,11 @@ describe Unparser do
         end.baz
       RUBY
 
-      assert_source '(1..2).max'
-      assert_source '1..2.max'
-      assert_source '(a = b).bar'
-      assert_source '@ivar.bar'
-      assert_source '//.bar'
-      assert_source '$var.bar'
-      assert_source '"".bar'
-      assert_source 'defined?(@foo).bar'
-      assert_source 'break.foo'
-      assert_source 'next.foo'
-      assert_source 'super(a).foo'
-      assert_source 'a || return'
-      assert_source 'super.foo'
-      assert_source 'nil.foo'
-      assert_source ':sym.foo'
-      assert_source '1.foo'
-      assert_source '1.0.foo'
-      assert_source '[].foo'
-      assert_source '{}.foo'
-      assert_source 'false.foo'
-      assert_source 'true.foo'
-      assert_source 'self.foo'
-      assert_source 'yield(a).foo'
-      assert_source 'yield.foo'
-      assert_source 'Foo::Bar.foo'
-      assert_source '::BAZ.foo'
-      assert_source 'foo[i].foo'
-      assert_source '(foo[i] = 1).foo'
-      assert_source 'foo[1..2].foo'
-      assert_source '(a.attribute ||= foo).bar'
-      assert_source 'foo.bar = baz[1]'
-      assert_source 'foo.bar = (baz || foo)'
-      assert_source 'foo.bar = baz.bar'
-      assert_source 'foo << (bar * baz)'
+      assert_terminated '(1..2).max'
+      assert_terminated '1..2.max'
+      assert_unterminated 'a || return'
+      assert_unterminated 'foo << (bar * baz)'
+
       assert_source <<-'RUBY'
         foo ||= (a, _ = b)
       RUBY
@@ -616,28 +586,25 @@ describe Unparser do
         local.bar
       RUBY
 
-      assert_source 'foo.bar(*args)'
-      assert_source 'foo.bar(*arga, foo, *argb)'
-      assert_source 'foo.bar(*args, foo)'
-      assert_source 'foo.bar(foo, *args)'
-      assert_source 'foo.bar(foo, *args, &block)'
+      assert_terminated 'foo.bar(*args)'
+      assert_terminated 'foo.bar(*arga, foo, *argb)'
+      assert_terminated 'foo.bar(*args, foo)'
+      assert_terminated 'foo.bar(foo, *args)'
+      assert_terminated 'foo.bar(foo, *args, &block)'
       assert_source <<-'RUBY'
         foo(bar, *args)
       RUBY
 
-      assert_source <<-'RUBY'
-        foo(*args, &block)
-      RUBY
+      assert_terminated 'foo(*args, &block)'
+      assert_terminated 'foo.bar(&baz)'
+      assert_terminated 'foo.bar(:baz, &baz)'
+      assert_terminated 'foo.bar = :baz'
+      assert_unterminated 'self.foo = :bar'
 
-      assert_source 'foo.bar(&baz)'
-      assert_source 'foo.bar(:baz, &baz)'
-      assert_source 'foo.bar = :baz'
-      assert_source 'self.foo = :bar'
-
-      assert_source 'foo.bar(baz: boz)'
-      assert_source 'foo.bar(foo, "baz" => boz)'
-      assert_source 'foo.bar({ foo: boz }, boz)'
-      assert_source 'foo.bar(foo, {})'
+      assert_terminated 'foo.bar(baz: boz)'
+      assert_terminated 'foo.bar(foo, "baz" => boz)'
+      assert_terminated 'foo.bar({ foo: boz }, boz)'
+      assert_terminated 'foo.bar(foo, {})'
     end
 
     context 'begin; end' do
@@ -694,7 +661,7 @@ describe Unparser do
 
       assert_source <<-'RUBY'
         begin
-          raise(Exception) rescue(foo = bar)
+          raise(Exception) rescue foo = bar
         rescue Exception
         end
       RUBY
@@ -735,19 +702,19 @@ describe Unparser do
 
       assert_source <<-'RUBY'
         class << self
-          undef :bar rescue(nil)
+          undef :bar rescue nil
         end
       RUBY
 
       assert_source <<-'RUBY'
         module Foo
-          undef :bar rescue(nil)
+          undef :bar rescue nil
         end
       RUBY
 
       assert_source <<-'RUBY'
         class Foo
-          undef :bar rescue(nil)
+          undef :bar rescue nil
         end
       RUBY
 
@@ -826,34 +793,34 @@ describe Unparser do
         end
       RUBY
 
-      assert_source 'foo rescue(bar)'
-      assert_source 'foo rescue(return bar)'
-      assert_source 'x = (foo rescue(return bar))'
+      assert_source 'foo rescue bar'
+      assert_source 'foo rescue return bar'
+      assert_source 'x = (foo rescue return bar)'
 
       %w(while until if).each do |keyword|
         assert_source <<-RUBY
           #{keyword} (
-            foo rescue(false)
+            foo rescue false
           )
           end
         RUBY
 
         assert_generates <<-RUBY, <<-GENERATED
-          foo rescue(false) #{keyword} true
+          foo rescue false #{keyword} true
         RUBY
           #{keyword} true
-            foo rescue(false)
+            foo rescue false
           end
         GENERATED
       end
 
       assert_generates <<-'RUBY', <<-GENERATED
-        case (foo rescue(false))
+        case (foo rescue false)
         when true
         end
       RUBY
         case (
-          foo rescue(false)
+          foo rescue false
         )
         when true
         end
@@ -1037,7 +1004,7 @@ describe Unparser do
           begin
             foo
           ensure
-            bar rescue(nil)
+            bar rescue nil
           end
         RUBY
 
@@ -1367,13 +1334,12 @@ describe Unparser do
     end
 
     context 'match operators' do
-      assert_source <<-'RUBY'
-        /bar/ =~ foo
-      RUBY
-
-      assert_source <<-'RUBY'
-        foo =~ /bar/
-      RUBY
+      assert_source '/bar/ =~ foo'
+      assert_source '/bar/ =~ :foo'
+      assert_source '(/bar/ =~ :foo).foo'
+      assert_source 'foo =~ /bar/'
+      assert_source 'foo(foo =~ /bar/)'
+      assert_source '(foo =~ /bar/).foo'
     end
 
     context 'binary operator methods' do
@@ -1497,6 +1463,11 @@ describe Unparser do
 
     context 'for' do
       assert_source <<-'RUBY'
+        bar(for a in bar do
+          baz
+        end)
+      RUBY
+      assert_source <<-'RUBY'
         for a in bar do
           baz
         end
@@ -1535,6 +1506,12 @@ describe Unparser do
     end
 
     context 'post conditions' do
+      assert_source <<-'RUBY'
+        x = (begin
+          foo
+        end while baz)
+      RUBY
+
       assert_source <<-'RUBY'
         begin
           foo

@@ -5,6 +5,7 @@ module Unparser
 
     # Emitter for various variable accesses
     class Variable < self
+      include Terminated
 
       handle :ivar, :lvar, :cvar, :gvar, :back_ref
 
@@ -26,6 +27,7 @@ module Unparser
 
     # Emitter for constant access
     class Const < self
+      include Terminated
 
       handle :const
 
@@ -59,6 +61,8 @@ module Unparser
 
     # Emitter for nth_ref nodes (regexp captures)
     class NthRef < self
+      include Terminated
+
       PREFIX = '$'.freeze
       handle :nth_ref
 

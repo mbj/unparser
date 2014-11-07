@@ -19,8 +19,8 @@ module Unparser
         # @api private
         #
         def dispatch
-          write(K_RESCUE)
-          parentheses { visit(body) }
+          write(K_RESCUE, WS)
+          visit_plain(body)
         end
 
         # Emit exception

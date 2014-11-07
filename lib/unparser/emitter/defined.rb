@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for defined? nodes
     class Defined < self
+      include Terminated
 
       handle :defined?
 
@@ -20,7 +21,7 @@ module Unparser
       def dispatch
         write(K_DEFINED)
         parentheses do
-          visit_terminated(subject)
+          visit(subject)
         end
       end
 

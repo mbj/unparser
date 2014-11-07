@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Base class for binary emitters
     class Binary < self
+      include Unterminated
 
       children :left, :right
 
@@ -14,16 +15,6 @@ module Unparser
 
       handle(*MAP.keys)
 
-      # Test if expression is terminated
-      #
-      # @return [false]
-      #
-      # @api private
-      #
-      def terminated?
-        false
-      end
-
     private
 
       # Perform dispatch
@@ -33,9 +24,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit_terminated(left)
+        visit(left)
         write(WS, MAP.fetch(node.type), WS)
-        visit_terminated(right)
+        visit(right)
       end
 
     end # Binary

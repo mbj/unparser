@@ -13,6 +13,10 @@ module Unparser
 
       handle(*MAP.keys)
 
+      def terminated?
+        children.empty?
+      end
+
     private
 
       # Perform dispatch
@@ -22,9 +26,13 @@ module Unparser
       # @api private
       #
       def dispatch
-        conditional_parentheses((parent_type.equal?(:or) || parent_type.equal?(:and)) && children.any?) do
-          write(MAP.fetch(node.type))
-          emit_arguments if children.any?
+        write(MAP.fetch(node.type))
+        case children.length
+        when 0
+        when 1
+          emit_single_argument
+        else
+          emit_arguments
         end
       end
 
@@ -53,8 +61,18 @@ module Unparser
       # @api private
       #
       def emit_argument(node)
+        visit_plain(node)
+      end
+
+      # Emit single argument
+      #
+      # @api private
+      #
+      def emit_single_argument
+        ws
+        node = children.first
         conditional_parentheses(PARENS.include?(node.type)) do
-          visit(node)
+          visit_plain(children.first)
         end
       end
 

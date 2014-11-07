@@ -22,6 +22,18 @@ module Unparser
       # Single assignment emitter
       class Single < self
 
+        # Test for terminated emit
+        #
+        # @return [Boolean]
+        #
+        # @api private
+        #
+        def terminated?
+          right_node.nil?
+        end
+
+      private
+
         # Emit right
         #
         # @return [undefined]
@@ -32,7 +44,7 @@ module Unparser
           right = right_node
           return unless right
           write(WS, T_ASN, WS)
-          visit_terminated(right)
+          visit(right)
         end
 
         abstract_method :emit_left
@@ -86,6 +98,7 @@ module Unparser
 
       # Multiple assignment
       class Multiple < self
+        include Unterminated
 
         handle :masgn
 
@@ -100,7 +113,7 @@ module Unparser
         # @api private
         #
         def emit_left
-          visit(first_child)
+          visit_plain(first_child)
         end
 
         # Emit right
@@ -127,6 +140,7 @@ module Unparser
 
       # Emitter for multiple assignment left hand side
       class MLHS < Emitter
+        include Unterminated
 
         handle :mlhs
 
@@ -141,12 +155,11 @@ module Unparser
         # @api private
         #
         def dispatch
-          conditional_parentheses(parent_type.equal?(:mlhs)) do
-            delimited(children)
-            write(',') if children.one? && !NO_COMMA.include?(children.first.type) && parent_type.equal?(:mlhs)
-          end
+          delimited(children)
 
-          write(',') if children.one? && !NO_COMMA.include?(children.first.type) && !(parent_type.equal?(:arg_expr) || parent_type.equal?(:mlhs))
+          if children.one? && !NO_COMMA.include?(children.first.type) && (parent_type.equal?(:mlhs) || parent_type.equal?(:masgn))
+            write(',')
+          end
         end
 
       end # MLHS

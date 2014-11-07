@@ -5,6 +5,7 @@ module Unparser
 
     # Emitter for yield node
     class Yield < self
+      include Terminated
 
       handle :yield
 

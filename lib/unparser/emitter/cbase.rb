@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for toplevel constant reference nodes
     class CBase < self
+      include Terminated
 
       handle :cbase
 

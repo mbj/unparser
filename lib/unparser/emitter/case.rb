@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for case nodes
     class Case < self
+      include Terminated
 
       handle :case
 
@@ -59,13 +60,14 @@ module Unparser
       def emit_condition
         return unless condition
         write(WS)
-        visit_terminated(condition)
+        visit(condition)
       end
 
     end # Case
 
     # Emitter for when nodes
     class When < self
+      include Terminated
 
       handle :when
 

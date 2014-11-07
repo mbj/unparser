@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for retry nodes
     class Retry < self
+      include Terminated
 
       handle :retry
 

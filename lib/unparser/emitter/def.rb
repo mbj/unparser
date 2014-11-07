@@ -4,7 +4,7 @@ module Unparser
   class Emitter
     # Emitter for def node
     class Def < self
-      include LocalVariableRoot
+      include LocalVariableRoot, Terminated
 
     private
 

@@ -5,6 +5,7 @@ module Unparser
     class Send
       # Emitter for unary sends
       class Unary < self
+        include Unterminated
 
       private
 
@@ -26,7 +27,7 @@ module Unparser
             write('+')
           end
 
-          visit_terminated(receiver)
+          visit(receiver)
         end
 
       end # Unary

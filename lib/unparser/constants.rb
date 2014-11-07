@@ -98,17 +98,6 @@ module Unparser
     K_FILE     = '__FILE__'
     K_THEN     = 'then'
 
-    # Nodes that can be emitted in tokens that terminate their expression.
-    #
-    # These nodes dont require parentheses to be exactly reproduced in context of a more complex expression.
-    #
-    TERMINATED = symbol_set %w(
-      int float self kwbegin const regexp args lvar
-      ivar gvar cvar if case module class sclass super
-      yield zsuper break next defined? str block while loop until
-      def defs true false nil array hash sym return match_current_line
-    )
-
     DEFAULT_DELIMITER = ', '.freeze
 
     CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))

@@ -5,6 +5,7 @@ module Unparser
 
     # Block emitter
     class Block < self
+      include Terminated
 
       handle :block
 

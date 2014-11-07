@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for splats
     class KwSplat < self
+      include Terminated
 
       handle :kwsplat
 
@@ -25,6 +26,7 @@ module Unparser
 
     # Emitter for splats
     class Splat < self
+      include Terminated
 
       handle :splat
 

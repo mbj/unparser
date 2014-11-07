@@ -19,14 +19,13 @@ module Unparser
       # @api private
       #
       def dispatch
-        parentheses do
-          visit(body)
-        end
+        visit_parentheses(body)
       end
     end # ArgExpr
 
     # Arguments emitter
     class Arguments < self
+      include Terminated
 
       handle :args
 
@@ -54,13 +53,7 @@ module Unparser
       # @api private
       #
       def normal_arguments
-        children.reject(&SHADOWARGS).map do |child|
-          if child.type.equal?(:mlhs)
-            Parser::AST::Node.new(:arg_expr, [child])
-          else
-            child
-          end
-        end
+        children.reject(&SHADOWARGS)
       end
 
       # Return shadow args
@@ -78,6 +71,7 @@ module Unparser
 
     # Emitter for block arguments
     class Blockarg < self
+      include Terminated
 
       handle :blockarg
 
@@ -99,6 +93,7 @@ module Unparser
 
     # Optional argument emitter
     class Optarg < self
+      include Terminated
 
       handle :optarg
 
@@ -120,6 +115,7 @@ module Unparser
 
     # Keyword rest argument emitter
     class KeywordRest < self
+      include Terminated
 
       handle :kwrestarg
 
@@ -140,6 +136,8 @@ module Unparser
 
     # Optional keyword argument emitter
     class KeywordOptional < self
+      include Terminated
+
       handle :kwoptarg
 
       children :name, :value
@@ -161,6 +159,8 @@ module Unparser
 
     # Keyword argument emitter
     class Kwarg < self
+      include Terminated
+
       handle :kwarg
 
       children :name
@@ -181,6 +181,7 @@ module Unparser
 
     # Rest argument emitter
     class Restarg < self
+      include Terminated
 
       handle :restarg
 
@@ -202,6 +203,7 @@ module Unparser
 
     # Argument emitter
     class Argument < self
+      include Terminated
 
       handle :arg, :shadowarg
 
@@ -223,6 +225,7 @@ module Unparser
 
     # Block pass node emitter
     class BlockPass < self
+      include Terminated
 
       handle :block_pass
 
@@ -238,7 +241,7 @@ module Unparser
       #
       def dispatch
         write(T_AMP)
-        visit_terminated(name)
+        visit(name)
       end
 
     end # BlockPass

@@ -5,6 +5,7 @@ module Unparser
 
     # Emitter for zsuper nodes
     class ZSuper < self
+      include Terminated
 
       handle :zsuper
 
@@ -24,6 +25,7 @@ module Unparser
 
     # Emitter for super nodes
     class Super < self
+      include Terminated
 
       handle :super
 

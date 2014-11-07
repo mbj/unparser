@@ -17,15 +17,16 @@ module Unparser
       # @api private
       #
       def emit_inner
-        delimited(children, NL)
+        children.each_with_index do |child, index|
+          visit_plain(child)
+          write(NL) if index < children.length - 1
+        end
       end
 
       # Emitter for implicit begins
       class Implicit < self
 
         handle :begin
-
-        NON_EMPTY_PARENS = [:root, :dstr, :dyn_str_body].to_set.freeze
 
         # Test if begin is terminated
         #
@@ -34,8 +35,10 @@ module Unparser
         # @api private
         #
         def terminated?
-          children.empty? && !NON_EMPTY_PARENS.include?(parent_type)
+          children.empty?
         end
+
+        TERMINATING_PARENT = [:root, :dyn_str_body].to_set.freeze
 
       private
 
@@ -46,12 +49,10 @@ module Unparser
         # @api private
         #
         def dispatch
-          if terminated?
+          if terminated? && !TERMINATING_PARENT.include?(parent_type)
             write('()')
           else
-            conditional_parentheses(parent_type.equal?(:optarg)) do
-              emit_inner
-            end
+            emit_inner
           end
         end
 
@@ -59,6 +60,7 @@ module Unparser
 
       # Emitter for explicit begins
       class Explicit < self
+        include Terminated
 
         handle :kwbegin
 

@@ -5,6 +5,7 @@ module Unparser
 
     # Base class for special match node emitters
     class Match < self
+      include Unterminated
 
       OPERATOR = '=~'.freeze
 

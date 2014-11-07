@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for undef nodes
     class Undef < self
+      include Unterminated
 
       handle :undef
 

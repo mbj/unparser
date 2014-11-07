@@ -4,10 +4,13 @@ module Unparser
   class Emitter
     # Emitter if nodes
     class If < self
-
       handle :if
 
       children :condition, :if_branch, :else_branch
+
+      def terminated?
+        !postcondition?
+      end
 
     private
 
@@ -46,7 +49,7 @@ module Unparser
       # @api private
       #
       def emit_postcondition
-        visit(if_branch || else_branch)
+        visit_plain(if_branch || else_branch)
         write(WS, keyword, WS)
         emit_condition
       end
@@ -92,7 +95,11 @@ module Unparser
       # @api private
       #
       def emit_condition
-        visit_terminated(condition)
+        if condition.type.equal?(:match_current_line)
+          visit_plain(condition)
+        else
+          visit(condition)
+        end
       end
 
       # Emit if branch

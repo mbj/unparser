@@ -5,6 +5,7 @@ module Unparser
     class Send
       # Emitter for binary sends
       class Binary < self
+        include Unterminated
 
       private
 
@@ -15,7 +16,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          visit_terminated(receiver)
+          visit(receiver)
           emit_operator
           emit_right
         end
@@ -47,7 +48,7 @@ module Unparser
         # @api private
         #
         def emit_right
-          visit_terminated(right_node)
+          visit(right_node)
         end
 
       end # Binary

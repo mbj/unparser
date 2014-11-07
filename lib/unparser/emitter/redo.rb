@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for redo nodes
     class Redo < self
+      include Terminated
 
       handle :redo
 

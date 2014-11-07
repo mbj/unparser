@@ -5,6 +5,7 @@ module Unparser
 
     # Base class for and and or op-assign
     class BinaryAssign < self
+      include Unterminated
 
       children :target, :expression
 
@@ -26,13 +27,14 @@ module Unparser
       def dispatch
         visit(target)
         write(WS, MAP.fetch(node.type), WS)
-        visit_terminated(expression)
+        visit(expression)
       end
 
     end # BinaryAssign
 
     # Emitter for op assign
     class OpAssign < self
+      include Unterminated
 
       handle :op_asgn
 
@@ -47,7 +49,7 @@ module Unparser
       def dispatch
         visit(first_child)
         emit_operator
-        visit_terminated(children[2])
+        visit(children[2])
       end
 
       # Emit operator

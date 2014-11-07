@@ -4,6 +4,7 @@ module Unparser
   class Emitter
     # Emitter for for nodes
     class For < self
+      include Terminated
 
       handle :for
 
@@ -31,7 +32,7 @@ module Unparser
       # @api private
       #
       def emit_condition
-        visit(condition)
+        visit_plain(condition)
         write(WS, K_IN, WS)
         visit(assignment)
         write(WS, K_DO)
