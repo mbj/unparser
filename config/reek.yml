@@ -79,6 +79,7 @@ TooManyStatements:
   - Unparser::CLI#add_options
   - Unparser::CLI#initialize
   - Unparser::CLI::Source#report_unparser
+  - Unparser::Emitter#delimited
 DuplicateMethodCall:
   allow_calls: []
   exclude: []

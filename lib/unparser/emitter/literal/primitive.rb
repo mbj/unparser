@@ -28,6 +28,7 @@ module Unparser
 
         end # Inspect
 
+        # Emitter for complex literals
         class Complex < self
 
           handle :complex
@@ -75,6 +76,7 @@ module Unparser
 
         end # Rational
 
+        # Emitter for rational literals
         class Rational < self
 
           handle :rational
