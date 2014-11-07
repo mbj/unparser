@@ -196,6 +196,7 @@ describe Unparser do
         assert_terminated ':"foo#{bar}baz"'
         assert_terminated ':"fo\no#{bar}b\naz"'
         assert_terminated ':"#{bar}foo"'
+        assert_terminated ':"#{"foo"}"'
         assert_terminated ':"foo#{bar}"'
       end
 

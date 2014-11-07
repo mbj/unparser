@@ -155,6 +155,12 @@ module Unparser
     class CompactDSTR < self
 
       register :dstr
+      register :dsym
+
+      MAP = IceNine.deep_freeze(
+        dstr: :str,
+        dsym: :sym,
+      )
 
       # Return preprocessor result
       #
@@ -163,8 +169,8 @@ module Unparser
       # @api private
       #
       def result
-        if children.all? { |child| child.type.equal?(:str) }
-          node.updated(:str, [children.map { |child| child.children.first }.join])
+        if children.any? && children.all? { |child| child.type.equal?(:str) }
+          node.updated(MAP.fetch(node.type), [children.map { |child| child.children.first }.join])
         else
           node
         end
