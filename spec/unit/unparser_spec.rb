@@ -111,9 +111,9 @@ describe Unparser do
         assert_generates '-10e10000000000', '-Float::INFINITY'
       end
 
-      # Rubies < 2.1 do not have these literals, parser can parse them
+      # Rubies < 2.0 do not have these literals, parser can parse them
       # but there are subtible differencies. Excluding them under those rubies.
-      if RUBY_VERSION >= '2.1'
+      if RUBY_VERSION >= '2.0'
         context 'rational' do
           assert_terminated '1r', %w(2.1)
           assert_generates '1.0r', '1r', %w(2.1)
