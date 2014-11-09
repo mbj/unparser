@@ -813,9 +813,7 @@ describe Unparser do
 
       %w(while until if).each do |keyword|
         assert_source <<-RUBY
-          #{keyword} (
-            foo rescue false
-          )
+          #{keyword} (foo rescue false)
           end
         RUBY
 
@@ -833,9 +831,7 @@ describe Unparser do
         when true
         end
       RUBY
-        case (
-          foo rescue false
-        )
+        case (foo rescue false)
         when true
         end
       GENERATED

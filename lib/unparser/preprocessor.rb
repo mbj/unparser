@@ -204,30 +204,5 @@ module Unparser
         end
       end
     end
-
-    # Preprocessor for begin nodes. Removes begin nodes with one child.
-    #
-    # This reduces the amount of complex logic needed inside unparser to emit "nice" syntax with minimal
-    # tokens.
-    #
-    class Begin < self
-
-      register :begin
-
-      # Return preprocessor result
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      def result
-        if children.one? && !parent_type.equal?(:regexp)
-          visit(children.first)
-        else
-          Noop.call(node, parent_type)
-        end
-      end
-
-    end # Begin
   end # Preprocessor
 end # Unparser
