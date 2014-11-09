@@ -184,7 +184,7 @@ module Unparser
       register :float
       register :int
 
-      NEG_INFINITY = Float::INFINITY - 1
+      NEG_INFINITY = -(Float::INFINITY - 1)
 
       # Return preprocessor result
       #
@@ -197,7 +197,7 @@ module Unparser
         case value
         when Float::INFINITY
           s(:const, s(:const, nil, :Float), :INFINITY)
-        when -NEG_INFINITY
+        when NEG_INFINITY
           s(:send, s(:const, s(:const, nil, :Float), :INFINITY), :-@)
         else
           node
