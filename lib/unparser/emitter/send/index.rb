@@ -105,7 +105,7 @@ module Unparser
           #
           def emit_normal_operation
             parentheses(*INDEX_PARENS) do
-              delimited(indices)
+              delimited_plain(indices)
             end
             write(WS, T_ASN, WS)
             visit(value)
