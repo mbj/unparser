@@ -28,7 +28,7 @@ describe Unparser do
     def assert_round_trip(input, parser)
       ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
-      generated.should eql(input)
+      expect(generated).to eql(input)
       generated_ast, _ = parser.parse_with_comments(generated)
       expect(ast == generated_ast).to be(true)
     end
@@ -41,9 +41,9 @@ describe Unparser do
 
     def assert_generates_from_ast(parser, ast_with_comments, expected)
       generated = Unparser.unparse(*ast_with_comments)
-      generated.should eql(expected)
+      expect(generated).to eql(expected)
       ast, comments = parser.parse_with_comments(generated)
-      Unparser.unparse(ast, comments).should eql(expected)
+      expect(Unparser.unparse(ast, comments)).to eql(expected)
     end
 
     def self.assert_unterminated(expression)

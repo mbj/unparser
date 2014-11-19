@@ -26,4 +26,5 @@ end
 RSpec.configure do |config|
   config.include(SpecHelper)
   config.extend(SpecHelper)
+  config.raise_errors_for_deprecations!
 end
