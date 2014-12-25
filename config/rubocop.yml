@@ -15,6 +15,9 @@ MethodLength:
   CountComments: false
   Max: 17
 
+AbcSize:
+  Max: 18
+
 # Avoid more than `Max` levels of nesting.
 BlockNesting:
   Max: 3
@@ -74,7 +77,13 @@ Blocks:
   Enabled: false
 
 # I like to have an empty line before closing the currently opened body
-EmptyLinesAroundBody:
+EmptyLinesAroundBlockBody:
+  Enabled: false
+
+EmptyLinesAroundClassBody:
+  Enabled: false
+
+EmptyLinesAroundModuleBody:
   Enabled: false
 
 # I like my style more
