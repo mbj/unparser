@@ -4,6 +4,7 @@ script: 'bundle exec rake ci'
 rvm:
   - 2.0.0
   - 2.1.4
+  - 2.2.0
   - rbx-2
 matrix:
   include:
