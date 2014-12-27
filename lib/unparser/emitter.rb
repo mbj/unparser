@@ -446,7 +446,7 @@ module Unparser
     #
     # @api private
     #
-    def emit_body(body = body)
+    def emit_body(body = body())
       unless body
         buffer.indent
         nl
@@ -494,7 +494,7 @@ module Unparser
     #
     # @api private
     #
-    def run(emitter, node = node)
+    def run(emitter, node = node())
       emitter.new(node, self).write_to_buffer
     end
 
