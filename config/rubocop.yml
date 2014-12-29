@@ -85,3 +85,6 @@ EmptyLinesAroundModuleBody:
 # I like my style more
 AccessModifierIndentation:
   Enabled: false
+
+MultilineOperationIndentation:
+  EnforcedStyle: indented
