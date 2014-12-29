@@ -83,8 +83,8 @@ module Unparser
           util = self.class
           string = node.children.first
           segment = string
-                    .gsub(REPLACEMENTS, ESCAPES)
-                    .gsub(util::DELIMITER, util::REPLACEMENT)
+            .gsub(REPLACEMENTS, ESCAPES)
+            .gsub(util::DELIMITER, util::REPLACEMENT)
           write(segment)
         end
 
