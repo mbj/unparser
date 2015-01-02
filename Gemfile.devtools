@@ -1,4 +1,10 @@
 group :development do
+  gem 'rake',       '~> 10.4.0'
+  gem 'rspec',      '~> 3.1.0'
+  gem 'rspec-core', '~> 3.1.7'
+  gem 'rspec-its',  '~> 1.1.0'
+  gem 'yard',       '~> 0.8.7.6'
+
   platform :rbx do
     gem 'rubysl-singleton', '~> 2.0.0'
   end
@@ -23,6 +29,19 @@ group :guard do
 end
 
 group :metrics do
+  gem 'coveralls', '~> 0.7.2'
+  gem 'flay',      '~> 2.5.0'
+  gem 'flog',      '~> 4.3.0'
+  gem 'reek',      '=  1.4.0'  # locked due to buggy ast processing
+  gem 'rubocop',   '~> 0.28.0'
+  gem 'simplecov', '~> 0.9.1'
+  gem 'yardstick', '~> 0.9.9'
+
+  platforms :mri_20, :mri_21, :ruby_22 do
+    gem 'mutant',       '~> 0.7.4'
+    gem 'mutant-rspec', '~> 0.7.4'
+  end
+
   platform :rbx do
     gem 'json',               '~> 1.8.1'
     gem 'racc',               '~> 1.4.12'
