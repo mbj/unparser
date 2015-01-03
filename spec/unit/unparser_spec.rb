@@ -111,29 +111,25 @@ describe Unparser do
         assert_generates '-10e10000000000', '-Float::INFINITY'
       end
 
-      # Rubies < 2.0 do not have these literals, parser can parse them
-      # but there are subtible differencies. Excluding them under those rubies.
-      if RUBY_VERSION >= '2.0'
-        context 'rational' do
-          assert_terminated '1r', %w(2.1)
-          assert_generates '1.0r', '1r', %w(2.1)
-          assert_generates '-0r', '0r', %w(2.1)
+      context 'rational' do
+        assert_terminated '1r', %w(2.1)
+        assert_generates '1.0r', '1r', %w(2.1)
+        assert_generates '-0r', '0r', %w(2.1)
 
-          assert_terminated '1.5r', %w(2.1)
-          assert_terminated '1.3r', %w(2.1)
-        end
+        assert_terminated '1.5r', %w(2.1)
+        assert_terminated '1.3r', %w(2.1)
+      end
 
-        context 'complex' do
-          %w(
+      context 'complex' do
+        %w(
             5i
             -5i
             0.6i
             -0.6i
             1000000000000000000000000000000i
             1ri
-          ).each do |expression|
-            assert_terminated(expression, %w(2.1))
-          end
+        ).each do |expression|
+          assert_terminated(expression, %w(2.1))
         end
       end
 
