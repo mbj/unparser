@@ -93,7 +93,7 @@ module Unparser
             integer = value.to_i
             float   = value.to_f
 
-            write_rational(integer.to_f.equal?(float) ? integer : float)
+            write_rational(integer.to_f == float ? integer : float)
           end
 
           # Write rational format
