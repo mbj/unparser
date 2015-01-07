@@ -122,12 +122,12 @@ describe Unparser do
 
       context 'complex' do
         %w(
-            5i
-            -5i
-            0.6i
-            -0.6i
-            1000000000000000000000000000000i
-            1ri
+          5i
+          -5i
+          0.6i
+          -0.6i
+          1000000000000000000000000000000i
+          1ri
         ).each do |expression|
           assert_terminated(expression, %w(2.1))
         end
