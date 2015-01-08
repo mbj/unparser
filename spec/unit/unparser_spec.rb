@@ -84,16 +84,16 @@ describe Unparser do
     end
 
     context 'kwargs' do
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY, %w(2.1 2.2)
         def foo(bar:, baz:)
         end
       RUBY
 
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY, %w(2.1 2.2)
         foo(**bar)
       RUBY
 
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY, %w(2.1 2.2)
         def foo(bar:, baz: "value")
         end
       RUBY
@@ -113,12 +113,12 @@ describe Unparser do
       end
 
       context 'rational' do
-        assert_terminated '1r', %w(2.1)
-        assert_generates '1.0r', '1r', %w(2.1)
-        assert_generates '-0r', '0r', %w(2.1)
+        assert_terminated '1r', %w(2.1 2.2)
+        assert_generates '1.0r', '1r', %w(2.1 2.2)
+        assert_generates '-0r', '0r', %w(2.1 2.2)
 
-        assert_terminated '1.5r', %w(2.1)
-        assert_terminated '1.3r', %w(2.1)
+        assert_terminated '1.5r', %w(2.1 2.2)
+        assert_terminated '1.3r', %w(2.1 2.2)
       end
 
       context 'complex' do
@@ -190,7 +190,7 @@ describe Unparser do
         assert_terminated '/foo#{@bar}/'
         assert_terminated '/foo#{@bar}/imx'
         assert_terminated '/#{"\x00"}/', %w(1.9)
-        assert_terminated '/#{"\u0000"}/', %w(2.0 2.1)
+        assert_terminated '/#{"\u0000"}/', %w(2.0 2.1 2.2)
         assert_terminated "/\n/"
         assert_terminated '/\n/'
         assert_terminated "/\n/x"
@@ -1090,7 +1090,7 @@ describe Unparser do
           end
         RUBY
 
-        assert_source <<-'RUBY', %w(2.1)
+        assert_source <<-'RUBY', %w(2.1 2.2)
           def foo(bar: 1)
           end
         RUBY
