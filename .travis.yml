@@ -4,6 +4,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.4
+  - 2.2.0
   - rbx-2
 matrix:
   include:
@@ -19,3 +20,4 @@ notifications:
       - irc.freenode.org#mutant
     on_success: never
     on_failure: change
+before_install: gem update bundler
