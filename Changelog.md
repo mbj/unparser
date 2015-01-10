@@ -1,3 +1,8 @@
+# v0.1.17 2015-01-10
+
+* Fix jruby complex / rational generation edge case
+* Support generation under MRI 2.2
+
 # v0.1.16 2014-11-07
 
 * Add emitter for complex and rational literals
