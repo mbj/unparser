@@ -8,7 +8,8 @@ describe Unparser do
     PARSERS = IceNine.deep_freeze(
       '1.9' => Parser::Ruby19,
       '2.0' => Parser::Ruby20,
-      '2.1' => Parser::Ruby21
+      '2.1' => Parser::Ruby21,
+      '2.2' => Parser::Ruby22
     )
 
     RUBIES = PARSERS.keys.freeze
