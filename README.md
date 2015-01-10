@@ -110,8 +110,7 @@ Install the gem `unparser` via your prefered method.
 People
 ------
 
-* [Markus Schirp (mbj)](https://github.com/mbj) Author
-* [Trent Ogren (misfo)](https://github.com/misfo) Adding comment reproduction
+Various people contributed to this repository. See [Contributors](https://github.com/mbj/unparser/graphs/contributors).
 
 Contributing
 -------------
