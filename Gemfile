@@ -8,4 +8,5 @@ gem 'anima',   '~> 0.2.0'
 gem 'morpher', '~> 0.2.2'
 
 gem 'devtools', git: 'https://github.com/rom-rb/devtools.git'
+gem 'mutant',   git: 'https://github.com/mbj/mutant.git'
 eval_gemfile 'Gemfile.devtools'
