@@ -1,3 +1,11 @@
+# v0.2.1 2015-01-14
+
+* Add back unofficial support for 1.9.3
+
+# v0.2.0 2015-01-12
+
+* Bump required ruby version to 2.0.0
+
 # v0.1.17 2015-01-10
 
 * Fix jruby complex / rational generation edge case
