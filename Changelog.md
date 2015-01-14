@@ -1,3 +1,7 @@
+# v0.2.2 2015-01-14
+
+* Really add back unofficial support for 1.9.3
+
 # v0.2.1 2015-01-14
 
 * Add back unofficial support for 1.9.3
