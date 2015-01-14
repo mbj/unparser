@@ -2,16 +2,16 @@ sudo: false
 language: ruby
 script: 'bundle exec rake ci'
 rvm:
-  - 2.0.0
-  - 2.1.4
-  - 2.2.0
-  - rbx-2
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  - rbx
 matrix:
   include:
     - rvm: jruby
       env: JRUBY_OPTS="$JRUBY_OPTS --debug --2.0"  # for simplecov
   allow_failures:
-    - rvm: rbx-2
+    - rvm: rbx
 notifications:
   irc:
     channels:

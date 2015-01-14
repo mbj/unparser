@@ -8,16 +8,19 @@ unparser
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 
-This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 syntax. Including its own source code.
+This library is able to reproduce Ruby 1.9, 2.0, 2.1 and 2.2 syntax. Including its own source code.
 
 It serves well for [mutant](https://github.com/mbj/mutant) mutators and the in-memory vendoring for self hosting.
+
+Support for running unparser under 1.9 is unofficial, and is not tested on CI.
 
 Usage
 -----
 
 ```ruby
 require 'unparser'
-Unparser.unparse(your_ast) # => "the code"
+ast = Parser::CurrentRuby.parse(your_source)
+Unparser.unparse(ast) # => "the code"
 ```
 
 To preserve the comments from the source:
