@@ -102,10 +102,8 @@ module Unparser
     # @api private
     #
     def self.source_range(node, part)
-      location = node.location
-      if location && location.respond_to?(part)
-        location.public_send(part)
-      end
+      has_part = node.respond_to?(:location) && node.location.respond_to?(part)
+      node.location.public_send(part) if has_part
     end
 
   private
