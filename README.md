@@ -29,6 +29,38 @@ ast, comments = Parser::CurrentRuby.parse_with_comments(your_source)
 Unparser.unparse(ast, comments) # => "the code # with comments"
 ```
 
+Passing in manually constructed AST:
+```ruby
+require 'parser/current'
+require 'unparser'
+
+module YourHelper
+  def s(type, *children)
+    Parser::AST::Node.new(type, children)
+  end
+end
+
+include YourHelper
+
+node = s(:def,
+  :foo,
+  s(:args,
+    s(:arg, :x)
+  ),
+  s(:send,
+    s(:lvar, :x),
+    :+,
+    s(:int, 3)
+  )
+)
+
+Unparser.unparse(node) # => "def foo(x)\n  x + 3\nend"
+```
+
+Note: DO NOT attempt to pass in nodes generated via `AST::Sexp#s`, these ones return
+API incompatible `AST::Node` instances, unparser needs `Parser::AST::Node` instances.
+
+
 Equivalent vs identical:
 
 ```ruby

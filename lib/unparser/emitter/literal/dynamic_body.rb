@@ -47,7 +47,7 @@ module Unparser
 
         # Emit segment
         #
-        # @param [Parser::Node] node
+        # @param [Parser::AST::Node] node
         #
         # @return [undefined]
         #
@@ -73,7 +73,7 @@ module Unparser
 
         # Emit str segment
         #
-        # @param [Parser::Node] node
+        # @param [Parser::AST::Node] node
         #
         # @return [undefined]
         #
@@ -90,7 +90,7 @@ module Unparser
 
         # Emit interpolated segment
         #
-        # @param [Parser::Node] node
+        # @param [Parser::AST::Node] node
         #
         # @return [undefined]
         #
