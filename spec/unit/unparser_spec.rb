@@ -267,6 +267,16 @@ describe Unparser do
           assert_source '{ :-@ => 1 }'
         end
       end
+
+      context 'method' do
+        meth = s(:def,
+                 :foo,
+                 s(:args,
+                   s(:arg,
+                     :x)),
+                 s(:send, s(:lvar, :x), :+, s(:int, 3)))
+        assert_generates meth, "def foo(x)\n  x + 3\nend"
+      end
     end
 
     context 'access' do
