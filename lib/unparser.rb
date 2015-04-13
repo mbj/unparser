@@ -16,7 +16,7 @@ module Unparser
 
   # Unparse an AST (and, optionally, comments) into a string
   #
-  # @param [Parser::Node, nil] node
+  # @param [Parser::AST::Node, nil] node
   # @param [Array] comment_array
   #
   # @return [String]
