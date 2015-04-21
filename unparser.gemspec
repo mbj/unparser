@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 1.9.3'
 
-  gem.add_dependency('parser',        '~> 2.2.0.2')
+  gem.add_dependency('parser',        '~> 2.2.2', '>= 2.2.2.2')
   gem.add_dependency('procto',        '~> 0.0.2')
   gem.add_dependency('concord',       '~> 0.1.5')
   gem.add_dependency('adamantium',    '~> 0.2.0')
