@@ -189,7 +189,8 @@ describe Unparser do
 
       context 'regexp' do
         assert_terminated '/foo/'
-        assert_terminated %q(/[^-+',.\/:@[:alnum:]\[\]\x80-\xff]+/)
+        assert_terminated %q(/[\x80-\xff]+/), %w(1.9)
+        assert_terminated %q(/[^-+',.\/:@[:alnum:]\[\]]+/)
         assert_terminated '/foo#{@bar}/'
         assert_terminated '/foo#{@bar}/imx'
         assert_terminated '/#{"\x00"}/', %w(1.9)
