@@ -1,3 +1,7 @@
+# v0.2.3 2015-04-28
+
+* Compatibility with parser ~>2.2.2, >2.2.2.2
+
 # v0.2.2 2015-01-14
 
 * Really add back unofficial support for 1.9.3
