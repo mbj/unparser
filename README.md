@@ -7,6 +7,7 @@ unparser
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
+Excluding the macruby extensions the parser gem implemnents on top of ruby syntax.
 
 This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 syntax. Including its own source code.
 
