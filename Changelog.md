@@ -1,3 +1,7 @@
+# v0.2.4 2015-05-30
+
+* Relax parser dependency to ~>2.2.2
+
 # v0.2.3 2015-04-28
 
 * Compatibility with parser ~>2.2.2, >2.2.2.2
