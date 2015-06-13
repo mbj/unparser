@@ -55,7 +55,7 @@ BooleanParameter:
   enabled: true
 IrresponsibleModule:
   exclude: []
-  enabled: true
+  enabled: false # buggy / broken
 UncommunicativeModuleName:
   accept: []
   exclude: []
@@ -90,6 +90,9 @@ UtilityFunction:
   exclude:
   # Intent to be helper methods
   - Unparser::CLI::Source#strip
+  - Unparser::CLI::Source#parse
+  - Unparser::NodeHelpers#n
+  - Unparser::NodeHelpers#s
   - Unparser::CLI#sources
   enabled: true
 Attribute:
