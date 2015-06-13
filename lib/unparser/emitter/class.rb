@@ -41,7 +41,7 @@ module Unparser
     end # Class
 
     # Emitter for sclass nodes
-    class SClass  < self
+    class SClass < self
       include Terminated
 
       handle :sclass

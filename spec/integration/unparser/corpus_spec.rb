@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable ClosingParenthesisIndentation
 describe 'Unparser on ruby corpus' do
   before do
     if RUBY_VERSION < '2.1.0'

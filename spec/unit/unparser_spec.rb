@@ -30,7 +30,7 @@ describe Unparser do
       ast, comments = parser.parse_with_comments(input)
       generated = Unparser.unparse(ast, comments)
       expect(generated).to eql(input)
-      generated_ast, _ = parser.parse_with_comments(generated)
+      generated_ast, _comments = parser.parse_with_comments(generated)
       expect(ast == generated_ast).to be(true)
     end
 

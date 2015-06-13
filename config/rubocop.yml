@@ -72,10 +72,6 @@ ConstantName:
 TrivialAccessors:
   Enabled: false
 
-# Do not prefer do/end over {} for multiline blocks
-Blocks:
-  Enabled: false
-
 # I like to have an empty line before closing the currently opened body
 EmptyLinesAroundBlockBody:
   Enabled: false

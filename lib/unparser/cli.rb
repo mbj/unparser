@@ -38,7 +38,8 @@ module Unparser
     # @api private
     #
     def initialize(arguments)
-      @sources, @ignore = [], Set.new
+      @sources = []
+      @ignore = Set.new
 
       @success   = true
       @fail_fast = false
