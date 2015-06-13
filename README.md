@@ -9,8 +9,8 @@ unparser
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 Excluding the macruby extensions the parser gem implemnents on top of ruby syntax.
 
-Excluding the MacRuby / RubyMotion extensions the parser gem implemnents on top of MRI ruby syntax. If you feel the
-need to get them supported, contact me.
+Excluding the MacRuby / RubyMotion extensions the parser gem implemnents on top of MRI ruby syntax starting with parser release 2.3.
+If you feel the need to get them supported, contact me.
 
 This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 syntax. Including its own source code.
 
