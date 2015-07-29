@@ -149,7 +149,44 @@ module Unparser
 
     end # CollapseStrChildren
 
-    # Preprocessor eliminating unneded dstr nodes
+    # Preprocessor flattening unneeded dstr nesting. This happens when a dstr is generated from
+    # implicit string concatenation, and one of the strings being concatenated is itself a dstr.
+    #
+    # Example: "foo" "bar #{baz}"
+    #
+    # Without this preprocessor, this turns into: "foo#{"bar#{baz}"}"
+    # With this preprocessor, this turns into: "foobar #{baz}"
+    class FlattenImplicitDSTR < self
+
+      # No need to register :dsym, because Ruby doesn't do implicit concatenation of symbols
+      register :dstr
+
+      # Return preprocessor result
+      #
+      # @return [Parser::AST::Node]
+      #
+      # @api private
+      #
+      def result
+        # This should only ever be true for DSTR nodes that are a result of implicit concatenation
+        # (see the comments on this class). Any other DSTR node would have a :begin node as a child.
+        if children.any? && children.all? { |child| [:dstr, :str].include?(child.type) }
+          flat_children = children.flat_map do |child|
+            if child.type.equal?(:str)
+              child
+            else # child.type is dstr
+              child.children
+            end
+          end
+          node.updated(nil, flat_children)
+        else
+          node
+        end
+      end
+
+    end # FlattenImplicitDSTR
+
+    # Preprocessor eliminating unneeded dstr nodes
     class CompactDSTR < self
 
       register :dstr
