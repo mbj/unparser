@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 # rubocop:disable ClosingParenthesisIndentation
-describe 'Unparser on ruby corpus' do
+describe 'Unparser on ruby corpus', mutant: false do
   before do
     if RUBY_VERSION < '2.1.0'
       # Limits in encodings and complex/rational literals
