@@ -1,3 +1,7 @@
+# v0.2.5 2015-05-30
+
+* Drop support for ruby < 2.1
+
 # v0.2.4 2015-05-30
 
 * Relax parser dependency to ~>2.2.2
