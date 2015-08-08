@@ -161,6 +161,8 @@ module Unparser
       # No need to register :dsym, because Ruby doesn't do implicit concatenation of symbols
       register :dstr
 
+      FLATTEN_CHILDREN = IceNine.deep_freeze([:dstr, :str])
+
       # Return preprocessor result
       #
       # @return [Parser::AST::Node]
@@ -168,20 +170,27 @@ module Unparser
       # @api private
       #
       def result
-        # This should only ever be true for DSTR nodes that are a result of implicit concatenation
-        # (see the comments on this class). Any other DSTR node would have a :begin node as a child.
-        if children.any? && children.all? { |child| [:dstr, :str].include?(child.type) }
-          flat_children = children.flat_map do |child|
-            if child.type.equal?(:str)
-              child
-            else # child.type is dstr
-              child.children
-            end
-          end
-          node.updated(nil, flat_children)
-        else
-          node
+        return node unless implicit_dstr?
+
+        flat_children = children.flat_map do |child|
+          child.type.equal?(:dstr) ? child.children : child
         end
+        node.updated(nil, flat_children)
+      end
+
+    private
+
+      # Test for implicit dstr
+      #
+      # This should only ever be true for dstr nodes that are a result of implicit concatenation
+      # (see the comments on this class). Any other dstr node would have a :begin node as a child.
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def implicit_dstr?
+        children.map(&:type).all?(&FLATTEN_CHILDREN.method(:include?))
       end
 
     end # FlattenImplicitDSTR
