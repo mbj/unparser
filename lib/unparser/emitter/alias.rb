@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module Unparser
   class Emitter
     # Emitter for alias nodes

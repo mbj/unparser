@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module Unparser
   class Emitter
     # Namespace class for literal emiters

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module Unparser
 
   # Holds the comments that remain to be emitted

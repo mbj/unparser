@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module Unparser
   class CLI
     # Class to create diffs from source code
