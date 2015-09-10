@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'unparser'
 require 'optparse'
 require 'diff/lcs'

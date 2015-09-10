@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'spec_helper'
 
 describe Unparser::Buffer, '#append_without_prefix' do

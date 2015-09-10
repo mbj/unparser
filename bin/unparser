@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-# encoding: UTF-8
-
 trap('INT') do |status|
   exit! 128 + status
 end
