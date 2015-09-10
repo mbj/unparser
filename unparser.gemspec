@@ -13,9 +13,9 @@ Gem::Specification.new do |gem|
   gem.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
   gem.require_paths    = %w(lib)
   gem.extra_rdoc_files = %w(README.md)
-  gem.executables      = [ 'unparser' ]
+  gem.executables      = %w(unparser)
 
-  gem.required_ruby_version = '>= 1.9.3'
+  gem.required_ruby_version = '>= 2.1'
 
   gem.add_dependency('abstract_type', '~> 0.0.7')
   gem.add_dependency('adamantium',    '~> 0.2.0')

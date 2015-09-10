@@ -139,6 +139,7 @@ describe Unparser do
       context 'string' do
         assert_generates '?c', '"c"'
         assert_generates '"foo" "bar"', '"foobar"'
+        assert_generates '"foo" "bar #{baz}"', '"foobar #{baz}"'
         assert_generates '%Q(foo"#{@bar})', '"foo\\"#{@bar}"'
         assert_terminated '"\""'
         assert_terminated '"foo#{1}bar"'
