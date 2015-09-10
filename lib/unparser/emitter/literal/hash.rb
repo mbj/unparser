@@ -48,7 +48,7 @@ module Unparser
 
         # Pair emitter that emits colon separated key values
         class Colon < self
-          COLON      = ': '.freeze
+          COLON = ': '.freeze
 
           handle :pair_colon
 
