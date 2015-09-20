@@ -7,10 +7,41 @@ module Unparser
 
         children :value
 
+        # Emitter for string literals
+        class String < self
+          handle :str
+
+        private
+
+          # Dispatch value
+          #
+          # @return [undefined]
+          #
+          # @api private
+          #
+          def dispatch
+            if value.include? "'"
+              # Write %()-style strings for strings with both double and single
+              # quotes
+              if value.include? '"'
+                write("%(#{value})")
+              else
+                # Write double-quoted strings for strings with single but not
+                # double quotes
+                write(value.inspect)
+              end
+            else
+              # Write single-quoted strings for strings with just double quotes
+              # or no quotes at all
+              write("'#{value}'")
+            end
+          end
+        end
+
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 
-          handle :sym, :str
+          handle :sym
 
         private
 
