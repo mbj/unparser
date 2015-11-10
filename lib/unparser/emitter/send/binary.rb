@@ -14,9 +14,9 @@ module Unparser
         # @api private
         #
         def dispatch
-          visit(receiver)
+          visit_on_side(receiver, :left)
           emit_operator
-          emit_right
+          visit_on_side(right_node, :right)
         end
 
         # Emit operator
@@ -37,16 +37,6 @@ module Unparser
         #
         def right_node
           children[2]
-        end
-
-        # Emit right
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_right
-          visit(right_node)
         end
 
       end # Binary

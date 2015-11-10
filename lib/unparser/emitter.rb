@@ -148,6 +148,14 @@ module Unparser
     #
     abstract_method :terminated?
 
+    # Test if this is a binary or unary operator expression
+    #
+    # @return [Boolean]
+    #
+    def operator?
+      false
+    end
+
   protected
 
     # Return buffer
@@ -225,6 +233,22 @@ module Unparser
     def visit_parentheses(node, *arguments)
       parentheses(*arguments) do
         visit_plain(node)
+      end
+    end
+
+    # Visit a child node, which might be a binary or unary operator expression
+    # Only emit parentheses if required by operator precedence
+    #
+    # @param [Parser::AST::Node] node
+    #
+    # @return [undefined]
+    #
+    # @api private
+    #
+    def visit_on_side(node, side)
+      emitter = emitter(node)
+      conditional_parentheses(needs_parentheses?(emitter, side)) do
+        emitter.write_to_buffer
       end
     end
 
@@ -497,6 +521,42 @@ module Unparser
     #
     def run(emitter, node = node())
       emitter.new(node, self).write_to_buffer
+    end
+
+    # For binary or unary operators, check whether parentheses are needed
+    # around a nested operator expression.
+    #
+    # @return [Boolean]
+    #
+    # @api private
+    #
+    def needs_parentheses?(emitter, side)
+      # TODO: Later this can also be used for things like if/unless/until/while
+      # statement modifiers
+      # Right now it is just for nested operator expressions
+      unterminated = !emitter.terminated?
+
+      return unterminated unless operator? && emitter.operator?
+      parent_prec   = OPERATOR_PRECEDENCE[operator]
+      child_prec    = OPERATOR_PRECEDENCE[emitter.operator]
+      parent_intuit = INTUITIVE_PRECEDENCE[operator]
+      child_intuit  = INTUITIVE_PRECEDENCE[emitter.operator]
+      return unterminated unless parent_prec && child_prec && parent_intuit && child_intuit
+      # if omitting parens would change the meaning, we definitely need them
+      return true if child_prec < parent_prec
+      # if it is obvious to an "average" Ruby programmer that parens are not
+      # needed, then we can omit them
+      return false if child_intuit > parent_intuit
+      # in chains of identical operators, like a + b + c + d, we can omit
+      # parens if associativity allows us to do so without changing meaning
+      # + and - are a special case; a + b - c + d is OK without parens
+      return true if operator != emitter.operator &&
+                     (!INTUITIVE_PRECEDENCE_EQUAL.include?(operator) ||
+                     !INTUITIVE_PRECEDENCE_EQUAL.include?(emitter.operator))
+      associativity = OPERATOR_ASSOCIATIVITY[operator]
+      return false if associativity == side
+
+      unterminated
     end
 
   end # Emitter
