@@ -196,7 +196,7 @@ module Unparser
       emitter.write_to_buffer
     end
 
-    # Visit ambigous node
+    # Visit ambiguous node
     #
     # @param [Parser::AST::Node] node
     #

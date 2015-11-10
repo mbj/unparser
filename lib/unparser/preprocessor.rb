@@ -83,7 +83,7 @@ module Unparser
       end
     end
 
-    # Noop preprocessor that just passes through noode.
+    # Noop preprocessor that just passes node through.
     class Noop < self
 
       register :int
@@ -101,7 +101,7 @@ module Unparser
 
     end # Noop
 
-    # Preprocessor transforming numeric nodes with infinity as value to round trippable aequivalent.
+    # Preprocessor transforming numeric nodes with infinity as value to round trippable equivalent.
     class Infinity < self
 
       register :float
@@ -113,7 +113,7 @@ module Unparser
       #
       # @param [Parser::AST::Node]
       #
-      # @api pirvate
+      # @api private
       #
       def result
         value = node.children.first
