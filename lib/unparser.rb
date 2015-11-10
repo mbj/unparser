@@ -32,6 +32,7 @@ module Unparser
 
 end # Unparser
 
+require 'unparser/util'
 require 'unparser/buffer'
 require 'unparser/node_helpers'
 require 'unparser/preprocessor'
