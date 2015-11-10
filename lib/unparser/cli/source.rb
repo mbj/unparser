@@ -18,7 +18,7 @@ module Unparser
           !error
         end
 
-        # Build generateg source
+        # Build generated source
         #
         # @param [Parser::AST::Node]
         #
