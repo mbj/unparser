@@ -127,9 +127,10 @@ module Unparser
       # @api private
       #
       def collapsed_children
-        chunked_children.each_with_object([]) do |(type, nodes), aggregate|
-          if type.equal?(:str)
-            aggregate << s(:str, nodes.map { |node| node.children.first }.join)
+        chunked_children.each_with_object([]) do |nodes, aggregate|
+          if nodes.size > 1 && nodes.first.type.equal?(:str)
+            new_child = nodes.map { |node| node.children.first }.join
+            aggregate << n(:str, [new_child], location: combined_source_map(nodes))
           else
             aggregate.concat(nodes)
           end
@@ -144,7 +145,11 @@ module Unparser
       # @api private
       #
       def chunked_children
-        visited_children.chunk(&:type)
+        # don't collapse children which are separated by a line break
+        # (because we may need to emit a line continuation between them)
+        Unparser.chunk_by(visited_children) do |prev, current|
+          prev.type != current.type || different_lines?(prev, current)
+        end
       end
 
     end # CollapseStrChildren
