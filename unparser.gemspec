@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('equalizer',     '~> 0.0.9')
   gem.add_dependency('diff-lcs',      '~> 1.2.5')
   gem.add_dependency('concord',       '~> 0.1.5')
-  gem.add_dependency('parser',        '~> 2.2.2')
+  gem.add_dependency('parser',        '>= 2.2.2', '< 2.4')
   gem.add_dependency('procto',        '~> 0.0.2')
 
   gem.add_development_dependency('anima',    '~> 0.3.0')
