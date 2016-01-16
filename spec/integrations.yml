@@ -12,7 +12,7 @@
   repo_uri: 'https://github.com/ahawkins/chassis.git'
   exclude: []
 - name: rubyspec
-  repo_uri: 'https://github.com/rubyspec/rubyspec.git'
+  repo_uri: 'https://github.com/ruby/spec.git'
   exclude:
     # Binary encoded source subjected to limitations see Readme
     - core/array/pack/{b,h,u}_spec.rb
