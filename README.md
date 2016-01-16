@@ -92,7 +92,7 @@ Unparser currently successfully round trips almost all ruby code around. Using M
 If there is a non round trippable example that is NOT subjected to known [Limitations](#limitations).
 please report a bug.
 
-On CI unparser is currently tested against rubyspec with minor [excludes](https://github.com/mbj/unparser/blob/master/spec/integrations.yml).
+On CI unparser is currently tested against The Ruby Spec Suite with minor [excludes](https://github.com/mbj/unparser/blob/master/spec/integrations.yml).
 
 Limitations:
 ------------

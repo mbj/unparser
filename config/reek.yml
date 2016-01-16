@@ -93,6 +93,8 @@ UtilityFunction:
   - Unparser::CLI::Source#parse
   - Unparser::NodeHelpers#n
   - Unparser::NodeHelpers#s
+  - Unparser::NodeHelpers#different_lines?
+  - Unparser::NodeHelpers#combined_source_map
   - Unparser::CLI#sources
   enabled: true
 Attribute:
@@ -134,4 +136,5 @@ LongYieldList:
   exclude:
   - Unparser::AST::LocalVariableScopeEnumerator#visit
   - Unparser::AST::LocalVariableScope#match
+  - Unparser#self.chunk_by
   enabled: true

@@ -12,7 +12,7 @@
   repo_uri: 'https://github.com/ahawkins/chassis.git'
   exclude: []
 - name: rubyspec
-  repo_uri: 'https://github.com/rubyspec/rubyspec.git'
+  repo_uri: 'https://github.com/ruby/spec.git'
   exclude:
     # Binary encoded source subjected to limitations see Readme
     - core/array/pack/{b,h,u}_spec.rb
@@ -35,3 +35,9 @@
     - core/string/unpack/shared/integer.rb
     - core/symbol/casecmp_spec.rb
     - optional/capi/integer_spec.rb
+    - language/regexp/escapes_spec.rb
+    - library/conditionvariable/broadcast_spec.rb
+    - library/conditionvariable/signal_spec.rb
+    - library/zlib/deflate/deflate_spec.rb
+    - library/zlib/gzipwriter/write_spec.rb
+    - library/zlib/inflate/inflate_spec.rb
