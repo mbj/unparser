@@ -15,21 +15,7 @@ module Unparser
         #
         def dispatch
           util = self.class
-          if interpolation?
-            visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
-          else
-            emit_non_interpolated
-          end
-        end
-
-        # Test for interpolation
-        #
-        # @return [Boolean]
-        #
-        # @api private
-        #
-        def interpolation?
-          children.any? { |child| !child.type.equal?(:str) }
+          visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
         end
 
         # Return dynamic body
@@ -48,18 +34,6 @@ module Unparser
           OPEN = CLOSE = '"'.freeze
           handle :dstr
 
-        private
-
-          # Emit non interpolated form
-          #
-          # @return [undefined]
-          #
-          # @api private
-          #
-          def emit_non_interpolated
-            delimited(children, WS)
-          end
-
         end # String
 
         # Dynamic symbol literal emitter
@@ -70,21 +44,8 @@ module Unparser
 
           handle :dsym
 
-        private
-
-          # Emit non interpolated form
-          #
-          # @return [undefined]
-          #
-          # @api private
-          #
-          def emit_non_interpolated
-            visit_parentheses(dynamic_body, OPEN, CLOSE)
-          end
-
         end # Symbol
-
-      end
+      end # Dynamic
     end # Literal
   end # Emitter
 end # Unparser

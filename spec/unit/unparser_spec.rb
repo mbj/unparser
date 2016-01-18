@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser do
+describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
     PARSERS = IceNine.deep_freeze(
@@ -137,20 +137,17 @@ describe Unparser do
       end
 
       context 'string' do
-        assert_generates '?c', '"c"'
-        assert_generates '"foo" "bar"', '"foobar"'
-        assert_generates '"foo" "bar #{baz}"', '"foobar #{baz}"'
-        assert_generates '%Q(foo"#{@bar})', '"foo\\"#{@bar}"'
+        assert_generates '?c',                 '"c"'
+        assert_generates '"foo" "bar"',        '"#{"foo"}#{"bar"}"'
+        assert_generates '"foo" "bar #{baz}"', '"#{"foo"}#{"#{"bar "}#{baz}"}"'
+        assert_generates '%Q(foo"#{@bar})',    '"#{"foo\\""}#{@bar}"'
+        assert_generates '"foo#{1}bar"',       '"#{"foo"}#{1}#{"bar"}"'
+        assert_generates '"\\\\#{}"',          '"#{"\\\\"}#{}"'
+        assert_generates '"#{}\#{}"',          '"#{}#{"\#{}"}"'
+        assert_generates '"\#{}#{}"',          '"#{"\#{}"}#{}"'
         assert_terminated '"\""'
-        assert_terminated '"foo#{1}bar"'
-        assert_terminated '"\"#{@a}"'
-        assert_terminated '"\\\\#{}"'
         assert_terminated '"foo bar"'
         assert_terminated '"foo\nbar"'
-        assert_terminated '"foo bar #{}"'
-        assert_terminated '"foo\nbar #{}"'
-        assert_terminated '"#{}\#{}"'
-        assert_terminated '"\#{}#{}"'
         # Within indentation
         assert_generates <<-'RUBY', <<-'RUBY'
           if foo
@@ -160,21 +157,17 @@ describe Unparser do
           end
         RUBY
           if foo
-            "\n  #{foo}\n  "
+            "#{"\n"}#{"  "}#{foo}#{"\n"}#{"  "}"
           end
         RUBY
-
-        assert_terminated '"foo#{@bar}"'
-        assert_terminated '"fo\no#{bar}b\naz"'
       end
 
       context 'execute string' do
-        assert_terminated '`foo`'
-        assert_terminated '`foo#{@bar}`'
-        assert_generates '%x(\))', '`)`'
-        # FIXME: Research into this one!
-        # assert_generates  '%x(`)', '`\``'
-        assert_terminated '`"`'
+        assert_generates '`foo`',        '`#{"foo"}`'
+        assert_generates '`foo#{@bar}`', '`#{"foo"}#{@bar}`'
+        assert_generates '%x(\))',       '`#{")"}`'
+        assert_generates '%x(`)',        '`#{"`"}`'
+        assert_generates '`"`',          '`#{"\\""}`'
       end
 
       context 'symbol' do
@@ -211,11 +204,8 @@ describe Unparser do
       end
 
       context 'dynamic symbol' do
-        assert_terminated ':"foo#{bar}baz"'
-        assert_terminated ':"fo\no#{bar}b\naz"'
-        assert_terminated ':"#{bar}foo"'
-        assert_terminated ':"#{"foo"}"'
-        assert_terminated ':"foo#{bar}"'
+        assert_generates ':"foo#{bar}baz"', ':"#{"foo"}#{bar}#{"baz"}"'
+        assert_source ':"#{"foo"}"'
       end
 
       context 'irange' do

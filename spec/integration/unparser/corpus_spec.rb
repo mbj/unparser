@@ -84,7 +84,7 @@ describe 'Unparser on ruby corpus', mutant: false do
       if block_given?
         yield
       else
-        raise 'System command failed!'
+        raise "System command #{arguments.inspect} failed!"
       end
     end
 

@@ -52,10 +52,6 @@ module Unparser
         # @api private
         #
         def emit_segment(node)
-          if node.type == :str
-            emit_str_segment(node)
-            return
-          end
           emit_interpolated_segment(node)
         end
 
