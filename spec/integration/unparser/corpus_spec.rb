@@ -3,10 +3,6 @@ require 'spec_helper'
 # rubocop:disable ClosingParenthesisIndentation
 describe 'Unparser on ruby corpus', mutant: false do
   before do
-    if RUBY_VERSION < '2.1.0'
-      # Limits in encodings and complex/rational literals
-      skip 'Corpus test not active for < 2.1.0'
-    end
     if RUBY_ENGINE == 'jruby'
       skip 'Corpus test exhausts jruby heap space on travis'
     end

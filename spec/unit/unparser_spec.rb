@@ -4,8 +4,6 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
     PARSERS = IceNine.deep_freeze(
-      '1.9' => Parser::Ruby19,
-      '2.0' => Parser::Ruby20,
       '2.1' => Parser::Ruby21,
       '2.2' => Parser::Ruby22
     )
@@ -82,16 +80,16 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'kwargs' do
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY
         def foo(bar:, baz:)
         end
       RUBY
 
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY
         foo(**bar)
       RUBY
 
-      assert_source <<-RUBY, %w(2.1)
+      assert_source <<-RUBY
         def foo(bar:, baz: "value")
         end
       RUBY
@@ -110,29 +108,25 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_generates '-10e10000000000', '-Float::INFINITY'
       end
 
-      # Rubies < 2.0 do not have these literals, parser can parse them
-      # but there are subtible differencies. Excluding them under those rubies.
-      if RUBY_VERSION >= '2.0'
-        context 'rational' do
-          assert_terminated '1r', %w(2.1)
-          assert_generates '1.0r', '1r', %w(2.1)
-          assert_generates '-0r', '0r', %w(2.1)
+      context 'rational' do
+        assert_terminated '1r'
+        assert_generates '1.0r', '1r'
+        assert_generates '-0r', '0r'
 
-          assert_terminated '1.5r', %w(2.1)
-          assert_terminated '1.3r', %w(2.1)
-        end
+        assert_terminated '1.5r'
+        assert_terminated '1.3r'
+      end
 
-        context 'complex' do
-          %w(
-            5i
-            -5i
-            0.6i
-            -0.6i
-            1000000000000000000000000000000i
-            1ri
-          ).each do |expression|
-            assert_terminated(expression, %w(2.1))
-          end
+      context 'complex' do
+        %w(
+          5i
+          -5i
+          0.6i
+          -0.6i
+          1000000000000000000000000000000i
+          1ri
+        ).each do |expression|
+          assert_terminated(expression)
         end
       end
 
@@ -181,12 +175,10 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
       context 'regexp' do
         assert_terminated '/foo/'
-        assert_terminated %q(/[\x80-\xff]+/), %w(1.9)
         assert_terminated %q(/[^-+',.\/:@[:alnum:]\[\]]+/)
         assert_terminated '/foo#{@bar}/'
         assert_terminated '/foo#{@bar}/imx'
-        assert_terminated '/#{"\x00"}/', %w(1.9)
-        assert_terminated '/#{"\u0000"}/', %w(2.0 2.1)
+        assert_terminated '/#{"\u0000"}/'
         assert_terminated "/\n/"
         assert_terminated '/\n/'
         assert_terminated "/\n/x"
@@ -1077,19 +1069,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY', %w(1.9 2.0)
-          def foo(bar, baz = true, foo)
-            bar
-          end
-        RUBY
-
-        assert_source <<-'RUBY', %w(2.1)
+        assert_source <<-'RUBY'
           def foo(bar: 1)
-          end
-        RUBY
-
-        assert_source <<-'RUBY', %w(2.0)
-          def foo(**bar)
           end
         RUBY
 
