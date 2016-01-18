@@ -6,9 +6,6 @@ describe 'Unparser on ruby corpus', mutant: false do
     if RUBY_ENGINE == 'jruby'
       skip 'Corpus test exhausts jruby heap space on travis'
     end
-    if ENV['GUARD']
-      skip 'Do not execute corpus spec under guard'
-    end
   end
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
