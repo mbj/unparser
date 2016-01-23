@@ -27,5 +27,5 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('anima',    '~> 0.3')
   gem.add_development_dependency('devtools', '~> 0.1')
-  gem.add_development_dependency('morpher',  '~> 0.2')
+  gem.add_development_dependency('morpher',  '~> 0.2.5')
 end
