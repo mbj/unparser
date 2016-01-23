@@ -1,6 +1,9 @@
 module Unparser
 
   # Emitter base class
+  #
+  # buggy, argument values are sends to self
+  # rubocop:disable CircularArgumentReference
   class Emitter
     include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)

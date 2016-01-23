@@ -1,3 +1,8 @@
+# v0.2.6 2016-01-xx
+
+* Add support for ruby 2.3
+* Bump parser dependency to ~>2.3.0
+
 # v0.2.5 2015-05-30
 
 * Drop support for ruby < 2.1
