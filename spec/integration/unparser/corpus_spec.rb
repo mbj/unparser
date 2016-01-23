@@ -2,11 +2,6 @@ require 'spec_helper'
 
 # rubocop:disable ClosingParenthesisIndentation
 describe 'Unparser on ruby corpus', mutant: false do
-  before do
-    if RUBY_ENGINE == 'jruby'
-      skip 'Corpus test exhausts jruby heap space on travis'
-    end
-  end
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
   TMP = ROOT.join('tmp')
