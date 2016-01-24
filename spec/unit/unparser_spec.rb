@@ -5,7 +5,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     PARSERS = IceNine.deep_freeze(
       '2.1' => Parser::Ruby21,
-      '2.2' => Parser::Ruby22
+      '2.2' => Parser::Ruby22,
+      '2.3' => Parser::Ruby23
     )
 
     RUBIES = PARSERS.keys.freeze
@@ -403,6 +404,11 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end)
         RUBY
       end
+    end
+
+    context 'conditional send (csend)' do
+      assert_terminated 'a&.b',    %w(2.3)
+      assert_terminated 'a&.b(c)', %w(2.3)
     end
 
     context 'send' do

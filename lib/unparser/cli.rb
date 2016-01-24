@@ -90,7 +90,7 @@ module Unparser
       effective_sources.each do |source|
         next if @ignore.include?(source)
         process_source(source)
-        break unless @success if @fail_fast
+        break if @fail_fast && !@success
       end
 
       @success ? EXIT_SUCCESS : EXIT_FAILURE
