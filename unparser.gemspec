@@ -1,19 +1,19 @@
 Gem::Specification.new do |gem|
-  gem.name     = 'unparser'
-  gem.version  = '0.2.4'
+  gem.name        = 'unparser'
+  gem.version     = '0.2.4'
 
-  gem.authors  = ['Markus Schirp']
-  gem.email    = 'mbj@schir-dso.com'
-  gem.summary  = 'Generate equivalent source for parser gem AST nodes'
+  gem.authors     = ['Markus Schirp']
+  gem.email       = 'mbj@schirp-dso.com'
+  gem.summary     = 'Generate equivalent source for parser gem AST nodes'
   gem.description = gem.summary
-  gem.homepage = 'http://github.com/mbj/unparser'
-  gem.license  = 'MIT'
+  gem.homepage    = 'http://github.com/mbj/unparser'
+  gem.license     = 'MIT'
 
   gem.files            = `git ls-files`.split("\n")
   gem.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
-  gem.require_paths    = %w(lib)
-  gem.extra_rdoc_files = %w(README.md)
-  gem.executables      = %w(unparser)
+  gem.require_paths    = %w[lib]
+  gem.extra_rdoc_files = %w[README.md]
+  gem.executables      = %w[unparser]
 
   gem.required_ruby_version = '>= 2.1'
 
