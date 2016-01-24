@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Emitter, '.handle' do
+describe Unparser::Emitter, '.handle', mutant_expression: 'Unparser::Emitter*' do
   subject { class_under_test.class_eval { handle :foo } }
 
   let(:class_under_test) do

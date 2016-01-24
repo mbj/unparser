@@ -2,18 +2,6 @@ require 'spec_helper'
 
 # rubocop:disable ClosingParenthesisIndentation
 describe 'Unparser on ruby corpus', mutant: false do
-  before do
-    if RUBY_VERSION < '2.1.0'
-      # Limits in encodings and complex/rational literals
-      skip 'Corpus test not active for < 2.1.0'
-    end
-    if RUBY_ENGINE == 'jruby'
-      skip 'Corpus test exhausts jruby heap space on travis'
-    end
-    if ENV['GUARD']
-      skip 'Do not execute corpus spec under guard'
-    end
-  end
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
   TMP = ROOT.join('tmp')
@@ -84,7 +72,7 @@ describe 'Unparser on ruby corpus', mutant: false do
       if block_given?
         yield
       else
-        raise 'System command failed!'
+        raise "System command #{arguments.inspect} failed!"
       end
     end
 
