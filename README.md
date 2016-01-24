@@ -9,13 +9,19 @@ unparser
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
 Excluding the macruby extensions the parser gem implemnents on top of ruby syntax.
 
-Excluding the MacRuby / RubyMotion extensions the parser gem implemenents on top of MRI ruby syntax starting with parser release 2.3.
-If you feel the need to get them supported, contact me.
+Excluding the MacRuby / RubyMotion extensions the parser gem implemenents on top of MRI Ruby
+syntax starting with parser release 2.3.  If you feel the need to get them supported, contact me.
 
-This library is able to reproduce 100% of ruby 1.9, 2.0 and 2.1 syntax. Including its own source code.
+This library is able to reproduce 100% of Ruby 2.1 - 2.3 syntax. Including its own source code.
 
 It serves well for [mutant](https://github.com/mbj/mutant) mutators and the in-memory vendoring for self hosting,
 and other tooling.
+
+Public API:
+-----------
+
+While unparser is in the `0.x` versions its public API can change any moment. I recommend to use `~> 0.x.y` style
+version constraints that should give the best mileage.
 
 Usage
 -----
