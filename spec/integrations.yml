@@ -32,5 +32,3 @@
     # parser crashes
     - core/symbol/casecmp_spec.rb
     - language/regexp/escapes_spec.rb
-    - library/conditionvariable/broadcast_spec.rb
-    - library/conditionvariable/signal_spec.rb

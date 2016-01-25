@@ -1541,6 +1541,13 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           3
         end
       RUBY
+
+      assert_source <<-'RUBY'
+        while (foo do
+        end)
+          :body
+        end
+      RUBY
     end
 
     context 'until' do
@@ -1552,6 +1559,13 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source <<-'RUBY'
         until false
           3
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        until (foo do
+        end)
+          :body
         end
       RUBY
     end
