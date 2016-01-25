@@ -87,7 +87,9 @@ module Unparser
       #
       def emit_normal
         emit_keyword
-        visit(condition)
+        conditional_parentheses(condition.type.equal?(:block)) do
+          visit(condition)
+        end
         emit_body
         k_end
       end
