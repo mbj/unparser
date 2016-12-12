@@ -40,7 +40,11 @@ module Unparser
         # @api private
         #
         def dispatch
-          children.each(&method(:emit_segment))
+          # 2 adjacent str nodes may indicate that there was a line continuation
+          # in the original source
+          children.reduce(nil) do |previous, current|
+            emit_segment(current, previous)
+          end
         end
 
         # Emit segment
@@ -51,8 +55,20 @@ module Unparser
         #
         # @api private
         #
-        def emit_segment(node)
-          emit_interpolated_segment(node)
+        def emit_segment(node, prev_node)
+          if node.type == :str
+            if prev_node && prev_node.type == :str &&
+               different_lines?(prev_node, node)
+              # emit line continuation
+              write('"' + WS + '\\')
+              nl
+              write('"')
+            end
+            emit_str_segment(node)
+          else
+            emit_interpolated_segment(node)
+          end
+          node
         end
 
         pairs = Parser::Lexer::ESCAPES.invert.map do |key, value|
