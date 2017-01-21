@@ -5,6 +5,7 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
+  TargetRubyVersion: 2.1
 
 # Avoid parameter lists longer than five parameters.
 ParameterLists:
@@ -36,6 +37,23 @@ LineLength:
 
 ClassLength:
   Max: 204
+
+# Prefer modifiers and explicit if statements over returning early for small methods
+GuardClause:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+  # Ignore RSpec DSL
+  - spec/**/*
+
+# Flags freezes for singletons that could still be mutated like Regexps
+RedundantFreeze:
+  Enabled: false
+
+# Allow Fixnum and Bignum. This Gem supports versions before 2.4
+UnifiedInteger:
+  Enabled: false
 
 # Disabled because of indenting with private keyword in class bodies.
 IndentationWidth:

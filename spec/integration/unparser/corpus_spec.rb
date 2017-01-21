@@ -1,13 +1,11 @@
 require 'spec_helper'
-
-# rubocop:disable ClosingParenthesisIndentation
 describe 'Unparser on ruby corpus', mutant: false do
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
   TMP = ROOT.join('tmp')
 
   class Project
-    include Anima.new(:name, :repo_uri, :exclude)
+    include Anima.new(:name, :repo_uri, :repo_ref, :exclude)
 
     # Perform verification via unparser cli
     #
@@ -45,6 +43,13 @@ describe 'Unparser on ruby corpus', mutant: false do
       else
         system(%W(git clone #{repo_uri} #{repo_path}))
       end
+
+      Dir.chdir(repo_path) do
+        system(%W(git checkout #{repo_ref}))
+        system(%w(git reset --hard))
+        system(%w(git clean -f -d -x))
+      end
+
       self
     end
 
@@ -84,19 +89,15 @@ describe 'Unparser on ruby corpus', mutant: false do
             s(:guard, s(:primitive, Hash)),
             s(:hash_transform,
               s(:key_symbolize, :repo_uri, s(:guard, s(:primitive, String))),
+              s(:key_symbolize, :repo_ref, s(:guard, s(:primitive, String))),
               s(:key_symbolize, :name,     s(:guard, s(:primitive, String))),
-              s(:key_symbolize, :exclude,  s(:map, s(:guard, s(:primitive, String))))
-            ),
+              s(:key_symbolize, :exclude,  s(:map, s(:guard, s(:primitive, String))))),
             s(:load_attribute_hash,
               # NOTE: The domain param has no DSL currently!
               Morpher::Evaluator::Transformer::Domain::Param.new(
                 Project,
-                [:repo_uri, :name, :exclude]
-              )
-            )
-          )
-        )
-      )
+                [:repo_uri, :repo_ref, :name, :exclude]
+              )))))
     end
 
     ALL = LOADER.call(YAML.load_file(ROOT.join('spec', 'integrations.yml')))

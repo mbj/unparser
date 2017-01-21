@@ -14,8 +14,7 @@ module Unparser
       #
       # @api private
       #
-      def dispatch
-      end
+      def dispatch; end
 
     end
   end

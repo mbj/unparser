@@ -49,14 +49,13 @@ module Unparser
       # @api private
       #
       def report
-        case
-        when original_ast && generated_ast
+        if original_ast && generated_ast
           report_with_ast_diff
-        when !original_ast
+        elsif !original_ast
           report_original
-        when !generated.success?
+        elsif !generated.success?
           report_unparser
-        when !generated_ast
+        elsif !generated_ast
           report_generated
         else
           raise

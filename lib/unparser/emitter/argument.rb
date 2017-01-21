@@ -74,7 +74,7 @@ module Unparser
       MAP = {
         blockarg: T_AMP,
         kwrestarg: T_DSPLAT
-      }
+      }.freeze
 
       handle :blockarg
       handle :kwrestarg

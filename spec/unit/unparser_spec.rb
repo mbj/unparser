@@ -376,7 +376,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     %w(next return break).each do |keyword|
 
       context keyword do
-        assert_terminated "#{keyword}"
+        assert_terminated keyword.to_s
         assert_unterminated "#{keyword} 1"
         assert_unterminated "#{keyword} 2, 3"
         assert_unterminated "#{keyword} *nil"

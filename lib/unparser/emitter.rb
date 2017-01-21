@@ -10,7 +10,7 @@ module Unparser
     extend DSL
 
     # Registry for node emitters
-    REGISTRY = {}
+    REGISTRY = {} # rubocop:disable MutableConstant
 
     NOINDENT = [:rescue, :ensure].to_set.freeze
 
@@ -428,7 +428,7 @@ module Unparser
     #
     # False positive:
     #
-    # rubocop:disable MethodCallParentheses
+    # rubocop:disable MethodCallWithoutArgsParentheses
     #
     def indented
       buffer = buffer()

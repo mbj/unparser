@@ -9,6 +9,8 @@ require 'unparser/cli/color'
 
 module Unparser
   # Unparser CLI implementation
+  #
+  # :reek:InstanceVariableAssumption
   class CLI
 
     EXIT_SUCCESS = 0
@@ -148,10 +150,9 @@ module Unparser
     #
     def sources(file_name)
       files =
-        case
-        when File.directory?(file_name)
+        if File.directory?(file_name)
           Dir.glob(File.join(file_name, '**/*.rb')).sort
-        when File.file?(file_name)
+        elsif File.file?(file_name)
           [file_name]
         else
           Dir.glob(file_name).sort

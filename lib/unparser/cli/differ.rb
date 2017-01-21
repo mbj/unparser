@@ -6,6 +6,51 @@ module Unparser
 
       CONTEXT_LINES = 5
 
+      # Return new object
+      #
+      # @param [String] old
+      # @param [String] new
+      #
+      # @return [Differ]
+      #
+      # @api private
+      #
+      def self.build(old, new)
+        new(lines(old), lines(new))
+      end
+
+      # Return colorized diff line
+      #
+      # @param [String] line
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def self.colorize_line(line)
+        case line[0]
+        when '+'
+          Color::GREEN
+        when '-'
+          Color::RED
+        else
+          Color::NONE
+        end.format(line)
+      end
+
+      # Break up source into lines
+      #
+      # @param [String] source
+      #
+      # @return [Array<String>]
+      #
+      # @api private
+      #
+      def self.lines(source)
+        source.lines.map(&:chomp)
+      end
+      private_class_method :lines
+
       # Return hunks
       #
       # @return [Array<Diff::LCS::Hunk>]
@@ -77,32 +122,6 @@ module Unparser
       end
       memoize :colorized_diff
 
-      # Return new object
-      #
-      # @param [String] old
-      # @param [String] new
-      #
-      # @return [Differ]
-      #
-      # @api private
-      #
-      def self.build(old, new)
-        new(lines(old), lines(new))
-      end
-
-      # Break up source into lines
-      #
-      # @param [String] source
-      #
-      # @return [Array<String>]
-      #
-      # @api private
-      #
-      def self.lines(source)
-        source.lines.map(&:chomp)
-      end
-      private_class_method :lines
-
     private
 
       # Return diffs
@@ -124,25 +143,6 @@ module Unparser
       #
       def max_length
         [old, new].map(&:length).max
-      end
-
-      # Return colorized diff line
-      #
-      # @param [String] line
-      #
-      # @return [String]
-      #
-      # @api private
-      #
-      def self.colorize_line(line)
-        case line[0]
-        when '+'
-          Color::GREEN
-        when '-'
-          Color::RED
-        else
-          Color::NONE
-        end.format(line)
       end
 
     end # CLI
