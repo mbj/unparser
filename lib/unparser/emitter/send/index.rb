@@ -74,12 +74,10 @@ module Unparser
           def emit_operation
             if arguments.empty?
               emit_regular_with_empty_args
+            elsif mlhs?
+              emit_mlhs_operation
             else
-              if mlhs?
-                emit_mlhs_operation
-              else
-                emit_normal_operation
-              end
+              emit_normal_operation
             end
           end
 

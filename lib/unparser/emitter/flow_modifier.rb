@@ -7,7 +7,7 @@ module Unparser
         return: K_RETURN,
         next:   K_NEXT,
         break:  K_BREAK
-      }
+      }.freeze
 
       handle(*MAP.keys)
 
@@ -26,7 +26,7 @@ module Unparser
       def dispatch
         write(MAP.fetch(node.type))
         case children.length
-        when 0
+        when 0 # rubocop:disable Lint/EmptyWhen
         when 1
           emit_single_argument
         else

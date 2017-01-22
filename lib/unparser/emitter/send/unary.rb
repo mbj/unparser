@@ -2,9 +2,6 @@ module Unparser
   class Emitter
     class Send
       # Emitter for unary sends
-      #
-      # rubocop:disable Style/HashSyntax
-      # ^^ is false positive
       class Unary < self
         include Unterminated
 

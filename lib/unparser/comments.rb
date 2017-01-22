@@ -99,11 +99,11 @@ module Unparser
     #
     # @api private
     #
+    # :reek:ManualDispatch
+    #
     def self.source_range(node, part)
       location = node.location
-      if location && location.respond_to?(part)
-        location.public_send(part)
-      end
+      location.public_send(part) if location.respond_to?(part)
     end
 
   private

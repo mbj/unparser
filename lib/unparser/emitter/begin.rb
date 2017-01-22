@@ -83,10 +83,9 @@ module Unparser
         # @api private
         #
         def emit_body
-          case
-          when body.nil?
+          if body.nil?
             nl
-          when NOINDENT.include?(body.type)
+          elsif NOINDENT.include?(body.type)
             emit_inner
           else
             indented { emit_inner }

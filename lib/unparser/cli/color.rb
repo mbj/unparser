@@ -12,7 +12,7 @@ module Unparser
     # @api private
     #
     def format(text)
-      "\e[#{@code}m#{text}\e[0m"
+      "\e[#{code}m#{text}\e[0m"
     end
 
     NONE = Class.new(self) do
@@ -38,8 +38,7 @@ module Unparser
       #
       # @api private
       #
-      def initialize
-      end
+      def initialize; end
 
     end.new
 

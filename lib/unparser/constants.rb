@@ -1,5 +1,11 @@
 module Unparser
   # All unparser constants maybe included in other libraries.
+  #
+  # rubocop:disable MutableConstant
+  # False positive since constants are frozen dynamically
+  # to avoid duplication of `.freeze` calls
+  #
+  # :reek:TooManyConstants
   module Constants
 
     # Return frozen symbol set from enumerable
