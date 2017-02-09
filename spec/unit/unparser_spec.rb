@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'parser/all'
 
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
