@@ -518,7 +518,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_terminated '(1..2).max'
       assert_terminated '1..2.max'
       assert_unterminated 'a || return'
-      assert_unterminated 'foo << (bar * baz)'
+      assert_unterminated 'foo << bar * baz'
 
       assert_source <<-'RUBY'
         foo ||= (a, _ = b)
@@ -1358,6 +1358,23 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source '(a + b) / (c - d)'
       assert_source '(a + b) / c.-(e, f)'
       assert_source '(a + b) / c.-(*f)'
+      assert_source 'a + b + c'
+      assert_source 'a * b * c'
+      assert_source 'a / b / c'
+      assert_source 'a * b + c'
+      assert_source 'a + b * c'
+      assert_source 'a + (b + c)'
+      assert_generates '(a + b) + c', 'a + b + c'
+      assert_generates '(a * b) * c', 'a * b * c'
+      # ** is hi-precedence, so parens are not needed, but not everyone knows that
+      assert_source '(a ** b) + c'
+      assert_source 'a + (b ** c)'
+      assert_source 'a ** (b + c)'
+      assert_source 'a + b == c'
+      assert_source 'x > 5 && y > 10'
+      assert_source 'a + b - c + d - e'
+      assert_source '~a / -b'
+      assert_source '(str << "suffix") > "something"'
     end
 
     context 'binary operator' do
@@ -1366,7 +1383,12 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source 'a || (break foo)'
       assert_source '(break foo) || a'
       assert_source '(a || b).foo'
-      assert_source 'a || (b || c)'
+      assert_source 'a || b || c'
+      assert_source 'a && b && c'
+      assert_generates 'a and b and c', 'a && b && c'
+      assert_generates 'a or b or c', 'a || b || c'
+      assert_generates '(a and b) or c', '(a && b) || c'
+      assert_generates 'a and (b or c)', 'a && (b || c)'
     end
 
     { or: :'||', and: :'&&' }.each do |word, symbol|
@@ -1486,13 +1508,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     context 'unary operators' do
       assert_source '!1'
-      assert_source '!(!1)'
-      assert_source '!(!(foo || bar))'
+      assert_source '!!1'
+      assert_source '!!(foo || bar)'
       assert_source '!(!1).baz'
       assert_source '~a'
       assert_source '-a'
       assert_source '+a'
       assert_source '-(-a).foo'
+      assert_generates 'defined? a or not b', 'defined?(a) || !b'
     end
 
     context 'loop' do

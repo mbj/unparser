@@ -18,6 +18,22 @@ module Unparser
         effective_emitter.terminated?
       end
 
+      # Test if this is a binary or unary operator expression
+      #
+      # @return [Boolean]
+      #
+      def operator?
+        binary_operator? || unary_operator?
+      end
+
+      # If this is an operator expression, return the operator used.
+      #
+      # @return [Symbol]
+      #
+      def operator
+        operator? && selector
+      end
+
     private
 
       # Perform dispatch

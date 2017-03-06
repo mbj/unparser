@@ -33,6 +33,54 @@ module Unparser
       ** %
     )
 
+    OPERATOR_PRECEDENCE = IceNine.deep_freeze([
+      # if/unless/while/until modifiers
+      %i[and or],
+      %i[not],
+      %i[defined?],
+      # assignment
+      # rescue modifier
+      # ternary operator
+      # range creation
+      %i[||],
+      %i[&&],
+      %i[== === != =~ !~ <=>],
+      %i[< <= >= >],
+      %i[| ^],
+      %i[&],
+      %i[<< >>],
+      %i[+ -],
+      %i[* / %],
+      %i[-@],
+      %i[**],
+      %i[! ~ +@]
+    ].each_with_index.flat_map { |types, weight| types.map { |t| [ t, weight ] } }.to_h)
+
+    # The following table attempts to summarize what a hypothetical "average"
+    # Ruby programmer understands about operator precedence
+    # If our "average" programmer doesn't have any idea what the precedence
+    # of a certain operator is, it shouldn't appear in this table
+    INTUITIVE_PRECEDENCE = IceNine.deep_freeze([
+      %i[and or not defined?],
+      %i[|| && == === != =~ !~ <=>],
+      %i[< <= >= > << >>],
+      %i[+ -],
+      %i[* / %],
+      %i[-@ ! ~ +@]
+    ].each_with_index.flat_map { |types, weight| types.map { |t| [ t, weight ] } }.to_h)
+
+    # The "average" Ruby programmer will probably not be very sure about
+    # operators which have the *same* precedence in the above table.
+    # For example, they know that * binds tighter than +, but might not be
+    # sure about * and %
+    # But there are some which *everybody* understands...
+    INTUITIVE_PRECEDENCE_EQUAL = [:+, :-].freeze
+
+    OPERATOR_ASSOCIATIVITY = IceNine.deep_freeze({
+      left: %i[and or || && == === != =~ !~ <=> < <= >= > | ^ & << >> + - * / %],
+      right: %i[not -@ ** ! ~ +@]
+    }.flat_map { |side, ops| ops.map { |op| [op, side] } }.to_h)
+
     COMMENT = '#'
 
     WS       = ' '

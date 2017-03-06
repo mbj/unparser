@@ -13,6 +13,22 @@ module Unparser
 
       handle(*MAP.keys)
 
+      # Test if this is a binary or unary operator expression
+      #
+      # @return [Boolean]
+      #
+      def operator?
+        true
+      end
+
+      # Return the operator used (either :and, :or, :'&&', or :'||').
+      #
+      # @return [Symbol]
+      #
+      def operator
+        MAP.fetch(node.type).to_sym
+      end
+
     private
 
       # Perform dispatch
@@ -22,9 +38,9 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit(left)
+        visit_on_side(left, :left)
         write(WS, MAP.fetch(node.type), WS)
-        visit(right)
+        visit_on_side(right, :right)
       end
 
     end # Binary

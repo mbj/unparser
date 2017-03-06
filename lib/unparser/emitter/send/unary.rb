@@ -25,7 +25,7 @@ module Unparser
             write('+')
           end
 
-          visit(receiver)
+          visit_on_side(receiver, :right)
         end
 
       end # Unary
