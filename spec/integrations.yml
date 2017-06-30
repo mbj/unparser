@@ -20,6 +20,7 @@
   # Revision of rubyspec on the last CI build of unparser that passed
   repo_ref: 'origin/master'
   exclude:
+    - command_line/fixtures/bad_syntax.rb
     - core/array/pack/shared/float.rb
     - core/array/pack/shared/integer.rb
     - core/array/pack/shared/string.rb
@@ -79,4 +80,3 @@
     - library/stringscanner/shared/get_byte.rb
     - library/zlib/inflate/set_dictionary_spec.rb
     - optional/capi/integer_spec.rb
-

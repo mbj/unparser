@@ -33,12 +33,21 @@ module Unparser
 
           RATIONAL_FORMAT = 'i'.freeze
 
-          MAP = IceNine.deep_freeze(
-            Float    => :float,
-            Rational => :rational,
-            Fixnum   => :int,
-            Bignum   => :int
-          )
+          MAP =
+            if 0.class.equal?(Integer)
+              IceNine.deep_freeze(
+                Float    => :float,
+                Rational => :rational,
+                Integer  => :int
+              )
+            else
+              IceNine.deep_freeze(
+                Float    => :float,
+                Rational => :rational,
+                Fixnum   => :int,
+                Bignum   => :int
+              )
+            end
 
         private
 
