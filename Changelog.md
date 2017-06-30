@@ -1,3 +1,9 @@
+# v0.2.6 2017-05-30
+
+* Reduce memory consumption via not requirering all possible parsers
+* Allow ruby 2.4
+* Update parser dependency
+
 # v0.2.5 2016-01-24
 
 * Add support for ruby 2.3
