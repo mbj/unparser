@@ -3,6 +3,7 @@ defaults: &defaults
   steps:
     - checkout
     - run: bundle install
+    - run: bash ./build-parser.sh
     - run: bundle exec rake ci
 
 version: 2
