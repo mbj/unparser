@@ -7,7 +7,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     PARSERS = IceNine.deep_freeze(
       '2.1' => Parser::Ruby21,
       '2.2' => Parser::Ruby22,
-      '2.3' => Parser::Ruby23
+      '2.3' => Parser::Ruby23,
+      '2.4' => Parser::Ruby24
     )
 
     RUBIES = PARSERS.keys.freeze
@@ -374,6 +375,26 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
     end
 
+    context 'multiple assignment in conditional' do
+      assert_source <<-RUBY, %w(2.4)
+        if (a, b = [1, 2])
+          :foo
+        end
+      RUBY
+
+      assert_source <<-RUBY, %w(2.4)
+        if (a, b = foo)
+          :bar
+        end
+      RUBY
+
+      assert_source <<-RUBY, %w(2.4)
+        if (a, b = nil)
+          :foo
+        end
+      RUBY
+    end
+
     %w(next return break).each do |keyword|
 
       context keyword do
@@ -408,8 +429,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'conditional send (csend)' do
-      assert_terminated 'a&.b',    %w(2.3)
-      assert_terminated 'a&.b(c)', %w(2.3)
+      assert_terminated 'a&.b',    %w(2.3 2.4)
+      assert_terminated 'a&.b(c)', %w(2.3 2.4)
     end
 
     context 'send' do
