@@ -55,6 +55,7 @@
     - core/string/shared/each_codepoint_without_block.rb
     - core/string/shared/eql.rb
     - core/string/shared/succ.rb
+    - core/string/shared/to_sym.rb
     - core/string/squeeze_spec.rb
     - core/string/unpack/{b,c,h,m}_spec.rb
     - core/string/unpack/shared/float.rb
@@ -63,7 +64,9 @@
     - core/symbol/casecmp_spec.rb
     - core/time/_dump_spec.rb
     - core/time/_load_spec.rb
+    - language/fixtures/binary_symbol.rb
     - language/fixtures/squiggly_heredoc.rb
+    - language/for_spec.rb
     - language/regexp/encoding_spec.rb
     - language/regexp/escapes_spec.rb
     - language/string_spec.rb
