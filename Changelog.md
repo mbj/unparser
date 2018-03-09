@@ -1,3 +1,7 @@
+# v0.2.7 2018-02-09
+
+* Allow ruby_parser 2.5
+
 # v0.2.6 2017-05-30
 
 * Reduce memory consumption via not requirering all possible parsers
