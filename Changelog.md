@@ -1,3 +1,8 @@
+# v0.2.7 2018-07-18
+
+* Add emitters for `__FILE__` and `__LINE__`
+  https://github.com/mbj/unparser/pull/70
+
 # v0.2.7 2018-02-09
 
 * Allow ruby_parser 2.5
