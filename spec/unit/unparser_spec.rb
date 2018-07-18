@@ -323,8 +323,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     context 'magic keywords' do
       assert_generates '__ENCODING__', 'Encoding::UTF_8'
-      assert_generates '__FILE__', '"(string)"'
-      assert_generates '__LINE__', '1'
+
+      # These two assertions don't actually need to be wrapped in this block since `true` is the default,
+      # but it is helpful to contrast with the assertions farther down.
+      with_builder_options(emit_file_line_as_literals: true) do
+        assert_generates '__FILE__', '"(string)"'
+        assert_generates '__LINE__', '1'
+      end
+
+      with_builder_options(emit_file_line_as_literals: false) do
+        assert_source '__FILE__'
+        assert_source '__LINE__'
+      end
     end
 
     context 'assignment' do
