@@ -1,26 +1,76 @@
 require 'spec_helper'
 require 'parser/all'
+require 'support/parser_class_generator'
 
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
-    PARSERS = IceNine.deep_freeze(
+    RUBY_VERSION_PARSERS = IceNine.deep_freeze(
       '2.1' => Parser::Ruby21,
       '2.2' => Parser::Ruby22,
       '2.3' => Parser::Ruby23
     )
 
-    RUBIES = PARSERS.keys.freeze
+    RUBY_VERSIONS = RUBY_VERSION_PARSERS.keys.freeze
 
-    def self.parser_for_ruby_version(version)
-      PARSERS.fetch(version) do
-        raise "Unrecognized Ruby version #{version}"
+    def self.builder_options
+      @builder_options ||= {}
+    end
+
+    def self.builder_options=(options)
+      @builder_options = options
+    end
+
+    def self.ruby_versions
+      @ruby_versions ||= RUBY_VERSIONS
+    end
+
+    def self.ruby_versions=(versions)
+      @ruby_versions = versions
+    end
+
+    def self.with_ruby_versions(beginning_at: nil, ending_at: nil, only: nil)
+      original_ruby_versions = ruby_versions
+      if only
+        self.ruby_versions = only & ruby_versions # intersection
+      else
+        if ending_at
+          idx = ruby_versions.index(ending_at) || fail('Invalid Ruby specified')
+          self.ruby_versions = ruby_versions[0..idx]
+        end
+        if beginning_at
+          idx = ruby_versions.index(beginning_at) || fail('Invalid Ruby specified')
+          self.ruby_versions = ruby_versions[idx..-1]
+        end
+      end
+
+      yield
+
+      self.ruby_versions = original_ruby_versions
+    end
+
+    def self.current_parsers
+      ruby_versions.map do |ruby_version|
+        if builder_options != {}
+          ParserClassGenerator.generate_with_options(parser_for_ruby_version(ruby_version), builder_options)
+        else
+          parser_for_ruby_version(ruby_version)
+        end
       end
     end
 
-    def self.with_versions(versions)
-      versions.each do |version|
-        yield parser_for_ruby_version(version)
+    def self.with_builder_options(options)
+      original_options = builder_options
+      self.builder_options = builder_options.merge(options)
+
+      yield
+
+      self.builder_options = original_options
+    end
+
+    def self.parser_for_ruby_version(version)
+      RUBY_VERSION_PARSERS.fetch(version) do
+        raise "Unrecognized Ruby version #{version}"
       end
     end
 
@@ -50,14 +100,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source("(#{expression}).foo")
     end
 
-    def self.assert_terminated(expression, rubies = RUBIES)
-      assert_source(expression, rubies)
-      assert_source("foo(#{expression})", rubies)
-      assert_source("#{expression}.foo", rubies)
+    def self.assert_terminated(expression)
+      assert_source(expression)
+      assert_source("foo(#{expression})")
+      assert_source("#{expression}.foo")
     end
 
-    def self.assert_generates(ast_or_string, expected, versions = RUBIES)
-      with_versions(versions) do |parser|
+    def self.assert_generates(ast_or_string, expected)
+      current_parsers.each do |parser|
         it "should generate #{ast_or_string} as #{expected} under #{parser.inspect}" do
           if ast_or_string.is_a?(String)
             expected = strip(expected)
@@ -69,16 +119,16 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
     end
 
-    def self.assert_round_trip(input, versions = RUBIES)
-      with_versions(versions) do |parser|
+    def self.assert_round_trip(input)
+      current_parsers.each do |parser|
         it "should round trip #{input} under #{parser.inspect}" do
           assert_round_trip(input, parser)
         end
       end
     end
 
-    def self.assert_source(input, versions = RUBIES)
-      assert_round_trip(strip(input), versions)
+    def self.assert_source(input)
+      assert_round_trip(strip(input))
     end
 
     context 'kwargs' do
@@ -273,8 +323,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     context 'magic keywords' do
       assert_generates '__ENCODING__', 'Encoding::UTF_8'
-      assert_generates '__FILE__', '"(string)"'
-      assert_generates '__LINE__', '1'
+
+      # These two assertions don't actually need to be wrapped in this block since `true` is the default,
+      # but it is helpful to contrast with the assertions farther down.
+      with_builder_options(emit_file_line_as_literals: true) do
+        assert_generates '__FILE__', '"(string)"'
+        assert_generates '__LINE__', '1'
+      end
+
+      with_builder_options(emit_file_line_as_literals: false) do
+        assert_source '__FILE__'
+        assert_source '__LINE__'
+      end
     end
 
     context 'assignment' do
@@ -408,8 +468,10 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'conditional send (csend)' do
-      assert_terminated 'a&.b',    %w(2.3)
-      assert_terminated 'a&.b(c)', %w(2.3)
+      with_ruby_versions(beginning_at: '2.3') do
+        assert_terminated 'a&.b'
+        assert_terminated 'a&.b(c)'
+      end
     end
 
     context 'send' do
