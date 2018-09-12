@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Unparser
 
   # Emitter base class
   #
   # buggy, argument values are sends to self
-  # rubocop:disable CircularArgumentReference
   class Emitter
     include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)
@@ -12,11 +13,11 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {} # rubocop:disable MutableConstant
 
-    NOINDENT = [:rescue, :ensure].to_set.freeze
+    NOINDENT = %i[rescue ensure].to_set.freeze
 
     DEFAULT_DELIMITER = ', '.freeze
 
-    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
+    CURLY_BRACKETS = IceNine.deep_freeze(%w[{ }])
 
     module Unterminated
       def terminated?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 describe 'Unparser on ruby corpus', mutant: false do
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
@@ -17,9 +19,9 @@ describe 'Unparser on ruby corpus', mutant: false do
     #
     def verify
       checkout
-      command = %W(unparser #{repo_path})
+      command = %W[unparser #{repo_path}]
       exclude.each do |name|
-        command.concat(%W(--ignore #{repo_path.join(name)}))
+        command.concat(%W[--ignore #{repo_path.join(name)}])
       end
       system(command) do
         raise "Verifing #{name} failed!"
@@ -37,17 +39,17 @@ describe 'Unparser on ruby corpus', mutant: false do
       TMP.mkdir unless TMP.directory?
       if repo_path.exist?
         Dir.chdir(repo_path) do
-          system(%w(git pull origin master))
-          system(%w(git clean -f -d -x))
+          system(%w[git pull origin master])
+          system(%w[git clean -f -d -x])
         end
       else
-        system(%W(git clone #{repo_uri} #{repo_path}))
+        system(%W[git clone #{repo_uri} #{repo_path}])
       end
 
       Dir.chdir(repo_path) do
-        system(%W(git checkout #{repo_ref}))
-        system(%w(git reset --hard))
-        system(%w(git clean -f -d -x))
+        system(%W[git checkout #{repo_ref}])
+        system(%w[git reset --hard])
+        system(%w[git clean -f -d -x])
       end
 
       self
@@ -96,7 +98,7 @@ describe 'Unparser on ruby corpus', mutant: false do
               # NOTE: The domain param has no DSL currently!
               Morpher::Evaluator::Transformer::Domain::Param.new(
                 Project,
-                [:repo_uri, :repo_ref, :name, :exclude]
+                %i[repo_uri repo_ref name exclude]
               )))))
     end
 

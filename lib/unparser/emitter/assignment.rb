@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -144,8 +146,8 @@ module Unparser
 
       private
 
-        NO_COMMA = [:splat, :restarg].to_set.freeze
-        PARENT_MLHS = [:mlhs, :masgn].freeze
+        NO_COMMA    = %i[splat restarg].to_set.freeze
+        PARENT_MLHS = %i[mlhs masgn].to_set.freeze
 
         # Perform dispatch
         #

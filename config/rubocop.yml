@@ -2,10 +2,10 @@ inherit_from: ../.rubocop.yml
 
 AllCops:
   Include:
+    - '**/*.rb'
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
-  TargetRubyVersion: 2.1
 
 # Avoid parameter lists longer than five parameters.
 ParameterLists:
@@ -102,4 +102,15 @@ EmptyLinesAroundModuleBody:
 
 # I like my style more
 AccessModifierIndentation:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+Lint/InterpolationCheck:
+  Enabled: false
+Style/AccessModifierDeclarations:
+  Enabled: false
+Style/CommentedKeyword:
+  Enabled: false
+Style/MixinGrouping:
   Enabled: false

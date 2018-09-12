@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Unparser
   # All unparser constants maybe included in other libraries.
   #
-  # rubocop:disable MutableConstant
   # False positive since constants are frozen dynamically
   # to avoid duplication of `.freeze` calls
   #
@@ -22,16 +23,16 @@ module Unparser
     private_class_method :symbol_set
 
     # All unary operators of the ruby language
-    UNARY_OPERATORS = symbol_set %w(
+    UNARY_OPERATORS = symbol_set %w[
       ! ~ -@ +@
-    )
+    ]
 
     # All binary operators of the ruby language
-    BINARY_OPERATORS = symbol_set %w(
+    BINARY_OPERATORS = symbol_set %w[
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
       ** %
-    )
+    ]
 
     COMMENT = '#'
 
@@ -104,7 +105,7 @@ module Unparser
 
     DEFAULT_DELIMITER = ', '.freeze
 
-    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
+    CURLY_BRACKETS = IceNine.deep_freeze(%w[{ }])
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze

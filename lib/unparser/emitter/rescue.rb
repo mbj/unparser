@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter for rescue nodes
@@ -10,9 +12,9 @@ module Unparser
 
       define_group :rescue_bodies, 1..-2
 
-      EMBEDDED_TYPES = [:def, :defs, :kwbegin, :ensure].to_set.freeze
+      EMBEDDED_TYPES = %i[def defs kwbegin ensure].to_set.freeze
 
-      NOINDENT_STANDALONE_RESCUE = [:root, :begin, :pair_rocket, :pair_colon, :lvasgn, :ivasgn].to_set.freeze
+      NOINDENT_STANDALONE_RESCUE = %i[root begin pair_rocket pair_colon lvasgn ivasgn].to_set.freeze
 
     private
 

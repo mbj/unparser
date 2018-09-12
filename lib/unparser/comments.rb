@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
 
   # Holds the comments that remain to be emitted

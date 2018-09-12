@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ParserClassGenerator
   def self.generate_with_options(base_parser_class, builder_options)
     # This builds a dynamic subclass of the base_parser_class (e.g. Parser::Ruby23)

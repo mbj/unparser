@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   # Namespace for AST processing tools
   # :reek:TooManyConstants
@@ -6,7 +8,7 @@ module Unparser
     FIRST_CHILD = ->(node) { node.children.first }.freeze
     TAUTOLOGY   = ->(_node) { true }.freeze
 
-    RESET_NODES   = [:module, :class, :sclass, :def, :defs].freeze
+    RESET_NODES   = %i[module class sclass def defs].freeze
     INHERIT_NODES = [:block].freeze
     CLOSE_NODES   = (RESET_NODES + INHERIT_NODES).freeze
 
@@ -14,7 +16,7 @@ module Unparser
     #
     # FIXME: Kwargs are missing.
     #
-    ASSIGN_NODES = [:lvasgn, :arg, :optarg, :restarg].freeze
+    ASSIGN_NODES = %i[lvasgn arg optarg restarg].freeze
 
     # Test for local variable inherited scope reset
     #

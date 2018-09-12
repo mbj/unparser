@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'parser/all'
 require 'support/parser_class_generator'
@@ -170,14 +172,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'complex' do
-        %w(
+        %w[
           5i
           -5i
           0.6i
           -0.6i
           1000000000000000000000000000000i
           1ri
-        ).each do |expression|
+        ].each do |expression|
           assert_terminated(expression)
         end
       end
@@ -304,19 +306,19 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'access' do
-      %w(@a @@a $a $1 $` CONST SCOPED::CONST ::TOPLEVEL ::TOPLEVEL::CONST).each do |expression|
+      %w[@a @@a $a $1 $` CONST SCOPED::CONST ::TOPLEVEL ::TOPLEVEL::CONST].each do |expression|
         assert_terminated(expression)
       end
     end
 
     context 'control keywords' do
-      %w(retry redo).each do |expression|
+      %w[retry redo].each do |expression|
         assert_terminated(expression)
       end
     end
 
     context 'singletons' do
-      %w(self true false nil).each do |expression|
+      %w[self true false nil].each do |expression|
         assert_terminated(expression)
       end
     end
@@ -434,7 +436,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
     end
 
-    %w(next return break).each do |keyword|
+    %w[next return break].each do |keyword|
 
       context keyword do
         assert_terminated keyword.to_s
@@ -867,7 +869,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source 'foo rescue return bar'
       assert_source 'x = (foo rescue return bar)'
 
-      %w(while until if).each do |keyword|
+      %w[while until if].each do |keyword|
         assert_source <<-RUBY
           #{keyword} (
             foo rescue false
@@ -1342,7 +1344,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'op assign' do
-        %w(|= ||= &= &&= += -= *= /= **= %=).each do |op|
+        %w[|= ||= &= &&= += -= *= /= **= %=].each do |op|
           assert_source "self.foo #{op} bar"
           assert_source "foo[key] #{op} bar"
           assert_source "a #{op} (true\nfalse)"
@@ -1357,7 +1359,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_source 'foo.[]=()'
         assert_source 'foo[] = 1'
 
-        %w(+ - * / % & | || &&).each do |operator|
+        %w[+ - * / % & | || &&].each do |operator|
           context "with #{operator}" do
             assert_source "foo[index] #{operator}= 2"
             assert_source "foo[] #{operator}= 2"
@@ -1403,7 +1405,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'binary operator methods' do
-      %w(+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **).each do |operator|
+      %w[+ - * / & | << >> == === != <= < <=> > >= =~ !~ ^ **].each do |operator|
         assert_source "(-1) #{operator} 2"
         assert_source "(-1.2) #{operator} 2"
         assert_source "left.#{operator}(*foo)"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class CLI
     # Class to create diffs from source code

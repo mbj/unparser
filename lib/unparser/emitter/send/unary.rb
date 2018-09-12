@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Send
@@ -8,8 +10,8 @@ module Unparser
       private
 
         MAP = IceNine.deep_freeze(
-          :'-@' => '-',
-          :'+@' => '+'
+          '-@': '-',
+          '+@': '+'
         )
 
         # Perform dispatch
