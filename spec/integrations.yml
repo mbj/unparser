@@ -83,3 +83,5 @@
     - library/stringscanner/shared/get_byte.rb
     - library/zlib/inflate/set_dictionary_spec.rb
     - optional/capi/integer_spec.rb
+    - security/cve_2010_1330_spec.rb
+    - language/source_encoding_spec.rb
