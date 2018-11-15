@@ -58,7 +58,7 @@ module Unparser
 
     # Add options
     #
-    # @param [Optparse::Builder] builder
+    # @param [OptionParser] builder
     #
     # @return [undefined]
     #
