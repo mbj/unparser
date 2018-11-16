@@ -1,3 +1,7 @@
+# v0.3.0 2018-11-16
+
+* Drop support for Ruby < 2.5
+
 # v0.2.7 2018-07-18
 
 * Add emitters for `__FILE__` and `__LINE__`
