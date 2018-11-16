@@ -5,7 +5,6 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
-  TargetRubyVersion: 2.1
 
 # Avoid parameter lists longer than five parameters.
 ParameterLists:

@@ -154,6 +154,7 @@ module Unparser
       #
       # @api private
       #
+      # ignore :reek:LongYieldList
       def visit(node, &block)
         before = current.dup
         enter(node)

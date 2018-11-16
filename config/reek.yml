@@ -1,137 +1,137 @@
 ---
-UnusedParameters:
-  exclude: []
-UncommunicativeParameterName:
-  accept: []
-  exclude: []
-  enabled: true
-  reject:
-  - !ruby/regexp /^.$/
-  - !ruby/regexp /[0-9]$/
-  - !ruby/regexp /[A-Z]/
-TooManyInstanceVariables:
-  exclude:
-  - Unparser::CLI
-  enabled: true
-  max_instance_variables: 3
-TooManyMethods:
-  exclude:
-  - Unparser::Emitter # TODO: 13 methods, mostly helpers for deduplicate sublcasses
-  - Unparser::Buffer  # 11 methods
-  - Unparser::CLI::Source # 11 methods
-  enabled: true
-  max_methods: 10
-UncommunicativeMethodName:
-  accept:
-  - s
-  - n
-  exclude: []
-  enabled: true
-  reject:
-  - !ruby/regexp /^[a-z]$/
-  - !ruby/regexp /[0-9]$/
-  - !ruby/regexp /[A-Z]/
-LongParameterList:
-  max_params: 3
-  exclude:
-  - Unparser#self.transquote
-  enabled: true
-  overrides: {}
-FeatureEnvy:
-  exclude:
-  # False positives
-  - Unparser::CLI::Differ#collapsed_hunks
-  - Unparser::Emitter::Send::Arguments#effective_arguments
-  # Helper methods, false positive
-  - Unparser::CLI::Source#strip
-  - Unparser::CLI::Source#report_unparser
-  - Unparser::CLI#sources
-  enabled: true
-ClassVariable:
-  exclude: []
-  enabled: true
-BooleanParameter:
-  exclude: []
-  enabled: true
-IrresponsibleModule:
-  exclude: []
-  enabled: false # buggy / broken
-UncommunicativeModuleName:
-  accept: []
-  exclude: []
-  enabled: true
-  reject:
-  - !ruby/regexp /^.$/
-  - !ruby/regexp /[0-9]$/
-NestedIterators:
-  ignore_iterators: []
-  exclude:
-  # Acceptable cases:
-  - Unparser::Emitter::Literal::Regexp#dispatch
-  - Unparser::CLI::Preprocessor::Dstr#collapsed_children
-  - Unparser::Preprocessor::CollapseStrChildren#collapsed_children
-  enabled: true
-  max_allowed_nesting: 1
-TooManyStatements:
-  max_statements: 6
-  enabled: true
-  exclude:
-  - Unparser::CLI#add_options
-  - Unparser::CLI#initialize
-  - Unparser::CLI::Source#report_unparser
-  - Unparser::Emitter#delimited
-DuplicateMethodCall:
-  allow_calls: []
-  exclude: []
-  enabled: false
-  max_calls: 1
-UtilityFunction:
-  max_helper_calls: 1
-  exclude:
-  # Intent to be helper methods
-  - Unparser::CLI::Source#strip
-  - Unparser::CLI::Source#parse
-  - Unparser::NodeHelpers#n
-  - Unparser::NodeHelpers#s
-  - Unparser::CLI#sources
-  enabled: true
-Attribute:
-  exclude: []
-  enabled: false
-UncommunicativeVariableName:
-  accept: []
-  exclude: []
-  enabled: true
-  reject:
-  - !ruby/regexp /^.$/
-  - !ruby/regexp /[0-9]$/
-  - !ruby/regexp /[A-Z]/
-RepeatedConditional:
-  exclude:
-  # TODO:
-  - Unparser::Comments
-  # False positives
-  - Unparser::Emitter::If
-  - Unparser::CLI
-  enabled: true
-  max_ifs: 1
-DataClump:
-  exclude: []
-  enabled: true
-  max_copies: 1
-  min_clump_size: 3
-ControlParameter:
-  exclude:
-    # False positive:
-    - Unparser::Emitter#emit_body
-    - Unparser::Emitter#conditional_parentheses
-    - Unparser::AST::LocalVariableScope#match
-  enabled: true
-NilCheck:
-  enabled: false
-LongYieldList:
-  max_params: 1
-  exclude:
-  - Unparser::AST::LocalVariableScopeEnumerator#visit
-  - Unparser::AST::LocalVariableScope#match
-  enabled: true
+detectors:
+  Attribute:
+    enabled: false
+    exclude: []
+  BooleanParameter:
+    enabled: true
+    exclude: []
+  ClassVariable:
+    enabled: true
+    exclude: []
+  ControlParameter:
+    enabled: true
+    exclude:
+    - Mutant::Expression#match_length
+  DataClump:
+    enabled: true
+    exclude: []
+    max_copies: 2
+    min_clump_size: 2
+  DuplicateMethodCall:
+    enabled: false
+    exclude: []
+    max_calls: 1
+    allow_calls: []
+  FeatureEnvy:
+    enabled: false
+  # Buggy smell detector
+  IrresponsibleModule:
+    enabled: false
+    exclude: []
+  LongParameterList:
+    enabled: true
+    exclude:
+    - Mutant::Matcher::Method::Instance#self.build
+    - Mutant::Meta::Example::DSL # 3 vars
+    max_params: 2
+  LongYieldList:
+    enabled: true
+    exclude: []
+    max_params: 2
+  NestedIterators:
+    enabled: true
+    exclude:
+    - Mutant#self.singleton_subclass_instance
+    - Mutant::CLI#parse
+    - Mutant::Mutator::Node::Arguments#emit_argument_mutations
+    - Mutant::Mutator::Node::Resbody#mutate_captures
+    - Mutant::Mutator::Util::Array::Element#dispatch
+    - Mutant::Parallel::Master#run
+    - Mutant::RequireHighjack#self.call
+    - Mutant::Selector::Expression#call
+    - Parser::Lexer#self.new
+    max_allowed_nesting: 1
+    ignore_iterators: []
+  NilCheck:
+    enabled: false
+  RepeatedConditional:
+    enabled: true
+    exclude:
+    - Mutant::Mutator
+    - Mutant::Meta::Example::DSL
+    max_ifs: 1
+  TooManyInstanceVariables:
+    enabled: true
+    exclude:
+    - Mutant::Mutator # 4 vars
+    - Mutant::Parallel::Master # 4 vars
+    - Mutant::Meta::Example::DSL # 4 vars
+    max_instance_variables: 3
+  TooManyMethods:
+    enabled: true
+    exclude:
+    - Mutant::CLI
+    - Mutant::Mutator::Node
+    - Mutant::Parallel::Master
+    max_methods: 10
+  TooManyStatements:
+    enabled: true
+    exclude:
+    - Mutant::CLI#add_debug_options
+    - Mutant::CLI#add_environment_options
+    - Mutant::Reporter::CLI::Printer::Config#run
+    - Mutant::Reporter::CLI::Printer::EnvProgress#run
+    - Mutant::Runner#run_driver
+    - Mutant::Zombifier::File#self.find
+    max_statements: 7
+  UncommunicativeMethodName:
+    enabled: true
+    exclude:
+    - Mutant::AST::Sexp#s
+    - Mutant::Mutation#sha1
+    reject:
+    - '/^[a-z]$/'
+    - '/[0-9]$/'
+    - '/[A-Z]/'
+    accept: []
+  UncommunicativeModuleName:
+    enabled: true
+    exclude: []
+    reject:
+    - '/^.$/'
+    - '/[0-9]$/'
+    accept: []
+  UncommunicativeParameterName:
+    enabled: true
+    exclude: []
+    reject:
+    - '/^.$/'
+    - '/[0-9]$/'
+    - '/[A-Z]/'
+    accept: []
+  UncommunicativeVariableName:
+    enabled: true
+    exclude: []
+    reject:
+    - '/^.$/'
+    - '/[0-9]$/'
+    - '/[A-Z]/'
+    accept: ['force_utf32']
+  UnusedParameters:
+    enabled: true
+    exclude: []
+  UtilityFunction:
+    enabled: true
+    exclude:
+    - Mutant::AST::Sexp#s
+    - Mutant::Actor::Env#new_mailbox
+    - Mutant::CLI#reporter
+    - Mutant::Integration::Null#call
+    - Mutant::Integration::Rspec#parse_example
+    - Mutant::Integration::Rspec#parse_expression # intentional, private
+    - Mutant::Meta::Example::Verification#format_mutations # intentional, private
+    - Mutant::Reporter::CLI::Format::Progressive#new_buffer
+    - Mutant::Reporter::CLI::Printer::StatusProgressive#object # False positive calls super
+    - Mutant::Repository::Diff#tracks? # intentional, private
+    - Mutant::Repository::Diff#within_working_directory? # intentional, private

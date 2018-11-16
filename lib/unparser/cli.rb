@@ -11,6 +11,7 @@ module Unparser
   # Unparser CLI implementation
   #
   # :reek:InstanceVariableAssumption
+  # :reek:TooManyInstanceVariables
   class CLI
 
     EXIT_SUCCESS = 0
@@ -37,6 +38,7 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:TooManyStatements
     def initialize(arguments)
       @sources = []
       @ignore = Set.new
@@ -62,6 +64,7 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:TooManyStatements
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
       builder.separator('')
@@ -148,6 +151,7 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:UtilityFunction
     def sources(file_name)
       files =
         if File.directory?(file_name)

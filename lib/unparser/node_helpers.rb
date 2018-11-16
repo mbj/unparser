@@ -9,6 +9,8 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:UncommunicativeMethodName
+    # ignore :reek:UtilityFunction
     def s(type, *children)
       Parser::AST::Node.new(type, children)
     end
@@ -21,6 +23,8 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:UncommunicativeMethodName
+    # ignore :reek:UtilityFunction
     def n(type, children = [])
       Parser::AST::Node.new(type, children)
     end

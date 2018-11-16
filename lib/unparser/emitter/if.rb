@@ -1,6 +1,8 @@
 module Unparser
   class Emitter
     # Emitter if nodes
+    #
+    # ignore :reek:RepeatedConditional
     class If < self
       handle :if
 

@@ -1,6 +1,7 @@
 module Unparser
   class Emitter
     # Emitter for send
+    # ignore :reek:TooManyMethods
     class Send < self
 
       handle :send

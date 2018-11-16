@@ -1,6 +1,8 @@
 module Unparser
 
   # Buffer used to emit into
+  #
+  # ignore :reek:TooManyMethods
   class Buffer
 
     NL = "\n".freeze
