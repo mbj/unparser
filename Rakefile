@@ -8,6 +8,7 @@ namespace :metrics do
   task mutant: :coverage do
     args = %w[
       bundle exec mutant
+      --ignore-subject Unparser::Buffer#initialize
       --include lib
       --require unparser
       --use rspec

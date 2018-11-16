@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Literal
@@ -131,7 +133,7 @@ module Unparser
           # @api private
           #
           def dispatch
-            conditional_parentheses(parent.is_a?(Emitter::Send) && value < 0) do
+            conditional_parentheses(parent.is_a?(Send) && value.negative?) do
               write(value.inspect)
             end
           end

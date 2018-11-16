@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -52,6 +54,7 @@ module Unparser
       #
       def emit_scope
         return unless scope
+
         visit(scope)
         write(T_DCL) unless scope.type.equal?(:cbase)
       end

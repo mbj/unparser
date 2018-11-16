@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'unparser'
 require 'optparse'
 require 'diff/lcs'
@@ -94,6 +96,7 @@ module Unparser
     def exit_status
       effective_sources.each do |source|
         next if @ignore.include?(source)
+
         process_source(source)
         break if @fail_fast && !@success
       end

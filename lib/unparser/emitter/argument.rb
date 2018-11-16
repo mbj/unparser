@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -40,6 +42,7 @@ module Unparser
       def dispatch
         delimited(normal_arguments)
         return if shadowargs.empty?
+
         write('; ')
         delimited(shadowargs)
       end

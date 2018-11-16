@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter for rescue body nodes
@@ -19,30 +21,6 @@ module Unparser
         def dispatch
           write(K_RESCUE, WS)
           visit_plain(body)
-        end
-
-        # Emit exception
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_exception
-          return unless exception
-          ws
-          delimited(exception.children)
-        end
-
-        # Emit assignment
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_assignment
-          return unless assignment
-          write(WS, T_ASR, WS)
-          visit(assignment)
         end
       end
 
@@ -74,6 +52,7 @@ module Unparser
         #
         def emit_exception
           return unless exception
+
           ws
           delimited(exception.children)
         end
@@ -86,6 +65,7 @@ module Unparser
         #
         def emit_assignment
           return unless assignment
+
           write(WS, T_ASR, WS)
           visit(assignment)
         end

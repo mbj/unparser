@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Literal
 
       # Array literal emitter
       class Array < self
-        OPEN      = '['.freeze
-        CLOSE     = ']'.freeze
-        DELIMITER = ', '.freeze
+        OPEN  = '['.freeze
+        CLOSE = ']'.freeze
 
         handle :array
 
@@ -20,7 +21,7 @@ module Unparser
         #
         def dispatch
           parentheses(OPEN, CLOSE) do
-            delimited(children, DELIMITER)
+            delimited(children)
           end
         end
 

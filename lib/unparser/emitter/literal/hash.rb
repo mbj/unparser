@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Literal
@@ -70,7 +72,6 @@ module Unparser
       # Emitter for hash bodies
       class HashBody < self
 
-        DELIMITER = ', '.freeze
         BAREWORD = /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\z/.freeze
 
         handle :hash_body
@@ -84,7 +85,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          delimited(effective_body, DELIMITER)
+          delimited(effective_body)
         end
 
         # Return effective body

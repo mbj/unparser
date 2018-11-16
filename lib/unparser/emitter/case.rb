@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter for case nodes
@@ -34,6 +36,7 @@ module Unparser
       def emit_else
         else_branch = children.last
         return unless else_branch
+
         write(K_ELSE)
         visit_indented(else_branch)
       end
@@ -57,6 +60,7 @@ module Unparser
       #
       def emit_condition
         return unless condition
+
         write(WS)
         visit(condition)
       end

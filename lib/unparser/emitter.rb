@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Unparser
 
   # Emitter base class
   #
   # buggy, argument values are sends to self
-  # rubocop:disable CircularArgumentReference
   #
   # ignore :reek:TooManyMethods
   class Emitter
@@ -14,11 +15,11 @@ module Unparser
     # Registry for node emitters
     REGISTRY = {} # rubocop:disable MutableConstant
 
-    NOINDENT = [:rescue, :ensure].to_set.freeze
+    NOINDENT = %i[rescue ensure].to_set.freeze
 
     DEFAULT_DELIMITER = ', '.freeze
 
-    CURLY_BRACKETS = IceNine.deep_freeze(%w({ }))
+    CURLY_BRACKETS = IceNine.deep_freeze(%w[{ }])
 
     module Unterminated
       def terminated?
@@ -268,8 +269,8 @@ module Unparser
     #
     # @api private
     #
-    def delimited_plain(nodes, delimiter = DEFAULT_DELIMITER)
-      delimited(nodes, delimiter, &method(:visit_plain))
+    def delimited_plain(nodes)
+      delimited(nodes, &method(:visit_plain))
     end
 
     # Emit delimited body
@@ -281,13 +282,14 @@ module Unparser
     #
     # @api private
     #
-    def delimited(nodes, delimiter = DEFAULT_DELIMITER, &block)
+    def delimited(nodes, &block)
       return if nodes.empty?
+
       block ||= method(:visit)
       head, *tail = nodes
       block.call(head)
       tail.each do |node|
-        write(delimiter)
+        write(DEFAULT_DELIMITER)
         block.call(node)
       end
     end
@@ -324,6 +326,7 @@ module Unparser
     def emit_comments_before(source_part = :expression)
       comments_before = comments.take_before(node, source_part)
       return if comments_before.empty?
+
       emit_comments(comments_before)
       buffer.nl
     end
@@ -350,6 +353,7 @@ module Unparser
       emit_eol_comments
       comments_left = comments.take_all
       return if comments_left.empty?
+
       buffer.nl
       emit_comments(comments_left)
     end
@@ -431,8 +435,6 @@ module Unparser
     #
     # False positive:
     #
-    # rubocop:disable MethodCallWithoutArgsParentheses
-    #
     def indented
       buffer = buffer()
       buffer.indent
@@ -450,6 +452,7 @@ module Unparser
     #
     # @api private
     #
+    # rubocop:disable MethodCallWithoutArgsParentheses
     def emit_body(body = body())
       unless body
         buffer.indent
@@ -459,6 +462,7 @@ module Unparser
       end
       visit_indented(body)
     end
+    # rubocop:enable MethodCallWithoutArgsParentheses
 
     # Visit indented node
     #
@@ -498,9 +502,11 @@ module Unparser
     #
     # @api private
     #
+    # rubocop:disable MethodCallWithoutArgsParentheses
     def run(emitter, node = node())
       emitter.new(node, self).write_to_buffer
     end
+    # rubocop:enable MethodCallWithoutArgsParentheses
 
   end # Emitter
 end # Unparser

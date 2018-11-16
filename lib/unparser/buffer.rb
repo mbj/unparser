@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
 
   # Buffer used to emit into
@@ -14,7 +16,7 @@ module Unparser
     # @api private
     #
     def initialize
-      @content = ''
+      @content = +''
       @indent = 0
     end
 

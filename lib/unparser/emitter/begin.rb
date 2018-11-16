@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -36,7 +38,7 @@ module Unparser
           children.empty?
         end
 
-        TERMINATING_PARENT = %i(root interpolated dyn_str_body).to_set.freeze
+        TERMINATING_PARENT = %i[root interpolated dyn_str_body].to_set.freeze
 
       private
 

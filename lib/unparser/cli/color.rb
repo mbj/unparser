@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   # Class to colorize strings
   class Color

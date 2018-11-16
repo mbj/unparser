@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   module AST
 
@@ -130,7 +132,6 @@ module Unparser
       # @api private
       #
       def each(node, &block)
-        return to_enum(__method__, node) unless block_given?
         visit(node, &block)
       end
 
