@@ -1,6 +1,8 @@
 module Unparser
 
   # Holds the comments that remain to be emitted
+  #
+  # ignore :reek:RepeatedConditional
   class Comments
 
     # Proxy to singleton

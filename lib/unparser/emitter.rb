@@ -4,6 +4,8 @@ module Unparser
   #
   # buggy, argument values are sends to self
   # rubocop:disable CircularArgumentReference
+  #
+  # ignore :reek:TooManyMethods
   class Emitter
     include Adamantium::Flat, AbstractType, Constants, NodeHelpers
     include Concord.new(:node, :parent)
@@ -236,6 +238,7 @@ module Unparser
     #
     # @api private
     #
+    # ignore :reek:ControlParameter
     def conditional_parentheses(flag)
       if flag
         parentheses { yield }

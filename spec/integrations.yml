@@ -57,9 +57,9 @@
     - core/string/shared/succ.rb
     - core/string/shared/to_sym.rb
     - core/string/squeeze_spec.rb
-    - core/string/unpack/{b,c,h,m}_spec.rb
     - core/string/unpack/shared/float.rb
     - core/string/unpack/shared/integer.rb
+    - core/string/unpack/{b,c,h,m}_spec.rb
     - core/string/unpack/{u,w}_spec.rb
     - core/symbol/casecmp_spec.rb
     - core/time/_dump_spec.rb
@@ -69,6 +69,7 @@
     - language/for_spec.rb
     - language/regexp/encoding_spec.rb
     - language/regexp/escapes_spec.rb
+    - language/source_encoding_spec.rb
     - language/string_spec.rb
     - library/digest/md5/shared/constants.rb
     - library/digest/md5/shared/sample.rb
@@ -83,3 +84,4 @@
     - library/stringscanner/shared/get_byte.rb
     - library/zlib/inflate/set_dictionary_spec.rb
     - optional/capi/integer_spec.rb
+    - security/cve_2010_1330_spec.rb

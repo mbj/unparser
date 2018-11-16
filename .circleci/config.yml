@@ -1,0 +1,17 @@
+defaults: &defaults
+  working_directory: ~/unparser
+  steps:
+    - checkout
+    - run: bundle install
+    - run: bundle exec rake ci
+version: 2
+jobs:
+  ruby_2_5:
+    <<: *defaults
+    docker:
+      - image: circleci/ruby:2.5.3
+workflows:
+  version: 2
+  test:
+    jobs:
+      - ruby_2_5

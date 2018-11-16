@@ -6,9 +6,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
     RUBY_VERSION_PARSERS = IceNine.deep_freeze(
-      '2.1' => Parser::Ruby21,
-      '2.2' => Parser::Ruby22,
-      '2.3' => Parser::Ruby23
+      '2.5' => Parser::Ruby25
     )
 
     RUBY_VERSIONS = RUBY_VERSION_PARSERS.keys.freeze
@@ -468,10 +466,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'conditional send (csend)' do
-      with_ruby_versions(beginning_at: '2.3') do
-        assert_terminated 'a&.b'
-        assert_terminated 'a&.b(c)'
-      end
+      assert_terminated 'a&.b'
+      assert_terminated 'a&.b(c)'
     end
 
     context 'send' do

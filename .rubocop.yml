@@ -6,3 +6,4 @@ AllCops:
     - 'vendor/**/*'
     - 'benchmarks/**/*'
     - 'tmp/**/*'
+  TargetRubyVersion: 2.5

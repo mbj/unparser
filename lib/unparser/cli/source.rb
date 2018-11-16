@@ -1,6 +1,8 @@
 module Unparser
   class CLI
     # Source representation for CLI sources
+    #
+    # ignore :reek:TooManyMethods
     class Source
       include AbstractType, Adamantium::Flat, NodeHelpers
 
@@ -84,6 +86,7 @@ module Unparser
       #
       # @api private
       #
+      # ignore :reek:UtilityFunction
       def strip(source)
         source = source.rstrip
         indent = source.scan(/^\s*/).first
@@ -204,6 +207,7 @@ module Unparser
       #
       # @api private
       #
+      # ignore :reek:UtilityFunction
       def parse(source)
         Parser::CurrentRuby.parse(source)
       end
