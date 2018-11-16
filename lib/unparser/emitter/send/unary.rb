@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Send
@@ -8,8 +10,8 @@ module Unparser
       private
 
         MAP = IceNine.deep_freeze(
-          :'-@' => '-',
-          :'+@' => '+'
+          '-@': '-',
+          '+@': '+'
         )
 
         # Perform dispatch
@@ -21,7 +23,7 @@ module Unparser
         def dispatch
           name = selector
           write(MAP.fetch(name, name).to_s)
-          if receiver.type.equal?(:int) && selector.equal?(:'+@') && receiver.children.first > 0
+          if receiver.type.equal?(:int) && selector.equal?(:'+@')
             write('+')
           end
 

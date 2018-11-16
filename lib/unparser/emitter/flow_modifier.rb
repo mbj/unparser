@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter control flow modifiers
@@ -50,7 +52,7 @@ module Unparser
         end
       end
 
-      PARENS = [:if, :case, :begin].to_set.freeze
+      PARENS = %i[if case begin].to_set.freeze
 
       # Emit argument
       #

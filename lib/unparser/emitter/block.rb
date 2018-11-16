@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -34,6 +36,7 @@ module Unparser
       #
       def emit_block_arguments
         return if arguments.children.empty?
+
         ws
         visit_parentheses(arguments, T_PIPE, T_PIPE)
       end

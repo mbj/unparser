@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class CLI
     # Source representation for CLI sources
@@ -29,7 +31,7 @@ module Unparser
         def self.build(ast)
           source = Unparser.unparse(ast)
           new(source, ast, nil)
-        rescue => exception
+        rescue StandardError => exception
           new(nil, ast, exception)
         end
       end

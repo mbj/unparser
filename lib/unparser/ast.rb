@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   # Namespace for AST processing tools
   # :reek:TooManyConstants
@@ -6,7 +8,7 @@ module Unparser
     FIRST_CHILD = ->(node) { node.children.first }.freeze
     TAUTOLOGY   = ->(_node) { true }.freeze
 
-    RESET_NODES   = [:module, :class, :sclass, :def, :defs].freeze
+    RESET_NODES   = %i[module class sclass def defs].freeze
     INHERIT_NODES = [:block].freeze
     CLOSE_NODES   = (RESET_NODES + INHERIT_NODES).freeze
 
@@ -14,7 +16,7 @@ module Unparser
     #
     # FIXME: Kwargs are missing.
     #
-    ASSIGN_NODES = [:lvasgn, :arg, :optarg, :restarg].freeze
+    ASSIGN_NODES = %i[lvasgn arg optarg restarg].freeze
 
     # Test for local variable inherited scope reset
     #
@@ -98,7 +100,6 @@ module Unparser
       # @api private
       #
       def each(&block)
-        return to_enum unless block_given?
         Walker.call(node, controller, &block)
       end
 
@@ -176,18 +177,19 @@ module Unparser
       #
       # @param [Parser::AST::Node] node
       #
-      # @return [self]
+      # @return [undefined]
       #
       # @api private
       #
       def call(node)
         return unless controller.call(node)
+
         block.call(node)
         node.children.each do |child|
-          next unless child.is_a?(Parser::AST::Node)
+          break unless child.instance_of?(Parser::AST::Node)
+
           call(child)
         end
-        self
       end
 
     end # Walker

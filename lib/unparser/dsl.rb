@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   # DSL to help defining emitters
   module DSL

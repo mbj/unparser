@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter for class nodes
@@ -32,6 +34,7 @@ module Unparser
       #
       def emit_superclass
         return unless superclass
+
         write(WS, T_LT, WS)
         visit(superclass)
       end

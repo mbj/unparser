@@ -2,6 +2,8 @@ inherit_from: ../.rubocop.yml
 
 AllCops:
   Include:
+    - 'lib/unparser.rb'
+    - 'lib/unparser/**/*.rb'
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
@@ -101,4 +103,16 @@ EmptyLinesAroundModuleBody:
 
 # I like my style more
 AccessModifierIndentation:
+  Enabled: false
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Style/MixinGrouping:
+  Enabled: false
+
+Lint/BooleanSymbol:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
   Enabled: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -65,7 +67,8 @@ module Unparser
       # @api private
       #
       def postcontrol?
-        return false unless body
+        return nil unless body # greez from falsyness
+
         local_variable_scope.first_assignment_in_body_and_used_in_condition?(body, condition)
       end
 

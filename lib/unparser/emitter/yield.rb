@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -18,6 +20,7 @@ module Unparser
       def dispatch
         write(K_YIELD)
         return if children.empty?
+
         parentheses do
           delimited(children)
         end

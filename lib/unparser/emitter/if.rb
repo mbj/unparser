@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter if nodes
@@ -124,6 +126,7 @@ module Unparser
       #
       def emit_else_branch
         return unless else_branch
+
         write(K_ELSE) unless unless?
         visit_indented(else_branch)
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     # Emitter for def node
@@ -47,6 +49,7 @@ module Unparser
       #
       def emit_arguments
         return if arguments.children.empty?
+
         visit_parentheses(arguments)
       end
 

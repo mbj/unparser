@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
 
@@ -41,6 +43,7 @@ module Unparser
         def emit_right
           right = right_node
           return unless right
+
           write(WS, T_ASN, WS)
           visit(right)
         end
@@ -144,8 +147,8 @@ module Unparser
 
       private
 
-        NO_COMMA = [:splat, :restarg].to_set.freeze
-        PARENT_MLHS = [:mlhs, :masgn].freeze
+        NO_COMMA = %i[splat restarg].to_set.freeze
+        PARENT_MLHS = %i[mlhs masgn].freeze
 
         # Perform dispatch
         #

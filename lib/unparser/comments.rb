@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
 
   # Holds the comments that remain to be emitted
@@ -54,6 +56,7 @@ module Unparser
     #
     def take_eol_comments
       return EMPTY_ARRAY unless @last_range_consumed
+
       comments = take_up_to_line(@last_range_consumed.end.line)
       unshift_documents(comments)
     end

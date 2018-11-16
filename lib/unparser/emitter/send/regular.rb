@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Unparser
   class Emitter
     class Send
@@ -27,6 +29,7 @@ module Unparser
         #
         def emit_receiver
           return unless first_child
+
           visit(receiver)
           write(T_DOT)
         end
