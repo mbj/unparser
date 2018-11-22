@@ -160,7 +160,7 @@ module Unparser
       #
       def emit_arguments
         if arguments.empty?
-          write('()') if local_variable_clash?
+          write('()') if receiver.nil? && avoid_clash?
         else
           normal_arguments
         end
@@ -195,6 +195,16 @@ module Unparser
         end
       end
 
+      # Test if clash with local variable or constant needs to be avoided
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def avoid_clash?
+        local_variable_clash? || parses_as_constant?
+      end
+
       # Test for local variable clash
       #
       # @return [Boolean]
@@ -214,6 +224,15 @@ module Unparser
         string_selector[NON_ASSIGN_RANGE]
       end
 
+      # Test if selector parses as constant
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def parses_as_constant?
+        Unparser.parse(selector.to_s).type.equal?(:const)
+      end
     end # Send
   end # Emitter
 end # Unparser
