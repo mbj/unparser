@@ -20,11 +20,10 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     def self.current_parsers
       RUBY_VERSIONS.map do |ruby_version|
-        if builder_options != {}
-          ParserClassGenerator.generate_with_options(parser_for_ruby_version(ruby_version), builder_options)
-        else
-          parser_for_ruby_version(ruby_version)
-        end
+        ParserClassGenerator.generate_with_options(
+          parser_for_ruby_version(ruby_version),
+          builder_options
+        )
       end
     end
 
