@@ -19,36 +19,8 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       @builder_options = options
     end
 
-    def self.ruby_versions
-      @ruby_versions ||= RUBY_VERSIONS
-    end
-
-    def self.ruby_versions=(versions)
-      @ruby_versions = versions
-    end
-
-    def self.with_ruby_versions(beginning_at: nil, ending_at: nil, only: nil)
-      original_ruby_versions = ruby_versions
-      if only
-        self.ruby_versions = only & ruby_versions # intersection
-      else
-        if ending_at
-          idx = ruby_versions.index(ending_at) || fail('Invalid Ruby specified')
-          self.ruby_versions = ruby_versions[0..idx]
-        end
-        if beginning_at
-          idx = ruby_versions.index(beginning_at) || fail('Invalid Ruby specified')
-          self.ruby_versions = ruby_versions[idx..-1]
-        end
-      end
-
-      yield
-
-      self.ruby_versions = original_ruby_versions
-    end
-
     def self.current_parsers
-      ruby_versions.map do |ruby_version|
+      RUBY_VERSIONS.map do |ruby_version|
         if builder_options != {}
           ParserClassGenerator.generate_with_options(parser_for_ruby_version(ruby_version), builder_options)
         else
