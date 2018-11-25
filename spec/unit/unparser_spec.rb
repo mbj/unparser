@@ -4,11 +4,7 @@ require 'support/parser_class_generator'
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
-    RUBY_VERSION_PARSERS = IceNine.deep_freeze(
-      '2.5' => Parser::Ruby25
-    )
-
-    RUBY_VERSIONS = RUBY_VERSION_PARSERS.keys.freeze
+    RUBY_PARSERS = IceNine.deep_freeze([Parser::Ruby25])
 
     def self.builder_options
       @builder_options ||= {}
@@ -19,9 +15,9 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     def self.current_parsers
-      RUBY_VERSIONS.map do |ruby_version|
+      RUBY_PARSERS.map do |parser_class|
         ParserClassGenerator.generate_with_options(
-          parser_for_ruby_version(ruby_version),
+          parser_class,
           builder_options
         )
       end
@@ -34,12 +30,6 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       yield
 
       self.builder_options = original_options
-    end
-
-    def self.parser_for_ruby_version(version)
-      RUBY_VERSION_PARSERS.fetch(version) do
-        raise "Unrecognized Ruby version #{version}"
-      end
     end
 
     def assert_round_trip(input, parser)
