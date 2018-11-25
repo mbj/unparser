@@ -1,15 +1,10 @@
 require 'spec_helper'
-require 'parser/all'
 require 'support/parser_class_generator'
 
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
 
-    RUBY_VERSION_PARSERS = IceNine.deep_freeze(
-      '2.5' => Parser::Ruby25
-    )
-
-    RUBY_VERSIONS = RUBY_VERSION_PARSERS.keys.freeze
+    RUBY_PARSERS = IceNine.deep_freeze([Parser::Ruby25])
 
     def self.builder_options
       @builder_options ||= {}
@@ -19,41 +14,12 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       @builder_options = options
     end
 
-    def self.ruby_versions
-      @ruby_versions ||= RUBY_VERSIONS
-    end
-
-    def self.ruby_versions=(versions)
-      @ruby_versions = versions
-    end
-
-    def self.with_ruby_versions(beginning_at: nil, ending_at: nil, only: nil)
-      original_ruby_versions = ruby_versions
-      if only
-        self.ruby_versions = only & ruby_versions # intersection
-      else
-        if ending_at
-          idx = ruby_versions.index(ending_at) || fail('Invalid Ruby specified')
-          self.ruby_versions = ruby_versions[0..idx]
-        end
-        if beginning_at
-          idx = ruby_versions.index(beginning_at) || fail('Invalid Ruby specified')
-          self.ruby_versions = ruby_versions[idx..-1]
-        end
-      end
-
-      yield
-
-      self.ruby_versions = original_ruby_versions
-    end
-
     def self.current_parsers
-      ruby_versions.map do |ruby_version|
-        if builder_options != {}
-          ParserClassGenerator.generate_with_options(parser_for_ruby_version(ruby_version), builder_options)
-        else
-          parser_for_ruby_version(ruby_version)
-        end
+      RUBY_PARSERS.map do |parser_class|
+        ParserClassGenerator.generate_with_options(
+          parser_class,
+          builder_options
+        )
       end
     end
 
@@ -64,12 +30,6 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       yield
 
       self.builder_options = original_options
-    end
-
-    def self.parser_for_ruby_version(version)
-      RUBY_VERSION_PARSERS.fetch(version) do
-        raise "Unrecognized Ruby version #{version}"
-      end
     end
 
     def assert_round_trip(input, parser)
