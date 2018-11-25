@@ -859,6 +859,81 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
+      assert_source <<-'RUBY'
+        m do
+        rescue Exception => e
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+        ensure
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+        rescue
+        ensure
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          foo
+        rescue Exception => bar
+          bar
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue SomeError, *bar
+          baz
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue SomeError, *bar => exception
+          baz
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue *bar
+          baz
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue LoadError
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue
+        else
+          baz
+        end
+      RUBY
+
+      assert_source <<-'RUBY'
+        m do
+          bar
+        rescue *bar => exception
+          baz
+        end
+      RUBY
+
       assert_source 'foo rescue bar'
       assert_source 'foo rescue return bar'
       assert_source 'x = (foo rescue return bar)'
