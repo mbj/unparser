@@ -97,7 +97,7 @@ module Unparser
       # @api private
       #
       def diff
-        output = ''
+        output = +''
 
         collapsed_hunks.each do |hunk|
           output << hunk.diff(:unified) << "\n"
