@@ -1,55 +1,53 @@
 require 'spec_helper'
-require 'support/parser_class_generator'
 
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   describe '.unparse' do
+    let(:builder_options) { {} }
 
-    RUBY_PARSERS = IceNine.deep_freeze([Parser::Ruby25])
-
-    def self.builder_options
-      @builder_options ||= {}
-    end
-
-    def self.builder_options=(options)
-      @builder_options = options
-    end
-
-    def self.current_parsers
-      RUBY_PARSERS.map do |parser_class|
-        ParserClassGenerator.generate_with_options(
-          parser_class,
-          builder_options
-        )
+    def parser
+      Parser::CurrentRuby.new.tap do |parser|
+        builder_options.each do |name, value|
+          parser.builder.public_send(:"#{name}=", value)
+        end
       end
     end
 
-    def self.with_builder_options(options)
-      original_options = builder_options
-      self.builder_options = builder_options.merge(options)
-
-      yield
-
-      self.builder_options = original_options
+    def buffer(input)
+      Parser::Source::Buffer.new('(string)').tap do |buffer|
+        buffer.source = input
+      end
     end
 
-    def assert_round_trip(input, parser)
-      ast, comments = parser.parse_with_comments(input)
+    def parse_with_comments(string)
+      parser.parse_with_comments(buffer(string))
+    end
+
+    def self.with_builder_options(options, &block)
+      context "with #{options}" do
+        let(:builder_options) { options }
+
+        class_eval(&block)
+      end
+    end
+
+    def assert_round_trip(string, parser)
+      ast, comments = parse_with_comments(string)
       generated = Unparser.unparse(ast, comments)
-      expect(generated).to eql(input)
-      generated_ast, _comments = parser.parse_with_comments(generated)
+      expect(generated).to eql(string)
+      generated_ast, _comments = parse_with_comments(generated)
       expect(ast == generated_ast).to be(true)
     end
 
     def assert_generates_from_string(parser, string, expected)
       string = strip(string)
-      ast_with_comments = parser.parse_with_comments(string)
+      ast_with_comments = parse_with_comments(string)
       assert_generates_from_ast(parser, ast_with_comments, expected)
     end
 
     def assert_generates_from_ast(parser, ast_with_comments, expected)
       generated = Unparser.unparse(*ast_with_comments)
       expect(generated).to eql(expected)
-      ast, comments = parser.parse_with_comments(generated)
+      ast, comments = parse_with_comments(generated)
       expect(Unparser.unparse(ast, comments)).to eql(expected)
     end
 
@@ -64,24 +62,20 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source("#{expression}.foo")
     end
 
-    def self.assert_generates(ast_or_string, expected)
-      current_parsers.each do |parser|
-        it "should generate #{ast_or_string} as #{expected} under #{parser.inspect}" do
-          if ast_or_string.is_a?(String)
-            expected = strip(expected)
-            assert_generates_from_string(parser, ast_or_string, expected)
-          else
-            assert_generates_from_ast(parser, [ast_or_string, []], expected)
-          end
+    def self.assert_generates(input, expected)
+      it "should generate #{input} as #{expected}" do
+        if input.is_a?(String)
+          expected = strip(expected)
+          assert_generates_from_string(parser, input, expected)
+        else
+          assert_generates_from_ast(parser, [input, []], expected)
         end
       end
     end
 
     def self.assert_round_trip(input)
-      current_parsers.each do |parser|
-        it "should round trip #{input} under #{parser.inspect}" do
-          assert_round_trip(input, parser)
-        end
+      it "should round trip #{input}" do
+        assert_round_trip(input, parser)
       end
     end
 
