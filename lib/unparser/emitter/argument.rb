@@ -30,6 +30,7 @@ module Unparser
       handle :args
 
       SHADOWARGS = ->(node) { node.type.equal?(:shadowarg) }.freeze
+      ARG        = ->(node) { node.type.equal?(:arg) }.freeze
 
     private
 
@@ -41,10 +42,33 @@ module Unparser
       #
       def dispatch
         delimited(normal_arguments)
+
+        write(', ') if procarg_disambiguator?
+
         return if shadowargs.empty?
 
         write('; ')
         delimited(shadowargs)
+      end
+
+      # Test for procarg_disambiguator
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def procarg_disambiguator?
+        regular_block? && normal_arguments.all?(&ARG) && normal_arguments.one?
+      end
+
+      # Test for regular block
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def regular_block?
+        parent_type.equal?(:block) && !parent.node.children.first.type.equal?(:lambda)
       end
 
       # Return normal arguments
@@ -56,6 +80,7 @@ module Unparser
       def normal_arguments
         children.reject(&SHADOWARGS)
       end
+      memoize :normal_arguments
 
       # Return shadow args
       #
@@ -208,6 +233,43 @@ module Unparser
       end
 
     end # Argument
+
+    # Progarg emitter
+    class Procarg < self
+      include Terminated
+
+      handle :procarg0
+
+      children :first_argument
+
+    private
+
+      # Perform dispatch
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def dispatch
+        if first_argument.instance_of?(Symbol)
+          write(first_argument.to_s)
+        else
+          emit_multiple_children
+        end
+      end
+
+      # Emit multiple children
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_multiple_children
+        parentheses do
+          delimited(children)
+        end
+      end
+    end
 
     # Block pass node emitter
     class BlockPass < self

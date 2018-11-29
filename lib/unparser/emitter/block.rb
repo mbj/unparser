@@ -4,12 +4,14 @@ module Unparser
   class Emitter
 
     # Block emitter
+    #
+    # ignore :reek:RepeatedConditional
     class Block < self
       include Terminated
 
       handle :block
 
-      children :send, :arguments, :body
+      children :target, :arguments, :body
 
     private
 
@@ -20,12 +22,35 @@ module Unparser
       # @api private
       #
       def dispatch
-        visit(send)
+        emit_target
         write(WS, K_DO)
-        comments.consume(node, :begin)
-        emit_block_arguments
+        emit_block_arguments unless stabby_lambda?
         emit_body
         k_end
+      end
+
+      # Emit target
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def emit_target
+        visit(target)
+
+        if stabby_lambda?
+          parentheses { visit(arguments) }
+        end
+      end
+
+      # Test if we are emitting a stabby lambda
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def stabby_lambda?
+        target.type.equal?(:lambda)
       end
 
       # Emit arguments

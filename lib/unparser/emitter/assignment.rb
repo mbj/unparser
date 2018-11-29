@@ -29,7 +29,7 @@ module Unparser
         # @api private
         #
         def terminated?
-          right_node.nil?
+          right.nil?
         end
 
       private
@@ -41,7 +41,6 @@ module Unparser
         # @api private
         #
         def emit_right
-          right = right_node
           return unless right
 
           write(WS, T_ASN, WS)
@@ -55,7 +54,7 @@ module Unparser
 
           handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
 
-          children :name, :right_node
+          children :name, :right
 
         private
 
@@ -76,7 +75,7 @@ module Unparser
 
           handle :casgn
 
-          children :base, :name, :right_node
+          children :base, :name, :right
 
         private
 

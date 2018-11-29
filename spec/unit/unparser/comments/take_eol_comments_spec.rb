@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Unparser::Comments, '#take_eol_comments' do
 
   let(:ast_and_comments) do
-    Parser::CurrentRuby.parse_with_comments(<<-RUBY)
-def hi # EOL 1
-=begin
-doc comment
-=end
-end # EOL 2
+    Unparser.parse_with_comments(<<~'RUBY')
+      def hi # EOL 1
+      =begin
+      doc comment
+      =end
+      end # EOL 2
     RUBY
   end
   let(:ast)              { ast_and_comments[0] }

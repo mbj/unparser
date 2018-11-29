@@ -9,7 +9,7 @@ describe Unparser::Comments, '#take_before' do
   context 'usual case' do
 
     let(:ast_and_comments) do
-      Parser::CurrentRuby.parse_with_comments(<<-RUBY)
+      Unparser.parse_with_comments(<<~'RUBY')
         def hi # EOL 1
           # comment
         end # EOL 2
@@ -29,7 +29,7 @@ describe Unparser::Comments, '#take_before' do
   context 'when node does not respond to source part' do
 
     let(:ast_and_comments) do
-      Parser::CurrentRuby.parse_with_comments(<<-RUBY)
+      Unparser.parse_with_comments(<<~'RUBY')
         expression ? :foo : :bar # EOL 1
         # EOL 2
       RUBY
