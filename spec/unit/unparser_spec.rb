@@ -14,7 +14,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     def buffer(input)
       Parser::Source::Buffer.new('(string)').tap do |buffer|
-        buffer.source = input
+        buffer.source = input.chomp
       end
     end
 
@@ -33,15 +33,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     def assert_round_trip(string, parser)
       ast, comments = parse_with_comments(string)
       generated = Unparser.unparse(ast, comments)
-      expect(generated).to eql(string)
+      expect(generated).to eql(string.chomp)
       generated_ast, _comments = parse_with_comments(generated)
       expect(ast == generated_ast).to be(true)
     end
 
     def assert_generates_from_string(parser, string, expected)
-      string = strip(string)
       ast_with_comments = parse_with_comments(string)
-      assert_generates_from_ast(parser, ast_with_comments, expected)
+      assert_generates_from_ast(parser, ast_with_comments, expected.chomp)
     end
 
     def assert_generates_from_ast(parser, ast_with_comments, expected)
@@ -65,7 +64,6 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     def self.assert_generates(input, expected)
       it "should generate #{input} as #{expected}" do
         if input.is_a?(String)
-          expected = strip(expected)
           assert_generates_from_string(parser, input, expected)
         else
           assert_generates_from_ast(parser, [input, []], expected)
@@ -80,20 +78,20 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     def self.assert_source(input)
-      assert_round_trip(strip(input))
+      assert_round_trip(input)
     end
 
     context 'kwargs' do
-      assert_source <<-RUBY
+      assert_source <<~RUBY
         def foo(bar:, baz:)
         end
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<~RUBY
         foo(**bar)
       RUBY
 
-      assert_source <<-RUBY
+      assert_source <<~RUBY
         def foo(bar:, baz: "value")
         end
       RUBY
@@ -147,7 +145,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_terminated '"foo bar"'
         assert_terminated '"foo\nbar"'
         # Within indentation
-        assert_generates <<-'RUBY', <<-'RUBY'
+        assert_generates <<~'RUBY', <<~'RUBY'
           if foo
             "
             #{foo}
@@ -187,7 +185,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_terminated '/\n/'
         assert_terminated "/\n/x"
         # Within indentation
-        assert_source <<-RUBY
+        assert_source <<~RUBY
           if foo
             /
             /
@@ -307,7 +305,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       context 'lvar introduction from condition' do
         assert_source 'foo = bar while foo'
         assert_source 'foo = bar until foo'
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           foo = exp
           while foo
             foo = bar
@@ -320,7 +318,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         #   pair = :foo
         #   foo
         # end
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           if foo do |pair|
             pair
           end
@@ -329,13 +327,13 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           while foo
             foo = bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           each do |bar|
             while foo
               foo = bar
@@ -343,13 +341,13 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             foo = bar while foo != baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           each do |baz|
             while foo
               foo = bar
@@ -357,7 +355,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           each do |foo|
             while foo
               foo = bar
@@ -395,7 +393,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_unterminated "#{keyword} *nil"
         assert_unterminated "#{keyword} *foo, bar"
 
-        assert_generates <<-RUBY, <<-RUBY
+        assert_generates <<~RUBY, <<~RUBY
           foo do |bar|
             bar =~ // || #{keyword}
             baz
@@ -407,7 +405,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_generates <<-RUBY, <<-RUBY
+        assert_generates <<~RUBY, <<~RUBY
           #{keyword}(a ? b : c)
         RUBY
           #{keyword} (if a
@@ -438,91 +436,91 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_terminated 'foo(&(foo || bar))'
       assert_terminated 'foo(*arguments)'
       assert_terminated 'foo(*arguments)'
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo(1) do
           nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo do |a, b|
           nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo do |a, *b|
           nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo do |a, *|
           nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo do
           bar
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar(*args)
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |(a)|
           d
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |(a, b), c|
           d
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |*a; b|
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |a; b|
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |; a, b|
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |((*))|
           d
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |(a, (*))|
           d
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do |(a, b)|
           d
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo.bar do
         end.baz
       RUBY
@@ -532,17 +530,17 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_unterminated 'a || return'
       assert_unterminated 'foo << (bar * baz)'
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo ||= (a, _ = b)
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
         rescue
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case (def foo
         end
         :bar)
@@ -550,58 +548,58 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end.baz
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when bar
         end.baz
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         class << self
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         def self.foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         def foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         until foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         while foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         loop do
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         class Foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         module Foo
         end.bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         if foo
         end.baz
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         local = 1
         local.bar
       RUBY
@@ -611,7 +609,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_terminated 'foo.bar(*args, foo)'
       assert_terminated 'foo.bar(foo, *args)'
       assert_terminated 'foo.bar(foo, *args, &block)'
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo(bar, *args)
       RUBY
 
@@ -630,17 +628,17 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     context 'begin; end' do
       assert_generates s(:begin), ''
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo
         bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
           bar
@@ -649,7 +647,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'begin / rescue / ensure' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         ensure
@@ -658,7 +656,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         rescue
@@ -666,7 +664,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           begin
             foo
@@ -679,14 +677,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           raise(Exception) rescue foo = bar
         rescue Exception
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
           bar
@@ -696,7 +694,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         rescue Exception
@@ -704,7 +702,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         rescue => bar
@@ -712,7 +710,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         rescue Exception, Other => bar
@@ -720,44 +718,44 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         class << self
           undef :bar rescue nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         module Foo
           undef :bar rescue nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         class Foo
           undef :bar rescue nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
         rescue Exception => e
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
         ensure
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
         rescue
         ensure
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         rescue Exception => bar
@@ -765,7 +763,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue SomeError, *bar
@@ -773,7 +771,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue SomeError, *bar => exception
@@ -781,7 +779,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue *bar
@@ -789,14 +787,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue LoadError
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue
@@ -805,7 +803,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           bar
         rescue *bar => exception
@@ -813,26 +811,26 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
         rescue Exception => e
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
         ensure
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
         rescue
         ensure
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           foo
         rescue Exception => bar
@@ -840,7 +838,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue SomeError, *bar
@@ -848,7 +846,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue SomeError, *bar => exception
@@ -856,7 +854,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue *bar
@@ -864,14 +862,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue LoadError
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue
@@ -880,7 +878,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         m do
           bar
         rescue *bar => exception
@@ -893,14 +891,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source 'x = (foo rescue return bar)'
 
       %w(while until if).each do |keyword|
-        assert_source <<-RUBY
+        assert_source <<~RUBY
           #{keyword} (
             foo rescue false
           )
           end
         RUBY
 
-        assert_generates <<-RUBY, <<-GENERATED
+        assert_generates <<~RUBY, <<~GENERATED
           foo rescue false #{keyword} true
         RUBY
           #{keyword} true
@@ -909,7 +907,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         GENERATED
       end
 
-      assert_generates <<-'RUBY', <<-GENERATED
+      assert_generates <<~'RUBY', <<~GENERATED
         case (foo rescue false)
         when true
         end
@@ -931,31 +929,31 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source 'super(&block)'
       assert_source 'super(a, &block)'
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         super(a do
           foo
         end)
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         super do
           foo
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         super(a) do
           foo
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         super() do
           foo
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         super(a, b) do
           foo
         end
@@ -969,7 +967,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'BEGIN' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         BEGIN {
           foo
         }
@@ -977,7 +975,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'END' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         END {
           foo
         }
@@ -985,11 +983,11 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'alias' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         alias $foo $bar
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         alias :foo :bar
       RUBY
     end
@@ -1009,19 +1007,19 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'if statement' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         if /foo/
           bar
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         if 3
           9
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         if 4
           5
         else
@@ -1029,32 +1027,32 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         unless 3
           nil
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         unless 3
           9
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         if foo
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo = bar if foo
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         foo = bar unless foo
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         def foo(*foo)
           unless foo
             foo = bar
@@ -1062,7 +1060,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         each do |foo|
           unless foo
             foo = bar
@@ -1074,18 +1072,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     context 'def' do
       context 'on instance' do
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             foo
           rescue
@@ -1095,7 +1093,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           begin
             foo
           ensure
@@ -1103,7 +1101,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             bar
           ensure
@@ -1111,7 +1109,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def self.foo
             bar
           rescue
@@ -1119,7 +1117,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             bar
           rescue
@@ -1127,134 +1125,134 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar, baz)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar = ())
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar = (baz
           nil))
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar = true)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar, baz = true)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar: 1)
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(*)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(*bar)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar, *baz)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(baz = true, *bor)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(baz = true, *bor, &block)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar, baz = true, *bor)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(&block)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo(bar, &block)
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo
             bar
             baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def (foo do |bar|
           end).bar
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def (foo(1)).bar
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def (Foo::Bar.baz).bar
             baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def (Foo::Bar).bar
             baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def Foo.bar
             baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def foo.bar
             baz
           end
@@ -1262,25 +1260,25 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'on singleton' do
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def self.foo
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def self.foo
             bar
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def self.foo
             bar
             baz
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           def Foo.bar
             bar
           end
@@ -1289,43 +1287,43 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'class' do
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class TestClass
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class << some_object
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class << some_object
             the_body
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class SomeNameSpace::TestClass
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class Some::Name::Space::TestClass
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class TestClass < Object
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class TestClass < SomeNameSpace::Object
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class TestClass
             def foo
               :bar
@@ -1333,7 +1331,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           class ::TestClass
           end
         RUBY
@@ -1341,22 +1339,22 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
       context 'module' do
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           module TestModule
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           module SomeNameSpace::TestModule
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           module Some::Name::Space::TestModule
           end
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           module TestModule
             def foo
               :bar
@@ -1391,27 +1389,27 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'defined?' do
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           defined?(@foo)
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           defined?(Foo)
         RUBY
 
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           defined?((a, b = [1, 2]))
         RUBY
       end
     end
 
     context 'lambda' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         lambda do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         lambda do |a, b|
           a
         end
@@ -1479,7 +1477,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
     context 'flip flops' do
       context 'inclusive' do
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           if ((i == 4)..(i == 4))
             foo
           end
@@ -1487,7 +1485,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'exclusive' do
-        assert_source <<-'RUBY'
+        assert_source <<~'RUBY'
           if ((i == 4)...(i == 4))
             foo
           end
@@ -1496,7 +1494,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'case statement' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case
         when bar
           baz
@@ -1505,7 +1503,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when bar
         when baz
@@ -1513,7 +1511,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when bar
           baz
@@ -1522,21 +1520,21 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when bar, baz
           :other
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when *bar
           :value
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         case foo
         when bar
           baz
@@ -1547,24 +1545,24 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'for' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         bar(for a in bar do
           baz
         end)
       RUBY
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         for a in bar do
           baz
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         for a, *b in bar do
           baz
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         for a, b in bar do
           baz
         end
@@ -1583,7 +1581,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'loop' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         loop do
           foo
         end
@@ -1591,26 +1589,26 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'post conditions' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         x = (begin
           foo
         end while baz)
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
         end while baz
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
           bar
         end until baz
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         begin
           foo
           bar
@@ -1619,18 +1617,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'while' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         while false
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         while false
           3
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         while (foo do
         end)
           :body
@@ -1639,18 +1637,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'until' do
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         until false
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         until false
           3
         end
       RUBY
 
-      assert_source <<-'RUBY'
+      assert_source <<~'RUBY'
         until (foo do
         end)
           :body
@@ -1658,16 +1656,16 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       RUBY
     end
 
-    assert_source <<-'RUBY'
+    assert_source <<~'RUBY'
       # comment before
       a_line_of_code
     RUBY
 
-    assert_source <<-'RUBY'
+    assert_source <<~'RUBY'
       a_line_of_code # comment after
     RUBY
 
-    assert_source <<-'RUBY'
+    assert_source <<~'RUBY'
       nested do # first
         # second
         something # comment
@@ -1676,7 +1674,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       # last
     RUBY
 
-    assert_generates <<-'RUBY', <<-'RUBY'
+    assert_generates <<~'RUBY', <<~'RUBY'
       foo if bar
       # comment
     RUBY
@@ -1686,13 +1684,13 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       # comment
     RUBY
 
-    assert_source <<-'RUBY'
+    assert_source <<~'RUBY'
       def noop
         # do nothing
       end
     RUBY
 
-    assert_source <<-'RUBY'
+    assert_source <<~'RUBY'
       =begin
         block comment
       =end
@@ -1707,14 +1705,14 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
     RUBY
 
-    assert_generates(<<-'RUBY', <<-'RUBY')
+    assert_generates(<<~'RUBY', <<~'RUBY')
       1 + # first
         2 # second
     RUBY
       1 + 2 # first # second
     RUBY
 
-    assert_generates(<<-'RUBY', <<-'RUBY')
+    assert_generates(<<~'RUBY', <<~'RUBY')
       1 +
         # first
         2 # second
@@ -1722,7 +1720,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       1 + 2 # first # second
     RUBY
 
-    assert_generates(<<-'RUBY', <<-'RUBY')
+    assert_generates(<<~'RUBY', <<~'RUBY')
       1 +
       =begin
         block comment
