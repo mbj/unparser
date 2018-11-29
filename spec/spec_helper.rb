@@ -6,10 +6,6 @@ require 'morpher'
 require 'devtools/spec_helper'
 
 require 'parser/current'
-require 'parser/ruby19'
-require 'parser/ruby20'
-require 'parser/ruby21'
-require 'parser/ruby22'
 
 module SpecHelper
   def s(type, *children)
