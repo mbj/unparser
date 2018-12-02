@@ -17,8 +17,6 @@ module Unparser
 
     NOINDENT = %i[rescue ensure].to_set.freeze
 
-    DEFAULT_DELIMITER = ', '.freeze
-
     CURLY_BRACKETS = IceNine.deep_freeze(%w[{ }])
 
     module Unterminated
