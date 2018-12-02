@@ -42,7 +42,7 @@ module Unparser
           # @api private
           #
           def emit_operation
-            parentheses(*INDEX_PARENS) do
+            parentheses(*BRACKETS_SQUARE) do
               delimited_plain(arguments)
             end
           end
@@ -90,7 +90,7 @@ module Unparser
           # @api private
           #
           def emit_mlhs_operation
-            parentheses(*INDEX_PARENS) do
+            parentheses(*BRACKETS_SQUARE) do
               delimited(arguments)
             end
           end
@@ -102,7 +102,7 @@ module Unparser
           # @api private
           #
           def emit_normal_operation
-            parentheses(*INDEX_PARENS) do
+            parentheses(*BRACKETS_SQUARE) do
               delimited_plain(indices)
             end
             write(WS, T_ASN, WS)

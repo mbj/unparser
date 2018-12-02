@@ -8,9 +8,6 @@ module Unparser
 
       handle :send
 
-      INDEX_PARENS  = IceNine.deep_freeze(%w([ ]))
-      NORMAL_PARENS = IceNine.deep_freeze(%w[( )])
-
       INDEX_REFERENCE = :'[]'
       INDEX_ASSIGN    = :'[]='
       ASSIGN_SUFFIX   = '='.freeze

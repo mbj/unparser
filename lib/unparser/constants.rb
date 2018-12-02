@@ -22,6 +22,10 @@ module Unparser
     end
     private_class_method :symbol_set
 
+    BRACKETS_CURLY  = IceNine.deep_freeze(%w[{ }])
+    BRACKETS_ROUND  = IceNine.deep_freeze(%w[( )])
+    BRACKETS_SQUARE = IceNine.deep_freeze(%w([ ]))
+
     # All unary operators of the ruby language
     UNARY_OPERATORS = symbol_set %w[
       ! ~ -@ +@
@@ -104,8 +108,6 @@ module Unparser
     K_THEN     = 'then'
 
     DEFAULT_DELIMITER = ', '.freeze
-
-    CURLY_BRACKETS = IceNine.deep_freeze(%w[{ }])
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze
