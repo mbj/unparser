@@ -111,16 +111,6 @@ module Unparser
     end
     memoize :write_to_buffer
 
-    # Emit node
-    #
-    # @return [self]
-    #
-    # @api private
-    #
-    def self.emit(*arguments)
-      new(*arguments).write_to_buffer
-    end
-
     # Return emitter
     #
     # @return [Emitter]
