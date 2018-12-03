@@ -16,7 +16,14 @@ module Unparser
     #
     # FIXME: Kwargs are missing.
     #
-    ASSIGN_NODES = %i[arg lvasgn optarg procarg0 restarg].freeze
+    ASSIGN_NODES =
+      %i[
+        arg
+        lvasgn
+        optarg
+        procarg0
+        restarg
+      ].to_set.freeze
 
     # Test for local variable inherited scope reset
     #
