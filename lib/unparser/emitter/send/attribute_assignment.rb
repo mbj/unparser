@@ -7,6 +7,8 @@ module Unparser
       class AttributeAssignment < self
         include Unterminated
 
+        children :receiver, :selector, :first_argument
+
         # Perform regular dispatch
         #
         # @return [undefined]
@@ -16,8 +18,13 @@ module Unparser
         def dispatch
           emit_receiver
           emit_attribute
-          emit_operator
-          visit(arguments.first)
+          write(T_ASN)
+
+          if arguments.one?
+            visit(first_argument)
+          else
+            parentheses { delimited(arguments) }
+          end
         end
 
       private
@@ -40,29 +47,8 @@ module Unparser
         # @api private
         #
         def emit_attribute
-          write(attribute_name)
+          write(non_assignment_selector)
         end
-
-        # Emit assignment operator
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_operator
-          write(WS, T_ASN, WS)
-        end
-
-        # Return attribute name
-        #
-        # @return [String]
-        #
-        # @api private
-        #
-        def attribute_name
-          string_selector[0..-2]
-        end
-
       end # AttributeAssignment
     end # Send
   end # Emitter

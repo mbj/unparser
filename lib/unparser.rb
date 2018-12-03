@@ -8,10 +8,15 @@ require 'parser/current'
 
 # Library namespace
 module Unparser
+  # Unparser specific AST builder defaulting to modern AST format
+  class Builder < Parser::Builders::Default
+    modernize
+  end
 
   EMPTY_STRING = ''.freeze
+  EMPTY_ARRAY  = [].freeze
 
-  EMPTY_ARRAY = [].freeze
+  private_constant(*constants(false))
 
   # Unparse an AST (and, optionally, comments) into a string
   #
@@ -31,6 +36,60 @@ module Unparser
     buffer.content
   end
 
+  # Parse string into AST
+  #
+  # @param [String] source
+  #
+  # @return [Parser::AST::Node]
+  def self.parse(source)
+    parser.parse(buffer(source))
+  end
+
+  # Parse string into AST, with comments
+  #
+  # @param [String] source
+  #
+  # @return [Parser::AST::Node]
+  def self.parse_with_comments(source)
+    parser.parse_with_comments(buffer(source))
+  end
+
+  # Parser instance that produces AST unparser understands
+  #
+  # @return [Parser::Base]
+  #
+  # @api private
+  #
+  # ignore :reek:NestedIterators
+  def self.parser
+    Parser::CurrentRuby.new(Builder.new).tap do |parser|
+      parser.diagnostics.tap do |diagnostics|
+        diagnostics.all_errors_are_fatal = true
+        diagnostics.consumer             = method(:consume_diagnostic)
+      end
+    end
+  end
+
+  # Consume diagnostic
+  #
+  # @param [Parser::Diagnostic] diagnostic
+  #
+  # @return [undefined]
+  def self.consume_diagnostic(diagnostic)
+    Kernel.warn(diagnostic.render)
+  end
+  private_class_method :consume_diagnostic
+
+  # Construct a parser buffer from string
+  #
+  # @param [String] source
+  #
+  # @return [Parser::Source::Buffer]
+  def self.buffer(source)
+    Parser::Source::Buffer.new('(string)').tap do |buffer|
+      buffer.source = source
+    end
+  end
 end # Unparser
 
 require 'unparser/buffer'
@@ -56,7 +115,6 @@ require 'unparser/emitter/meta'
 require 'unparser/emitter/send'
 require 'unparser/emitter/send/unary'
 require 'unparser/emitter/send/binary'
-require 'unparser/emitter/send/index'
 require 'unparser/emitter/send/regular'
 require 'unparser/emitter/send/conditional'
 require 'unparser/emitter/send/arguments'
@@ -93,5 +151,7 @@ require 'unparser/emitter/flipflop'
 require 'unparser/emitter/rescue'
 require 'unparser/emitter/resbody'
 require 'unparser/emitter/ensure'
+require 'unparser/emitter/index'
+require 'unparser/emitter/lambda'
 # make it easy for zombie
 require 'unparser/finalize'

@@ -1,3 +1,8 @@
+# v0.4.0 2018-12-01
+
+* Change to modern AST format.
+* Add experimental `Unparser.{parser,parse,parse_with_comments}`
+
 # v0.3.0 2018-11-16
 
 * Drop support for Ruby < 2.5

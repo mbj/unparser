@@ -8,9 +8,10 @@ module Unparser
 
       handle :send
 
-      INDEX_REFERENCE = :'[]'
-      INDEX_ASSIGN    = :'[]='
-      ASSIGN_SUFFIX   = '='.freeze
+      ASSIGN_SUFFIX    = '='.freeze
+      INDEX_ASSIGN     = :'[]='
+      INDEX_REFERENCE  = :'[]'
+      NON_ASSIGN_RANGE = (0..-2).freeze
 
       children :receiver, :selector
 
@@ -47,23 +48,6 @@ module Unparser
       # @api private
       #
       def effective_emitter_class
-        case selector
-        when INDEX_REFERENCE
-          Index::Reference
-        when INDEX_ASSIGN
-          Index::Assign
-        else
-          non_index_emitter
-        end
-      end
-
-      # Return non index emitter
-      #
-      # @return [Class:Emitter]
-      #
-      # @api private
-      #
-      def non_index_emitter
         if binary_operator?
           Binary
         elsif unary_operator?
@@ -112,11 +96,7 @@ module Unparser
       # @api private
       #
       def emit_selector
-        name = string_selector
-        if mlhs?
-          name = name[0..-2]
-        end
-        write(name)
+        write(mlhs? ? non_assignment_selector : string_selector)
       end
 
       # Test for mlhs
@@ -194,6 +174,15 @@ module Unparser
       #
       def local_variable_clash?
         local_variable_scope.local_variable_defined_for_node?(node, selector)
+      end
+
+      # The non assignment selector
+      #
+      # @return [String]
+      #
+      # @api private
+      def non_assignment_selector
+        string_selector[NON_ASSIGN_RANGE]
       end
 
     end # Send

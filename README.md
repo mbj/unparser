@@ -7,9 +7,12 @@ unparser
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
-Excluding the macruby extensions the parser gem implemnents on top of ruby syntax.
 
-This library targets reproduce 100% of MRI/Ruby 2.5 syntax.
+The following constraints apply:
+
+* No support for macruby extensions
+* Only support for the [modern AST](https://github.com/whitequark/parser/#usage) format
+* Only support for Ruby >= 2.5
 
 It serves well for [mutant](https://github.com/mbj/mutant) mutators and the in-memory vendoring for self hosting,
 and other tooling.
@@ -17,15 +20,19 @@ and other tooling.
 Public API:
 -----------
 
-While unparser is in the `0.x` versions its public API can change any moment. I recommend to use `~> 0.x.y` style
-version constraints that should give the best mileage.
+While unparser is in the `0.x` versions its public API can change any moment.
+I recommend to use `~> 0.x.y` style version constraints that should give the best mileage.
 
 Usage
 -----
 
 ```ruby
+require 'parser/current'
 require 'unparser'
-Unparser.unparse(your_ast) # => "the code"
+
+ast = Unpaser.parse('your(ruby(code))')
+
+Unparser.unparse(ast) # => 'your(ruby(code))'
 ```
 
 To preserve the comments from the source:
@@ -33,8 +40,10 @@ To preserve the comments from the source:
 ```ruby
 require 'parser/current'
 require 'unparser'
-ast, comments = Parser::CurrentRuby.parse_with_comments(your_source)
-Unparser.unparse(ast, comments) # => "the code # with comments"
+
+ast, comments = Unpaser.parse_with_comments('your(ruby(code)) # with comments')
+
+Unparser.unparse(ast, comments) # => 'your(ruby(code)) # with comments'
 ```
 
 Passing in manually constructed AST:
@@ -68,22 +77,19 @@ Unparser.unparse(node) # => "def foo(x)\n  x + 3\nend"
 Note: DO NOT attempt to pass in nodes generated via `AST::Sexp#s`, these ones return
 API incompatible `AST::Node` instances, unparser needs `Parser::AST::Node` instances.
 
-
 Equivalent vs identical:
 
 ```ruby
 require 'unparser'
 
-code = <<-RUBY
-%w(foo bar)
+node = Unparser.parse(<<~'RUBY')
+  %w[foo bar]
 RUBY
 
-node = Parser::CurrentRuby.parse(code)
-
-generated = Unparser.unparse(node) # ["foo", "bar"], NOT %w(foo bar) !
+generated = Unparser.unparse(node) # ["foo", "bar"], NOT %w[foo bar] !
 
 code == generated                            # false, not identical code
-Parser::CurrentRuby.parse(generated) == node # true, but identical AST
+Unparser.parse(generated) == node # true, but identical AST
 ```
 
 Summary: unparser does not reproduce your source! It produces equivalent source.
@@ -91,7 +97,7 @@ Summary: unparser does not reproduce your source! It produces equivalent source.
 Testing:
 --------
 
-Unparser currently successfully round trips almost all ruby code around. Using MRI-2.0.0.
+Unparser currently successfully round trips almost all ruby code around. Using MRI-2.5.x.
 If there is a non round trippable example that is NOT subjected to known [Limitations](#limitations).
 please report a bug.
 
@@ -103,10 +109,7 @@ Limitations:
 Source parsed with magic encoding headers other than UTF-8 and that have literal strings.
 where parts can be represented in UTF-8 will fail to get reproduced.
 
-Please note: If you are on 1.9.3 or any 1.9 mode ruby and use UTF-8 encoded source via the magic encoding header:
-Unparser does not reproduce these.
-
-A fix might be possible and requires some guessing or parser metadata the raw AST does not carry.
+A fix is possible as with latest updates the parser gem carries the information.
 
 Example:
 

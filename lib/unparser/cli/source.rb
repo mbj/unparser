@@ -182,7 +182,7 @@ module Unparser
       # @api private
       #
       def generated_ast
-        generated.success? && Preprocessor.run(parse(generated.source))
+        generated.success? && Preprocessor.run(Unparser.parse(generated.source))
       rescue Parser::SyntaxError
         nil
       end
@@ -195,24 +195,11 @@ module Unparser
       # @api private
       #
       def original_ast
-        Preprocessor.run(parse(original_source))
+        Preprocessor.run(Unparser.parse(original_source))
       rescue Parser::SyntaxError
         nil
       end
       memoize :original_ast
-
-      # Parse source with current ruby
-      #
-      # @param [String] source
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
-      # ignore :reek:UtilityFunction
-      def parse(source)
-        Parser::CurrentRuby.parse(source)
-      end
 
       # CLI source from string
       class String < self

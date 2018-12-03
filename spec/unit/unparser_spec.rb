@@ -1,11 +1,75 @@
 require 'spec_helper'
 
 describe Unparser, mutant_expression: 'Unparser::Emitter*' do
+  describe '.buffer' do
+    let(:source) { 'a + b' }
+
+    def apply
+      described_class.buffer(source)
+    end
+
+    it 'returns parser buffer with expected name' do
+      expect(apply.name).to eql('(string)')
+    end
+
+    it 'returns parser buffer with pre-filled source' do
+      expect(apply.source).to eql(source)
+    end
+  end
+
+  describe '.parser' do
+    let(:invalid_source_buffer) { Unparser.buffer('a +') }
+
+    def apply
+      described_class.parser
+    end
+
+    context 'failure' do
+      def apply
+        super.tap do |parser|
+          parser.diagnostics.consumer = ->(_) {}
+        end
+      end
+
+      it 'returns a parser that fails with syntax error' do
+        expect { apply.parse(invalid_source_buffer) }
+          .to raise_error(Parser::SyntaxError)
+      end
+    end
+
+    context 'warnings' do
+      before do
+        allow(Kernel).to receive(:warn)
+      end
+
+      it 'returns a parser that warns on diagnostics' do
+        expect { apply.parse(invalid_source_buffer) }
+          .to raise_error(Parser::SyntaxError)
+
+        expect(Kernel).to have_received(:warn)
+          .with([
+            "(string):1:4: error: unexpected token $end",
+            "(string):1: a +", "(string):1:    "
+          ])
+      end
+    end
+  end
+
+  describe '.parse' do
+    def apply
+      described_class.parse('self[1]=2')
+    end
+
+    it 'returns expected AST' do
+      expect(apply).to eql(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2)))
+    end
+  end
+
   describe '.unparse' do
     let(:builder_options) { {} }
 
     def parser
-      Parser::CurrentRuby.new.tap do |parser|
+      Unparser.parser.tap do |parser|
         builder_options.each do |name, value|
           parser.builder.public_send(:"#{name}=", value)
         end
@@ -13,9 +77,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     def buffer(input)
-      Parser::Source::Buffer.new('(string)').tap do |buffer|
-        buffer.source = input.chomp
-      end
+      Unparser.buffer(input)
     end
 
     def parse_with_comments(string)
@@ -272,7 +334,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
     end
 
     context 'magic keywords' do
-      assert_generates '__ENCODING__', 'Encoding::UTF_8'
+      assert_source '__ENCODING__'
 
       # These two assertions don't actually need to be wrapped in this block since `true` is the default,
       # but it is helpful to contrast with the assertions farther down.
@@ -436,19 +498,29 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_terminated 'foo(&(foo || bar))'
       assert_terminated 'foo(*arguments)'
       assert_terminated 'foo(*arguments)'
+
       assert_source <<~'RUBY'
         foo do
         end
       RUBY
 
       assert_source <<~'RUBY'
-        foo(1) do
-          nil
+        foo do |a|
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        foo do |a, |
         end
       RUBY
 
       assert_source <<~'RUBY'
         foo do |a, b|
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        foo(1) do
           nil
         end
       RUBY
@@ -616,8 +688,9 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_terminated 'foo(*args, &block)'
       assert_terminated 'foo.bar(&baz)'
       assert_terminated 'foo.bar(:baz, &baz)'
-      assert_terminated 'foo.bar = :baz'
-      assert_unterminated 'self.foo = :bar'
+      assert_terminated 'foo.bar=:baz'
+
+      assert_unterminated 'self.foo=:bar'
 
       assert_terminated 'foo.bar(baz: boz)'
       assert_terminated 'foo.bar(foo, "baz" => boz)'
@@ -1378,7 +1451,10 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         assert_source 'foo[a, b] = value'
         assert_source 'foo[1..2] = value'
         assert_source 'foo.[]=()'
+        assert_source 'foo.[]=true'
+        assert_source 'foo.[]=(1, 2)'
         assert_source 'foo[] = 1'
+        assert_unterminated 'foo[] = 1'
 
         %w(+ - * / % & | || &&).each do |operator|
           context "with #{operator}" do
@@ -1412,6 +1488,21 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       assert_source <<~'RUBY'
         lambda do |a, b|
           a
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        ->() do
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        ->(a) do
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        ->(a, b) do
         end
       RUBY
     end
@@ -1732,6 +1823,5 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         block comment
       =end
     RUBY
-
   end
 end

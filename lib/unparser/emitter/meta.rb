@@ -6,10 +6,10 @@ module Unparser
     class Meta < self
       include Terminated
 
-      handle(:__FILE__, :__LINE__)
+      handle(:__ENCODING__, :__FILE__, :__LINE__)
 
       def dispatch
-        write(node.type.to_s) # (e.g. literally write '__FILE__' or '__LINE__')
+        write(node.type.to_s)
       end
     end # Meta
   end # Emitter
