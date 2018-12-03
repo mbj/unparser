@@ -6,9 +6,6 @@ module Unparser
 
       # Array literal emitter
       class Array < self
-        OPEN  = '['.freeze
-        CLOSE = ']'.freeze
-
         handle :array
 
       private
@@ -20,7 +17,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          parentheses(OPEN, CLOSE) do
+          parentheses(*BRACKETS_SQUARE) do
             delimited(children)
           end
         end

@@ -24,7 +24,7 @@ module Unparser
       #
       def dispatch
         write(MAP.fetch(node.type), WS)
-        parentheses(*CURLY_BRACKETS) do
+        parentheses(*BRACKETS_CURLY) do
           emit_body
         end
       end
