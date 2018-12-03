@@ -103,8 +103,6 @@ module Unparser
 
         handle :masgn
 
-        PARENS = IceNine.deep_freeze(%w([ ]))
-
       private
 
         # Emit left
@@ -125,16 +123,7 @@ module Unparser
         #
         def emit_right
           write(WS, T_ASN, WS)
-          right = children.last
-          case right.type
-          when :array
-            children = right.children
-            parentheses(*PARENS) do
-              delimited(children)
-            end
-          else
-            visit(right)
-          end
+          visit(children.last)
         end
 
       end # Multiple
