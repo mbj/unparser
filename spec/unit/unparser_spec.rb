@@ -597,6 +597,10 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         end.baz
       RUBY
 
+      assert_source <<~'RUBY'
+        FOO()
+      RUBY
+
       assert_terminated '(1..2).max'
       assert_terminated '1..2.max'
       assert_unterminated 'a || return'
