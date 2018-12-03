@@ -100,7 +100,7 @@ module Unparser
       include Terminated
 
       MAP = {
-        blockarg: T_AMP,
+        blockarg:  T_AMP,
         kwrestarg: T_DSPLAT
       }.freeze
 
