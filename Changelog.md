@@ -1,4 +1,8 @@
-# v0.4.0 2018-12-01
+# v0.4.0 2018-12-03
+
+* Fix unparsing of `def foo(bar: bar())`
+
+# v0.4.0 2018-12-03
 
 * Change to modern AST format.
 * Add experimental `Unparser.{parser,parse,parse_with_comments}`
