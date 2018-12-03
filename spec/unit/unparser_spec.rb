@@ -1244,6 +1244,16 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
         RUBY
 
         assert_source <<~'RUBY'
+          def foo(bar: bar)
+          end
+        RUBY
+
+        assert_source <<~'RUBY'
+          def foo(bar: bar())
+          end
+        RUBY
+
+        assert_source <<~'RUBY'
           def foo(*)
             bar
           end

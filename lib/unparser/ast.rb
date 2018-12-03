@@ -13,12 +13,11 @@ module Unparser
     CLOSE_NODES   = (RESET_NODES + INHERIT_NODES).freeze
 
     # Nodes that assign a local variable
-    #
-    # FIXME: Kwargs are missing.
-    #
     ASSIGN_NODES =
       %i[
         arg
+        kwarg
+        kwoptarg
         lvasgn
         optarg
         procarg0
