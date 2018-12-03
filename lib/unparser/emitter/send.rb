@@ -159,10 +159,39 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        if arguments.empty? && receiver.nil? && local_variable_clash?
-          write('()')
+        if arguments.empty?
+          write('()') if local_variable_clash?
         else
-          run(Arguments, n(:arguments, arguments))
+          normal_arguments
+        end
+      end
+
+      # Emit normal arguments
+      #
+      # @return [undefined]
+      #
+      # @api private
+      #
+      def normal_arguments
+        parentheses do
+          delimited_plain(effective_arguments)
+        end
+      end
+
+      # The effective arguments
+      #
+      # @return [Parser::AST::Node]
+      #
+      # @api private
+      #
+      def effective_arguments
+        last = arguments.length - 1
+        arguments.each_with_index.map do |argument, index|
+          if last.equal?(index) && argument.type.equal?(:hash) && argument.children.any?
+            argument.updated(:hash_body)
+          else
+            argument
+          end
         end
       end
 
