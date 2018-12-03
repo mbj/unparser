@@ -116,3 +116,7 @@ Lint/BooleanSymbol:
 
 Style/AccessModifierDeclarations:
   Enabled: false
+
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table

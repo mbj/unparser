@@ -4,4 +4,4 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'mutant', git: 'https://github.com/mbj/mutant', branch: 'change/to-modern-ast'
+gem 'mutant', git: 'https://github.com/mbj/mutant'
