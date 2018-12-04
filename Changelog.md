@@ -1,4 +1,8 @@
-# v0.4.0 2018-12-03
+# v0.4.2 2018-12-04
+
+* Drop hard ruby version requirement. Still officially I'll only support 2.5.
+
+# v0.4.1 2018-12-03
 
 * Fix unparsing of `def foo(bar: bar())`
 
