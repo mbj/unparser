@@ -30,7 +30,7 @@ Usage
 require 'parser/current'
 require 'unparser'
 
-ast = Unpaser.parse('your(ruby(code))')
+ast = Unparser.parse('your(ruby(code))')
 
 Unparser.unparse(ast) # => 'your(ruby(code))'
 ```
@@ -41,7 +41,7 @@ To preserve the comments from the source:
 require 'parser/current'
 require 'unparser'
 
-ast, comments = Unpaser.parse_with_comments('your(ruby(code)) # with comments')
+ast, comments = Unparser.parse_with_comments('your(ruby(code)) # with comments')
 
 Unparser.unparse(ast, comments) # => 'your(ruby(code)) # with comments'
 ```
