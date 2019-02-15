@@ -17,7 +17,7 @@ GEM
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
-    anima (0.3.0)
+    anima (0.3.1)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2)
       equalizer (~> 0.0.11)
@@ -162,7 +162,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anima (~> 0.3.0)
+  anima (~> 0.3.1)
   devtools (~> 0.1.21)
   morpher (~> 0.2.6)
   unparser!
