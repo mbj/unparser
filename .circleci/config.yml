@@ -30,7 +30,7 @@ jobs:
     steps:
       - checkout
       - run: bundle install
-      - run: bundle exec rake metrics:mutant
+      - run: bundle exec mutant --since origin/master --zombie -- 'Unparser*'
 workflows:
   version: 2
   test:

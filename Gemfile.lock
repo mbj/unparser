@@ -1,3 +1,26 @@
+GIT
+  remote: https://github.com/mbj/mutant.git
+  revision: d1d1993427ec01cc9b57a3a87ce23a7c41456a39
+  branch: upgrade/dependencies
+  specs:
+    mutant (0.8.25)
+      abstract_type (~> 0.0.7)
+      adamantium (~> 0.2.0)
+      anima (~> 0.3.1)
+      ast (~> 2.2)
+      concord (~> 0.1.5)
+      diff-lcs (~> 1.3)
+      equalizer (~> 0.0.9)
+      ice_nine (~> 0.11.1)
+      memoizable (~> 0.4.2)
+      morpher (~> 0.2.6)
+      parser (~> 2.6.0)
+      procto (~> 0.0.2)
+      unparser (~> 0.4.2)
+    mutant-rspec (0.8.25)
+      mutant (~> 0.8.25)
+      rspec-core (>= 3.8.0, < 4.0.0)
+
 PATH
   remote: .
   specs:
@@ -7,7 +30,7 @@ PATH
       concord (~> 0.1.5)
       diff-lcs (~> 1.3)
       equalizer (~> 0.0.9)
-      parser (>= 2.3.1.2, < 2.6)
+      parser (~> 2.6.0)
       procto (~> 0.0.2)
 
 GEM
@@ -82,26 +105,8 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.0)
       procto (~> 0.0.2)
-    mutant (0.8.24)
-      abstract_type (~> 0.0.7)
-      adamantium (~> 0.2.0)
-      anima (~> 0.3.0)
-      ast (~> 2.2)
-      concord (~> 0.1.5)
-      diff-lcs (~> 1.3)
-      equalizer (~> 0.0.9)
-      ice_nine (~> 0.11.1)
-      memoizable (~> 0.4.2)
-      morpher (~> 0.2.6)
-      parser (~> 2.5.1)
-      procto (~> 0.0.2)
-      regexp_parser (~> 1.2)
-      unparser (~> 0.4.2)
-    mutant-rspec (0.8.24)
-      mutant (~> 0.8.24)
-      rspec-core (>= 3.4.0, < 4.0.0)
     parallel (1.13.0)
-    parser (2.5.3.0)
+    parser (2.6.0.0)
       ast (~> 2.4.0)
     path_expander (1.0.3)
     powerpack (0.1.2)
@@ -115,7 +120,6 @@ GEM
       parser (>= 2.5.0.0, < 2.7, != 2.5.1.1)
       psych (~> 3.1.0)
       rainbow (>= 2.0, < 4.0)
-    regexp_parser (1.3.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -165,8 +169,9 @@ PLATFORMS
 
 DEPENDENCIES
   anima (~> 0.3.1)
-  devtools (~> 0.1.21)
+  devtools (~> 0.1.23)
   morpher (~> 0.2.6)
+  mutant!
   unparser!
 
 BUNDLED WITH
