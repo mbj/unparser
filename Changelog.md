@@ -1,3 +1,7 @@
+# v0.4.3 2019-02-24
+
+* Bump parser dependency to ~> 2.6.0
+
 # v0.4.2 2018-12-04
 
 * Drop hard ruby version requirement. Still officially I'll only support 2.5.
