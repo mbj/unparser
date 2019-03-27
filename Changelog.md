@@ -1,3 +1,7 @@
+# v0.4.4 2019-03-27
+
+* Bump parser dependency to ~> 2.6.2
+
 # v0.4.3 2019-02-24
 
 * Bump parser dependency to ~> 2.6.0
