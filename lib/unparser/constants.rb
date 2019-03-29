@@ -11,7 +11,7 @@ module Unparser
 
     # Return frozen symbol set from enumerable
     #
-    # @param [Enumerable]
+    # @param [Enumerable] enumerable
     #
     # @return [Set<Symbol>]
     #

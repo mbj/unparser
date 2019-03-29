@@ -24,7 +24,7 @@ module Unparser
 
         # Build generated source
         #
-        # @param [Parser::AST::Node]
+        # @param [Parser::AST::Node] ast
         #
         # @api private
         #
@@ -82,7 +82,7 @@ module Unparser
 
       # Return stripped source
       #
-      # @param [String] string
+      # @param [String] source
       #
       # @return [String]
       #

@@ -45,7 +45,7 @@ module Unparser
     #
     # @return [undefined]
     #
-    # @pai private
+    # @api private
     #
     def define_group(name, range)
       define_method(name) do

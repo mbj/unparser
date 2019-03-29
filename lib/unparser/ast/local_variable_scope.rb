@@ -56,8 +56,8 @@ module Unparser
 
       # Test if local variables where first assigned in body and read by conditional
       #
-      # @param [Parser::AST::Node] conditional
       # @param [Parser::AST::Node] body
+      # @param [Parser::AST::Node] condition
       #
       # @api private
       #
@@ -78,16 +78,16 @@ module Unparser
 
       # Match node
       #
-      # @param [Parser::AST::Node] node
+      # @param [Parser::AST::Node] needle
       #   if block given
       #
       # @return [Boolean]
       #
       # @api private
       #
-      def match(neddle)
+      def match(needle)
         @items.each do |node, current, before|
-          return yield(current, before) if node.equal?(neddle)
+          return yield(current, before) if node.equal?(needle)
         end
         false
       end
@@ -149,7 +149,7 @@ module Unparser
 
       # Visit node and record local variable state
       #
-      # @param [Parser::AST::Node]
+      # @param [Parser::AST::Node] node
       #
       # @return [undefined]
       #
@@ -168,7 +168,7 @@ module Unparser
 
       # Record local variable state
       #
-      # @param [Parser::AST::Node]
+      # @param [Parser::AST::Node] node
       #
       # @return [undefined]
       #
