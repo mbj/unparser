@@ -23,7 +23,7 @@ GIT
 PATH
   remote: .
   specs:
-    unparser (0.4.4)
+    unparser (0.4.5)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)

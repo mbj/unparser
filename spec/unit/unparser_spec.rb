@@ -196,6 +196,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
       context 'string' do
         assert_generates '?c',                 '"c"'
+        assert_generates "'foo'",              "'foo'"
         assert_generates '"foo" "bar"',        '"#{"foo"}#{"bar"}"'
         assert_generates '"foo" "bar #{baz}"', '"#{"foo"}#{"#{"bar "}#{baz}"}"'
         assert_generates '%Q(foo"#{@bar})',    '"#{"foo\\""}#{@bar}"'

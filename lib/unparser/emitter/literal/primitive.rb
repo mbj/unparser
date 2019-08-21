@@ -12,7 +12,7 @@ module Unparser
         # Emitter for primitives based on Object#inspect
         class Inspect < self
 
-          handle :sym, :str
+          handle :sym
 
         private
 
@@ -119,7 +119,30 @@ module Unparser
 
         end # Rational
 
-        # Emiter for numeric literals
+        # Emitter for strings
+        class String < self
+
+          handle :str
+
+        private
+
+          # Dispatch value
+          #
+          # @return [undefined]
+          #
+          # @api private
+          # 
+          def dispatch
+            if node.location.is_a?(Parser::Source::Map::Collection) && node.location.begin && node.location.end
+              write(node.location.begin.source + value.inspect[1..-2] + node.location.end.source)
+            else
+              write(value.inspect)
+            end
+          end
+
+        end # String
+
+        # Emitter for numeric literals
         class Numeric < self
 
           handle :int, :float
