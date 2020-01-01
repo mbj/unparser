@@ -50,7 +50,7 @@ module Unparser
 
     # Return local variables that get assigned in scope
     #
-    # @param [Parser::AST::Node]
+    # @param [Parser::AST::Node] node
     #
     # @return [Set<Symbol>]
     #

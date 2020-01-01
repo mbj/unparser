@@ -114,7 +114,7 @@ module Unparser
 
       # Return preprocessor result
       #
-      # @param [Parser::AST::Node]
+      # @return [Parser::AST::Node]
       #
       # @api private
       #

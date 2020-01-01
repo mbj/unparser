@@ -79,7 +79,7 @@ module Unparser
 
     # Register emitter for type
     #
-    # @param [Symbol] type
+    # @param [Symbol] types
     #
     # @return [undefined]
     #
@@ -249,7 +249,6 @@ module Unparser
     # Emit delimited body
     #
     # @param [Enumerable<Parser::AST::Node>] nodes
-    # @param [String] delimiter
     #
     # @return [undefined]
     #
@@ -262,7 +261,6 @@ module Unparser
     # Emit delimited body
     #
     # @param [Enumerable<Parser::AST::Node>] nodes
-    # @param [String] delimiter
     #
     # @return [undefined]
     #
@@ -432,7 +430,7 @@ module Unparser
 
     # Emit non nil body
     #
-    # @param [Parser::AST::Node] node
+    # @param [Parser::AST::Node] body
     #
     # @return [undefined]
     #

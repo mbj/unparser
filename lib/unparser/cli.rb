@@ -108,7 +108,7 @@ module Unparser
 
     # Process source
     #
-    # @param [CLI::Source]
+    # @param [CLI::Source] source
     #
     # @return [undefined]
     #
