@@ -30,7 +30,15 @@ jobs:
     steps:
       - checkout
       - run: bundle install
-      - run: bundle exec mutant --since origin/master --zombie -- 'Unparser*'
+      - run: |
+          bundle                                                  \
+            exec                                                  \
+            mutant                                                \
+            --ignore-subject 'Unparser::AST::LocalVariableScope*' \
+            --since origin/master                                 \
+            --zombie                                              \
+            --                                                    \
+            'Unparser*'
 workflows:
   version: 2
   test:
