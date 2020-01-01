@@ -5,7 +5,8 @@ module Unparser
 
     # Helper for building nodes
     #
-    # @param [Symbol]
+    # @param [Symbol] type
+    # @param [Parser::AST::Node] children
     #
     # @return [Parser::AST::Node]
     #
@@ -19,9 +20,10 @@ module Unparser
 
     # Helper for building nodes
     #
-    # @param [Symbol]
+    # @param [Symbol] type
     #
     # @return [Parser::AST::Node]
+    # @param [Array] children
     #
     # @api private
     #

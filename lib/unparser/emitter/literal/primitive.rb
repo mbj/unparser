@@ -107,7 +107,7 @@ module Unparser
 
           # Write rational format
           #
-          # @param [#to_s]
+          # @param [#to_s] value
           #
           # @return [undefined]
           #
