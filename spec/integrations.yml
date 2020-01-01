@@ -40,10 +40,12 @@
     - core/env/element_reference_spec.rb
     - core/io/readpartial_spec.rb
     - core/io/shared/gets_ascii.rb
+    - core/kernel/shared/sprintf_encoding.rb
     - core/marshal/dump_spec.rb
     - core/marshal/fixtures/marshal_data.rb
     - core/marshal/shared/load.rb
     - core/random/bytes_spec.rb
+    - core/regexp/shared/new.rb
     - core/regexp/shared/new_ascii.rb
     - core/regexp/shared/new_ascii_8bit.rb
     - core/regexp/shared/quote.rb
@@ -51,6 +53,8 @@
     - core/string/casecmp_spec.rb
     - core/string/codepoints_spec.rb
     - core/string/count_spec.rb
+    - core/string/encode_spec.rb
+    - core/string/inspect_spec.rb
     - core/string/shared/codepoints.rb
     - core/string/shared/each_codepoint_without_block.rb
     - core/string/shared/eql.rb
@@ -71,6 +75,7 @@
     - language/regexp/escapes_spec.rb
     - language/source_encoding_spec.rb
     - language/string_spec.rb
+    - library/base64/decode64_spec.rb
     - library/digest/md5/shared/constants.rb
     - library/digest/md5/shared/sample.rb
     - library/digest/sha1/shared/constants.rb
