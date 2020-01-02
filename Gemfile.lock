@@ -1,8 +1,9 @@
 GIT
   remote: https://github.com/mbj/mutant.git
-  revision: 97d44b4d3f410fd6b8e0d547ed1fa4a2dfc05191
+  revision: f138cc7b16ed6dab728ef2e2f46731754086b9e8
+  branch: upgrade/parser
   specs:
-    mutant (0.9.0)
+    mutant (0.9.1)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       anima (~> 0.3.1)
@@ -13,20 +14,20 @@ GIT
       ice_nine (~> 0.11.1)
       memoizable (~> 0.4.2)
       mutant-license (~> 0.1.0)
-      parser (= 2.6.3)
+      parser (~> 2.6.5)
       procto (~> 0.0.2)
       unparser (~> 0.4.5)
 
 PATH
   remote: .
   specs:
-    unparser (0.4.5)
+    unparser (0.4.6)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)
       diff-lcs (~> 1.3)
       equalizer (~> 0.0.9)
-      parser (~> 2.6.3)
+      parser (~> 2.6.5)
       procto (~> 0.0.2)
 
 GEM
@@ -102,7 +103,7 @@ GEM
       procto (~> 0.0.2)
     mutant-license (0.1.0)
     parallel (1.19.1)
-    parser (2.6.3.0)
+    parser (2.6.5.0)
       ast (~> 2.4.0)
     path_expander (1.1.0)
     powerpack (0.1.2)
