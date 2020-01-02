@@ -548,12 +548,6 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       RUBY
 
       assert_source <<~'RUBY'
-        foo.bar do |(a)|
-          d
-        end
-      RUBY
-
-      assert_source <<~'RUBY'
         foo.bar do |(a, b), c|
           d
         end
@@ -571,6 +565,18 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
       assert_source <<~'RUBY'
         foo.bar do |; a, b|
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        foo.bar do |*|
+          d
+        end
+      RUBY
+
+      assert_source <<~'RUBY'
+        foo.bar do |(*)|
+          d
         end
       RUBY
 

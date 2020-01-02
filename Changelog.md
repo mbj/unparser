@@ -1,3 +1,7 @@
+# v0.4.6 2020-01-02
+
+* Upgrades to allow parser dependency to ~> 2.6.5
+
 # v0.4.5 2019-05-10
 
 * Bump parser dependency to ~> 2.6.3

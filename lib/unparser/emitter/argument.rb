@@ -240,7 +240,7 @@ module Unparser
 
       handle :procarg0
 
-      children :first_argument
+      PARENS = %i[restarg mlhs].freeze
 
     private
 
@@ -251,22 +251,18 @@ module Unparser
       # @api private
       #
       def dispatch
-        if first_argument.instance_of?(Symbol)
-          write(first_argument.to_s)
+        if needs_parens?
+          parentheses do
+            delimited(children)
+          end
         else
-          emit_multiple_children
+          delimited(children)
         end
       end
 
-      # Emit multiple children
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_multiple_children
-        parentheses do
-          delimited(children)
+      def needs_parens?
+        children.length > 1 || children.any? do |node|
+          PARENS.include?(node.type)
         end
       end
     end
