@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    unparser (0.4.6)
+    unparser (0.4.7)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)

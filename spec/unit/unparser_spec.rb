@@ -265,6 +265,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'irange' do
+        assert_unterminated '1..'
         assert_unterminated '1..2'
         assert_unterminated '(0.0 / 0.0)..1'
         assert_unterminated '1..(0.0 / 0.0)'
@@ -272,6 +273,7 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
       end
 
       context 'erange' do
+        assert_unterminated '1...'
         assert_unterminated '1...2'
       end
 

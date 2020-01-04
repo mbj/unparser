@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/unparser
   docker:
-    - image: circleci/ruby:2.5.5
+    - image: circleci/ruby:2.6.5
 version: 2
 jobs:
   unit_specs:
