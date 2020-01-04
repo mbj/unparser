@@ -1,3 +1,9 @@
+# v0.4.7 2020-01-03
+
+* Add support for endless ranges
+* Change to allow parser 2.7, even while syntax is not yet supported.
+  This reduces downstream complexity.
+
 # v0.4.6 2020-01-02
 
 * Upgrades to allow parser dependency to ~> 2.6.5

@@ -27,7 +27,7 @@ module Unparser
         def dispatch
           visit(begin_node)
           write(TOKENS.fetch(node.type))
-          visit(end_node)
+          visit(end_node) if end_node
         end
 
       end # Range

@@ -1,33 +1,13 @@
-GIT
-  remote: https://github.com/mbj/mutant.git
-  revision: f138cc7b16ed6dab728ef2e2f46731754086b9e8
-  branch: upgrade/parser
-  specs:
-    mutant (0.9.1)
-      abstract_type (~> 0.0.7)
-      adamantium (~> 0.2.0)
-      anima (~> 0.3.1)
-      ast (~> 2.2)
-      concord (~> 0.1.5)
-      diff-lcs (~> 1.3)
-      equalizer (~> 0.0.9)
-      ice_nine (~> 0.11.1)
-      memoizable (~> 0.4.2)
-      mutant-license (~> 0.1.0)
-      parser (~> 2.6.5)
-      procto (~> 0.0.2)
-      unparser (~> 0.4.5)
-
 PATH
   remote: .
   specs:
-    unparser (0.4.6)
+    unparser (0.4.7)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)
       diff-lcs (~> 1.3)
       equalizer (~> 0.0.9)
-      parser (~> 2.6.5)
+      parser (>= 2.6.5)
       procto (~> 0.0.2)
 
 GEM
@@ -101,7 +81,31 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.0)
       procto (~> 0.0.2)
+    mprelude (0.1.0)
+      abstract_type (~> 0.0.7)
+      adamantium (~> 0.2.0)
+      concord (~> 0.1.5)
+      equalizer (~> 0.0.9)
+      ice_nine (~> 0.11.1)
+      procto (~> 0.0.2)
+    mutant (0.9.4)
+      abstract_type (~> 0.0.7)
+      adamantium (~> 0.2.0)
+      anima (~> 0.3.1)
+      ast (~> 2.2)
+      concord (~> 0.1.5)
+      diff-lcs (~> 1.3)
+      equalizer (~> 0.0.9)
+      ice_nine (~> 0.11.1)
+      memoizable (~> 0.4.2)
+      mprelude (~> 0.1.0)
+      parser (~> 2.6.5)
+      procto (~> 0.0.2)
+      unparser (~> 0.4.6)
     mutant-license (0.1.0)
+    mutant-rspec (0.9.4)
+      mutant (~> 0.9.4)
+      rspec-core (>= 3.8.0, < 4.0.0)
     parallel (1.19.1)
     parser (2.6.5.0)
       ast (~> 2.4.0)
@@ -168,8 +172,9 @@ DEPENDENCIES
   anima (~> 0.3.1)
   devtools (~> 0.1.23)
   morpher (~> 0.2.6)
-  mutant!
+  mutant (~> 0.9.4)
   mutant-license!
+  mutant-rspec (~> 0.9.4)
   unparser!
 
 BUNDLED WITH
