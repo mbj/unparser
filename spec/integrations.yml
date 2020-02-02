@@ -18,7 +18,7 @@
 - name: rubyspec
   repo_uri: 'https://github.com/ruby/spec.git'
   # Revision of rubyspec on the last CI build of unparser that passed
-  repo_ref: 'origin/master'
+  repo_ref: 'b40189b88'
   exclude:
     - command_line/fixtures/bad_syntax.rb
     - core/array/pack/shared/float.rb
