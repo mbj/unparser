@@ -117,6 +117,9 @@ Lint/BooleanSymbol:
 Style/AccessModifierDeclarations:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
+
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
