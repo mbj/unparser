@@ -2,33 +2,20 @@
 
 module Unparser
   class Emitter
-    # Base class for binary emitters
+    # Non send binary operator / keyword emitter
     class Binary < self
-      include Unterminated
-
-      children :left, :right
-
-      MAP = {
-        or:  T_OR,
-        and: T_AND
-      }.freeze
-
-      handle(*MAP.keys)
+      handle :and, :or
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        visit(left)
-        write(WS, MAP.fetch(node.type), WS)
-        visit(right)
+        writer.dispatch
       end
 
+      def writer
+        writer_with(Writer::Binary, node)
+      end
+      memoize :writer
     end # Binary
   end # Emitter
 end # Unparser

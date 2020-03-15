@@ -3,8 +3,6 @@
 module Unparser
 
   # Buffer used to emit into
-  #
-  # ignore :reek:TooManyMethods
   class Buffer
 
     NL = "\n".freeze
@@ -82,6 +80,13 @@ module Unparser
       self
     end
 
+    def root_indent
+      before = @indent
+      @indent = 0
+      yield
+      @indent = before
+    end
+
     # Test for a fresh line
     #
     # @return [Boolean]
@@ -114,26 +119,24 @@ module Unparser
       @content[size_before..-1]
     end
 
+    # Write raw fragment to buffer
+    #
+    # Does not do indentation logic.
+    #
+    # @param [String] fragment
+    #
+    # @return [self]
+    def write(fragment)
+      @content << fragment
+      self
+    end
+
   private
 
     INDENT_SPACE = '  '.freeze
 
-    # Write prefix
-    #
-    # @return [String]
-    #
-    # @api private
-    #
     def prefix
       write(INDENT_SPACE * @indent)
-    end
-
-    # Write to content buffer
-    #
-    # @param [String] fragment
-    #
-    def write(fragment)
-      @content << fragment
     end
 
   end # Buffer

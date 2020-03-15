@@ -4,38 +4,24 @@ module Unparser
   class Emitter
     # Emitter for for nodes
     class For < self
-      include Terminated
-
       handle :for
 
       children :condition, :assignment, :body
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_FOR, WS)
+        write('for ')
         emit_condition
-        emit_body
+        emit_optional_body(body)
         k_end
       end
 
-      # Emit assignment
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_condition
-        visit_plain(condition)
-        write(WS, K_IN, WS)
+        visit(condition)
+        write(' in ')
         visit(assignment)
-        write(WS, K_DO)
+        write(' do')
       end
 
     end # For

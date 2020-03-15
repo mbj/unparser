@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-require 'unparser'
-require 'optparse'
-
 module Unparser
   # Unparser CLI implementation
-  #
-  # :reek:InstanceVariableAssumption
-  # :reek:TooManyInstanceVariables
   class CLI
 
     EXIT_SUCCESS = 0
@@ -26,6 +20,13 @@ module Unparser
         def validation
           Validation.from_path(path)
         end
+
+        # Literal for this target
+        #
+        # @return [Validation]
+        def literal_validation
+          Validation::Literal.from_path(path)
+        end
       end
 
       # String target
@@ -38,6 +39,13 @@ module Unparser
         def validation
           Validation.from_string(string)
         end
+
+        # Literal for this target
+        #
+        # @return [Validation]
+        def literal_validation
+          Validation::Literal.from_string(path)
+        end
       end # String
     end # Target
 
@@ -47,7 +55,7 @@ module Unparser
     #
     # @param [Array<String>] arguments
     #
-    # @return [Fixnum]
+    # @return [Integer]
     #   the exit status
     #
     # @api private
@@ -63,15 +71,14 @@ module Unparser
     # @return [undefined]
     #
     # @api private
-    #
-    # ignore :reek:TooManyStatements
     def initialize(arguments)
       @ignore  = Set.new
       @targets = []
 
-      @success   = true
-      @fail_fast = false
-      @verbose   = false
+      @fail_fast  = false
+      @success    = true
+      @validation = :validation
+      @verbose    = false
 
       opts = OptionParser.new do |builder|
         add_options(builder)
@@ -90,7 +97,7 @@ module Unparser
     #
     # @api private
     #
-    # ignore :reek:TooManyStatements
+    # rubocop:disable Metrics/MethodLength
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
       builder.separator('')
@@ -103,6 +110,9 @@ module Unparser
       builder.on('-v', '--verbose') do
         @verbose = true
       end
+      builder.on('-l', '--literal') do
+        @validation = :literal_validation
+      end
       builder.on('--ignore FILE') do |file|
         @ignore.merge(targets(file))
       end
@@ -110,10 +120,11 @@ module Unparser
         @fail_fast = true
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # Return exit status
     #
-    # @return [Fixnum]
+    # @return [Integer]
     #
     # @api private
     #
@@ -128,16 +139,8 @@ module Unparser
 
   private
 
-    # Process target
-    #
-    # @param [Target] target
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
     def process_target(target)
-      validation = target.validation
+      validation = target.public_send(@validation)
       if validation.success?
         puts validation.report if @verbose
         puts "Success: #{validation.identification}"
@@ -148,12 +151,6 @@ module Unparser
       end
     end
 
-    # Return effective targets
-    #
-    # @return [Enumerable<Target>]
-    #
-    # @api private
-    #
     def effective_targets
       if @start_with
         reject = true
@@ -169,15 +166,6 @@ module Unparser
       end.reject(&@ignore.method(:include?))
     end
 
-    # Return targets for file name
-    #
-    # @param [String] file_name
-    #
-    # @return [Enumerable<Target>]
-    #
-    # @api private
-    #
-    # ignore :reek:UtilityFunction
     def targets(file_name)
       if File.directory?(file_name)
         Dir.glob(File.join(file_name, '**/*.rb')).sort
@@ -187,6 +175,5 @@ module Unparser
         Dir.glob(file_name).sort
       end.map { |file| Target::Path.new(Pathname.new(file)) }
     end
-
   end # CLI
 end # Unparser

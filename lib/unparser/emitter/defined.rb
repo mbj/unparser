@@ -4,25 +4,15 @@ module Unparser
   class Emitter
     # Emitter for defined? nodes
     class Defined < self
-      include Terminated
-
       handle :defined?
 
       children :subject
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_DEFINED)
-        parentheses do
-          visit(subject)
-        end
+        write('defined?')
+        parentheses { visit(subject) }
       end
 
     end # Defined

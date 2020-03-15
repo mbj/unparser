@@ -5,6 +5,6 @@ trap('INT') do |status|
   exit! 128 + status
 end
 
-require 'unparser/cli'
+require 'unparser'
 
 exit Unparser::CLI.run(ARGV)

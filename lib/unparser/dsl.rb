@@ -6,14 +6,6 @@ module Unparser
 
   private
 
-    # Define remaining children
-    #
-    # @param [Enumerable<Symbol>] names
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
     def define_remaining_children(names)
       range = names.length..-1
       define_method(:remaining_children) do
@@ -22,15 +14,6 @@ module Unparser
       private :remaining_children
     end
 
-    # Define named child
-    #
-    # @param [Symbol] name
-    # @param [Fixnum] index
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
     def define_child(name, index)
       define_method(name) do
         children.at(index)
@@ -38,15 +21,6 @@ module Unparser
       private name
     end
 
-    # Define a group of children
-    #
-    # @param [Symbol] name
-    # @param [Range] range
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
     def define_group(name, range)
       define_method(name) do
         children[range]
@@ -55,12 +29,6 @@ module Unparser
       memoize(name)
     end
 
-    # Create name helpers
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
     def children(*names)
       define_remaining_children(names)
 

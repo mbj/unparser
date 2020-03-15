@@ -3,8 +3,6 @@
 module Unparser
 
   # Holds the comments that remain to be emitted
-  #
-  # ignore :reek:RepeatedConditional
   class Comments
 
     # Proxy to singleton
@@ -113,39 +111,15 @@ module Unparser
 
   private
 
-    # Take comments while the provided block returns true
-    #
-    # @yield [Parser::Source::Comment]
-    #
-    # @return [Array]
-    #
-    # @api private
-    #
     def take_while
       number_to_take = @comments.index { |comment| !yield(comment) } || @comments.size
       @comments.shift(number_to_take)
     end
 
-    # Take comments up to the line number
-    #
-    # @param [Fixnum] line
-    #
-    # @return [Array]
-    #
-    # @api private
-    #
     def take_up_to_line(line)
       take_while { |comment| comment.location.expression.line <= line }
     end
 
-    # Unshift document comments and return the rest
-    #
-    # @param [Array] comments
-    #
-    # @return [Array]
-    #
-    # @api private
-    #
     def unshift_documents(comments)
       doc_comments, other_comments = comments.partition(&:document?)
       doc_comments.reverse_each { |comment| @comments.unshift(comment) }

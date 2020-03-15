@@ -4,12 +4,19 @@ module Unparser
   class Emitter
     # Emitter for flip flops
     class FlipFlop < self
-      include Unterminated
-
-      MAP = IceNine.deep_freeze(
+      MAP = {
         iflipflop: '..',
         eflipflop: '...'
-      ).freeze
+      }.freeze
+
+      SYMBOLS = {
+        eflipflop: :tDOT3,
+        iflipflop: :tDOT2
+      }.freeze
+
+      def symbol_name
+        true
+      end
 
       handle(*MAP.keys)
 
@@ -17,12 +24,6 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
         visit(left)
         write(MAP.fetch(node.type))
