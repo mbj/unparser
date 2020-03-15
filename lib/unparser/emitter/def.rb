@@ -48,7 +48,7 @@ module Unparser
       # @api private
       #
       def emit_arguments
-        return if arguments.children.empty?
+        return if arguments.type.equal?(:args) && arguments.children.empty?
 
         visit_parentheses(arguments)
       end

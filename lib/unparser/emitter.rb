@@ -198,9 +198,7 @@ module Unparser
     #
     def visit(node)
       emitter = emitter(node)
-      conditional_parentheses(!emitter.terminated?) do
-        emitter.write_to_buffer
-      end
+      emitter.write_to_buffer
     end
 
     # Visit within parentheses
@@ -226,9 +224,9 @@ module Unparser
     # @api private
     #
     # ignore :reek:ControlParameter
-    def conditional_parentheses(flag)
+    def conditional_parentheses(flag, open = M_PO, close =M_PC)
       if flag
-        parentheses { yield }
+        parentheses(open, close) { yield }
       else
         yield
       end

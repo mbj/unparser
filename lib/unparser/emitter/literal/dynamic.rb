@@ -16,18 +16,67 @@ module Unparser
         # @api private
         #
         def dispatch
-          util = self.class
-          visit_parentheses(dynamic_body, util::OPEN, util::CLOSE)
+          segments.each_with_index do |children, index|
+            visit_segment(children, index)
+          end
         end
 
-        # Return dynamic body
-        #
-        # @return [Parser::AST::Node]
-        #
-        # @api private
-        #
-        def dynamic_body
-          Parser::AST::Node.new(:dyn_str_body, children)
+        def visit_segment(children, index)
+          util = self.class
+
+          write(' ') unless index.zero?
+
+          parentheses(util::OPEN, util::CLOSE) do
+            visit_body(children)
+          end
+        end
+
+        NO_PARENS = %i[ivar cvar gvar].to_set.freeze
+
+        BOUNDARIES =
+          [
+            %i(str str),
+            %i(dstr str),
+            %i(str dstr),
+            %i(dstr dstr)
+          ]
+
+        def segments
+          children.chunk_while do |left, right|
+            !BOUNDARIES.any?([left.type, right.type])
+          end
+        end
+        memoize :segments
+
+        def visit_body(children)
+          children.each do |child|
+            if child.type.equal?(:str)
+              write(child.children.first.inspect[1..-2])
+            else
+              visit_dynamic(child)
+            end
+          end
+        end
+
+        def visit_dynamic(child)
+          if NO_PARENS.include?(child.type)
+            write('#')
+            visit(child)
+            return
+          end
+
+          if child.type.equal?(:dstr)
+            visit_body(child.children)
+            return
+          end
+
+          parentheses('#{', '}') do
+            if child.type.equal?(:begin) && child.children.one?
+              visit(child.children.first)
+            else
+              visit(child)
+            end
+          end
         end
 
         # Dynamic string literal emitter
@@ -37,6 +86,34 @@ module Unparser
           handle :dstr
 
         end # String
+
+        # Dynamic executable string
+        class Execute < self
+
+          OPEN = CLOSE = '`'.freeze
+          handle :xstr
+
+          def dispatch
+            if segments.one?
+              visit_segment(segments.first, 0)
+              return
+            end
+
+            write("<<-`HERE`\n")
+
+            segments.each do |children|
+              children.each do |child|
+                if child.type.equal?(:str)
+                  write(child.children.first)
+                else
+                  fail
+                end
+              end
+            end
+
+            write("HERE\n")
+          end
+        end
 
         # Dynamic symbol literal emitter
         class Symbol < self

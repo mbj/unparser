@@ -53,6 +53,15 @@ module Unparser
 
         private
 
+          # Test if emitter is terminated
+          #
+          # @return [Boolean]
+          #
+          # @private
+          def terminated?
+            !negative?
+          end
+
           # Dispatch value
           #
           # @return [undefined]

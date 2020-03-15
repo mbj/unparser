@@ -173,6 +173,10 @@ module Unparser
       # @api private
       #
       def normal_arguments
+        if arguments.first.type.equal?(:begin)
+          ws
+        end
+
         parentheses do
           delimited_plain(effective_arguments)
         end

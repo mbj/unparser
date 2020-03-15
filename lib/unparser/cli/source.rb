@@ -80,6 +80,13 @@ module Unparser
       end
       memoize :generated
 
+      # Effective parser
+      #
+      # @return [Parser::Parser]
+      def parser
+        Unparser.parser
+      end
+
       # Return stripped source
       #
       # @param [String] source
@@ -182,7 +189,7 @@ module Unparser
       # @api private
       #
       def generated_ast
-        generated.success? && Preprocessor.run(Unparser.parse(generated.source))
+        generated.success? && parser.parse(Unparser.buffer(generated.source))
       rescue Parser::SyntaxError
         nil
       end
@@ -195,7 +202,7 @@ module Unparser
       # @api private
       #
       def original_ast
-        Preprocessor.run(Unparser.parse(original_source))
+        parser.parse(Unparser.buffer(original_source))
       rescue Parser::SyntaxError
         nil
       end
@@ -262,6 +269,11 @@ module Unparser
         memoize :original_source
       end # Node
 
+
+      # Original node and source present
+      class Original < self
+        include Concord.new(:original_ast, :original_source, :parser)
+      end # Original
     end # Source
   end # CLI
 end # Unparser

@@ -5,7 +5,6 @@ module Unparser
 
     # Emitter for begin nodes
     class Begin < self
-
       children :body
 
     private
@@ -25,18 +24,9 @@ module Unparser
 
       # Emitter for implicit begins
       class Implicit < self
+        include Unterminated
 
         handle :begin
-
-        # Test if begin is terminated
-        #
-        # @return [Boolean]
-        #
-        # @api private
-        #
-        def terminated?
-          children.empty?
-        end
 
         TERMINATING_PARENT = %i[root interpolated dyn_str_body].to_set.freeze
 
@@ -49,11 +39,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          if terminated? && !TERMINATING_PARENT.include?(parent_type)
-            write('()')
-          else
-            emit_inner
-          end
+          emit_inner
         end
 
       end # Implicit

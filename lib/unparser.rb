@@ -28,7 +28,6 @@ module Unparser
   # @api private
   #
   def self.unparse(node, comment_array = [])
-    node = Preprocessor.run(node)
     buffer = Buffer.new
     comments = Comments.new(comment_array)
     root = Emitter::Root.new(Parser::AST::Node.new(:root, [node]), buffer, comments)
@@ -94,7 +93,6 @@ end # Unparser
 
 require 'unparser/buffer'
 require 'unparser/node_helpers'
-require 'unparser/preprocessor'
 require 'unparser/comments'
 require 'unparser/constants'
 require 'unparser/dsl'
@@ -109,8 +107,6 @@ require 'unparser/emitter/literal/regexp'
 require 'unparser/emitter/literal/array'
 require 'unparser/emitter/literal/hash'
 require 'unparser/emitter/literal/range'
-require 'unparser/emitter/literal/dynamic_body'
-require 'unparser/emitter/literal/execute_string'
 require 'unparser/emitter/meta'
 require 'unparser/emitter/send'
 require 'unparser/emitter/send/unary'
@@ -152,5 +148,14 @@ require 'unparser/emitter/resbody'
 require 'unparser/emitter/ensure'
 require 'unparser/emitter/index'
 require 'unparser/emitter/lambda'
+require 'unparser/emitter/numblock'
+require 'unparser/emitter/forward_args'
+require 'unparser/emitter/case_match'
+require 'unparser/emitter/in_pattern'
+require 'unparser/emitter/match_var'
+require 'unparser/emitter/unless_guard'
+require 'unparser/emitter/pin'
+require 'unparser/emitter/array_pattern'
+require 'unparser/emitter/hash_pattern'
 # make it easy for zombie
 require 'unparser/finalize'

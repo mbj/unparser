@@ -25,7 +25,7 @@ module Unparser
         # @api private
         #
         def dispatch
-          visit(begin_node)
+          visit(begin_node) if begin_node
           write(TOKENS.fetch(node.type))
           visit(end_node) if end_node
         end

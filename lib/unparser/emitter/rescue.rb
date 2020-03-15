@@ -4,8 +4,6 @@ module Unparser
   class Emitter
     # Emitter for rescue nodes
     class Rescue < self
-      include Unterminated
-
       handle :rescue
 
       children :body, :rescue_body
@@ -34,6 +32,16 @@ module Unparser
         else
           emit_embedded
         end
+      end
+
+      # Test if node is terminated
+      #
+      # @return [Boolean]
+      #
+      # @api private
+      #
+      def terminated?
+        !standaline?
       end
 
       # Test if rescue node ist standalone

@@ -30,7 +30,10 @@ module Unparser
         def emit_receiver
           return unless first_child
 
-          visit(receiver)
+          conditional_parentheses(!emitter(receiver).terminated?) do
+            visit(receiver)
+          end
+
           write(T_DOT)
         end
 
