@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Unparser
+  UnknownNodeError = Class.new(ArgumentError)
 
   # Emitter base class
   #
@@ -116,7 +117,7 @@ module Unparser
     def self.emitter(node, parent)
       type = node.type
       klass = REGISTRY.fetch(type) do
-        raise ArgumentError, "No emitter for node: #{type.inspect}"
+        raise UnknownNodeError, "Unknown node type: #{type.inspect}"
       end
       klass.new(node, parent)
     end
