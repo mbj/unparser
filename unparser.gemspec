@@ -26,7 +26,6 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('anima',        '~> 0.3.1')
   gem.add_development_dependency('devtools',     '~> 0.1.23')
-  gem.add_development_dependency('morpher',      '~> 0.2.6')
   gem.add_development_dependency('mutant',       '~> 0.9.5')
   gem.add_development_dependency('mutant-rspec', '~> 0.9.5')
 end
