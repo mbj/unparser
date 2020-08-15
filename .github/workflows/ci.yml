@@ -65,7 +65,7 @@ jobs:
     - run: |
         gem install bundler
         bundle install
-    - run: bundle exec mutant --since HEAD~1 --zombie -- 'Mutant*'
+    - run: bundle exec mutant --since HEAD~1 --zombie --ignore-subject 'Unparser::CLI*' -- 'Unparser*'
   ruby-rubocop:
     name: Rubocop
     runs-on: ${{ matrix.os }}
