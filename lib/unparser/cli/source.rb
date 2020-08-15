@@ -165,10 +165,10 @@ module Unparser
       # @api private
       #
       def ast_diff
-        Differ.call(
+        Diff.new(
           original_ast.inspect.lines.map(&:chomp),
           generated_ast.inspect.lines.map(&:chomp)
-        )
+        ).colorized_diff
       end
 
       # Return generated AST

@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-require 'set'
 require 'abstract_type'
-require 'procto'
 require 'concord'
+require 'diff/lcs'
+require 'diff/lcs/hunk'
 require 'parser/current'
+require 'procto'
+require 'set'
 
 # Library namespace
 module Unparser
@@ -100,6 +102,8 @@ require 'unparser/constants'
 require 'unparser/dsl'
 require 'unparser/ast'
 require 'unparser/ast/local_variable_scope'
+require 'unparser/diff'
+require 'unparser/color'
 require 'unparser/emitter'
 require 'unparser/emitter/literal'
 require 'unparser/emitter/literal/primitive'
