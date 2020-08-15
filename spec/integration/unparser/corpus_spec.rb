@@ -81,26 +81,40 @@ describe 'Unparser on ruby corpus', mutant: false do
       end
     end
 
-    LOADER = Morpher.build do
-      s(:block,
-        s(:guard, s(:primitive, Array)),
-        s(:map,
-          s(:block,
-            s(:guard, s(:primitive, Hash)),
-            s(:hash_transform,
-              s(:key_symbolize, :repo_uri, s(:guard, s(:primitive, String))),
-              s(:key_symbolize, :repo_ref, s(:guard, s(:primitive, String))),
-              s(:key_symbolize, :name,     s(:guard, s(:primitive, String))),
-              s(:key_symbolize, :exclude,  s(:map, s(:guard, s(:primitive, String))))),
-            s(:load_attribute_hash,
-              # NOTE: The domain param has no DSL currently!
-              Morpher::Evaluator::Transformer::Domain::Param.new(
-                Project,
-                [:repo_uri, :repo_ref, :name, :exclude]
-              )))))
-    end
+    transform    = Mutant::Transform
+    string       = transform::Primitive.new(String)
+    string_array = transform::Array.new(string)
+    path         = ROOT.join('spec', 'integrations.yml')
 
-    ALL = LOADER.call(YAML.load_file(ROOT.join('spec', 'integrations.yml')))
+    loader =
+      transform::Named.new(
+        path.to_s,
+        transform::Sequence.new(
+          [
+            transform::Exception.new(SystemCallError, :read.to_proc),
+            transform::Exception.new(YAML::SyntaxError, YAML.method(:safe_load)),
+            transform::Array.new(
+              transform::Sequence.new(
+                [
+                  transform::Hash.new(
+                     optional: [],
+                     required: [
+                       transform::Hash::Key.new('exclude',  string_array),
+                       transform::Hash::Key.new('name',     string),
+                       transform::Hash::Key.new('repo_ref', string),
+                       transform::Hash::Key.new('repo_uri', string)
+                    ]
+                  ),
+                  transform::Hash::Symbolize.new,
+                  transform::Exception.new(Anima::Error, Project.public_method(:new))
+                ]
+              )
+            )
+          ]
+        )
+      )
+
+    ALL = loader.apply(path).lmap(&:compact_message).from_right
   end
 
   Project::ALL.each do |project|

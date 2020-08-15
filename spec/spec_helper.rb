@@ -1,9 +1,9 @@
-require 'yaml'
+require 'anima'
+require 'devtools/spec_helper'
+require 'mutant'
 require 'pathname'
 require 'unparser'
-require 'anima'
-require 'morpher'
-require 'devtools/spec_helper'
+require 'yaml'
 
 require 'parser/current'
 
