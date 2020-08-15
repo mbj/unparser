@@ -1,8 +1,7 @@
 unparser
 ========
 
-[![Build Status](https://secure.travis-ci.org/mbj/unparser.svg?branch=master)](http://travis-ci.org/mbj/unparser)
-[![Code Climate](https://codeclimate.com/github/mbj/unparser.svg)](https://codeclimate.com/github/mbj/unparser)
+[![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
