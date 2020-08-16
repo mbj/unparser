@@ -57,11 +57,65 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
 
   describe '.parse' do
     def apply
-      described_class.parse('self[1]=2')
+      described_class.parse(source)
     end
 
-    it 'returns expected AST' do
-      expect(apply).to eql(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2)))
+    context 'on present source' do
+      let(:source) { 'self[1]=2' }
+
+      it 'returns expected AST' do
+        expect(apply).to eql(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2)))
+      end
+    end
+
+    context 'on empty source' do
+      let(:source) { '' }
+
+      it 'returns ni' do
+        expect(apply).to be(nil)
+      end
+    end
+
+    context 'on syntax error' do
+      let(:source) { '[' }
+
+      it 'raises error' do
+        expect { apply }.to raise_error(Parser::SyntaxError)
+      end
+    end
+  end
+
+  describe '.parse_either' do
+    def apply
+      described_class.parse_either(source)
+    end
+
+    context 'on present source' do
+      let(:source) { 'self[1]=2' }
+
+      it 'returns right value with expected AST' do
+        expect(apply).to eql(MPrelude::Either::Right.new(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2))))
+      end
+    end
+
+    context 'on empty source' do
+      let(:source) { '' }
+
+      it 'returns right value with nil' do
+        expect(apply).to eql(MPrelude::Either::Right.new(nil))
+      end
+    end
+
+    context 'on syntax error' do
+      let(:source) { '[' }
+
+      it 'returns left value with syntax error' do
+        result = apply
+
+        # Syntax errors that compare nicely under #eql? are hard to construct
+        expect(result).to be_instance_of(MPrelude::Either::Left)
+        expect(result.from_left).to be_instance_of(Parser::SyntaxError)
+      end
     end
   end
 

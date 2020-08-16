@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require 'abstract_type'
+require 'anima'
 require 'concord'
 require 'diff/lcs'
 require 'diff/lcs/hunk'
+require 'mprelude'
 require 'parser/current'
 require 'procto'
 require 'set'
@@ -42,9 +44,20 @@ module Unparser
   #
   # @param [String] source
   #
-  # @return [Parser::AST::Node]
+  # @return [Parser::AST::Node, nil]
   def self.parse(source)
     parser.parse(buffer(source))
+  end
+
+  # Parse string into either syntax error or AST
+  #
+  # @param [String] source
+  #
+  # @return [MPrelude::Either<Parser::SyntaxError, (Parser::ASTNode, nil)>]
+  def self.parse_either(source)
+    MPrelude::Either.wrap_error(Parser::SyntaxError) do
+      parser.parse(buffer(source))
+    end
   end
 
   # Parse string into AST, with comments
@@ -156,5 +169,6 @@ require 'unparser/emitter/resbody'
 require 'unparser/emitter/ensure'
 require 'unparser/emitter/index'
 require 'unparser/emitter/lambda'
+require 'unparser/validation'
 # make it easy for zombie
 require 'unparser/finalize'
