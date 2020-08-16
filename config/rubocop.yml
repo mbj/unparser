@@ -123,3 +123,6 @@ Layout/HashAlignment:
 
 Naming/RescuedExceptionsVariableName:
   Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
