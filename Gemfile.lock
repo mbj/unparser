@@ -72,15 +72,6 @@ GEM
     kwalify (0.7.2)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
-    morpher (0.2.6)
-      abstract_type (~> 0.0.7)
-      adamantium (~> 0.2.0)
-      anima (~> 0.3.0)
-      ast (~> 2.2)
-      concord (~> 0.1.5)
-      equalizer (~> 0.0.9)
-      ice_nine (~> 0.11.0)
-      procto (~> 0.0.2)
     mprelude (0.1.0)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
@@ -169,7 +160,6 @@ PLATFORMS
 DEPENDENCIES
   anima (~> 0.3.1)
   devtools (~> 0.1.23)
-  morpher (~> 0.2.6)
   mutant (~> 0.9.5)
   mutant-license!
   mutant-rspec (~> 0.9.5)
