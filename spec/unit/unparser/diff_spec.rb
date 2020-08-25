@@ -26,8 +26,8 @@ RSpec.describe Unparser::Diff do
       let(:expectation) do
         [
           "@@ -1,3 +1,3 @@\n",
-          Mutant::Color::RED.format("-foo\n"),
-          Mutant::Color::GREEN.format("+baz\n"),
+          Unparser::Color::RED.format("-foo\n"),
+          Unparser::Color::GREEN.format("+baz\n"),
           " bar\n"
         ].join
       end
