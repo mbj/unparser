@@ -1,3 +1,8 @@
+# v0.4.8 unreleased
+
+* Significantly improve verifier (only useful for debugging)
+* Add `Unparser::Color` module for colorized source diffs
+
 # v0.4.7 2020-01-03
 
 * Add support for endless ranges
