@@ -1,7 +1,7 @@
 unparser
 ========
 
-[![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
+![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
 Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).

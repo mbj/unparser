@@ -65,13 +65,7 @@ jobs:
     - run: |
         gem install bundler
         bundle install
-    - run: |
-        bundle exec mutant                                    \
-          --since HEAD~1                                      \
-          --zombie                                            \
-          --ignore-subject 'Unparser::CLI*'                   \
-          --ignore-subject 'Unparser::Validation.from_string' \
-          -- 'Unparser*'
+    - run: ./mutant.sh
   ruby-rubocop:
     name: Rubocop
     runs-on: ${{ matrix.os }}
