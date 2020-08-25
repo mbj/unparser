@@ -120,6 +120,23 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   end
 
   describe '.unparse' do
+    context 'on unknown node type' do
+      def apply
+        Unparser.unparse(node)
+      end
+
+      let(:node) { s(:example_node) }
+
+      it 'raises UnknownNodeError' do
+        expect { apply }.to raise_error(
+          Unparser::UnknownNodeError,
+          'Unknown node type: :example_node'
+        )
+      end
+    end
+  end
+
+  describe '.unparse' do
     let(:builder_options) { {} }
 
     def parser
