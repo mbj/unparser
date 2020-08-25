@@ -1,4 +1,4 @@
-# v0.4.8 unreleased
+# v0.4.8 2020-05-25
 
 * Change to specific node type when unparser fails on an unknown node type: [#150](https://github.com/mbj/unparser/pull/150)
 * Significantly improve verifier (only useful for debugging)
