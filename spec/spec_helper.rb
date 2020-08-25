@@ -1,11 +1,33 @@
 require 'anima'
-require 'devtools/spec_helper'
 require 'mutant'
 require 'pathname'
+require 'timeout'
 require 'unparser'
 require 'yaml'
 
 require 'parser/current'
+
+RSpec.configuration.around(file_path: %r{spec/unit}) do |example|
+  Timeout.timeout(0.1, &example)
+end
+
+RSpec.shared_examples_for 'a command method' do
+  it 'returns self' do
+    should equal(object)
+  end
+end
+
+RSpec.shared_examples_for 'an idempotent method' do
+  it 'is idempotent' do
+    first = subject
+    fail 'RSpec not configured for threadsafety' unless RSpec.configuration.threadsafe?
+    mutex    = __memoized.instance_variable_get(:@mutex)
+    memoized = __memoized.instance_variable_get(:@memoized)
+
+    mutex.synchronize { memoized.delete(:subject) }
+    should equal(first)
+  end
+end
 
 module SpecHelper
   def s(type, *children)
