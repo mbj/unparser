@@ -1,5 +1,6 @@
 # v0.4.8 unreleased
 
+* Handle `nil` as input correctly returning the empty string [#151](https://github.com/mbj/unparser/pull/151)
 * Change to specific node type when unparser fails on an unknown node type: [#150](https://github.com/mbj/unparser/pull/150)
 * Significantly improve verifier (only useful for debugging)
 * Add `Unparser::Color` module for colorized source diffs

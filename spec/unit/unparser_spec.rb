@@ -120,11 +120,20 @@ describe Unparser, mutant_expression: 'Unparser::Emitter*' do
   end
 
   describe '.unparse' do
-    context 'on unknown node type' do
-      def apply
-        Unparser.unparse(node)
-      end
+    def apply
+      Unparser.unparse(node)
+    end
 
+    context 'on nil input' do
+      # yes parser produces `nil` on empty string as input.
+      let(:node) { nil }
+
+      it 'returns the empty string' do
+        expect(apply).to eql('')
+      end
+    end
+
+    context 'on unknown node type' do
       let(:node) { s(:example_node) }
 
       it 'raises UnknownNodeError' do

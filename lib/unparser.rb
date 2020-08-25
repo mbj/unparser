@@ -32,6 +32,8 @@ module Unparser
   # @api private
   #
   def self.unparse(node, comment_array = [])
+    return '' if node.nil?
+
     node = Preprocessor.run(node)
     buffer = Buffer.new
     comments = Comments.new(comment_array)
