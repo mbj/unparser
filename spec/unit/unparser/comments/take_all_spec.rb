@@ -8,7 +8,6 @@ describe Unparser::Comments, '#take_all' do
       end # EOL 2
     RUBY
   end
-  let(:ast)      { ast_and_comments[0] }
   let(:comments) { ast_and_comments[1] }
   let(:object)   { described_class.new(comments) }
 
