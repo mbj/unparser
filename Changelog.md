@@ -1,3 +1,7 @@
+# v0.4.9 2020-09-10
+
+* Change packaging to avoid git in gemspec.
+
 # v0.4.8 2020-05-25
 
 * Change to specific node type when unparser fails on an unknown node type: [#150](https://github.com/mbj/unparser/pull/150)

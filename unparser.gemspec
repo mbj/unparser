@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.4.8'
+  gem.version     = '0.4.9'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -10,8 +10,7 @@ Gem::Specification.new do |gem|
   gem.homepage    = 'http://github.com/mbj/unparser'
   gem.license     = 'MIT'
 
-  gem.files            = `git ls-files`.split("\n")
-  gem.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
+  gem.files            = Dir.glob('lib/**/*')
   gem.require_paths    = %w[lib]
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
