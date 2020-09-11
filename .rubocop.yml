@@ -1,3 +1,6 @@
+require:
+  - rubocop-packaging
+
 AllCops:
   Include:
     - 'lib/unparser.rb'
