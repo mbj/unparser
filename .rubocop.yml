@@ -7,23 +7,23 @@ AllCops:
     - 'Gemfile.triage'
 
 # Avoid parameter lists longer than five parameters.
-ParameterLists:
+Metrics/ParameterLists:
   Max: 3
   CountKeywordArgs: true
 
-MethodLength:
+Metrics/MethodLength:
   CountComments: false
   Max: 17
 
-AbcSize:
+Metrics/AbcSize:
   Max: 18
 
 # Avoid more than `Max` levels of nesting.
-BlockNesting:
+Metrics/BlockNesting:
   Max: 3
 
 # Align with the style guide.
-CollectionMethods:
+Style/CollectionMethods:
   PreferredMethods:
     collect:  'map'
     inject:   'reduce'
@@ -31,14 +31,14 @@ CollectionMethods:
     find_all: 'select'
 
 # Limit line length
-LineLength:
+Layout/LineLength:
   Max: 113  # TODO: lower to 79 once the rubocop branch in shared/Gemfile is removed
 
-ClassLength:
-  Max: 204
+Metrics/ClassLength:
+  Max: 175
 
 # Prefer modifiers and explicit if statements over returning early for small methods
-GuardClause:
+Style/GuardClause:
   Enabled: false
 
 Metrics/BlockLength:
@@ -47,60 +47,37 @@ Metrics/BlockLength:
   - spec/**/*
 
 # Flags freezes for singletons that could still be mutated like Regexps
-RedundantFreeze:
+Style/RedundantFreeze:
   Enabled: false
 
 # Allow Fixnum and Bignum. This Gem supports versions before 2.4
-UnifiedInteger:
+Lint/UnifiedInteger:
   Enabled: false
 
 # Disabled because of indenting with private keyword in class bodies.
-IndentationWidth:
-  Enabled: false
-
-# I like raise more
-SignalException:
-  Enabled: false
-
-# False positive in unparser source
-OneLineConditional:
-  Enabled: false
-
-Documentation:
+Layout/IndentationWidth:
   Enabled: false
 
 # Disable documentation checking until a class needs to be documented once
-Documentation:
+Style/Documentation:
   Enabled: false
 
 # Do not favor modifier if/unless usage when you have a single-line body
-IfUnlessModifier:
-  Enabled: false
-
-# Allow case equality operator (in limited use within the specs)
-CaseEquality:
-  Enabled: false
-
-# Constants do not always have to use SCREAMING_SNAKE_CASE
-ConstantName:
-  Enabled: false
-
-# Not all trivial readers/writers can be defined with attr_* methods
-TrivialAccessors:
+Style/IfUnlessModifier:
   Enabled: false
 
 # I like to have an empty line before closing the currently opened body
-EmptyLinesAroundBlockBody:
+Layout/EmptyLinesAroundBlockBody:
   Enabled: false
 
-EmptyLinesAroundClassBody:
+Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
-EmptyLinesAroundModuleBody:
+Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
 # I like my style more
-AccessModifierIndentation:
+Layout/AccessModifierIndentation:
   Enabled: false
 
 Style/CommentedKeyword:
