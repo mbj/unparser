@@ -80,5 +80,7 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: bundle install
+    - run: |
+        gem install bundler
+        bundle install
     - run: bundle exec rubocop
