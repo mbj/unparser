@@ -14,7 +14,7 @@ module Unparser
     extend DSL
 
     # Registry for node emitters
-    REGISTRY = {} # rubocop:disable MutableConstant
+    REGISTRY = {} # rubocop:disable Style/MutableConstant
 
     NOINDENT = %i[rescue ensure].to_set.freeze
 
@@ -437,7 +437,7 @@ module Unparser
     #
     # @api private
     #
-    # rubocop:disable MethodCallWithoutArgsParentheses
+    # rubocop:disable Style/MethodCallWithoutArgsParentheses
     def emit_body(body = body())
       unless body
         buffer.indent
@@ -447,7 +447,7 @@ module Unparser
       end
       visit_indented(body)
     end
-    # rubocop:enable MethodCallWithoutArgsParentheses
+    # rubocop:enable Style/MethodCallWithoutArgsParentheses
 
     # Visit indented node
     #
@@ -487,11 +487,11 @@ module Unparser
     #
     # @api private
     #
-    # rubocop:disable MethodCallWithoutArgsParentheses
+    # rubocop:disable Style/MethodCallWithoutArgsParentheses
     def run(emitter, node = node())
       emitter.new(node, self).write_to_buffer
     end
-    # rubocop:enable MethodCallWithoutArgsParentheses
+    # rubocop:enable Style/MethodCallWithoutArgsParentheses
 
   end # Emitter
 end # Unparser
