@@ -4,66 +4,82 @@ module Unparser
   class Emitter
 
     # Block emitter
-    #
-    # ignore :reek:RepeatedConditional
     class Block < self
-      include Terminated
-
-      handle :block
+      handle :block, :numblock
 
       children :target, :arguments, :body
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
         emit_target
-        write(WS, K_DO)
-        emit_block_arguments unless stabby_lambda?
-        emit_body
-        k_end
+        ws
+        write_open
+        target_writer.emit_heredoc_reminders if n_send?(target)
+        emit_block_arguments unless n_lambda?(target)
+        emit_optional_body_ensure_rescue(body)
+        write_close
       end
 
-      # Emit target
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def emit_target
-        visit(target)
+      def need_do?
+        body && (n_rescue?(body) || n_ensure?(body))
+      end
 
-        if stabby_lambda?
-          parentheses { visit(arguments) }
+      def write_open
+        if need_do?
+          write('do')
+        else
+          write('{')
         end
       end
 
-      # Test if we are emitting a stabby lambda
-      #
-      # @return [Boolean]
-      #
-      # @api private
-      #
-      def stabby_lambda?
-        target.type.equal?(:lambda)
+      def write_close
+        if need_do?
+          k_end
+        else
+          write('}')
+        end
       end
 
-      # Emit arguments
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
+      def target_writer
+        writer_with(Writer::Send::Regular, target)
+      end
+      memoize :target_writer
+
+      def emit_target
+        case target.type
+        when :send
+          emit_send_target
+        when :lambda
+          visit(target)
+          emit_lambda_arguments unless node.type.equal?(:numblock)
+        else
+          visit(target)
+        end
+      end
+
+      def emit_send_target
+        target_writer.emit_receiver
+        target_writer.emit_selector
+        target_writer.emit_arguments_without_heredoc_body
+      end
+
+      def emit_lambda_arguments
+        parentheses { writer_with(Args, arguments).emit_lambda_arguments }
+      end
+
+      def numblock?
+        node.type.equal?(:numblock)
+      end
+
       def emit_block_arguments
-        return if arguments.children.empty?
+        return if numblock? || arguments.children.empty?
 
         ws
-        visit_parentheses(arguments, T_PIPE, T_PIPE)
+
+        parentheses('|', '|') do
+          writer_with(Args, arguments).emit_block_arguments
+        end
       end
 
     end # Block

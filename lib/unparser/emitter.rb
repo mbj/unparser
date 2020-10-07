@@ -4,34 +4,20 @@ module Unparser
   UnknownNodeError = Class.new(ArgumentError)
 
   # Emitter base class
-  #
-  # buggy, argument values are sends to self
-  #
-  # ignore :reek:TooManyMethods
   class Emitter
-    include Adamantium::Flat, AbstractType, Constants, NodeHelpers
-    include Concord.new(:node, :parent)
+    include Adamantium::Flat, AbstractType, Constants, Generation, NodeHelpers
+    include Anima.new(:buffer, :comments, :node, :local_variable_scope)
+
+    public :node
+
     extend DSL
 
     # Registry for node emitters
     REGISTRY = {} # rubocop:disable Style/MutableConstant
 
-    NOINDENT = %i[rescue ensure].to_set.freeze
-
-    module Unterminated
-      def terminated?
-        false
-      end
-    end
-
-    module Terminated
-      def terminated?
-        true
-      end
-    end
+    NO_INDENT = %i[ensure rescue].freeze
 
     module LocalVariableRoot
-
       # Return local variable root
       #
       # @return [Parser::AST::Node]
@@ -47,33 +33,8 @@ module Unparser
           memoize :local_variable_scope
         end
       end
-
     end # LocalVariableRoot
 
-    # Return local variable root
-    #
-    # @return [Parser::AST::Node]
-    #
-    # @api private
-    #
-    def local_variable_scope
-      parent.local_variable_scope
-    end
-
-    # Return assigned lvars
-    #
-    # @return [Array<Symbol>]
-    #
-    # @api private
-    #
-    abstract_method :local_variables
-
-    # Return node type
-    #
-    # @return [Symbol]
-    #
-    # @api private
-    #
     def node_type
       node.type
     end
@@ -88,25 +49,16 @@ module Unparser
     #
     def self.handle(*types)
       types.each do |type|
+        fail "Handler for type: #{type} already registered" if REGISTRY.key?(type)
+
         REGISTRY[type] = self
       end
     end
     private_class_method :handle
 
-    # Trigger write to buffer
-    #
-    # @return [self]
-    #
-    # @api private
-    #
-    def write_to_buffer
-      emit_comments_before if buffer.fresh_line?
+    def emit_mlhs
       dispatch
-      comments.consume(node)
-      emit_eof_comments if parent.is_a?(Root)
-      self
     end
-    memoize :write_to_buffer
 
     # Return emitter
     #
@@ -114,384 +66,30 @@ module Unparser
     #
     # @api private
     #
-    def self.emitter(node, parent)
+    # rubocop:disable Metrics/ParameterLists
+    def self.emitter(buffer:, comments:, node:, local_variable_scope:)
       type = node.type
-      klass = REGISTRY.fetch(type) do
-        raise UnknownNodeError, "Unknown node type: #{type.inspect}"
-      end
-      klass.new(node, parent)
-    end
 
-    # Dispatch node
+      klass = REGISTRY.fetch(type) do
+        fail UnknownNodeError, "Unknown node type: #{type.inspect}"
+      end
+
+      klass.new(
+        buffer:               buffer,
+        comments:             comments,
+        local_variable_scope: local_variable_scope,
+        node:                 node
+      )
+    end
+    # rubocop:enable Metrics/ParameterLists
+
+    # Dispatch node write as statement
     #
     # @return [undefined]
     #
     # @api private
     #
     abstract_method :dispatch
-
-    # Test if node is emitted as terminated expression
-    #
-    # @return [Boolean]
-    #
-    # @api private
-    #
-    abstract_method :terminated?
-
-  protected
-
-    # Return buffer
-    #
-    # @return [Buffer] buffer
-    #
-    # @api private
-    #
-    def buffer
-      parent.buffer
-    end
-    memoize :buffer, freezer: :noop
-
-    # Return comments
-    #
-    # @return [Comments] comments
-    #
-    # @api private
-    #
-    def comments
-      parent.comments
-    end
-    memoize :comments, freezer: :noop
-
-  private
-
-    # Emit contents of block within parentheses
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def parentheses(open = M_PO, close = M_PC)
-      write(open)
-      yield
-      write(close)
-    end
-
-    # Visit node
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def visit_plain(node)
-      emitter = emitter(node)
-      emitter.write_to_buffer
-    end
-
-    # Visit ambiguous node
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def visit(node)
-      emitter = emitter(node)
-      conditional_parentheses(!emitter.terminated?) do
-        emitter.write_to_buffer
-      end
-    end
-
-    # Visit within parentheses
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def visit_parentheses(node, *arguments)
-      parentheses(*arguments) do
-        visit_plain(node)
-      end
-    end
-
-    # Call block in optional parentheses
-    #
-    # @param [true, false] flag
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    # ignore :reek:ControlParameter
-    def conditional_parentheses(flag)
-      if flag
-        parentheses { yield }
-      else
-        yield
-      end
-    end
-
-    # Return emitter for node
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [Emitter]
-    #
-    # @api private
-    #
-    def emitter(node)
-      self.class.emitter(node, self)
-    end
-
-    # Emit delimited body
-    #
-    # @param [Enumerable<Parser::AST::Node>] nodes
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def delimited_plain(nodes)
-      delimited(nodes, &method(:visit_plain))
-    end
-
-    # Emit delimited body
-    #
-    # @param [Enumerable<Parser::AST::Node>] nodes
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def delimited(nodes, &block)
-      return if nodes.empty?
-
-      block ||= method(:visit)
-      head, *tail = nodes
-      block.call(head)
-      tail.each do |node|
-        write(DEFAULT_DELIMITER)
-        block.call(node)
-      end
-    end
-
-    # Return children of node
-    #
-    # @return [Array<Parser::AST::Node>]
-    #
-    # @api private
-    #
-    def children
-      node.children
-    end
-
-    # Write newline
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def nl
-      emit_eol_comments
-      buffer.nl
-    end
-
-    # Write comments that appeared before source_part in the source
-    #
-    # @param [Symbol] source_part
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit_comments_before(source_part = :expression)
-      comments_before = comments.take_before(node, source_part)
-      return if comments_before.empty?
-
-      emit_comments(comments_before)
-      buffer.nl
-    end
-
-    # Write end-of-line comments
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit_eol_comments
-      comments.take_eol_comments.each do |comment|
-        write(WS, comment.text)
-      end
-    end
-
-    # Write end-of-file comments
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit_eof_comments
-      emit_eol_comments
-      comments_left = comments.take_all
-      return if comments_left.empty?
-
-      buffer.nl
-      emit_comments(comments_left)
-    end
-
-    # Write each comment to a separate line
-    #
-    # @param [Array] comments
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def emit_comments(comments)
-      max = comments.size - 1
-      comments.each_with_index do |comment, index|
-        if comment.type.equal?(:document)
-          buffer.append_without_prefix(comment.text.chomp)
-        else
-          write(comment.text)
-        end
-        buffer.nl if index < max
-      end
-    end
-
-    # Write strings into buffer
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def write(*strings)
-      strings.each do |string|
-        buffer.append(string)
-      end
-    end
-
-    # Write end keyword
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def k_end
-      buffer.indent
-      emit_comments_before(:end)
-      buffer.unindent
-      write(K_END)
-    end
-
-    # Return first child
-    #
-    # @return [Parser::AST::Node]
-    #   if present
-    #
-    # @return [nil]
-    #   otherwise
-    #
-    # @api private
-    #
-    def first_child
-      children.first
-    end
-
-    # Write whitespace
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def ws
-      write(WS)
-    end
-
-    # Call emit contents of block indented
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    # False positive:
-    #
-    def indented
-      buffer = buffer()
-      buffer.indent
-      nl
-      yield
-      nl
-      buffer.unindent
-    end
-
-    # Emit non nil body
-    #
-    # @param [Parser::AST::Node] body
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    # rubocop:disable Style/MethodCallWithoutArgsParentheses
-    def emit_body(body = body())
-      unless body
-        buffer.indent
-        nl
-        buffer.unindent
-        return
-      end
-      visit_indented(body)
-    end
-    # rubocop:enable Style/MethodCallWithoutArgsParentheses
-
-    # Visit indented node
-    #
-    # @param [Parser::AST::Node] node
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    def visit_indented(node)
-      if NOINDENT.include?(node.type)
-        visit_plain(node)
-      else
-        indented { visit_plain(node) }
-      end
-    end
-
-    # Return parent type
-    #
-    # @return [Symbol]
-    #   if parent is present
-    #
-    # @return [nil]
-    #   otherwise
-    #
-    # @api private
-    #
-    def parent_type
-      parent.node_type
-    end
-
-    # Delegate to emitter
-    #
-    # @param [Class:Emitter] emitter
-    #
-    # @return [undefined]
-    #
-    # @api private
-    #
-    # rubocop:disable Style/MethodCallWithoutArgsParentheses
-    def run(emitter, node = node())
-      emitter.new(node, self).write_to_buffer
-    end
-    # rubocop:enable Style/MethodCallWithoutArgsParentheses
 
   end # Emitter
 end # Unparser

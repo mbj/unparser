@@ -4,7 +4,7 @@ module Unparser
   class Emitter
     # Emitter for class nodes
     class Class < self
-      include LocalVariableRoot, Terminated
+      include LocalVariableRoot
 
       handle :class
 
@@ -12,30 +12,18 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_CLASS, WS)
+        write('class ')
         visit(name)
         emit_superclass
-        emit_body
+        emit_optional_body(body)
         k_end
       end
 
-      # Emit superclass
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_superclass
         return unless superclass
 
-        write(WS, T_LT, WS)
+        write(' < ')
         visit(superclass)
       end
 
@@ -43,24 +31,16 @@ module Unparser
 
     # Emitter for sclass nodes
     class SClass < self
-      include Terminated
-
       handle :sclass
 
       children :object, :body
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_CLASS, WS, T_DLT, WS)
+        write('class << ')
         visit(object)
-        emit_body
+        emit_optional_body(body)
         k_end
       end
 

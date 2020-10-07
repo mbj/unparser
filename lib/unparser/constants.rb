@@ -2,66 +2,19 @@
 
 module Unparser
   # All unparser constants maybe included in other libraries.
-  #
-  # False positive since constants are frozen dynamically
-  # to avoid duplication of `.freeze` calls
-  #
-  # :reek:TooManyConstants
   module Constants
 
-    # Return frozen symbol set from enumerable
-    #
-    # @param [Enumerable] enumerable
-    #
-    # @return [Set<Symbol>]
-    #
-    # @api private
-    #
-    def self.symbol_set(enumerable)
-      enumerable.map(&:to_sym).freeze
-    end
-    private_class_method :symbol_set
-
-    BRACKETS_CURLY  = IceNine.deep_freeze(%w[{ }])
-    BRACKETS_ROUND  = IceNine.deep_freeze(%w[( )])
-    BRACKETS_SQUARE = IceNine.deep_freeze(%w([ ]))
-
     # All unary operators of the ruby language
-    UNARY_OPERATORS = symbol_set %w[
+    UNARY_OPERATORS = %i[
       ! ~ -@ +@
-    ]
+    ].to_set.freeze
 
     # All binary operators of the ruby language
-    BINARY_OPERATORS = symbol_set %w[
+    BINARY_OPERATORS = %i[
       + - * / & | && || << >> ==
       === != <= < <=> > >= =~ !~ ^
       ** %
-    ]
-
-    COMMENT = '#'
-
-    WS       = ' '
-    NL       = "\n"
-    T_DOT    = '.'
-    T_LT     = '<'
-    T_DLT    = '<<'
-    T_AMP    = '&'
-    T_ASN    = '='
-    T_SPLAT  = '*'
-    T_DSPLAT = '**'
-    T_ASR    = '=>'
-    T_PIPE   = '|'
-    T_DCL    = '::'
-    T_NEG    = '!'
-    T_OR     = '||'
-    T_AND    = '&&'
-    T_COLON  = ':'
-
-    M_PO  = '('
-    M_PC  = ')'
-
-    SNGL_QUOTE = "'"
-    DBL_QUOTE  = '"'
+    ].to_set.freeze
 
     # Keywords
     K_DO       = 'do'
@@ -106,8 +59,6 @@ module Unparser
     K_EEND     = '__END__'
     K_FILE     = '__FILE__'
     K_THEN     = 'then'
-
-    DEFAULT_DELIMITER = ', '.freeze
 
     KEYWORDS = constants.each_with_object([]) do |name, keywords|
       value = const_get(name).freeze

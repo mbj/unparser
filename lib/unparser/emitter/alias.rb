@@ -11,16 +11,10 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_ALIAS, WS)
+        write('alias ')
         visit(target)
-        write(WS)
+        ws
         visit(source)
       end
 

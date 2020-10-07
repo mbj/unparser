@@ -28,9 +28,6 @@ module Unparser
 
     private
 
-      # Initialize null color
-      #
-      # @return [undefined]
       def initialize; end
 
     end.new

@@ -1,3 +1,9 @@
+# v0.5.0 unreleased
+
+* Add 2.7 syntax support
+* Fix lots of edge cases via leveraging parser specs
+* Add `--literal` mode for CLI
+
 # v0.4.9 2020-09-10
 
 * Change packaging to avoid git in gemspec.

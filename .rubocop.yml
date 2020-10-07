@@ -5,6 +5,9 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
+  Exclude:
+    - lib/unparser/precedence/data.rb
+    - tmp
 
 # Avoid parameter lists longer than five parameters.
 Metrics/ParameterLists:
@@ -30,12 +33,16 @@ Style/CollectionMethods:
     find:     'detect'
     find_all: 'select'
 
+# Use `fail` as `raise` implies re-raising
+Style/SignalException:
+  EnforcedStyle: semantic
+
 # Limit line length
 Layout/LineLength:
   Max: 113  # TODO: lower to 79 once the rubocop branch in shared/Gemfile is removed
 
 Metrics/ClassLength:
-  Max: 175
+  Max: 205
 
 # Prefer modifiers and explicit if statements over returning early for small methods
 Style/GuardClause:
@@ -48,10 +55,6 @@ Metrics/BlockLength:
 
 # Flags freezes for singletons that could still be mutated like Regexps
 Style/RedundantFreeze:
-  Enabled: false
-
-# Allow Fixnum and Bignum. This Gem supports versions before 2.4
-Lint/UnifiedInteger:
   Enabled: false
 
 # Disabled because of indenting with private keyword in class bodies.

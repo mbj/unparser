@@ -6,8 +6,8 @@ module Unparser
     class Hookexe < self
 
       MAP = {
-        preexe:  K_PREEXE,
-        postexe: K_POSTEXE
+        preexe:  'BEGIN',
+        postexe: 'END'
       }.freeze
 
       handle(*MAP.keys)
@@ -16,16 +16,10 @@ module Unparser
 
     private
 
-      # Perfrom dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(MAP.fetch(node.type), WS)
-        parentheses(*BRACKETS_CURLY) do
-          emit_body
+        write(MAP.fetch(node.type), ' ')
+        parentheses('{', '}') do
+          emit_body(body)
         end
       end
 

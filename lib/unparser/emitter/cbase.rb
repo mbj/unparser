@@ -4,8 +4,6 @@ module Unparser
   class Emitter
     # Emitter for toplevel constant reference nodes
     class CBase < self
-      include Terminated
-
       handle :cbase
 
     private
@@ -17,7 +15,7 @@ module Unparser
       # @api private
       #
       def dispatch
-        write(T_DCL)
+        write('::')
       end
 
     end # CBase

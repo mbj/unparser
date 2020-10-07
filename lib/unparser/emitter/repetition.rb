@@ -5,39 +5,29 @@ module Unparser
 
     # Emitter for postconditions
     class Post < self
-      include Unterminated
-
-      handle :while_post, :until_post
-
       children :condition, :body
 
       MAP = {
-        while_post: K_WHILE,
-        until_post: K_UNTIL
+        while_post: 'while',
+        until_post: 'until'
       }.freeze
 
       handle(*MAP.keys)
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
+    private
+
       def dispatch
         visit(body)
-        write(WS, MAP.fetch(node.type), WS)
+        write(' ', MAP.fetch(node.type), ' ')
         visit(condition)
       end
     end
 
-    # Base class for while and until emitters
+    # Emitter for while and until nodes
     class Repetition < self
-      include Terminated
-
       MAP = {
-        while: K_WHILE,
-        until: K_UNTIL
+        while: 'while',
+        until: 'until'
       }.freeze
 
       handle(*MAP.keys)
@@ -46,12 +36,6 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
         if postcontrol?
           emit_postcontrol
@@ -60,54 +44,30 @@ module Unparser
         end
       end
 
-      # Test if node must be emitted in postcontrol form
-      #
-      # @return [Boolean]
-      #
-      # @api private
-      #
       def postcontrol?
-        return nil unless body # greez from falsyness
-
-        local_variable_scope.first_assignment_in_body_and_used_in_condition?(body, condition)
+        body && local_variable_scope.first_assignment_in?(body, condition)
       end
 
-      # Emit keyword
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_keyword
-        write(MAP.fetch(node.type), WS)
+        write(MAP.fetch(node.type), ' ')
       end
 
-      # Emit embedded
-      #
-      # @return [undefned]
-      #
-      # @api private
-      #
       def emit_normal
         emit_keyword
-        conditional_parentheses(condition.type.equal?(:block)) do
-          visit(condition)
+        visit(condition)
+        if body
+          emit_body(body)
+        else
+          nl
         end
-        emit_body
         k_end
       end
 
-      # Emit postcontrol
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_postcontrol
-        visit_plain(body)
+        visit(body)
         ws
         emit_keyword
-        visit_plain(condition)
+        visit(condition)
       end
 
     end # Repetition

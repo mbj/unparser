@@ -55,22 +55,10 @@ describe 'Unparser on ruby corpus', mutant: false do
 
   private
 
-    # Return repository path
-    #
-    # @return [Pathname]
-    #
-    # @api private
-    #
     def repo_path
       TMP.join(name)
     end
 
-    # Helper method to execute system commands
-    #
-    # @param [Array<String>] arguments
-    #
-    # @api private
-    #
     def system(arguments)
       return if Kernel.system(*arguments)
 

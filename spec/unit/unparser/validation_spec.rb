@@ -236,7 +236,7 @@ describe Unparser::Validation do
     end
 
     let(:path)   { instance_double(Pathname, read: source, to_s: '/some/file') }
-    let(:source) { 'true'                                                      }
+    let(:source) { "true\n"                                                    }
 
     it 'returns expected validator' do
       expect(apply).to eql(
@@ -267,7 +267,7 @@ describe Unparser::Validation do
     end
 
     context 'on valid original source' do
-      let(:source) { 'true' }
+      let(:source) { "true\n" }
 
       it 'returns expected validator' do
         expect(apply).to eql(described_class.new(attributes))
@@ -288,26 +288,6 @@ describe Unparser::Validation do
           expect(validator.original_source).to eql(right(source))
           expect(validator.original_node).to eql(right(s(:true)))
         end
-      end
-    end
-
-    # These are actually specifying the wrong behavior as the normalization is a conceptual mistake
-    # But for now we specify them to get this PR through.
-    #
-    # Removal in followup.
-    context 'on denormalized valid original source' do
-      let(:source) { '(true)' }
-
-      it 'returns expected validator' do
-        expect(apply).to eql(described_class.new(attributes.merge(generated_source: right('true'))))
-      end
-    end
-
-    context 'on very denormalized valid original source' do
-      let(:source) { '((true))' }
-
-      it 'returns expected validator' do
-        expect(apply).to eql(described_class.new(attributes.merge(generated_source: right('true'))))
       end
     end
 

@@ -4,70 +4,40 @@ module Unparser
   class Emitter
     # Emitter for def node
     class Def < self
-      include LocalVariableRoot, Terminated
+      include LocalVariableRoot
 
     private
 
-      # Emit name
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       abstract_method :emit_name
       private :emit_name
 
-      # Return body node
-      #
-      # @return [Parser::AST::Node]
-      #
-      # @api private
-      #
       abstract_method :body
       private :body
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_DEF, WS)
+        write('def ')
         emit_name
-        comments.consume(node, :name)
         emit_arguments
-        emit_body
+        emit_optional_body_ensure_rescue(body)
         k_end
       end
 
-      # Emit arguments
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_arguments
         return if arguments.children.empty?
 
-        visit_parentheses(arguments)
+        parentheses do
+          writer_with(Args, arguments).emit_def_arguments
+        end
       end
 
       # Instance def emitter
       class Instance < self
-
         handle :def
 
         children :name, :arguments, :body
 
       private
 
-        # Emit name
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
         def emit_name
           write(name.to_s)
         end
@@ -83,25 +53,13 @@ module Unparser
 
       private
 
-        # Return mame
-        #
-        # @return [String]
-        #
-        # @api private
-        #
         def emit_name
           conditional_parentheses(!subject_without_parens?) do
             visit(subject)
           end
-          write(T_DOT, name.to_s)
+          write('.', name.to_s)
         end
 
-        # Test if subject needs parentheses
-        #
-        # @return [Boolean]
-        #
-        # @api private
-        #
         def subject_without_parens?
           case subject.type
           when :self
@@ -111,8 +69,6 @@ module Unparser
           when :send
             receiver, _selector, *arguments = *subject
             !receiver && arguments.empty?
-          else
-            false
           end
         end
 

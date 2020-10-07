@@ -4,8 +4,6 @@ module Unparser
   class Emitter
     # Emitter for case nodes
     class Case < self
-      include Terminated
-
       handle :case
 
       children :condition
@@ -13,89 +11,49 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_CASE)
+        write('case')
         emit_condition
         emit_whens
         emit_else
         k_end
       end
 
-      # Emit else
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_else
         else_branch = children.last
         return unless else_branch
 
-        write(K_ELSE)
-        visit_indented(else_branch)
+        write('else')
+        emit_body(else_branch)
       end
 
-      # Emit whens
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_whens
         nl
         whens.each(&method(:visit))
       end
 
-      # Emit condition
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_condition
         return unless condition
 
-        write(WS)
+        ws
         visit(condition)
       end
-
     end # Case
 
     # Emitter for when nodes
     class When < self
-      include Terminated
-
       handle :when
 
       define_group :captures, 0..-2
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_WHEN, WS)
+        write('when ')
         emit_captures
-        body = children.last
-        emit_body(body)
+        emit_optional_body(children.last)
       end
 
-      # Emit captures
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_captures
         delimited(captures)
       end

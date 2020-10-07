@@ -5,163 +5,72 @@ module Unparser
 
     # Base class for assignment emitters
     class Assignment < self
+      BINARY_OPERATOR = %i[and or].freeze
+
+      def symbol_name
+        true
+      end
+
+      def emit_heredoc_reminders
+        return unless right
+
+        emitter(right).emit_heredoc_reminders
+      end
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
         emit_left
         emit_right
       end
 
-      # Single assignment emitter
-      class Single < self
+      def emit_right
+        return unless right
 
-        # Test for terminated emit
-        #
-        # @return [Boolean]
-        #
-        # @api private
-        #
-        def terminated?
-          right.nil?
-        end
+        write(' = ')
 
-      private
-
-        # Emit right
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_right
-          return unless right
-
-          write(WS, T_ASN, WS)
+        if BINARY_OPERATOR.include?(right.type)
+          writer_with(Writer::Binary, right).emit_operator
+        else
           visit(right)
         end
+      end
 
-        abstract_method :emit_left
+      abstract_method :emit_left
 
-        # Variable assignment emitter
-        class Variable < self
+      # Variable assignment emitter
+      class Variable < self
 
-          handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
+        handle :lvasgn, :ivasgn, :cvasgn, :gvasgn
 
-          children :name, :right
-
-        private
-
-          # Emit left
-          #
-          # @return [undefined]
-          #
-          # @api private
-          #
-          def emit_left
-            write(name.to_s)
-          end
-
-        end # Variable
-
-        # Constant assignment emitter
-        class Constant < self
-
-          handle :casgn
-
-          children :base, :name, :right
-
-        private
-
-          # Emit left
-          #
-          # @return [undefined]
-          #
-          # @api private
-          #
-          def emit_left
-            if base
-              visit(base)
-              write(T_DCL) if base.type != :cbase
-            end
-            write(name.to_s)
-          end
-
-        end # Constant
-      end # Single
-
-      # Multiple assignment
-      class Multiple < self
-        include Unterminated
-
-        handle :masgn
+        children :name, :right
 
       private
 
-        # Emit left
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
         def emit_left
-          visit_plain(first_child)
+          write(name.to_s)
         end
 
-        # Emit right
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def emit_right
-          write(WS, T_ASN, WS)
-          visit(children.last)
-        end
+      end # Variable
 
-      end # Multiple
+      # Constant assignment emitter
+      class Constant < self
 
-      # Emitter for multiple assignment left hand side
-      class MLHS < Emitter
-        include Unterminated
+        handle :casgn
 
-        handle :mlhs
+        children :base, :name, :right
 
       private
 
-        NO_COMMA = %i[splat restarg].to_set.freeze
-        PARENT_MLHS = %i[mlhs masgn].freeze
-
-        # Perform dispatch
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def dispatch
-          delimited(children)
-
-          write(',') if children.one? && mlhs?
+        def emit_left
+          if base
+            visit(base)
+            write('::') unless n_cbase?(base)
+          end
+          write(name.to_s)
         end
 
-        # Test for mlhs context
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
-        def mlhs?
-          !NO_COMMA.include?(first_child.type) && PARENT_MLHS.include?(parent_type)
-        end
-
-      end # MLHS
-
+      end # Constant
     end # Assignment
   end # Emitter
 end # Unparser

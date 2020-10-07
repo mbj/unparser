@@ -5,10 +5,6 @@ module Unparser
 
     # Base class for special match node emitters
     class Match < self
-      include Unterminated
-
-      OPERATOR = '=~'.freeze
-
       # Emitter for match with local variable assignment
       class Lvasgn < self
         handle :match_with_lvasgn
@@ -17,15 +13,9 @@ module Unparser
 
       private
 
-        # Perform dispatch
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
         def dispatch
           visit(regexp)
-          write(WS, OPERATOR, WS)
+          write(' =~ ')
           visit(lvasgn)
         end
 
@@ -37,12 +27,8 @@ module Unparser
 
         children :regexp
 
-        # Perform dispatch
-        #
-        # @return [undefined]
-        #
-        # @api private
-        #
+      private
+
         def dispatch
           visit(regexp)
         end

@@ -2,7 +2,6 @@
 
 module Unparser
   # Namespace for AST processing tools
-  # :reek:TooManyConstants
   module AST
 
     FIRST_CHILD = ->(node) { node.children.first }.freeze

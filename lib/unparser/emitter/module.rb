@@ -4,7 +4,7 @@ module Unparser
   class Emitter
     # Emitter for module nodes
     class Module < self
-      include LocalVariableRoot, Terminated
+      include LocalVariableRoot
 
       handle :module
 
@@ -12,16 +12,10 @@ module Unparser
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        write(K_MODULE, WS)
+        write('module ')
         visit(name)
-        emit_body
+        emit_optional_body(body)
         k_end
       end
 

@@ -5,8 +5,6 @@ module Unparser
 
     # Base class for and and or op-assign
     class BinaryAssign < self
-      include Unterminated
-
       children :target, :expression
 
       MAP = IceNine.deep_freeze(
@@ -16,17 +14,16 @@ module Unparser
 
       handle(*MAP.keys)
 
+      def emit_heredoc_reminders
+        emitter(target).emit_heredoc_reminders
+        emitter(expression).emit_heredoc_reminders
+      end
+
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        visit(target)
-        write(WS, MAP.fetch(node.type), WS)
+        emitter(target).emit_mlhs
+        write(' ', MAP.fetch(node.type), ' ')
         visit(expression)
       end
 
@@ -34,32 +31,20 @@ module Unparser
 
     # Emitter for op assign
     class OpAssign < self
-      include Unterminated
-
       handle :op_asgn
+
+      children :target, :operator, :value
 
     private
 
-      # Perform dispatch
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def dispatch
-        visit(first_child)
+        emitter(first_child).emit_mlhs
         emit_operator
-        visit(children[2])
+        visit(value)
       end
 
-      # Emit operator
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
       def emit_operator
-        write(WS, children[1].to_s, T_ASN, WS)
+        write(' ', operator.to_s, '= ')
       end
 
     end # OpAssign
