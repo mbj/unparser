@@ -236,7 +236,7 @@ describe Unparser::Validation do
     end
 
     let(:path)   { instance_double(Pathname, read: source, to_s: '/some/file') }
-    let(:source) { "true\n"                                                    }
+    let(:source) { 'true'                                                      }
 
     it 'returns expected validator' do
       expect(apply).to eql(
@@ -267,7 +267,7 @@ describe Unparser::Validation do
     end
 
     context 'on valid original source' do
-      let(:source) { "true\n" }
+      let(:source) { 'true' }
 
       it 'returns expected validator' do
         expect(apply).to eql(described_class.new(attributes))

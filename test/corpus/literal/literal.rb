@@ -89,4 +89,3 @@ b"
     x
   #{foo}
 HEREDOC
-
