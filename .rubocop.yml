@@ -8,6 +8,7 @@ AllCops:
   Exclude:
     - lib/unparser/precedence/data.rb
     - tmp
+  NewCops: enable
 
 # Avoid parameter lists longer than five parameters.
 Metrics/ParameterLists:
