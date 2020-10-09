@@ -14,9 +14,10 @@ module Unparser
     private
 
       def dispatch
-        if value.eql?(INFINITY)
+        case value
+        when INFINITY
           write('10e1000000000000000000')
-        elsif value.eql?(NEG_INFINITY)
+        when NEG_INFINITY
           write('-10e1000000000000000000')
         else
           write(value.inspect)

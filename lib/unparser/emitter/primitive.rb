@@ -61,12 +61,14 @@ module Unparser
 
       private
 
+        # rubocop:disable Lint/FloatComparison
         def dispatch
           integer = Integer(value)
           float   = value.to_f
 
           write_rational(integer.to_f.equal?(float) ? integer : float)
         end
+        # rubocop:enable Lint/FloatComparison
 
         def write_rational(value)
           write(value.to_s, RATIONAL_FORMAT)
