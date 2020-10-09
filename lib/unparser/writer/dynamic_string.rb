@@ -46,7 +46,7 @@ module Unparser
       end
 
       def heredoc?
-        children.empty? || (nl_last_child? && heredoc_pattern?)
+        !children.empty? && (nl_last_child? && heredoc_pattern?)
       end
 
       def emit_heredoc_header
@@ -169,8 +169,12 @@ module Unparser
       end
 
       def emit_dstr
-        segments.each_with_index do |children, index|
-          emit_segment(children, index)
+        if children.empty?
+          write('%()')
+        else
+          segments.each_with_index do |children, index|
+            emit_segment(children, index)
+          end
         end
       end
 

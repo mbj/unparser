@@ -1,11 +1,16 @@
 { "foo" => <<-HEREDOC, "bar" => :baz }
+  #{}
 HEREDOC
-["foo", <<-HEREDOC]
-HEREDOC
+{ "foo" => %(), "bar" => :baz }
+["foo", %()]
 a(<<-HEREDOC).a
+  #{}
 HEREDOC
+a(%()).a
 { "foo" => <<-HEREDOC, **baz }
+  #{}
 HEREDOC
+{ "foo" => %(), **baz }
 "#@a #@@a #$a"
 0
 ++1

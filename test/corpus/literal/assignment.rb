@@ -30,13 +30,23 @@ foo[1..2] = value
 foo[] = 1
 foo[a, b] = value
 foo[index] = value
+x = %()
+x.x=%()
+x[%()] = bar
+a[%()] ||= bar
+@a ||= %()
 x = <<-HEREDOC
+  #{}
 HEREDOC
 x.x=<<-HEREDOC
+  #{}
 HEREDOC
 x[] = <<-HEREDOC
+  #{}
 HEREDOC
 a[<<-HEREDOC] ||= bar
+  #{}
 HEREDOC
 @a ||= <<-HEREDOC
+  #{}
 HEREDOC

@@ -1,3 +1,7 @@
+# v0.5.0 2020-10-09
+
+* Change to emit empty `dstr` as `%()`
+
 # v0.5.0 2020-10-08
 
 * Add 2.7 syntax support
