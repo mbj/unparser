@@ -7,9 +7,7 @@ module Unparser
       def emit_block_arguments
         delimited(normal_arguments)
 
-        if normal_arguments.one?
-          write(',') if n_arg?(normal_arguments.first)
-        end
+        write(',') if normal_arguments.one? && n_arg?(normal_arguments.first)
 
         emit_shadowargs
       end
