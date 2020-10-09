@@ -1,4 +1,4 @@
-# v0.5.0 unreleased
+# v0.5.0 2020-10-08
 
 * Add 2.7 syntax support
 * Fix lots of edge cases via leveraging parser specs
