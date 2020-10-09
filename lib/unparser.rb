@@ -18,6 +18,8 @@ module Unparser
     modernize
 
     def initialize
+      super
+
       self.emit_file_line_as_literals = false
     end
   end

@@ -2,6 +2,7 @@
 
 bundle exec mutant                                                    \
   --zombie                                                            \
+  --ignore-subject 'Unparser::Builder#initialize'                     \
   --ignore-subject 'Unparser::CLI*'                                   \
   --ignore-subject 'Unparser::Emitter#emit_comments'                  \
   --ignore-subject 'Unparser::Emitter#emit_comments_before'           \
