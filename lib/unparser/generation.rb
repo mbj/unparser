@@ -234,11 +234,11 @@ module Unparser
       children.first
     end
 
-    def conditional_parentheses(flag)
+    def conditional_parentheses(flag, &block)
       if flag
-        parentheses { yield }
+        parentheses(&block)
       else
-        yield
+        block.call
       end
     end
 
