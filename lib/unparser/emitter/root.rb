@@ -7,6 +7,10 @@ module Unparser
       include Concord::Public.new(:buffer, :node, :comments)
       include LocalVariableRoot
 
+      END_NL = %i[class sclass module begin].freeze
+
+      private_constant(*constants(false))
+
       def dispatch
         if children.any?
           emit_body(node, indent: false)
@@ -15,7 +19,8 @@ module Unparser
         end
 
         emit_eof_comments
-        nl
+
+        nl if END_NL.include?(node.type) && !buffer.fresh_line?
       end
     end # Root
   end # Emitter

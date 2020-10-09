@@ -138,8 +138,8 @@ module Unparser
         original_source.fmap do |original|
           generated_source.fmap do |generated|
             diff = Diff.new(
-              original.to_s.lines.map(&:chomp),
-              generated.to_s.lines.map(&:chomp)
+              original.split("\n", -1),
+              generated.split("\n", -1)
             ).colorized_diff
           end
         end

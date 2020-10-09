@@ -22,6 +22,7 @@ bundle exec mutant                                                    \
   --ignore-subject 'Unparser::Emitter::Root#local_variable_scope'     \
   --ignore-subject 'Unparser::Emitter::Send#writer'                   \
   --ignore-subject 'Unparser::Validation.from_string'                 \
+  --ignore-subject 'Unparser::Validation::Literal*'                   \
   --ignore-subject 'Unparser::Writer.included'                        \
   --ignore-subject 'Unparser::Writer::Binary#left_emitter'            \
   --ignore-subject 'Unparser::Writer::Binary#right_emitter'           \
