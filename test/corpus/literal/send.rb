@@ -77,3 +77,4 @@ self.foo=:bar
 (a + b) / c.-(e, f)
 (a + b) / c.-(*f)
 x(**foo)
+foo&.!
