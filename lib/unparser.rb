@@ -50,6 +50,23 @@ module Unparser
     end.content
   end
 
+  # Unparse with validation
+  #
+  # @param [Parser::AST::Node, nil] node
+  # @param [Array] comment_array
+  #
+  # @return [Either<Validation,String>]
+  def self.unparse_validate(node, comment_array = [])
+    generated = unparse(node, comment_array)
+    validation = Validation.from_string(generated)
+
+    if validation.success?
+      MPrelude::Either::Right.new(generated)
+    else
+      MPrelude::Either::Left.new(validation)
+    end
+  end
+
   # Unparse capturing errors
   #
   # This is mostly useful for writing testing tools against unparser.

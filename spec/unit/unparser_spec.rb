@@ -129,6 +129,46 @@ describe Unparser, mutant_expression: 'Unparser*' do
     end
   end
 
+  describe '.unparse_validate' do
+    def apply
+      Unparser.unparse_validate(s(:true))
+    end
+
+    context 'on successful validation' do
+      context 'with comments' do
+        def apply
+          Unparser.unparse_validate(
+            *Unparser.parser.parse_with_comments(Unparser.buffer('true # foo'))
+          )
+        end
+
+        it 'returns right value with generated source' do
+          expect(apply).to eql(MPrelude::Either::Right.new('true # foo'))
+        end
+      end
+
+      context 'without comments' do
+        it 'returns right value with generated source' do
+          expect(apply).to eql(MPrelude::Either::Right.new('true'))
+        end
+      end
+    end
+
+    context 'on unsuccessful validation' do
+      before do
+        allow(Unparser::Validation).to receive_messages(from_string: validation)
+      end
+
+      let(:validation) do
+        instance_double(Unparser::Validation, success?: false)
+      end
+
+      it 'returns left value with validation' do
+        expect(apply).to eql(MPrelude::Either::Left.new(validation))
+      end
+    end
+  end
+
   describe '.unparse' do
     context 'on unknown node type' do
       def apply

@@ -1,6 +1,7 @@
 # v0.5.2 2020-10-16
 
 * Fix unary csends to emit correctly.
+* Add `Unparser.unparse_validate` interface
 
 # v0.5.1 2020-10-09
 
