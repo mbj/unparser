@@ -45,7 +45,7 @@ module Unparser
       def effective_writer_class
         if details.binary_syntax_allowed?
           Binary
-        elsif details.selector_unary_operator?
+        elsif details.selector_unary_operator? && n_send?(node)
           Unary
         elsif write_as_attribute_assignment?
           AttributeAssignment
