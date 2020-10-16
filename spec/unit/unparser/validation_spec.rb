@@ -304,4 +304,41 @@ describe Unparser::Validation do
       end
     end
   end
+
+  describe '.from_node' do
+    def apply
+      described_class.from_node(node)
+    end
+
+    let(:attributes) do
+      {
+        generated_node:   right(s(:true)),
+        generated_source: right('true'),
+        identification:   '(string)',
+        original_node:    right(node),
+        original_source:  right('true')
+      }
+    end
+
+    context 'on valid original node' do
+      let(:node) { s(:true) }
+
+      it 'returns expected validator' do
+        expect(apply).to eql(described_class.new(attributes))
+      end
+    end
+
+    context 'on invalid original node' do
+      let(:node) { s(:foo) }
+
+      it 'returns expected validator' do
+        validator = apply
+
+        expect(validator.generated_node).to eql(left(nil))
+        expect(validator.generated_source.lmap(&:inspect)).to eql(left(Unparser::UnknownNodeError.new('Unknown node type: :foo').inspect))
+        expect(validator.original_source).to eql(validator.generated_source)
+        expect(validator.original_node).to eql(right(node))
+      end
+    end
+  end
 end

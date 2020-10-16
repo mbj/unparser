@@ -71,6 +71,27 @@ module Unparser
       )
     end
 
+    # Create validator from node
+    #
+    # @param [Parser::AST::Node] original_node
+    #
+    # @return [Validator]
+    def self.from_node(original_node)
+      generated_source = Unparser.unparse_either(original_node)
+
+      generated_node = generated_source
+        .lmap(&method(:const_unit))
+        .bind(&Unparser.public_method(:parse_either))
+
+      new(
+        identification:   '(string)',
+        original_source:  generated_source,
+        original_node:    MPrelude::Either::Right.new(original_node),
+        generated_source: generated_source,
+        generated_node:   generated_node
+      )
+    end
+
     # Create validator from file
     #
     # @param [Pathname] path
