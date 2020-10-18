@@ -40,7 +40,7 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.1)
       procto (~> 0.0.2)
-    mutant (0.9.13)
+    mutant (0.9.14)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       anima (~> 0.3.1)
@@ -53,11 +53,11 @@ GEM
       mprelude (~> 0.1.0)
       parser (~> 2.7.1)
       procto (~> 0.0.2)
-      unparser (~> 0.4.8)
+      unparser (~> 0.5.2)
       variable (~> 0.0.1)
     mutant-license (0.1.0)
-    mutant-rspec (0.9.13)
-      mutant (~> 0.9.13)
+    mutant-rspec (0.9.14)
+      mutant (~> 0.9.14)
       rspec-core (>= 3.8.0, < 4.0.0)
     parallel (1.19.2)
     parser (2.7.2.0)
@@ -105,9 +105,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mutant (~> 0.9.13)
+  mutant (~> 0.9.14)
   mutant-license!
-  mutant-rspec (~> 0.9.13)
+  mutant-rspec (~> 0.9.14)
   rspec (~> 3.9)
   rspec-core (~> 3.9)
   rspec-its (~> 1.2.0)
