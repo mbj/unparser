@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.5.2'
+  gem.version     = '0.5.3'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -14,6 +14,8 @@ Gem::Specification.new do |gem|
   gem.require_paths    = %w[lib]
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
+
+  gem.required_ruby_version = '>= 2.5'
 
   gem.add_dependency('abstract_type', '~> 0.0.7')
   gem.add_dependency('adamantium',    '~> 0.2.0')
