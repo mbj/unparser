@@ -4,7 +4,7 @@ unparser
 ![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
-Generate equivalent source for ASTs from whitequarks [parser](https://github.com/whitequark/parser).
+Generate equivalent source for ASTs from [parser](https://github.com/whitequark/parser).
 
 The following constraints apply:
 
@@ -12,8 +12,13 @@ The following constraints apply:
 * Only support for the [modern AST](https://github.com/whitequark/parser/#usage) format
 * Only support for Ruby >= 2.5
 
-It serves well for [mutant](https://github.com/mbj/mutant) mutators and the in-memory vendoring for self hosting,
-and other tooling.
+Notable Users:
+
+* [mutant](https://github.com/mbj/mutant) - Code review engine via mutation testing.
+* [ruby-next](https://github.com/ruby-next/ruby-next) - Ruby Syntax Backports.
+* May other [reverse-dependencies](https://rubygems.org/gems/unparser/reverse_dependencies).
+
+(if you want your tool to be mentioned here please PR the addition with a TLDR of your use case).
 
 Public API:
 -----------
@@ -86,11 +91,21 @@ RUBY
 
 generated = Unparser.unparse(node) # ["foo", "bar"], NOT %w[foo bar] !
 
-code == generated                            # false, not identical code
+code == generated                 # false, not identical code
 Unparser.parse(generated) == node # true, but identical AST
 ```
 
 Summary: unparser does not reproduce your source! It produces equivalent source.
+
+Ruby Versions:
+--------------
+
+Unparsers primay reason for existance is mutant and its
+supported [Ruby-Versions](https://github.com/mbj/mutant#ruby-versions).
+
+Basically: All non EOL MRI releases.
+
+If you need to generate Ruby Syntax outside of this band feel free to contact me (email in gemspec).
 
 Testing:
 --------
