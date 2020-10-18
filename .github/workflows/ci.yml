@@ -17,16 +17,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.6', '2.7']
+        ruby: [ruby-2.6, ruby-2.7]
         os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: |
-        gem install bundler
-        bundle install
+    - run: bundle install
     - run: bundle exec rspec spec/unit
   ruby-integration-spec:
     name: Integration Specs
@@ -35,16 +33,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.6', '2.7']
+        ruby: [ruby-2.6, ruby-2.7]
         os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: |
-        gem install bundler
-        bundle install
+    - run: bundle install
     - run: bundle exec rspec spec/integration
   ruby-rubocop:
     name: Rubocop
@@ -53,14 +49,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.6', '2.7']
+        ruby: [ruby-2.6, ruby-2.7]
         os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: |
-        gem install bundler
-        bundle install
+    - run: bundle install
     - run: bundle exec rubocop
