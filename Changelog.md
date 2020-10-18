@@ -1,3 +1,7 @@
+# v0.5.3 2020-10-18
+
+* Add required ruby version '>= 2.5' to gemspec.
+
 # v0.5.2 2020-10-16
 
 * Fix unary csends to emit correctly.
