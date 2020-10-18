@@ -362,14 +362,22 @@ describe Unparser, mutant_expression: 'Unparser*' do
 
   describe 'corpus' do
     let(:version_excludes) do
+      excludes = []
+
       if RUBY_VERSION < '2.7.'
-        %w[
-          --ignore test/corpus/literal/pattern.rb
-          --ignore test/corpus/literal/since/27.rb
-        ]
-      else
-        []
+        excludes.concat(
+          %w[
+            test/corpus/literal/pattern.rb
+            test/corpus/literal/since/27.rb
+          ]
+        )
       end
+
+      if RUBY_VERSION < '2.6.'
+        excludes << 'test/corpus/literal/since/26.rb'
+      end
+
+      excludes.flat_map { |file| ['--ignore', file] }
     end
 
     it 'passes the literal corpus' do
