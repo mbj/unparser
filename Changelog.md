@@ -1,3 +1,7 @@
+# v0.5.4 2020-11-04
+
+* Fix forced ternary on control keyword [#191](https://github.com/mbj/unparser/pull/191)
+
 # v0.5.3 2020-10-18
 
 * Add required ruby version '>= 2.5' to gemspec.

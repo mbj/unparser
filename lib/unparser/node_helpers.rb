@@ -45,6 +45,7 @@ module Unparser
       ensure
       hash
       hash_pattern
+      if
       in_pattern
       int
       kwsplat
