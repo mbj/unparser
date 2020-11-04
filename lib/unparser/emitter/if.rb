@@ -8,6 +8,14 @@ module Unparser
 
       children :condition, :if_branch, :else_branch
 
+      def emit_ternary
+        visit(condition)
+        write(' ? ')
+        visit(if_branch)
+        write(' : ')
+        visit(else_branch)
+      end
+
     private
 
       def dispatch
