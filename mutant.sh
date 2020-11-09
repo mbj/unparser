@@ -1,6 +1,6 @@
 #/usr/bin/bash -ex
 
-bundle exec mutant                                                    \
+bundle exec mutant run                                                \
   --zombie                                                            \
   --ignore-subject 'Unparser::Builder#initialize'                     \
   --ignore-subject 'Unparser::CLI*'                                   \
