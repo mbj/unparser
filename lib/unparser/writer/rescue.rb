@@ -20,6 +20,10 @@ module Unparser
         end
       end
 
+      def emit_heredoc_reminders
+        emitter(body).emit_heredoc_reminders
+      end
+
       def emit_postcontrol
         visit(body)
         writer_with(Resbody, rescue_body).emit_postcontrol

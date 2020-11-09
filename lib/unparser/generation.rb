@@ -204,7 +204,9 @@ module Unparser
     end
 
     def emit_rescue_postcontrol(node)
-      writer_with(Writer::Rescue, node).emit_postcontrol
+      writer = writer_with(Writer::Rescue, node)
+      writer.emit_postcontrol
+      writer.emit_heredoc_reminders
     end
 
     def emit_rescue_regular(node)
