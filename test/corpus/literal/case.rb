@@ -29,3 +29,9 @@ when bar
 else
   :foo
 end
+case foo
+when *bar | baz
+end
+case foo
+when *bar.baz=1
+end
