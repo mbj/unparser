@@ -20,7 +20,7 @@ module Unparser
         ]
       )
 
-      FLAT_INTERPOLATION = %i[ivar cvar gvar].to_set.freeze
+      FLAT_INTERPOLATION = %i[ivar cvar gvar nth_ref].to_set.freeze
 
       private_constant(*constants(false))
 
