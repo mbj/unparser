@@ -102,7 +102,7 @@ describe 'Unparser on ruby corpus', mutant: false do
         )
       )
 
-    ALL = loader.apply(path).lmap(&:compact_message).from_right
+    ALL = loader.call(path).lmap(&:compact_message).from_right
   end
 
   Project::ALL.each do |project|
