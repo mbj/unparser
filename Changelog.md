@@ -1,3 +1,7 @@
+# v0.5.5 2020-12-24
+
+* Fix in-pattern without body [#231](https://github.com/mbj/unparser/pull/231)
+
 # v0.5.4 2020-11-04
 
 * Fix forced ternary on control keyword [#191](https://github.com/mbj/unparser/pull/191)

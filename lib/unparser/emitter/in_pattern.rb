@@ -27,6 +27,8 @@ module Unparser
           ws
           write('then')
           emit_body(branch)
+        else
+          nl
         end
       end
     end # InPattern
