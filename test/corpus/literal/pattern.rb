@@ -25,6 +25,9 @@ in 1 => a then
   true
 in ^x then
   true
+in 1
+in 2 then
+  true
 else
   true
 end
