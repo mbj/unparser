@@ -86,7 +86,6 @@ foo {
 }
 :"a\\
 b"
-<<~`HEREDOC`
-    x
-  #{foo}
-HEREDOC
+`  x
+#{foo}
+#`

@@ -75,20 +75,7 @@ module Unparser
       end
 
       def emit_normal_arguments
-        parentheses do
-          arguments.each_with_index do |node, index|
-            write(', ') unless index.zero?
-            emit_argument(node, index.succ.equal?(arguments.length))
-          end
-        end
-      end
-
-      def emit_argument(argument, last)
-        if n_hash?(argument) && last
-          writer_with(Emitter::Hash, argument).emit_last_argument_hash
-        else
-          visit(argument)
-        end
+        parentheses { delimited(arguments) }
       end
 
       def emit_heredoc_reminder(argument)

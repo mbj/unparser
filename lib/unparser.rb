@@ -117,20 +117,9 @@ module Unparser
     Parser::CurrentRuby.new(Builder.new).tap do |parser|
       parser.diagnostics.tap do |diagnostics|
         diagnostics.all_errors_are_fatal = true
-        diagnostics.consumer             = method(:consume_diagnostic)
       end
     end
   end
-
-  # Consume diagnostic
-  #
-  # @param [Parser::Diagnostic] diagnostic
-  #
-  # @return [undefined]
-  def self.consume_diagnostic(diagnostic)
-    Kernel.warn(diagnostic.render)
-  end
-  private_class_method :consume_diagnostic
 
   # Construct a parser buffer from string
   #
@@ -209,6 +198,9 @@ require 'unparser/emitter/undef'
 require 'unparser/emitter/variable'
 require 'unparser/emitter/xstr'
 require 'unparser/emitter/yield'
+require 'unparser/emitter/kwargs'
+require 'unparser/emitter/pair'
+require 'unparser/emitter/match_pattern'
 require 'unparser/writer'
 require 'unparser/writer/binary'
 require 'unparser/writer/dynamic_string'

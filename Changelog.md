@@ -1,3 +1,7 @@
+# v0.5.6 2020-12-25
+
+* Add full Ruby 3.0 Syntax support [#233](https://github.com/mbj/unparser/pull/233)
+
 # v0.5.5 2020-12-24
 
 * Fix in-pattern without body [#231](https://github.com/mbj/unparser/pull/231)

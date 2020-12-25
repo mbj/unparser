@@ -46,23 +46,6 @@ describe Unparser, mutant_expression: 'Unparser*' do
           .to raise_error(Parser::SyntaxError)
       end
     end
-
-    context 'warnings' do
-      before do
-        allow(Kernel).to receive(:warn)
-      end
-
-      it 'returns a parser that warns on diagnostics' do
-        expect { apply.parse(invalid_source_buffer) }
-          .to raise_error(Parser::SyntaxError)
-
-        expect(Kernel).to have_received(:warn)
-          .with([
-            "(string):1:4: error: unexpected token $end",
-            "(string):1: a +", "(string):1:    "
-          ])
-      end
-    end
   end
 
   describe '.parse' do
