@@ -33,8 +33,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency('parser',        '>= 3.0.0')
   gem.add_dependency('procto',        '~> 0.0.2')
 
-  gem.add_development_dependency('mutant',            '~> 0.10.21')
-  gem.add_development_dependency('mutant-rspec',      '~> 0.10.21')
+  gem.add_development_dependency('mutant',            '~> 0.10.22')
+  gem.add_development_dependency('mutant-rspec',      '~> 0.10.22')
   gem.add_development_dependency('rspec',             '~> 3.9')
   gem.add_development_dependency('rspec-core',        '~> 3.9')
   gem.add_development_dependency('rspec-its',         '~> 1.3.0')
