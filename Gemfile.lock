@@ -1,27 +1,3 @@
-GIT
-  remote: https://github.com/mbj/mutant
-  revision: a4fad01945bceb3e9d166e13d644fcd4081e70b7
-  branch: add/ruby-3.0
-  specs:
-    mutant (0.10.22)
-      abstract_type (~> 0.0.7)
-      adamantium (~> 0.2.0)
-      anima (~> 0.3.1)
-      ast (~> 2.2)
-      concord (~> 0.1.5)
-      diff-lcs (~> 1.3)
-      equalizer (~> 0.0.9)
-      ice_nine (~> 0.11.1)
-      memoizable (~> 0.4.2)
-      mprelude (~> 0.1.0)
-      parser (~> 3.0.0)
-      procto (~> 0.0.2)
-      unparser (~> 0.5.6)
-      variable (~> 0.0.1)
-    mutant-rspec (0.10.22)
-      mutant (= 0.10.22)
-      rspec-core (>= 3.8.0, < 4.0.0)
-
 PATH
   remote: .
   specs:
@@ -64,7 +40,25 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.1)
       procto (~> 0.0.2)
+    mutant (0.10.22)
+      abstract_type (~> 0.0.7)
+      adamantium (~> 0.2.0)
+      anima (~> 0.3.1)
+      ast (~> 2.2)
+      concord (~> 0.1.5)
+      diff-lcs (~> 1.3)
+      equalizer (~> 0.0.9)
+      ice_nine (~> 0.11.1)
+      memoizable (~> 0.4.2)
+      mprelude (~> 0.1.0)
+      parser (~> 3.0.0)
+      procto (~> 0.0.2)
+      unparser (~> 0.5.6)
+      variable (~> 0.0.1)
     mutant-license (0.1.1.2.2355046999240944981729280251890364410689.2)
+    mutant-rspec (0.10.22)
+      mutant (= 0.10.22)
+      rspec-core (>= 3.8.0, < 4.0.0)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -111,9 +105,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mutant!
+  mutant (~> 0.10.22)
   mutant-license!
-  mutant-rspec!
+  mutant-rspec (~> 0.10.22)
   rspec (~> 3.9)
   rspec-core (~> 3.9)
   rspec-its (~> 1.3.0)
