@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mbj/mutant
-  revision: 1ecdf3344f65f21b757e38fcc8f51d10f4a878e6
+  revision: a4fad01945bceb3e9d166e13d644fcd4081e70b7
   branch: add/ruby-3.0
   specs:
     mutant (0.10.22)
