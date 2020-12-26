@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.5.5'
+  gem.version     = '0.5.6'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('diff-lcs',      '~> 1.3')
   gem.add_dependency('equalizer',     '~> 0.0.9')
   gem.add_dependency('mprelude',      '~> 0.1.0')
-  gem.add_dependency('parser',        '>= 2.6.5')
+  gem.add_dependency('parser',        '>= 3.0.0')
   gem.add_dependency('procto',        '~> 0.0.2')
 
   gem.add_development_dependency('mutant',            '~> 0.10.21')

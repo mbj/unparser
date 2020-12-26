@@ -42,7 +42,7 @@ module Unparser
     private
 
       def heredoc_header
-        need_squiggly? ? '<<~HEREDOC' : '<<-HEREDOC'
+        '<<-HEREDOC'
       end
 
       def heredoc?
@@ -55,11 +55,7 @@ module Unparser
 
       def emit_heredoc_body
         nl
-        if need_squiggly?
-          emit_squiggly_heredoc_body
-        else
-          emit_normal_heredoc_body
-        end
+        emit_normal_heredoc_body
       end
 
       def emit_heredoc_footer
@@ -117,10 +113,6 @@ module Unparser
       def nl_last_child?
         last = children.last
         n_str?(last) && last.children.first[-1].eql?("\n")
-      end
-
-      def need_squiggly?
-        children.any?(s(:str, ''))
       end
 
       def emit_squiggly_heredoc_body

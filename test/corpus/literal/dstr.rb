@@ -1,21 +1,19 @@
 if true
-  <<~HEREDOC
-    #{}a
-  HEREDOC
+  "#{}a"
 end
 if true
-  <<~HEREDOC
-    a
-    #{}a
-    b
+  <<-HEREDOC
+a
+#{}a
+b
   HEREDOC
   x
 end
-<<~HEREDOC
-  \#{}\#{}
-  #{}
-  #{}
-  #{}
+<<-HEREDOC
+\#{}\#{}
+#{}
+#{}
+#{}
 HEREDOC
 <<-HEREDOC rescue nil
 #{}

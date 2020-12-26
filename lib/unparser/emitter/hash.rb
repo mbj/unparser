@@ -4,10 +4,6 @@ module Unparser
   class Emitter
     # Emitter for Hash literals
     class Hash < self
-      BAREWORD = /\A[A-Za-z_][A-Za-z_0-9]*[?!]?\z/.freeze
-
-      private_constant(*constants(false))
-
       handle :hash
 
       def emit_last_argument_hash
@@ -41,34 +37,8 @@ module Unparser
       end
 
       def emit_hash_body
-        delimited(children, &method(:emit_hash_member))
+        delimited(children)
       end
-
-      def emit_hash_member(node)
-        if n_kwsplat?(node)
-          visit(node)
-        else
-          emit_pair(node)
-        end
-      end
-
-      def emit_pair(pair)
-        key, value = *pair.children
-
-        if colon?(key)
-          write(key.children.first.to_s, ': ')
-        else
-          visit(key)
-          write(' => ')
-        end
-
-        visit(value)
-      end
-
-      def colon?(key)
-        n_sym?(key) && BAREWORD.match?(key.children.first)
-      end
-
     end # Hash
   end # Emitter
 end # Unparser

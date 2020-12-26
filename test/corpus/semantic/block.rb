@@ -10,10 +10,10 @@ foo do
   nil
 end
 
-foo do |_1|
+foo do |a|
 end
 
-foo(<<-DOC) do |_1|
+foo(<<-DOC) do |a|
   b
 DOC
   a
