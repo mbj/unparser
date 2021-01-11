@@ -23,3 +23,8 @@ HEREDOC
 "a#$a"
 "a#@a"
 "a#@@a"
+if true
+  return <<-HEREDOC
+    #{42}
+  HEREDOC
+end
