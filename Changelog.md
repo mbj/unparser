@@ -1,3 +1,7 @@
+# v0.5.7 2020-12-25
+
+* Fix heredocs in return arguments [#244](https://github.com/mbj/unparser/pull/244)
+
 # v0.5.6 2020-12-25
 
 * Add full Ruby 3.0 Syntax support [#233](https://github.com/mbj/unparser/pull/233)
