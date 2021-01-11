@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
-require 'abstract_type'
-require 'anima'
-require 'concord'
 require 'diff/lcs'
 require 'diff/lcs/hunk'
-require 'mprelude'
 require 'optparse'
 require 'parser/current'
-require 'procto'
 require 'set'
+
+require 'unparser/equalizer'
+require 'unparser/adamantium'
+require 'unparser/adamantium/method_builder'
+require 'unparser/abstract_type'
+
+require 'unparser/concord'
+require 'unparser/either'
+require 'unparser/anima'
+require 'unparser/anima/attribute'
+require 'unparser/anima/error'
 
 # Library namespace
 module Unparser
@@ -27,7 +33,7 @@ module Unparser
   EMPTY_STRING = ''.freeze
   EMPTY_ARRAY  = [].freeze
 
-  private_constant(*constants(false))
+  private_constant(*constants(false) - %i[Adamantium AbstractType Anima Concord Either Equalizer Memoizable])
 
   # Error raised when unparser encounters an invalid AST
   class InvalidNodeError < RuntimeError
@@ -74,9 +80,9 @@ module Unparser
     validation = Validation.from_string(generated)
 
     if validation.success?
-      MPrelude::Either::Right.new(generated)
+      Either::Right.new(generated)
     else
-      MPrelude::Either::Left.new(validation)
+      Either::Left.new(validation)
     end
   end
 
@@ -88,8 +94,7 @@ module Unparser
   #
   # @return [Either<Exception, String>]
   def self.unparse_either(node)
-    MPrelude::Either
-      .wrap_error(Exception) { unparse(node) }
+    Either.wrap_error(Exception) { unparse(node) }
   end
 
   # Parse string into AST
@@ -105,9 +110,9 @@ module Unparser
   #
   # @param [String] source
   #
-  # @return [MPrelude::Either<Parser::SyntaxError, (Parser::ASTNode, nil)>]
+  # @return [Either<Parser::SyntaxError, (Parser::ASTNode, nil)>]
   def self.parse_either(source)
-    MPrelude::Either.wrap_error(Parser::SyntaxError) do
+    Either.wrap_error(Parser::SyntaxError) do
       parser.parse(buffer(source))
     end
   end

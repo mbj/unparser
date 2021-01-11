@@ -28,11 +28,11 @@ module Unparser
         RATIONAL_FORMAT = 'i'.freeze
 
         MAP =
-          IceNine.deep_freeze(
+          {
             ::Float    => :float,
             ::Rational => :rational,
             ::Integer  => :int
-          )
+          }.freeze
 
       private
 

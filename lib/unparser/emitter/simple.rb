@@ -4,7 +4,7 @@ module Unparser
   class Emitter
     # Emitter for simple nodes that generate a single token
     class Simple < self
-      MAP = IceNine.deep_freeze(
+      MAP = {
         __ENCODING__:      '__ENCODING__',
         __FILE__:          '__FILE__',
         __LINE__:          '__LINE__',
@@ -19,7 +19,7 @@ module Unparser
         self:              'self',
         true:              'true',
         zsuper:            'super'
-      )
+      }.freeze
 
       handle(*MAP.keys)
 

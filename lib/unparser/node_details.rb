@@ -6,7 +6,7 @@ module Unparser
 
     def self.included(descendant)
       descendant.class_eval do
-        include Adamantium::Flat, Concord.new(:node)
+        include Adamantium, Concord.new(:node)
 
         extend DSL
       end

@@ -4,7 +4,7 @@ module Unparser
   module Writer
     # Writer for send
     class Send
-      include Writer, Adamantium::Flat, Constants, Generation
+      include Writer, Adamantium, Constants, Generation
 
       INDEX_ASSIGN    = :'[]='
       INDEX_REFERENCE = :'[]'

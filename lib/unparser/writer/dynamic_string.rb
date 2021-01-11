@@ -3,22 +3,20 @@
 module Unparser
   module Writer
     class DynamicString
-      include Writer, Adamantium::Flat
+      include Writer, Adamantium
 
-      PATTERNS_2 = IceNine.deep_freeze(
+      PATTERNS_2 =
         [
-          %i[str_empty begin],
-          %i[begin str_nl]
-        ]
-      )
+          %i[str_empty begin].freeze,
+          %i[begin str_nl].freeze
+        ].freeze
 
-      PATTERNS_3 = IceNine.deep_freeze(
+      PATTERNS_3 =
         [
-          %i[begin str_nl_eol str_nl_eol],
-          %i[str_nl_eol begin str_nl_eol],
-          %i[str_ws begin str_nl_eol]
-        ]
-      )
+          %i[begin str_nl_eol str_nl_eol].freeze,
+          %i[str_nl_eol begin str_nl_eol].freeze,
+          %i[str_ws begin str_nl_eol].freeze
+        ].freeze
 
       FLAT_INTERPOLATION = %i[ivar cvar gvar nth_ref].to_set.freeze
 

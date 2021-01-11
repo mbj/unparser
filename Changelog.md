@@ -1,7 +1,10 @@
 # v0.6.0 unreleased
 
+[245](https://github.com/mbj/unparser/pull/245)
+
 * Change to raise Unparser::InvalidNode error in some cases when unparsing invalid AST.
 * Change `Unparser.unparse` into an official public API.
+* Remove lots of dependencies.
 
 # v0.5.7 2020-12-25
 

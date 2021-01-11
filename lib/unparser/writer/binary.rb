@@ -3,7 +3,7 @@
 module Unparser
   module Writer
     class Binary
-      include Writer, Adamantium::Flat
+      include Writer, Adamantium
 
       children :left, :right
 

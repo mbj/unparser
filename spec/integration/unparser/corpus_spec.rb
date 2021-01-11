@@ -1,11 +1,12 @@
 require 'spec_helper'
+
 describe 'Unparser on ruby corpus', mutant: false do
   ROOT = Pathname.new(__FILE__).parent.parent.parent.parent
 
   TMP = ROOT.join('tmp')
 
   class Project
-    include Anima.new(:name, :repo_uri, :repo_ref, :exclude)
+    include Unparser::Anima.new(:name, :repo_uri, :repo_ref, :exclude)
 
     # Perform verification via unparser cli
     #
@@ -94,7 +95,7 @@ describe 'Unparser on ruby corpus', mutant: false do
                     ]
                   ),
                   transform::Hash::Symbolize.new,
-                  transform::Exception.new(Anima::Error, Project.public_method(:new))
+                  transform::Exception.new(Unparser::Anima::Error, Project.public_method(:new))
                 ]
               )
             )

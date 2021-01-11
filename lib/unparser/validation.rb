@@ -3,7 +3,7 @@
 module Unparser
   # Validation of unparser results
   class Validation
-    include Adamantium::Flat, Anima.new(
+    include Adamantium, Anima.new(
       :generated_node,
       :generated_source,
       :identification,
@@ -64,7 +64,7 @@ module Unparser
 
       new(
         identification:   '(string)',
-        original_source:  MPrelude::Either::Right.new(original_source),
+        original_source:  Either::Right.new(original_source),
         original_node:    original_node,
         generated_source: generated_source,
         generated_node:   generated_node
@@ -86,7 +86,7 @@ module Unparser
       new(
         identification:   '(string)',
         original_source:  generated_source,
-        original_node:    MPrelude::Either::Right.new(original_node),
+        original_node:    Either::Right.new(original_node),
         generated_source: generated_source,
         generated_node:   generated_node
       )
