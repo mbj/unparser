@@ -1,6 +1,7 @@
 require 'anima'
 require 'mutant'
 require 'pathname'
+require 'rspec/its'
 require 'timeout'
 require 'unparser'
 require 'yaml'

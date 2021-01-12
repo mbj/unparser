@@ -1,3 +1,8 @@
+# v0.6.0 unreleased
+
+* Change to raise Unparser::InvalidNode error in some cases when unparsing invalid AST.
+* Change `Unparser.unparse` into an official public API.
+
 # v0.5.7 2020-12-25
 
 * Fix heredocs in return arguments [#244](https://github.com/mbj/unparser/pull/244)

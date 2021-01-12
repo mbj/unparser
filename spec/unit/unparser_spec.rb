@@ -218,6 +218,18 @@ describe Unparser, mutant_expression: 'Unparser*' do
       assert_source ''
     end
 
+    context 'invalid send selector' do
+      let(:node) { s(:send, nil, :module) }
+
+      it 'raises InvalidNode error' do
+        expect { Unparser.unparse(node) }.to raise_error do |error|
+          expect(error).to be_a(Unparser::InvalidNodeError)
+          expect(error.message).to eql('Invalid selector for send node: :module')
+          expect(error.node).to be(node)
+        end
+      end
+    end
+
     %w(next return break).each do |keyword|
       context keyword do
         assert_source "#{keyword} 1"

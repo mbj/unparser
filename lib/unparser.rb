@@ -29,6 +29,17 @@ module Unparser
 
   private_constant(*constants(false))
 
+  # Error raised when unparser encounters an invalid AST
+  class InvalidNodeError < RuntimeError
+    attr_reader :node
+
+    def initialize(message, node)
+      super(message)
+      @node = node
+      freeze
+    end
+  end
+
   # Unparse an AST (and, optionally, comments) into a string
   #
   # @param [Parser::AST::Node, nil] node
@@ -36,8 +47,10 @@ module Unparser
   #
   # @return [String]
   #
-  # @api private
+  # @raise InvalidNodeError
+  #   if the node passed is invalid
   #
+  # @api public
   def self.unparse(node, comment_array = [])
     return '' if node.nil?
 
