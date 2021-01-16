@@ -4,7 +4,7 @@ module Unparser
   module Writer
     # Writer for send
     class Send
-      include Writer, Adamantium::Flat, Constants, Generation
+      include Writer, Adamantium, Constants, Generation
 
       INDEX_ASSIGN    = :'[]='
       INDEX_REFERENCE = :'[]'
@@ -91,7 +91,11 @@ module Unparser
       end
 
       def parses_as_constant?
-        n_const?(Unparser.parse(selector.to_s))
+        test = Unparser.parse_either(selector.to_s).from_right do
+          fail InvalidNodeError.new("Invalid selector for send node: #{selector.inspect}", node)
+        end
+
+        n_const?(test)
       end
 
       def details

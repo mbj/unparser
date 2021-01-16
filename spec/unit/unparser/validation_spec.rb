@@ -11,14 +11,6 @@ describe Unparser::Validation do
     )
   end
 
-  def right(value)
-    MPrelude::Either::Right.new(value)
-  end
-
-  def left(value)
-    MPrelude::Either::Left.new(value)
-  end
-
   let(:generated_node)   { right(s(:send, s(:int, 1), :foo)) }
   let(:generated_source) { right('1.foo')                    }
   let(:identification)   { 'example-identification'          }

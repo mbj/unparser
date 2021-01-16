@@ -5,7 +5,7 @@ module Unparser
 
   # Emitter base class
   class Emitter
-    include Adamantium::Flat, AbstractType, Constants, Generation, NodeHelpers
+    include Adamantium, AbstractType, Constants, Generation, NodeHelpers
     include Anima.new(:buffer, :comments, :node, :local_variable_scope)
 
     public :node

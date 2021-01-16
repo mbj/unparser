@@ -87,7 +87,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       let(:source) { 'self[1]=2' }
 
       it 'returns right value with expected AST' do
-        expect(apply).to eql(MPrelude::Either::Right.new(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2))))
+        expect(apply).to eql(right(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2))))
       end
     end
 
@@ -95,7 +95,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       let(:source) { '' }
 
       it 'returns right value with nil' do
-        expect(apply).to eql(MPrelude::Either::Right.new(nil))
+        expect(apply).to eql(right(nil))
       end
     end
 
@@ -106,7 +106,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
         result = apply
 
         # Syntax errors that compare nicely under #eql? are hard to construct
-        expect(result).to be_instance_of(MPrelude::Either::Left)
+        expect(result).to be_instance_of(Unparser::Either::Left)
         expect(result.from_left).to be_instance_of(Parser::SyntaxError)
       end
     end
@@ -126,13 +126,13 @@ describe Unparser, mutant_expression: 'Unparser*' do
         end
 
         it 'returns right value with generated source' do
-          expect(apply).to eql(MPrelude::Either::Right.new('true # foo'))
+          expect(apply).to eql(right('true # foo'))
         end
       end
 
       context 'without comments' do
         it 'returns right value with generated source' do
-          expect(apply).to eql(MPrelude::Either::Right.new('true'))
+          expect(apply).to eql(right('true'))
         end
       end
     end
@@ -147,7 +147,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       end
 
       it 'returns left value with validation' do
-        expect(apply).to eql(MPrelude::Either::Left.new(validation))
+        expect(apply).to eql(left(validation))
       end
     end
   end
@@ -216,6 +216,18 @@ describe Unparser, mutant_expression: 'Unparser*' do
 
     context 'on empty source' do
       assert_source ''
+    end
+
+    context 'invalid send selector' do
+      let(:node) { s(:send, nil, :module) }
+
+      it 'raises InvalidNode error' do
+        expect { Unparser.unparse(node) }.to raise_error do |error|
+          expect(error).to be_a(Unparser::InvalidNodeError)
+          expect(error.message).to eql('Invalid selector for send node: :module')
+          expect(error.node).to be(node)
+        end
+      end
     end
 
     %w(next return break).each do |keyword|

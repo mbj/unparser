@@ -18,7 +18,7 @@ def default_builder_attributes
 end
 
 class Test
-  include Adamantium::Flat, Anima.new(
+  include Adamantium, Anima.new(
     :default_builder_attributes,
     :group_index,
     :name,
@@ -61,7 +61,7 @@ class Test
   end
 
   def right(value)
-    MPrelude::Either::Right.new(value)
+    Unparser::Either::Right.new(value)
   end
 
   def validation
@@ -89,7 +89,7 @@ class Test
   end
 
   def parse_either(source, identification)
-    MPrelude::Either.wrap_error(Parser::SyntaxError) do
+    Unparser::Either.wrap_error(Parser::SyntaxError) do
       parser.parse(Unparser.buffer(source, identification))
     end
   end

@@ -3,7 +3,7 @@
 module Unparser
   # Class to create diffs from source code
   class Diff
-    include Adamantium::Flat, Concord.new(:old, :new)
+    include Adamantium, Concord.new(:old, :new)
 
     ADDITION = '+'
     DELETION = '-'

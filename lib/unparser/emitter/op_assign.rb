@@ -7,10 +7,10 @@ module Unparser
     class BinaryAssign < self
       children :target, :expression
 
-      MAP = IceNine.deep_freeze(
+      MAP = {
         and_asgn: '&&=',
         or_asgn:  '||='
-      )
+      }.freeze
 
       handle(*MAP.keys)
 

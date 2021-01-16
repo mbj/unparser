@@ -6,8 +6,8 @@ AllCops:
     - 'Gemfile'
     - 'Gemfile.triage'
   Exclude:
-    - lib/unparser/precedence/data.rb
-    - tmp
+    - tmp/**/*
+    - vendor/**/*
   NewCops: enable
 
 # Avoid parameter lists longer than five parameters.

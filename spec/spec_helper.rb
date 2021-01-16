@@ -1,8 +1,8 @@
-require 'anima'
-require 'mutant'
 require 'pathname'
+require 'rspec/its'
 require 'timeout'
 require 'unparser'
+require 'mutant'
 require 'yaml'
 
 require 'parser/current'
@@ -32,6 +32,14 @@ end
 module SpecHelper
   def s(type, *children)
     Parser::AST::Node.new(type, children)
+  end
+
+  def right(value)
+    Unparser::Either::Right.new(value)
+  end
+
+  def left(value)
+    Unparser::Either::Left.new(value)
   end
 end
 

@@ -36,7 +36,7 @@ module Unparser
         handle :indexasgn
 
         VALUE_RANGE     = (1..-2).freeze
-        NO_VALUE_PARENT = IceNine.deep_freeze(%i[and_asgn op_asgn or_asgn].to_set)
+        NO_VALUE_PARENT = %i[and_asgn op_asgn or_asgn].to_set.freeze
 
         private_constant(*constants(false))
 

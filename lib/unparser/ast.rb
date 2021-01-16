@@ -3,7 +3,6 @@
 module Unparser
   # Namespace for AST processing tools
   module AST
-
     FIRST_CHILD = ->(node) { node.children.first }.freeze
     TAUTOLOGY   = ->(_node) { true }.freeze
 
@@ -79,7 +78,7 @@ module Unparser
 
     # AST enumerator
     class Enumerator
-      include Adamantium::Flat, Concord.new(:node, :controller), Enumerable
+      include Adamantium, Concord.new(:node, :controller), Enumerable
 
       # Return new instance
       #

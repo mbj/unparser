@@ -3,7 +3,7 @@
 module Unparser
   module Writer
     class Rescue
-      include Writer, Adamantium::Flat
+      include Writer, Adamantium
 
       children :body, :rescue_body
 

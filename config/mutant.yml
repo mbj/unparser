@@ -4,3 +4,38 @@ includes:
 integration: rspec
 requires:
 - unparser
+matcher:
+  subjects:
+  - 'Unparser*'
+  ignore:
+  # API changed between ruby versions and each of them
+  # have a different minimal form
+  - 'Unparser::Concord#define_readers'
+  - 'Unparser::Builder#initialize'
+  - 'Unparser::CLI*'
+  - 'Unparser::Emitter#emit_comments'
+  - 'Unparser::Emitter#emit_comments_before'
+  - 'Unparser::Emitter#emit_eol_comments'
+  - 'Unparser::Emitter.handle'
+  - 'Unparser::Emitter::Args#normal_arguments'
+  - 'Unparser::Emitter::Args#shadowargs'
+  - 'Unparser::Emitter::Array#emitters'
+  - 'Unparser::Emitter::Binary#writer'
+  - 'Unparser::Emitter::Block#target_writer'
+  - 'Unparser::Emitter::Class#dispatch'
+  - 'Unparser::Emitter::Class#local_variable_scope'
+  - 'Unparser::Emitter::Def#local_variable_scope'
+  - 'Unparser::Emitter::HashPattern#write_symbol_body'
+  - 'Unparser::Emitter::LocalVariableRoot*'
+  - 'Unparser::Emitter::LocalVariableRoot.included'
+  - 'Unparser::Emitter::Module#local_variable_scope'
+  - 'Unparser::Emitter::Root#local_variable_scope'
+  - 'Unparser::Emitter::Send#writer'
+  - 'Unparser::NodeDetails.included'
+  - 'Unparser::Validation.from_string'
+  - 'Unparser::Validation::Literal*'
+  - 'Unparser::Writer.included'
+  - 'Unparser::Writer::Binary#left_emitter'
+  - 'Unparser::Writer::Binary#right_emitter'
+  - 'Unparser::Writer::Send#details'
+  - 'Unparser::Writer::Send#effective_writer'
