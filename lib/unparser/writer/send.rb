@@ -6,8 +6,8 @@ module Unparser
     class Send
       include Writer, Adamantium, Constants, Generation
 
-      INDEX_ASSIGN    = :'[]='
-      INDEX_REFERENCE = :'[]'
+      INDEX_ASSIGN    = :[]=
+      INDEX_REFERENCE = :[]
 
       OPERATORS = {
         csend: '&.',
