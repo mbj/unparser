@@ -17,7 +17,7 @@ module Unparser
 
           write(MAP.fetch(name, name).to_s)
 
-          if n_int?(receiver) && selector.equal?(:'+@')
+          if n_int?(receiver) && selector.equal?(:+@)
             write('+')
           end
 
