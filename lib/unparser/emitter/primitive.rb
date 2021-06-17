@@ -7,18 +7,33 @@ module Unparser
 
       children :value
 
-      # Emitter for primitives based on Object#inspect
-      class Inspect < self
+      class Str < self
 
-        handle :sym, :str
+        handle :str
 
       private
 
         def dispatch
-          write(value.inspect)
+          new_loc = buffer.append(value.inspect)
+          return unless callback
+
+          new_loc_adjusted = (new_loc.first + 1)...(new_loc.last - 1)
+          callback.call(buffer, node.location.expression.to_range, new_loc_adjusted)
         end
 
-      end # Inspect
+      end # Str
+
+      class Sym < self
+
+        handle :sym
+
+      private
+
+        def dispatch
+          write_loc(value.inspect, node.location.expression.to_range)
+        end
+
+      end # Sym
 
       # Emitter for complex literals
       class Complex < self
