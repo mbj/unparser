@@ -27,7 +27,7 @@ module Unparser
       end
 
       def emit_selector
-        write(details.string_selector)
+        write_loc(details.string_selector, node.location.selector.to_range)
       end
 
       def emit_heredoc_reminders
@@ -59,7 +59,7 @@ module Unparser
       end
 
       def emit_operator
-        write(OPERATORS.fetch(node.type))
+        write_loc(OPERATORS.fetch(node.type), node.location.dot.to_range)
       end
 
       def emit_arguments

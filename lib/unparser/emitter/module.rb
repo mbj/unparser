@@ -13,7 +13,8 @@ module Unparser
     private
 
       def dispatch
-        write('module ')
+        write_loc('module', node.location.keyword.to_range)
+        write(' ')
         visit(name)
         emit_optional_body(body)
         k_end

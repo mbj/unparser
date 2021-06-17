@@ -6,7 +6,7 @@ module Unparser
   # Emitter base class
   class Emitter
     include Adamantium, AbstractType, Constants, Generation, NodeHelpers
-    include Anima.new(:buffer, :comments, :node, :local_variable_scope)
+    include Anima.new(:buffer, :comments, :node, :local_variable_scope, :callback)
 
     public :node
 
@@ -67,7 +67,7 @@ module Unparser
     # @api private
     #
     # rubocop:disable Metrics/ParameterLists
-    def self.emitter(buffer:, comments:, node:, local_variable_scope:)
+    def self.emitter(buffer:, comments:, node:, local_variable_scope:, callback:)
       type = node.type
 
       klass = REGISTRY.fetch(type) do
@@ -78,7 +78,8 @@ module Unparser
         buffer:               buffer,
         comments:             comments,
         local_variable_scope: local_variable_scope,
-        node:                 node
+        node:                 node,
+        callback:             callback
       )
     end
     # rubocop:enable Metrics/ParameterLists

@@ -90,17 +90,27 @@ module Unparser
       strings.each(&buffer.method(:append))
     end
 
+    def write_loc(strings, old_location, new_location = nil)
+      locs = Array(strings).map(&buffer.method(:append))
+      return unless callback
+
+      if old_location
+        new_location ||= locs.first.first...locs.last.last
+        callback.call(buffer, old_location, new_location)
+      end
+    end
+
     def k_end
       buffer.indent
       emit_comments_before(:end)
       buffer.unindent
-      write('end')
+      write_loc('end', node.location.end.to_range)
     end
 
     def parentheses(open = '(', close = ')')
-      write(open)
+      write_loc(open, node.location.begin.to_range) if node.location.respond_to?(:begin)
       yield
-      write(close)
+      write_loc(close, node.location.end.to_range) if node.location.respond_to?(:begin)
     end
 
     def indented

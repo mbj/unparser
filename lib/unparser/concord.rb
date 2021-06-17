@@ -8,7 +8,7 @@ module Unparser
     include Adamantium, Equalizer.new(:names)
 
     # The maximum number of objects the hosting class is composed of
-    MAX_NR_OF_OBJECTS = 3
+    MAX_NR_OF_OBJECTS = 4
 
     # Return names
     #
