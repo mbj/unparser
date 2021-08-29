@@ -5,7 +5,7 @@
   exclude: []
 - name: mutant
   repo_uri: 'https://github.com/mbj/mutant.git'
-  repo_ref: 'origin/master'
+  repo_ref: 'origin/main'
   exclude: []
 - name: yaks
   repo_uri: 'https://github.com/plexus/yaks.git'

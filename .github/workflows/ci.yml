@@ -1,6 +1,9 @@
 name: CI
 
-on: push
+on:
+  pull_request: {}
+  push:
+    branches: main
 
 jobs:
   base:
@@ -43,7 +46,7 @@ jobs:
       with:
         bundler-cache: true
         ruby-version: ${{ matrix.ruby }}
-    - run: bundle exec mutant run --since origin/master --zombie
+    - run: bundle exec mutant run --since HEAD~1 --zombie
   ruby-integration-spec:
     name: Integration Specs
     runs-on: ${{ matrix.os }}
