@@ -10,7 +10,7 @@ The following constraints apply:
 
 * No support for macruby extensions
 * Only support for the [modern AST](https://github.com/whitequark/parser/#usage) format
-* Only support for Ruby >= 2.5
+* Only support for Ruby >= 2.6
 
 Notable Users:
 
@@ -110,7 +110,7 @@ If you need to generate Ruby Syntax outside of this band feel free to contact me
 Testing:
 --------
 
-Unparser currently successfully round trips almost all ruby code around. Using MRI-2.5.x.
+Unparser currently successfully round trips almost all ruby code around. Using Ruby >= 2.6.
 If there is a non round trippable example that is NOT subjected to known [Limitations](#limitations).
 please report a bug.
 

@@ -114,9 +114,9 @@ module Unparser
     # @api private
     #
     def capture_content
-      size_before = @content.size
+      size_before = content.size
       yield
-      @content[size_before..-1]
+      content[size_before..]
     end
 
     # Write raw fragment to buffer

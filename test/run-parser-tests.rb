@@ -27,7 +27,7 @@ class Test
     :rubies
   )
 
-  TARGET_RUBIES = %w[2.5 2.6 2.7]
+  TARGET_RUBIES = %w[2.6 2.7]
 
   EXPECT_FAILURE = {}.freeze
 

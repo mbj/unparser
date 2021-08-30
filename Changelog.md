@@ -1,6 +1,12 @@
-# v0.6.0 unreleased
+# v0.6.1 unreleased
 
-[245](https://github.com/mbj/unparser/pull/245)
+[#268](https://github.com/mbj/unparser/pull/268)
+
+* Remove ruby 2.5 support since its EOL.
+
+# v0.6.0 2021-01-06
+
+[#245](https://github.com/mbj/unparser/pull/245)
 
 * Change to raise Unparser::InvalidNode error in some cases when unparsing invalid AST.
 * Change `Unparser.unparse` into an official public API.
