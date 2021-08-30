@@ -60,7 +60,7 @@ module Unparser
       end
 
       def write_symbol_body(symbol)
-        write(symbol.inspect[1..-1])
+        write(symbol.inspect[1..])
       end
     end # Pin
   end # Emitter

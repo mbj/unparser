@@ -48,7 +48,7 @@ module Unparser
       memoize :assignment?
 
       def arguments
-        children[2..-1]
+        children[2..]
       end
       memoize :arguments
 
