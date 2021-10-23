@@ -101,7 +101,8 @@ module Unparser
       def visibility
         if    @descendant.private_method_defined?(@method_name)   then :private
         elsif @descendant.protected_method_defined?(@method_name) then :protected
-        else                                                           :public
+        else
+          :public
         end
       end
 
