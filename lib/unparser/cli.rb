@@ -76,6 +76,7 @@ module Unparser
       @targets = []
 
       @fail_fast  = false
+      @start_with = nil
       @success    = true
       @validation = :validation
       @verbose    = false
