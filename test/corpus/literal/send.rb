@@ -68,6 +68,8 @@ foo.bar(foo, {})
 foo.bar({ foo: boz }, boz)
 foo.bar=:baz
 foo(a: b)
+foo.&(a: b)
+foo.&(**a)
 foo[*baz]
 foo[1, 2]
 foo[]

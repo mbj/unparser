@@ -36,18 +36,20 @@ module Unparser
       args
       array
       array_pattern
-      empty_else
       begin
       block
       cbase
       const
       dstr
+      empty_else
       ensure
       hash
       hash_pattern
       if
       in_pattern
       int
+      kwarg
+      kwargs
       kwsplat
       lambda
       match_rest
