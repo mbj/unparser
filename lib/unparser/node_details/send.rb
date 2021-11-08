@@ -19,7 +19,10 @@ module Unparser
       end
 
       def binary_syntax_allowed?
-        selector_binary_operator? && arguments.one? && !n_splat?(arguments.first)
+        selector_binary_operator?        \
+          && arguments.one?              \
+          && !n_splat?(arguments.first)  \
+          && !n_kwargs?(arguments.first)
       end
 
       def selector_unary_operator?
