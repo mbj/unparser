@@ -80,3 +80,4 @@ self.foo=:bar
 (a + b) / c.-(*f)
 x(**foo)
 foo&.!
+foo.~(b)
