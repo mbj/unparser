@@ -1,4 +1,14 @@
-# v0.6.1 unreleased
+# v0.6.2 2021-11-09
+
+[#281](https://github.com/mbj/unparser/pull/268)
+
+* Fix unary operator with argument.
+
+# v0.6.1 2021-11-08
+
+[#279](https://github.com/mbj/unparser/pull/279)
+
+* Fix binary operator with kwargs argument.
 
 [#268](https://github.com/mbj/unparser/pull/268)
 
