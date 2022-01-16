@@ -1,4 +1,3 @@
-require 'anima'
 require 'unparser'
 
 $: << __dir__
@@ -18,7 +17,7 @@ def default_builder_attributes
 end
 
 class Test
-  include Adamantium, Anima.new(
+  include Unparser::Adamantium, Unparser::Anima.new(
     :default_builder_attributes,
     :group_index,
     :name,
@@ -96,7 +95,7 @@ class Test
 end
 
 class Execution
-  include Anima.new(:number, :total, :test)
+  include Unparser::Anima.new(:number, :total, :test)
 
   def call
     skip_reason = test.skip_reason
@@ -147,7 +146,7 @@ end # Minitest
 
 class Extractor
   class Capture
-    include Anima.new(
+    include Unparser::Anima.new(
       :default_builder_attributes,
       :node,
       :parser_source,
