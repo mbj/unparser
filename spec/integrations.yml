@@ -1,19 +1,7 @@
 ---
-- name: anima
-  repo_uri: 'https://github.com/mbj/anima.git'
-  repo_ref: 'origin/master'
-  exclude: []
 - name: mutant
   repo_uri: 'https://github.com/mbj/mutant.git'
   repo_ref: 'origin/main'
-  exclude: []
-- name: yaks
-  repo_uri: 'https://github.com/plexus/yaks.git'
-  repo_ref: 'origin/master'
-  exclude: []
-- name: chassis
-  repo_uri: 'https://github.com/ahawkins/chassis.git'
-  repo_ref: 'origin/master'
   exclude: []
 - name: rubyspec
   repo_uri: 'https://github.com/ruby/spec.git'
