@@ -38,7 +38,7 @@ describe 'Unparser on ruby corpus', mutant: false do
       TMP.mkdir unless TMP.directory?
       if repo_path.exist?
         Dir.chdir(repo_path) do
-          system(%w(git pull origin master))
+          system(%w(git fetch))
           system(%w(git clean -f -d -x))
         end
       else
