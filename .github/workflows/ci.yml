@@ -62,7 +62,7 @@ jobs:
       with:
         bundler-cache: true
         ruby-version: ${{ matrix.ruby }}
-    - run: bundle exec rspec spec/integration
+    - run: bundle exec bin/corpus
   ruby-rubocop:
     name: Rubocop
     runs-on: ${{ matrix.os }}

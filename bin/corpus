@@ -1,0 +1,149 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'mutant'
+require 'optparse'
+require 'unparser'
+
+module Unparser
+  module Corpus
+    ROOT = Pathname.new(__dir__).parent
+    TMP  = ROOT.join('tmp')
+
+    class Project
+      include Unparser::Anima.new(:name, :repo_uri, :repo_ref, :exclude)
+
+      # Perform verification via unparser cli
+      #
+      # @return [Boolean]
+      def verify
+        checkout
+        command = %W[unparser #{repo_path}]
+        exclude.each do |name|
+          command.concat(%W[--ignore #{repo_path.join(name)}])
+        end
+        Kernel.system(*command)
+      end
+
+    private
+
+      def checkout
+        TMP.mkdir unless TMP.directory?
+
+        if repo_path.exist?
+          Dir.chdir(repo_path) do
+            system(%w[git fetch])
+            system(%w[git clean -f -d -x])
+          end
+        else
+          system(%W[git clone #{repo_uri} #{repo_path}])
+        end
+
+        Dir.chdir(repo_path) do
+          system(%W[git checkout #{repo_ref}])
+          system(%w[git reset --hard])
+          system(%w[git clean -f -d -x])
+        end
+      end
+
+      def repo_path
+        TMP.join(name)
+      end
+
+      def system(arguments)
+        return if Kernel.system(*arguments)
+
+        fail "System command #{arguments.inspect} failed!"
+      end
+
+      transform    = Mutant::Transform
+      string       = transform::Primitive.new(String)
+      string_array = transform::Array.new(string)
+      path         = ROOT.join('spec', 'integrations.yml')
+
+      loader =
+        transform::Named.new(
+          path.to_s,
+          transform::Sequence.new(
+            [
+              transform::Exception.new(SystemCallError, :read.to_proc),
+              transform::Exception.new(YAML::SyntaxError, YAML.method(:safe_load)),
+              transform::Array.new(
+                transform::Sequence.new(
+                  [
+                    transform::Hash.new(
+                      optional: [],
+                      required: [
+                        transform::Hash::Key.new('exclude',  string_array),
+                        transform::Hash::Key.new('name',     string),
+                        transform::Hash::Key.new('repo_ref', string),
+                        transform::Hash::Key.new('repo_uri', string)
+                      ]
+                    ),
+                    transform::Hash::Symbolize.new,
+                    transform::Exception.new(Unparser::Anima::Error, Project.public_method(:new))
+                  ]
+                )
+              )
+            ]
+          )
+        )
+
+      ALL = loader.call(path).lmap(&:compact_message).from_right
+    end
+
+    # Unparser corpus CLI implementation
+    class CLI
+      def self.run(*arguments)
+        new(*arguments).exit_status
+      end
+
+      def initialize(arguments)
+        @projects = []
+
+        options = OptionParser.new do |builder|
+          builder.on('--list', 'List registered projects') do
+            Project::ALL.each do |project|
+              puts(project.name)
+            end
+
+            Kernel.exit(true)
+          end
+        end
+
+        options.parse!(arguments).each do |name|
+          @projects << project(name)
+        end
+      end
+
+      def project(name)
+        Project::ALL.find { |project| project.name.eql?(name) } || fail("Unregistered project: #{name}")
+      end
+
+      def effective_projects
+        if @projects.empty?
+          Project::ALL
+        else
+          @projects
+        end
+      end
+
+      # Return exit status
+      #
+      # @return [Integer]
+      #
+      # @api private
+      #
+      def exit_status
+        effective_projects.each do |project|
+          project.verify || Kernel.exit(false)
+        end
+
+        Kernel.exit(true)
+      end
+
+    end # CLI
+  end # Corpus
+end # Unparser
+
+Unparser::Corpus::CLI.run(ARGV)
