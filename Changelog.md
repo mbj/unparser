@@ -1,3 +1,11 @@
+# v0.6.3 2022-01-16
+
+[#290](https://github.com/mbj/unparser/pull/290)
+
+* Depend on parser-3.1.0.
+* This is not yet Ruby 3.1 syntax support, only
+  supporting the existing feature set on an updated `parser` gem.
+
 # v0.6.2 2021-11-09
 
 [#281](https://github.com/mbj/unparser/pull/268)
