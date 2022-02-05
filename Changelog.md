@@ -1,3 +1,9 @@
+# v0.6.2 2022-02-05
+
+[#297](https://github.com/mbj/unparser/pull/297)
+
+* Fix emit of of `match_pattern` vs `match_pattern_p`
+
 # v0.6.3 2022-01-16
 
 [#290](https://github.com/mbj/unparser/pull/290)
