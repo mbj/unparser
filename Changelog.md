@@ -1,4 +1,8 @@
-# v0.6.3 2022-02-12
+# v0.6.4 2022-02-12
+
+[#299](https://github.com/mbj/unparser/pull/299)
+
+* Add 3.1+ syntax support.
 
 [#300](https://github.com/mbj/unparser/pull/300)
 
@@ -7,8 +11,6 @@
 [#298](https://github.com/mbj/unparser/pull/298)
 
 * Add `parser` gem derived round trip tests.
-
-# v0.6.2 2022-02-05
 
 [#297](https://github.com/mbj/unparser/pull/297)
 

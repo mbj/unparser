@@ -8,8 +8,6 @@ matcher:
   subjects:
   - 'Unparser*'
   ignore:
-  # API changed between ruby versions and each of them
-  # have a different minimal form
   - 'Unparser::Builder#initialize'
   - 'Unparser::CLI*'
   - 'Unparser::Concord#define_readers'
@@ -22,6 +20,7 @@ matcher:
   - 'Unparser::Emitter::Array#emitters'
   - 'Unparser::Emitter::Binary#writer'
   - 'Unparser::Emitter::Block#target_writer'
+  - 'Unparser::Emitter::BlockPass#dispatch' # 3.1+ specific
   - 'Unparser::Emitter::Class#dispatch'
   - 'Unparser::Emitter::Class#local_variable_scope'
   - 'Unparser::Emitter::Def#local_variable_scope'

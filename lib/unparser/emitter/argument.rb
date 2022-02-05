@@ -127,7 +127,7 @@ module Unparser
 
       def dispatch
         write('&')
-        visit(name)
+        visit(name) if name
       end
 
     end # BlockPass

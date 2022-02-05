@@ -1,7 +1,7 @@
 ---
 - name: mutant
   repo_uri: 'https://github.com/mbj/mutant.git'
-  repo_ref: 'origin/main'
+  repo_ref: '83f8b26e'
   exclude: []
 - name: rubyspec
   repo_uri: 'https://github.com/ruby/spec.git'
