@@ -63,6 +63,22 @@ jobs:
         bundler-cache: true
         ruby-version: ${{ matrix.ruby }}
     - run: bundle exec bin/corpus
+  ruby-parser-round-trip-tests:
+    name: Parser Round Trip Tests
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ruby-2.6, ruby-2.7, ruby-3.0]
+        os: [macos-latest, ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: ${{ matrix.ruby }}
+    - run: bundle exec ruby bin/parser-round-trip-test
   ruby-rubocop:
     name: Rubocop
     runs-on: ${{ matrix.os }}

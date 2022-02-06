@@ -4,6 +4,10 @@
 
 * Fix emit of of `match_pattern` vs `match_pattern_p`
 
+[#298](https://github.com/mbj/unparser/pull/298)
+
+* Add round trip tests dynamically derived from the `parser` gems test suite to CI
+
 # v0.6.3 2022-01-16
 
 [#290](https://github.com/mbj/unparser/pull/290)
