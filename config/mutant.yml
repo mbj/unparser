@@ -25,11 +25,13 @@ matcher:
   - 'Unparser::Emitter::Class#dispatch'
   - 'Unparser::Emitter::Class#local_variable_scope'
   - 'Unparser::Emitter::Def#local_variable_scope'
+  - 'Unparser::Emitter::FindPattern#dispatch' # 3.0+ specific
   - 'Unparser::Emitter::HashPattern#write_symbol_body'
   - 'Unparser::Emitter::LocalVariableRoot*'
   - 'Unparser::Emitter::LocalVariableRoot.included'
   - 'Unparser::Emitter::MatchPattern#dispatch' # 2.7+ specific
   - 'Unparser::Emitter::MatchPatternP#dispatch' # 3.0+ specific
+  - 'Unparser::Emitter::MatchRest#dispatch' # 3.0+ specific
   - 'Unparser::Emitter::Module#local_variable_scope'
   - 'Unparser::Emitter::Root#local_variable_scope'
   - 'Unparser::Emitter::Send#writer'

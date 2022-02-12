@@ -1,3 +1,13 @@
+# v0.6.3 2022-02-12
+
+[#300](https://github.com/mbj/unparser/pull/300)
+
+* Add 3.0+ node support for `find_pattern` and `match_rest`
+
+[#298](https://github.com/mbj/unparser/pull/298)
+
+* Add `parser` gem derived round trip tests.
+
 # v0.6.2 2022-02-05
 
 [#297](https://github.com/mbj/unparser/pull/297)

@@ -68,7 +68,7 @@ class Test
   end
 
   def allow_ruby?
-    rubies.empty? || rubies.include?(RUBY_VERSION)
+    rubies.empty? || rubies.include?(RUBY_VERSION.split('.').take(2).join('.'))
   end
 
   def right(value)

@@ -4,7 +4,14 @@ module Unparser
   class Emitter
     # Emiter for match rest nodes
     class MatchRest < self
+      handle :match_rest
+
       children :match_var
+
+      def dispatch
+        write('*')
+        visit(match_var) if match_var
+      end
 
       def emit_array_pattern
         write('*')
