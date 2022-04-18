@@ -1,3 +1,13 @@
+# v0.6.5 2022-04-17
+
+[#312](https://github.com/mbj/unparser/pull/122)
+
+* Fix #311, emitting of heredocs within block that has arguments.
+
+[#313](https://github.com/mbj/unparser/pull/123)
+
+* Remove Ruby-2.6 support as its EOL
+
 # v0.6.4 2022-02-12
 
 [#299](https://github.com/mbj/unparser/pull/299)

@@ -28,3 +28,10 @@ if true
     #{42}
   HEREDOC
 end
+foo(<<-HEREDOC)
+  #{bar}
+HEREDOC
+foo(<<-HEREDOC) { |x|
+  #{bar}
+HEREDOC
+}
