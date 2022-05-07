@@ -44,7 +44,6 @@ module Unparser
     #
     def append_without_prefix(string)
       write(string)
-      self
     end
 
     # Increase indent
@@ -77,7 +76,6 @@ module Unparser
     #
     def nl
       write(NL)
-      self
     end
 
     def root_indent
@@ -105,18 +103,6 @@ module Unparser
     #
     def content
       @content.dup.freeze
-    end
-
-    # Capture the content written to the buffer within the block
-    #
-    # @return [String]
-    #
-    # @api private
-    #
-    def capture_content
-      size_before = content.size
-      yield
-      content[size_before..]
     end
 
     # Write raw fragment to buffer
