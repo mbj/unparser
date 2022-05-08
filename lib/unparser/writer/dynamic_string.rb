@@ -113,18 +113,6 @@ module Unparser
         n_str?(last) && last.children.first[-1].eql?("\n")
       end
 
-      def emit_squiggly_heredoc_body
-        buffer.indent
-        children.each do |child|
-          if n_str?(child)
-            write(escape_dynamic(child.children.first))
-          else
-            emit_dynamic(child)
-          end
-        end
-        buffer.unindent
-      end
-
       def emit_normal_heredoc_body
         buffer.root_indent do
           children.each do |child|
