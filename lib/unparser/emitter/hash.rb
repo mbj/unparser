@@ -6,14 +6,6 @@ module Unparser
     class Hash < self
       handle :hash
 
-      def emit_last_argument_hash
-        if children.empty?
-          write('{}')
-        else
-          emit_hash_body
-        end
-      end
-
       def emit_heredoc_reminders
         children.each(&method(:emit_heredoc_reminder_member))
       end
