@@ -191,6 +191,11 @@ Contributing
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
+Known Users
+-------------
+
+* [RailsRocket](https://www.railsrocket.app) - A no-code app builder that creates Rails apps
+
 License
 -------
 
