@@ -28,7 +28,10 @@ module Unparser
 
     private
 
+      # Well rubocop you are static so you do not have a clue here ;)
+      # rubocop:disable Style/RedundantInitialize
       def initialize; end
+      # rubocop:enable Style/RedundantInitialize
 
     end.new
 

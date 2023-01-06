@@ -20,7 +20,7 @@ module Unparser
         checkout
         command = %W[unparser #{repo_path}]
         exclude.each do |name|
-          command.concat(%W[--ignore #{repo_path.join(name)}])
+          command.push('--ignore', repo_path.join(name).to_s)
         end
         Kernel.system(*command)
       end
