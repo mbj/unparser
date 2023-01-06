@@ -1,3 +1,9 @@
+# v0.6.6 2022-04-17
+
+[#336](https://github.com/mbj/unparser/pull/336)
+
+* Add support for ruby-3.2 syntax.
+
 # v0.6.5 2022-04-17
 
 [#312](https://github.com/mbj/unparser/pull/312)
