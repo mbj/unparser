@@ -2,11 +2,13 @@
 
 module Unparser
   class Emitter
-    # Emitter for block and kwrestarg arguments
-    class Morearg < self
+    # Emitter for forwarding arguments
+    class ForwardArg < self
       MAP = {
-        blockarg:  '&',
-        kwrestarg: '**'
+        blockarg:            '&',
+        forwarded_kwrestarg: '**',
+        forwarded_restarg:   '*',
+        kwrestarg:           '**'
       }.freeze
 
       handle(*MAP.keys)
