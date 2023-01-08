@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.6.6'
+  gem.version     = '0.6.7'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -21,13 +21,15 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
 
+  gem.metadata['rubygems_mfa_required'] = 'true'
+
   gem.required_ruby_version = '>= 2.7'
 
   gem.add_dependency('diff-lcs', '~> 1.3')
   gem.add_dependency('parser',   '>= 3.2.0')
 
-  gem.add_development_dependency('mutant',            '~> 0.11.17')
-  gem.add_development_dependency('mutant-rspec',      '~> 0.11.17')
+  gem.add_development_dependency('mutant',            '~> 0.11.18')
+  gem.add_development_dependency('mutant-rspec',      '~> 0.11.18')
   gem.add_development_dependency('rspec',             '~> 3.9')
   gem.add_development_dependency('rspec-core',        '~> 3.9')
   gem.add_development_dependency('rspec-its',         '~> 1.3.0')
