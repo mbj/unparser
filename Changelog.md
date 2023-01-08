@@ -1,5 +1,11 @@
 # v0.6.6 2022-04-17
 
+[#338](https://github.com/mbj/unparser/pull/338)
+
+* Add required MFA for rubygems pushes.
+
+# v0.6.6 2022-04-17
+
 [#336](https://github.com/mbj/unparser/pull/336)
 
 * Add support for ruby-3.2 syntax.
