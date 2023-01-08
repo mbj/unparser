@@ -1,4 +1,4 @@
-# v0.6.6 2022-04-17
+# v0.6.7 2022-04-17
 
 [#338](https://github.com/mbj/unparser/pull/338)
 
