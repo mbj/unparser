@@ -16,7 +16,7 @@ Notable Users:
 
 * [mutant](https://github.com/mbj/mutant) - Code review engine via mutation testing.
 * [ruby-next](https://github.com/ruby-next/ruby-next) - Ruby Syntax Backports.
-* May other [reverse-dependencies](https://rubygems.org/gems/unparser/reverse_dependencies).
+* Many other [reverse-dependencies](https://rubygems.org/gems/unparser/reverse_dependencies).
 
 (if you want your tool to be mentioned here please PR the addition with a TLDR of your use case).
 
