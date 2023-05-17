@@ -4,7 +4,6 @@ RSpec.describe Unparser::Adamantium::Memory do
     let(:monitor) { instance_double(Monitor)   }
     let(:name)    { :some_name                 }
     let(:object)  { described_class.new(proxy) }
-    let(:values)  { {}                         }
     let(:value_was_read) { -> {} }
 
     let(:block) do
