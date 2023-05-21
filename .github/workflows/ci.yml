@@ -26,6 +26,22 @@ jobs:
         bundler-cache: true
         ruby-version: ${{ matrix.ruby }}
     - run: bundle exec rspec spec/unit
+  rspectre:
+    name: RSpectre
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ruby-3.2]
+        os: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: ${{ matrix.ruby }}
+    - run: bundle exec rspectre
   ruby-mutant:
     name: Mutant
     runs-on: ${{ matrix.os }}
