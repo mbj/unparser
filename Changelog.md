@@ -1,10 +1,16 @@
-# v0.6.7 2022-04-17
+# v0.6.8 2023-06-14
+
+[#347](https://github.com/mbj/unparser/pull/347)
+
+* Fix binary operator with csend receiver. [Fix #345]
+
+# v0.6.7 2023-01-08
 
 [#338](https://github.com/mbj/unparser/pull/338)
 
 * Add required MFA for rubygems pushes.
 
-# v0.6.6 2022-04-17
+# v0.6.6 2023-01-06
 
 [#336](https://github.com/mbj/unparser/pull/336)
 

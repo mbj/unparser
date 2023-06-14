@@ -20,6 +20,7 @@ module Unparser
 
       def binary_syntax_allowed?
         selector_binary_operator? \
+          && n_send?(node) \
           && arguments.one? \
           && !n_splat?(arguments.first) \
           && !n_kwargs?(arguments.first)
