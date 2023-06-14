@@ -57,31 +57,40 @@ module Unparser
       end
 
       transform    = Mutant::Transform
-      string       = transform::Primitive.new(String)
-      string_array = transform::Array.new(string)
+      string       = transform::Primitive.new(primitive: String)
+      string_array = transform::Array.new(transform: string)
       path         = ROOT.join('spec', 'integrations.yml')
 
       loader =
         transform::Named.new(
-          path.to_s,
-          transform::Sequence.new(
-            [
-              transform::Exception.new(SystemCallError, :read.to_proc),
-              transform::Exception.new(YAML::SyntaxError, YAML.method(:safe_load)),
+          name:      path.to_s,
+          transform: transform::Sequence.new(
+            steps: [
+              transform::Exception.new(
+                block:       :read.to_proc,
+                error_class: SystemCallError
+              ),
+              transform::Exception.new(
+                block:       YAML.method(:safe_load),
+                error_class: YAML::SyntaxError
+              ),
               transform::Array.new(
-                transform::Sequence.new(
-                  [
+                transform: transform::Sequence.new(
+                  steps: [
                     transform::Hash.new(
                       optional: [],
                       required: [
-                        transform::Hash::Key.new('exclude',  string_array),
-                        transform::Hash::Key.new('name',     string),
-                        transform::Hash::Key.new('repo_ref', string),
-                        transform::Hash::Key.new('repo_uri', string)
+                        transform::Hash::Key.new(value: 'exclude',  transform: string_array),
+                        transform::Hash::Key.new(value: 'name',     transform: string),
+                        transform::Hash::Key.new(value: 'repo_ref', transform: string),
+                        transform::Hash::Key.new(value: 'repo_uri', transform: string)
                       ]
                     ),
                     transform::Hash::Symbolize.new,
-                    transform::Exception.new(Unparser::Anima::Error, Project.public_method(:new))
+                    transform::Exception.new(
+                      block:       Project.public_method(:new),
+                      error_class: Unparser::Anima::Error
+                    )
                   ]
                 )
               )

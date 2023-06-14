@@ -17,6 +17,7 @@ module Unparser
     #
     # @api private
     #
+    # rubocop:disable Style/OperatorMethodCall
     def success?
       [
         original_source,
@@ -25,6 +26,7 @@ module Unparser
         generated_node
       ].all?(&:right?) && generated_node.from_right.==(original_node.from_right)
     end
+    # rubocop:enable Style/OperatorMethodCall
 
     # Return error report
     #

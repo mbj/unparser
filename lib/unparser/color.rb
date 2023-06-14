@@ -30,8 +30,10 @@ module Unparser
 
       # Well rubocop you are static so you do not have a clue here ;)
       # rubocop:disable Style/RedundantInitialize
+      # rubocop:disable Style/MissingSuper
       def initialize; end
       # rubocop:enable Style/RedundantInitialize
+      # rubocop:enable Style/MissingSuper
 
     end.new
 
