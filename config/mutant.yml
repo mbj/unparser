@@ -25,6 +25,7 @@ matcher:
   - 'Unparser::Emitter::Class#local_variable_scope'
   - 'Unparser::Emitter::Def#local_variable_scope'
   - 'Unparser::Emitter::FindPattern#dispatch' # 3.0+ specific
+  - 'Unparser::Emitter::Hash#emit_heredoc_reminder_member' # 3.2+ specific
   - 'Unparser::Emitter::HashPattern#write_symbol_body'
   - 'Unparser::Emitter::LocalVariableRoot*'
   - 'Unparser::Emitter::LocalVariableRoot.included'

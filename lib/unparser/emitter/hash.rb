@@ -25,7 +25,7 @@ module Unparser
       end
 
       def emit_heredoc_reminder_member(node)
-        emitter(node.children.last).emit_heredoc_reminders
+        emitter(node.children.last).emit_heredoc_reminders if n_pair?(node)
       end
 
       def emit_hash_body

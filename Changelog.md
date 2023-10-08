@@ -1,3 +1,9 @@
+# v0.6.8 2023-10-08
+
+[#348](https://github.com/mbj/unparser/pull/348)
+
+* Fix crash on kwrestarg hash member
+
 # v0.6.8 2023-06-14
 
 [#347](https://github.com/mbj/unparser/pull/347)
