@@ -4,6 +4,10 @@
 
 * Fix crash on kwrestarg hash member
 
+[#349](https://github.com/mbj/unparser/pull/349)
+
+* Fix {begin,end}less {i,e}range flipflops
+
 # v0.6.8 2023-06-14
 
 [#347](https://github.com/mbj/unparser/pull/347)

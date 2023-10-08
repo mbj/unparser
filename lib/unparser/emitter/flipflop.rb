@@ -25,9 +25,14 @@ module Unparser
     private
 
       def dispatch
-        visit(left)
+        visit(left) if left
         write(MAP.fetch(node.type))
-        visit(right)
+
+        if right
+          visit(right)
+        else
+          write(';')
+        end
       end
     end # FlipFLop
   end # Emitter

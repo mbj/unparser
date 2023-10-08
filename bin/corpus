@@ -116,7 +116,7 @@ module Unparser
               puts(project.name)
             end
 
-            Kernel.exit(true)
+            Kernel.exit
           end
         end
 
@@ -148,7 +148,7 @@ module Unparser
           project.verify || Kernel.exit(false)
         end
 
-        Kernel.exit(true)
+        Kernel.exit
       end
 
     end # CLI
