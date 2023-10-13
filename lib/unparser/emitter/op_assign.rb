@@ -35,6 +35,11 @@ module Unparser
 
       children :target, :operator, :value
 
+      def emit_heredoc_reminders
+        emitter(target).emit_heredoc_reminders
+        emitter(value).emit_heredoc_reminders
+      end
+
     private
 
       def dispatch
