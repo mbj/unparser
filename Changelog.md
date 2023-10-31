@@ -1,4 +1,10 @@
-# v0.6.8 2023-10-08
+# v0.6.10 2023-10-31
+
+[#351](https://github.com/mbj/unparser/pull/351)
+
+* Fix missing heredocs on op-assign rhs
+
+# v0.6.9 2023-10-08
 
 [#348](https://github.com/mbj/unparser/pull/348)
 
