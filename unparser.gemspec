@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.6.10'
+  gem.version     = '0.6.11'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
 
   gem.metadata['rubygems_mfa_required'] = 'true'
 
-  gem.required_ruby_version = '>= 2.7'
+  gem.required_ruby_version = '>= 3.0'
 
   gem.add_dependency('diff-lcs', '~> 1.3')
   gem.add_dependency('parser',   '>= 3.2.2.4')
