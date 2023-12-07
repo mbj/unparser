@@ -169,11 +169,11 @@ module Unparser
 
     def targets(file_name)
       if File.directory?(file_name)
-        Dir.glob(File.join(file_name, '**/*.rb')).sort
+        Dir.glob(File.join(file_name, '**/*.rb'))
       elsif File.file?(file_name)
         [file_name]
       else
-        Dir.glob(file_name).sort
+        Dir.glob(file_name)
       end.map { |file| Target::Path.new(Pathname.new(file)) }
     end
   end # CLI

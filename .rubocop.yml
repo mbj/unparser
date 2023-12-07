@@ -5,6 +5,7 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
+  TargetRubyVersion: 3.0
   Exclude:
     - tmp/**/*
     - vendor/**/*

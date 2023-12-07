@@ -29,7 +29,6 @@ matcher:
   - 'Unparser::Emitter::HashPattern#write_symbol_body'
   - 'Unparser::Emitter::LocalVariableRoot*'
   - 'Unparser::Emitter::LocalVariableRoot.included'
-  - 'Unparser::Emitter::MatchPattern#dispatch' # 2.7+ specific
   - 'Unparser::Emitter::MatchPatternP#dispatch' # 3.0+ specific
   - 'Unparser::Emitter::MatchRest#dispatch' # 3.0+ specific
   - 'Unparser::Emitter::Module#local_variable_scope'

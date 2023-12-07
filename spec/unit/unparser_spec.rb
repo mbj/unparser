@@ -383,15 +383,6 @@ describe Unparser, mutant_expression: 'Unparser*' do
         )
       end
 
-      if RUBY_VERSION < '2.7.'
-        excludes.concat(
-          %w[
-            test/corpus/literal/pattern.rb
-            test/corpus/literal/since/27.rb
-          ]
-        )
-      end
-
       excludes.flat_map { |file| ['--ignore', file] }
     end
 

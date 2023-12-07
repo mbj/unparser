@@ -1,3 +1,7 @@
+# v0.6.11 2023-10-31
+
+* Remove support for ruby 2.7
+
 # v0.6.10 2023-10-31
 
 [#351](https://github.com/mbj/unparser/pull/351)
