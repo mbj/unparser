@@ -127,7 +127,9 @@ module Unparser
       end
 
       if n_begin?(node)
-        if node.children.one?
+        if node.children.empty?
+          write('()')
+        elsif node.children.one?
           visit_deep(node)
         else
           emit_body_inner(node)

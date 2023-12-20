@@ -353,6 +353,42 @@ describe Unparser, mutant_expression: 'Unparser*' do
         block comment
       =end
     RUBY
+
+    assert_generates(<<~'RUBY', <<~'RUBY')
+      true ? "true" : ()
+    RUBY
+      if true
+        "true"
+      else
+        ()
+      end
+    RUBY
+
+    assert_generates(<<~'RUBY', <<~'RUBY')
+      true ? () : "false"
+    RUBY
+      if true
+        ()
+      else
+        "false"
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      if true
+        "true"
+      else
+        ()
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      if true
+        ()
+      else
+        "false"
+      end
+    RUBY
   end
 
   describe 'corpus' do
