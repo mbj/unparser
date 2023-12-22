@@ -121,27 +121,29 @@ module Unparser
     end
 
     def emit_body(node, indent: true)
-      if indent
-        buffer.indent
-        nl
-      end
-
-      if n_begin?(node)
-        if node.children.empty?
-          write('()')
-        elsif node.children.one?
-          visit_deep(node)
+      with_indent(indent: indent) do
+        if n_begin?(node)
+          if node.children.empty?
+            write('()')
+          elsif node.children.one?
+            visit_deep(node)
+          else
+            emit_body_inner(node)
+          end
         else
-          emit_body_inner(node)
+          visit_deep(node)
         end
-      else
-        visit_deep(node)
       end
+    end
 
-      if indent
-        buffer.unindent
-        nl
-      end
+    def with_indent(indent:)
+      return yield unless indent
+
+      buffer.indent
+      nl
+      yield
+      buffer.unindent
+      nl
     end
 
     def emit_body_inner(node)
