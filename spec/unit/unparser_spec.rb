@@ -191,6 +191,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       generated = Unparser.unparse(*ast_with_comments).chomp
       expect(generated).to eql(expected)
       ast, comments = parse_with_comments(generated)
+      expect(ast).to eql(ast_with_comments.first)
       expect(Unparser.unparse(ast, comments).chomp).to eql(expected)
     end
 
