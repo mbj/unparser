@@ -89,7 +89,7 @@ module Unparser
     private
 
       def dispatch
-        write(name.to_s)
+        write_loc(name.to_s, node.location.name.to_range)
       end
 
     end # Argument

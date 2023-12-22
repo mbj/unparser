@@ -15,7 +15,8 @@ module Unparser
       private :body
 
       def dispatch
-        write('def ')
+        write_loc('def', node.location.keyword.to_range)
+        write(' ')
         emit_name
         emit_arguments
         emit_optional_body_ensure_rescue(body)
@@ -39,7 +40,7 @@ module Unparser
       private
 
         def emit_name
-          write(name.to_s)
+          write_loc(name.to_s, node.location.name.to_range)
         end
 
       end # Instance
@@ -57,7 +58,8 @@ module Unparser
           conditional_parentheses(!subject_without_parens?) do
             visit(subject)
           end
-          write('.', name.to_s)
+          write_loc('.', node.location.operator.to_range)
+          write_loc(name.to_s, node.location.name.to_range)
         end
 
         def subject_without_parens?

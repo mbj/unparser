@@ -31,7 +31,6 @@ module Unparser
         prefix
       end
       write(string)
-      self
     end
 
     # Append a string without an indentation prefix
@@ -113,8 +112,13 @@ module Unparser
     #
     # @return [self]
     def write(fragment)
+      start_pos = @content.length
       @content << fragment
-      self
+      start_pos...@content.length
+    end
+
+    def length
+      @content.length
     end
 
   private
