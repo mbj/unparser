@@ -191,6 +191,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       generated = Unparser.unparse(*ast_with_comments).chomp
       expect(generated).to eql(expected)
       ast, comments = parse_with_comments(generated)
+      expect(ast).to eql(ast_with_comments.first)
       expect(Unparser.unparse(ast, comments).chomp).to eql(expected)
     end
 
@@ -352,6 +353,42 @@ describe Unparser, mutant_expression: 'Unparser*' do
       =begin
         block comment
       =end
+    RUBY
+
+    assert_generates(<<~'RUBY', <<~'RUBY')
+      true ? "true" : ()
+    RUBY
+      if true
+        "true"
+      else
+        ()
+      end
+    RUBY
+
+    assert_generates(<<~'RUBY', <<~'RUBY')
+      true ? () : "false"
+    RUBY
+      if true
+        ()
+      else
+        "false"
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      if true
+        "true"
+      else
+        ()
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      if true
+        ()
+      else
+        "false"
+      end
     RUBY
   end
 
