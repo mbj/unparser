@@ -1,4 +1,12 @@
+# v0.6.12 2024-00-10
+
+[#355](https://github.com/mbj/unparser/pull/355)
+
+* Fix conditionals with empty bodies.
+
 # v0.6.11 2023-10-31
+
+[#354](https://github.com/mbj/unparser/pull/354)
 
 * Remove support for ruby 2.7
 
