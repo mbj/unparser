@@ -28,7 +28,7 @@ module Unparser
 
         # mutant:disable
         def dispatch
-          if RUBY_VERSION < '3.2' && value[-1] == '='
+          if RUBY_VERSION < '3.2' && value.match?(/=\z/)
             write(":#{value.name.inspect}")
           else
             write(value.inspect)
