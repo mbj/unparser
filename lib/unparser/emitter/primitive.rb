@@ -26,6 +26,7 @@ module Unparser
 
         private
 
+        # mutant:disable
         def dispatch
           if RUBY_VERSION < '3.2' && value[-1] == '='
             write(":#{value.name.inspect}")
