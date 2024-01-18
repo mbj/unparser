@@ -10,19 +10,31 @@ module Unparser
       # Emitter for primitives based on Object#inspect
       class Inspect < self
 
-        handle :sym, :str
+        handle :str
 
       private
 
         def dispatch
-          if RUBY_VERSION < '3.2' && node.type == :sym && value[-1] == '='
+          write(value.inspect)
+        end
+
+      end # Inspect
+
+      class Symbol < self
+
+        handle :sym
+
+        private
+
+        def dispatch
+          if RUBY_VERSION < '3.2' && value[-1] == '='
             write(":#{value.name.inspect}")
           else
             write(value.inspect)
           end
         end
 
-      end # Inspect
+      end # Symbol
 
       # Emitter for complex literals
       class Complex < self
