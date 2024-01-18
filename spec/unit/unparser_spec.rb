@@ -390,6 +390,9 @@ describe Unparser, mutant_expression: 'Unparser*' do
         "false"
       end
     RUBY
+
+    # Test for Symbol#inspect bug: https://bugs.ruby-lang.org/issues/18905
+    assert_source(':"8 >="')
   end
 
   describe 'corpus' do
