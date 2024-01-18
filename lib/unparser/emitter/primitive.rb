@@ -15,7 +15,11 @@ module Unparser
       private
 
         def dispatch
-          write(value.inspect)
+          if RUBY_VERSION < '3.2' && node.type == :sym && value[-1] == '='
+            write(":#{value.name.inspect}")
+          else
+            write(value.inspect)
+          end
         end
 
       end # Inspect

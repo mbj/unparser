@@ -392,6 +392,8 @@ describe Unparser, mutant_expression: 'Unparser*' do
     RUBY
 
     # Test Symbol#inspect Ruby bug: https://bugs.ruby-lang.org/issues/18905
+    assert_source(':"@="')
+    assert_source(':"$$$$="')
     assert_source(':"8 >="')
   end
 
