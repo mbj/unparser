@@ -28,13 +28,22 @@ module Unparser
 
         # mutant:disable
         def dispatch
-          if RUBY_VERSION < '3.2' && value.match?(/=\z/)
+          if inspect_breaks_parsing?
             write(":#{value.name.inspect}")
           else
             write(value.inspect)
           end
         end
 
+        # mutant:disable
+        def inspect_breaks_parsing?
+          return false unless RUBY_VERSION < '3.2.'
+
+          Unparser.parse(value.inspect)
+          false
+        rescue Parser::SyntaxError
+          true
+        end
       end # Symbol
 
       # Emitter for complex literals
