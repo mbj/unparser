@@ -1,4 +1,10 @@
-# v0.6.12 2024-00-10
+# v0.6.13 2024-02-01
+
+[#361](https://github.com/mbj/unparser/pull/361)
+
+* Fix unparsing of symbols that do not round trip under `#inspect`
+
+# v0.6.12 2024-01-10
 
 [#355](https://github.com/mbj/unparser/pull/355)
 
