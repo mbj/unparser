@@ -1,4 +1,5 @@
 ---
+usage: opensource
 includes:
 - lib
 integration: rspec
