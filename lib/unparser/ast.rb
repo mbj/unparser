@@ -2,7 +2,9 @@
 
 module Unparser
   # Namespace for AST processing tools
-  module AST
+  class AST
+    include Anima.new(:comments, :explicit_encoding, :node, :static_local_variables)
+
     FIRST_CHILD = ->(node) { node.children.first }.freeze
     TAUTOLOGY   = ->(_node) { true }.freeze
 
@@ -16,11 +18,21 @@ module Unparser
         arg
         kwarg
         kwoptarg
+        kwrestarg
         lvasgn
         optarg
-        procarg0
         restarg
       ].to_set.freeze
+
+    # mutant:disable
+    def self.from_node(node:)
+      new(
+        comments:               EMPTY_ARRAY,
+        explicit_encoding:      nil,
+        node:,
+        static_local_variables: Set.new
+      )
+    end
 
     # Test for local variable inherited scope reset
     #

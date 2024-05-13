@@ -10,10 +10,6 @@ module Unparser
         writer.emit_mlhs
       end
 
-      def emit_heredoc_remainders
-        writer.emit_heredoc_remainders
-      end
-
     private
 
       def dispatch
@@ -21,7 +17,7 @@ module Unparser
       end
 
       def writer
-        writer_with(Writer::Send, node)
+        writer_with(Writer::Send, node:)
       end
       memoize :writer
     end # Send

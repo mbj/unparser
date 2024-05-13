@@ -1,3 +1,10 @@
+# v0.7.0 2024-09-16
+
+[#366](https://github.com/mbj/unparser/pull/366)
+
+* Fix all known dstring issues.
+* Interface changes.
+
 # v0.6.15 2024-06-10
 
 [#373](https://github.com/mbj/unparser/pull/373)

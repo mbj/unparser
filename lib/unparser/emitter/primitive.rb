@@ -7,19 +7,6 @@ module Unparser
 
       children :value
 
-      # Emitter for primitives based on Object#inspect
-      class Inspect < self
-
-        handle :str
-
-      private
-
-        def dispatch
-          write(value.inspect)
-        end
-
-      end # Inspect
-
       class Symbol < self
 
         handle :sym

@@ -2,11 +2,7 @@
 
 module Unparser
   class Emitter
-    # Root emitter a special case
     class Root < self
-      include Concord::Public.new(:buffer, :node, :comments)
-      include LocalVariableRoot
-
       END_NL = %i[class sclass module begin].freeze
 
       private_constant(*constants(false))

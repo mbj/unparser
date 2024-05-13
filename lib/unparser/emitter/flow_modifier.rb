@@ -14,12 +14,6 @@ module Unparser
 
       handle(*MAP.keys)
 
-      def emit_heredoc_remainders
-        children.each do |node|
-          emitter(node).emit_heredoc_remainders
-        end
-      end
-
     private
 
       def dispatch

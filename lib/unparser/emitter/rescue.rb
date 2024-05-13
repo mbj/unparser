@@ -9,7 +9,13 @@ module Unparser
     private
 
       def dispatch
-        emit_rescue_postcontrol(node)
+        resbody = children.fetch(1)
+
+        if resbody.children.fetch(1)
+          emit_rescue_regular(node)
+        else
+          emit_rescue_postcontrol(node)
+        end
       end
     end # Rescue
   end # Emitter

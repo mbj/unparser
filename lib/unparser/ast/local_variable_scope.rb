@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 module Unparser
-  module AST
-
+  class AST
     # Calculated local variable scope for a given node
     class LocalVariableScope
-      include Enumerable, Adamantium
+      include Adamantium, Anima.new(:static_local_variables, :node)
 
       # Initialize object
       #
@@ -15,11 +14,17 @@ module Unparser
       #
       # @api private
       #
-      def initialize(node)
+      # mutant:disable
+      def initialize(*)
+        super(*)
+
         items = []
-        LocalVariableScopeEnumerator.each(node) do |*scope|
-          items << scope
-        end
+
+        LocalVariableScopeEnumerator.each(
+          node:  node,
+          stack: static_local_variables.dup
+        ) { |*scope| items << scope }
+
         @items = items
       end
 
@@ -51,6 +56,15 @@ module Unparser
         match(node) do |current|
           current.include?(name)
         end
+      end
+
+      # mutant:disable
+      def local_variables_for_node(needle)
+        @items.each do |node, current|
+          return current if node.equal?(needle)
+        end
+
+        return Set.new
       end
 
       # Test if local variables where first assigned in body and read by conditional
@@ -90,21 +104,13 @@ module Unparser
       #
       # @api private
       #
-      def initialize
-        @stack = [Set.new]
+      def initialize(stack:)
+        @stack = [stack]
       end
 
       # Enumerate each node with its local variable scope
-      #
-      # @param [Parser::AST::Node] node
-      #
-      # @return [self]
-      #
-      # @api private
-      #
-      def self.each(node, &block)
-        new.each(node, &block)
-        self
+      def self.each(node:, stack:, &block)
+        new(stack: stack).each(node: node, &block)
       end
 
       # Enumerate local variable scope scope
@@ -117,7 +123,7 @@ module Unparser
       #
       # @api private
       #
-      def each(node, &block)
+      def each(node:, &block)
         visit(node, &block)
       end
 
@@ -132,7 +138,7 @@ module Unparser
         enter(node)
         yield node, current.dup, before
         node.children.each do |child|
-          visit(child, &block) if child.is_a?(Parser::AST::Node)
+          visit(child, &block) if child.instance_of?(Parser::AST::Node)
         end
         leave(node)
       end
@@ -142,7 +148,7 @@ module Unparser
         when *RESET_NODES
           push_reset
         when ASSIGN_NODES
-          define(node.children.first)
+          value = node.children.first and define(value)
         when *INHERIT_NODES
           push_inherit
         end
