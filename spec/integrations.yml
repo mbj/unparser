@@ -1,10 +1,24 @@
 ---
 - name: mutant
   repo_uri: 'https://github.com/mbj/mutant.git'
-  repo_ref: 'main'
+  repo_ref: main
+  exclude: []
+- name: activemerchant
+  repo_uri: 'https://github.com/activemerchant/active_merchant.git'
+  repo_ref: master
   exclude:
-  # bug in unparser, to be fixed in followup PRs
-  - spec/integration/mutant/parallel_spec.rb
+  # actually ERB files, mot ruby files
+  - generators/gateway/templates/gateway.rb
+  - generators/gateway/templates/gateway_test.rb
+  - generators/gateway/templates/remote_gateway_test.rb
+  # invalid utf-8
+  - test/remote/gateways/remote_elavon_test.rb
+  - test/remote/gateways/remote_paybox_direct_3ds_test.rb
+  - test/remote/gateways/remote_paybox_direct_test.rb
+  - test/unit/gateways/ixopay_test.rb
+  - test/unit/gateways/pay_conex_test.rb
+  - test/unit/gateways/sage_test.rb
+  - test/unit/gateways/vpos_test.rb
 - name: rubyspec
   repo_uri: 'https://github.com/ruby/spec.git'
   # Revision of rubyspec on the last CI build of unparser that passed

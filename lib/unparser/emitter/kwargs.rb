@@ -5,6 +5,12 @@ module Unparser
     class Kwargs < self
       handle :kwargs
 
+      def emit_heredoc_remainders
+        children.each do |child|
+          emitter(child).emit_heredoc_remainders
+        end
+      end
+
       def dispatch
         delimited(children)
       end

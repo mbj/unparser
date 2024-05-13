@@ -391,6 +391,18 @@ describe Unparser, mutant_expression: 'Unparser*' do
       end
     RUBY
 
+    assert_source(<<~'RUBY')
+      def foo(bar)
+        bar()
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      foo { |bar|
+        bar()
+      }
+    RUBY
+
     # Test Symbol#inspect Ruby bug: https://bugs.ruby-lang.org/issues/18905
     assert_source(':"@="')
     assert_source(':"$$$$="')

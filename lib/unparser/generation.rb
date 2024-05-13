@@ -208,21 +208,17 @@ module Unparser
     end
 
     def emit_rescue_postcontrol(node)
-      writer = writer_with(Writer::Rescue, node)
+      writer = writer_with(Writer::Rescue, node:)
       writer.emit_postcontrol
       writer.emit_heredoc_remainders
     end
 
     def emit_rescue_regular(node)
-      writer_with(Writer::Rescue, node).emit_regular
+      writer_with(Writer::Rescue, node:).emit_regular
     end
 
-    def writer_with(klass, node)
-      klass.new(to_h.merge(node: node))
-    end
-
-    def emitter(node)
-      Emitter.emitter(**to_h.merge(node: node))
+    def writer_with(klass, node:, **attributes)
+      klass.new(to_h.merge(node: node, **attributes))
     end
 
     def visit(node)

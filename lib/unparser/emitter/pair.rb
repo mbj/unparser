@@ -12,6 +12,10 @@ module Unparser
 
       children :key, :value
 
+      def emit_heredoc_remainders
+        emitter(value).emit_heredoc_remainders
+      end
+
     private
 
       def dispatch

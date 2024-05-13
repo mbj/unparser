@@ -25,7 +25,7 @@ module Unparser
       # @api private
       #
       def local_variable_scope
-        AST::LocalVariableScope.new(node)
+        AST::LocalVariableScope.new(node: node, static_local_variables: Set.new)
       end
 
       def self.included(descendant)
@@ -90,6 +90,12 @@ module Unparser
     # @api private
     #
     abstract_method :dispatch
+
+  private
+
+    def emitter(node)
+      Emitter.emitter(**to_h.merge(node: node))
+    end
 
   end # Emitter
 end # Unparser

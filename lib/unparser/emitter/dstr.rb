@@ -8,14 +8,19 @@ module Unparser
       handle :dstr
 
       def emit_heredoc_remainders
-        writer_with(Writer::DynamicString, node).emit_heredoc_reminder
+        dstr_writer.emit_heredoc_remainder
       end
 
     private
 
       def dispatch
-        writer_with(Writer::DynamicString, node).dispatch
+        dstr_writer.dispatch
       end
+
+      def dstr_writer
+        writer_with(Writer::DynamicString, node:)
+      end
+      memoize :dstr_writer
 
     end # DStr
   end # Emitter

@@ -7,7 +7,7 @@ module Unparser
       handle :hash
 
       def emit_heredoc_remainders
-        children.each(&method(:emit_heredoc_reminder_member))
+        children.each(&method(:emit_heredoc_remainder_member))
       end
 
     private
@@ -24,7 +24,7 @@ module Unparser
         end
       end
 
-      def emit_heredoc_reminder_member(node)
+      def emit_heredoc_remainder_member(node)
         emitter(node.children.last).emit_heredoc_remainders if n_pair?(node)
       end
 

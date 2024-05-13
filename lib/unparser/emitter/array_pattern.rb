@@ -19,7 +19,7 @@ module Unparser
 
       def emit_member(node)
         if n_match_rest?(node)
-          writer_with(MatchRest, node).emit_array_pattern
+          writer_with(MatchRest, node:).emit_array_pattern
         else
           visit(node)
         end

@@ -46,6 +46,10 @@ module Unparser
     end
   end
 
+  # Error raised when unparser encounders AST it cannot generate source for that would parse to the same AST.
+  class UnsupportedNodeError < RuntimeError
+  end
+
   # Unparse an AST (and, optionally, comments) into a string
   #
   # @param [Parser::AST::Node, nil] node
@@ -57,14 +61,20 @@ module Unparser
   #   if the node passed is invalid
   #
   # @api public
-  def self.unparse(node, comment_array = [])
+  def self.unparse(node, comment_array = [], static_local_variables: Set.new)
     return '' if node.nil?
+
+    local_variable_scope = AST::LocalVariableScope.new(
+      node:                   node,
+      static_local_variables: static_local_variables
+    )
 
     Buffer.new.tap do |buffer|
       Emitter::Root.new(
-        buffer,
-        node,
-        Comments.new(comment_array)
+        buffer:               buffer,
+        comments:             Comments.new(comment_array),
+        local_variable_scope: local_variable_scope,
+        node:                 node
       ).write_to_buffer
     end.content
   end
@@ -93,8 +103,8 @@ module Unparser
   # @param [Parser::AST::Node, nil] node
   #
   # @return [Either<Exception, String>]
-  def self.unparse_either(node)
-    Either.wrap_error(Exception) { unparse(node) }
+  def self.unparse_either(node, **options)
+    Either.wrap_error(Exception) { unparse(node, **options) }
   end
 
   # Parse string into AST
@@ -224,6 +234,7 @@ require 'unparser/emitter/match_pattern_p'
 require 'unparser/writer'
 require 'unparser/writer/binary'
 require 'unparser/writer/dynamic_string'
+require 'unparser/writer/regexp'
 require 'unparser/writer/resbody'
 require 'unparser/writer/rescue'
 require 'unparser/writer/send'

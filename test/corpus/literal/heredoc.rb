@@ -1,0 +1,31 @@
+foo = <<-HEREDOC
+line_1
+line_2
+line_3
+line_4
+line_5
+line_6
+line_7
+line_8
+HEREDOC
+foo(<<-HEREDOC)
+line_1
+line_2
+line_3
+line_4
+line_5
+line_6
+line_7
+line_8
+HEREDOC
+<<-HEREDOC
+line_1
+line_2
+line_3
+line_4
+line_5
+line_6
+line_7
+line_8
+HEREDOC
+"segment_1" "segment_2" "segment_3" "segment_4"

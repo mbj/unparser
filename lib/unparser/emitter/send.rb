@@ -21,7 +21,7 @@ module Unparser
       end
 
       def writer
-        writer_with(Writer::Send, node)
+        writer_with(Writer::Send, node:)
       end
       memoize :writer
     end # Send
