@@ -5,7 +5,7 @@ module Unparser
 
     # Calculated local variable scope for a given node
     class LocalVariableScope
-      include Enumerable, Adamantium, Concord.new(:node)
+      include Enumerable, Adamantium
 
       # Initialize object
       #
@@ -21,7 +21,6 @@ module Unparser
           items << scope
         end
         @items = items
-        super(node)
       end
 
       # Test if local variable was first at given assignment
