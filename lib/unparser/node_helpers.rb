@@ -52,6 +52,7 @@ module Unparser
       kwargs
       kwsplat
       lambda
+      lvar
       match_rest
       pair
       rescue

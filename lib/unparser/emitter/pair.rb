@@ -15,18 +15,29 @@ module Unparser
     private
 
       def dispatch
-        if colon?(key)
-          write(key.children.first.to_s, ': ')
+        if colon?
+          emit_colon
+          unless implicit_value?
+            write(' ')
+            visit(value)
+          end
         else
           visit(key)
           write(' => ')
+          visit(value)
         end
-
-        visit(value)
       end
 
-      def colon?(key)
+      def colon?
         n_sym?(key) && BAREWORD.match?(key.children.first)
+      end
+
+      def emit_colon
+        write(key.children.first.to_s, ':')
+      end
+
+      def implicit_value?
+        n_lvar?(value) && value.children.first.equal?(key.children.first)
       end
     end
   end

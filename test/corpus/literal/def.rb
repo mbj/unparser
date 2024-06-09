@@ -132,3 +132,7 @@ end
 def f
   %()
 end
+
+def foo(return:)
+  { return: }
+end
