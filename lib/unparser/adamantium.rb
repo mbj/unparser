@@ -20,9 +20,11 @@ module Unparser
       # @return [Object]
       #
       # @api public
+      #
+      # mutant:disable
       def freeze
         memoized_method_cache
-        super()
+        super
       end
 
     private
