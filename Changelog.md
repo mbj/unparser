@@ -1,3 +1,9 @@
+# v0.6.14 2024-06-10
+
+[#369](https://github.com/mbj/unparser/pull/369)
+
+* Remove support for ruby-3.0, its EOL.
+
 # v0.6.13 2024-02-01
 
 [#361](https://github.com/mbj/unparser/pull/361)
