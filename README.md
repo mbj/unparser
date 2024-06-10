@@ -10,7 +10,7 @@ The following constraints apply:
 
 * No support for macruby extensions
 * Only support for the [modern AST](https://github.com/whitequark/parser/#usage) format
-* Only support for Ruby >= 3.0
+* Only support for Ruby >= 3.1
 
 Notable Users:
 

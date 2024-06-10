@@ -11,9 +11,11 @@ Gem::Specification.new do |gem|
   gem.license     = 'MIT'
 
   gem.metadata = {
-    'bug_tracker_uri' => 'https://github.com/mbj/unparser/issues',
-    'changelog_uri'   => 'https://github.com/mbj/unparser/blob/master/Changelog.md',
-    'funding_uri'     => 'https://github.com/sponsors/mbj'
+    'bug_tracker_uri'       => 'https://github.com/mbj/unparser/issues',
+    'changelog_uri'         => 'https://github.com/mbj/unparser/blob/master/Changelog.md',
+    'funding_uri'           => 'https://github.com/sponsors/mbj',
+    'source_code_uri'       => 'https://github.com/mbj/unparser',
+    'rubygems_mfa_required' => 'true'
   }
 
   gem.files            = Dir.glob('lib/**/*')
@@ -21,9 +23,8 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
 
-  gem.metadata['rubygems_mfa_required'] = 'true'
 
-  gem.required_ruby_version = '>= 3.0'
+  gem.required_ruby_version = '>= 3.1'
 
   gem.add_dependency('diff-lcs', '~> 1.3')
   gem.add_dependency('parser',   '>= 3.3.0')

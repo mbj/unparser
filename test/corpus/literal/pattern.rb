@@ -39,3 +39,7 @@ in A
 else
 end
 1 in [a]
+1 => [a]
+1 => [*]
+1 in [*, 42, *]
+1 in [*, a, *foo]
