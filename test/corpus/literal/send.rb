@@ -82,3 +82,5 @@ x(**foo)
 foo&.!
 foo.~(b)
 a&.+(b)
+a = nil
+foo(bar: a)
