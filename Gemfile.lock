@@ -6,11 +6,6 @@ PATH
       parser (>= 3.3.0)
 
 GEM
-  remote: https://gem.mutant.dev/
-  specs:
-    mutant-license (0.1.1.2.2355046999240944981729280251890364410689.5)
-
-GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
@@ -76,7 +71,6 @@ PLATFORMS
 
 DEPENDENCIES
   mutant (~> 0.12.2)
-  mutant-license!
   mutant-rspec (~> 0.12.2)
   rspec (~> 3.9)
   rspec-core (~> 3.9)
