@@ -1,3 +1,9 @@
+# v0.6.15 2024-06-10
+
+[#373](https://github.com/mbj/unparser/pull/373)
+
+* Fix additonal keyword dispatch
+
 # v0.6.14 2024-06-10
 
 [#369](https://github.com/mbj/unparser/pull/369)
