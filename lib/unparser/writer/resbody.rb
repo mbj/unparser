@@ -6,6 +6,11 @@ module Unparser
     class Resbody
       include Writer
 
+      OPERATORS = {
+        csend: '&.',
+        send:  '.'
+      }.freeze
+
       children :exception, :assignment, :body
 
       def emit_postcontrol
@@ -33,7 +38,31 @@ module Unparser
         return unless assignment
 
         write(' => ')
-        visit(assignment)
+
+        case assignment.type
+        when :send, :csend
+          write_send_assignment
+        when :indexasgn
+          write_index_assignment
+        else
+          visit(assignment)
+        end
+      end
+
+      def write_send_assignment
+        details = NodeDetails::Send.new(assignment)
+
+        visit(details.receiver)
+        write(OPERATORS.fetch(assignment.type))
+        write(details.non_assignment_selector)
+      end
+
+      def write_index_assignment
+        receiver, index = assignment.children
+        visit(receiver)
+        write('[')
+        visit(index) if index
+        write(']')
       end
     end # Resbody
   end # Writer

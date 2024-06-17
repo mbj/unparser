@@ -13,7 +13,7 @@ module Unparser
       end
 
       def writer
-        writer_with(Writer::Binary, node)
+        writer_with(Writer::Binary, node:)
       end
       memoize :writer
     end # Binary

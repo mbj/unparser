@@ -4,6 +4,7 @@ module Unparser
   module NodeDetails
     include Constants, NodeHelpers
 
+    # mutant:disable
     def self.included(descendant)
       descendant.class_eval do
         include Adamantium, Concord.new(:node)

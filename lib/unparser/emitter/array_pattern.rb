@@ -12,17 +12,9 @@ module Unparser
 
       def dispatch
         write('[')
-        delimited(children, &method(:emit_member))
+        delimited(children)
         write(', ') if node_type.equal?(:array_pattern_with_tail)
         write(']')
-      end
-
-      def emit_member(node)
-        if n_match_rest?(node)
-          writer_with(MatchRest, node).emit_array_pattern
-        else
-          visit(node)
-        end
       end
     end # Pin
   end # Emitter

@@ -7,8 +7,6 @@ module Unparser
 
     private_constant(*constants(false))
 
-    def emit_heredoc_reminders; end
-
     def symbol_name; end
 
     def write_to_buffer
@@ -151,7 +149,7 @@ module Unparser
       emit_body_member(head)
 
       tail.each do |child|
-        nl
+        buffer.ensure_nl
 
         nl if EXTRA_NL.include?(child.type)
 
@@ -208,21 +206,20 @@ module Unparser
     end
 
     def emit_rescue_postcontrol(node)
-      writer = writer_with(Writer::Rescue, node)
+      writer = writer_with(Writer::Rescue, node:)
       writer.emit_postcontrol
-      writer.emit_heredoc_reminders
     end
 
     def emit_rescue_regular(node)
-      writer_with(Writer::Rescue, node).emit_regular
-    end
-
-    def writer_with(klass, node)
-      klass.new(to_h.merge(node: node))
+      writer_with(Writer::Rescue, node:).emit_regular
     end
 
     def emitter(node)
       Emitter.emitter(**to_h, node: node)
+    end
+
+    def writer_with(klass, node:, **attributes)
+      klass.new(to_h.merge(node: node, **attributes))
     end
 
     def visit(node)
@@ -230,10 +227,7 @@ module Unparser
     end
 
     def visit_deep(node)
-      emitter(node).tap do |emitter|
-        emitter.write_to_buffer
-        emitter.emit_heredoc_reminders
-      end
+      emitter(node).tap(&:write_to_buffer)
     end
 
     def first_child

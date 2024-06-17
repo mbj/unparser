@@ -5,116 +5,123 @@ module Unparser
     class DynamicString
       include Writer, Adamantium
 
-      PATTERNS_2 =
-        [
-          %i[str_empty begin].freeze,
-          %i[begin str_nl].freeze
-        ].freeze
-
-      PATTERNS_3 =
-        [
-          %i[begin str_nl_eol str_nl_eol].freeze,
-          %i[str_nl_eol begin str_nl_eol].freeze,
-          %i[str_ws begin str_nl_eol].freeze
-        ].freeze
-
       FLAT_INTERPOLATION = %i[ivar cvar gvar nth_ref].to_set.freeze
+
+      # Amount of dstr children at which heredoc emitting is
+      # preferred, but not guaranteed.
+      HEREDOC_THRESHOLD = 8
+      HEREDOC_DELIMITER = 'HEREDOC'
+      HEREDOC_HEADER    = "<<-#{HEREDOC_DELIMITER}".freeze
+      HEREDOC_FOOTER    = "#{HEREDOC_DELIMITER}\n".freeze
 
       private_constant(*constants(false))
 
-      def emit_heredoc_reminder
-        return unless heredoc?
-
-        emit_heredoc_body
-        emit_heredoc_footer
-      end
-
+      # The raise below is not reachable if unparser is correctly implemented
+      # but has to exist as I have to assume unparser still has bugs.
+      #
+      # But unless I had such a bug in my test corpus: I cannot enable mutant, and if I
+      # knew about such a bug: I'd fix it so would be back at the start.
+      #
+      # TLDR: Good case for a mutant disable.
+      #
+      # mutant:disable
       def dispatch
         if heredoc?
-          emit_heredoc_header
+          write(HEREDOC_HEADER)
+          buffer.push_heredoc(heredoc_body)
+        elsif round_tripping_segmented_source
+          write(round_tripping_segmented_source)
         else
-          emit_dstr
+          fail UnsupportedNodeError, "Unparser cannot round trip this node: #{node.inspect}"
         end
       end
 
     private
 
-      def heredoc_header
-        '<<-HEREDOC'
-      end
-
       def heredoc?
-        !children.empty? && (nl_last_child? && heredoc_pattern?)
-      end
-
-      def emit_heredoc_header
-        write(heredoc_header)
-      end
-
-      def emit_heredoc_body
-        nl
-        emit_normal_heredoc_body
-      end
-
-      def emit_heredoc_footer
-        write('HEREDOC')
-      end
-
-      def classify(node)
-        if n_str?(node)
-          classify_str(node)
+        if children.length >= HEREDOC_THRESHOLD
+          round_trips_heredoc?
         else
-          node.type
+          round_tripping_segmented_source.nil? # && round_trips_heredoc?
+        end
+      end
+      memoize :heredoc?
+
+      def round_trips_heredoc?
+        round_trips?(source: heredoc_source)
+      end
+      memoize :round_trips_heredoc?
+
+      def round_tripping_segmented_source
+        each_segments(children) do |segments|
+
+          source = segmented_source(segments: segments)
+
+          return source if round_trips?(source: source)
+        end
+        nil
+      end
+      memoize :round_tripping_segmented_source
+
+      def each_segments(array)
+        yield [array]
+
+        1.upto(array.length) do |take|
+          prefix = [array.take(take)]
+          suffix = array.drop(take)
+          each_segments(suffix) do |items|
+            yield(prefix + items)
+          end
         end
       end
 
-      def classify_str(node)
-        if str_nl?(node)
-          :str_nl
-        elsif node.children.first.end_with?("\n")
-          :str_nl_eol
-        elsif str_ws?(node)
-          :str_ws
-        elsif str_empty?(node)
-          :str_empty
+      def segmented_source(segments:)
+        buffer = Buffer.new
+
+        Segmented.new(
+          buffer:,
+          comments:,
+          explicit_encoding:    nil,
+          local_variable_scope:,
+          node:,
+          segments:
+        ).dispatch
+
+        buffer.content
+      end
+
+      def heredoc_body
+        buffer = Buffer.new
+
+        writer = Heredoc.new(
+          buffer:,
+          comments:,
+          explicit_encoding:    nil,
+          local_variable_scope:,
+          node:
+        )
+
+        writer.emit
+        buffer.content
+      end
+      memoize :heredoc_body
+
+      def heredoc_source
+        "#{HEREDOC_HEADER}\n#{heredoc_body}"
+      end
+      memoize :heredoc_source
+
+      class Heredoc
+        include Writer, Adamantium
+
+        def emit
+          emit_heredoc_body
+          write(HEREDOC_FOOTER)
         end
-      end
 
-      def str_nl?(node)
-        node.eql?(s(:str, "\n"))
-      end
+      private
 
-      def str_empty?(node)
-        node.eql?(s(:str, ''))
-      end
-
-      def str_ws?(node)
-        /\A( |\t)+\z/.match?(node.children.first)
-      end
-
-      def heredoc_pattern?
-        heredoc_pattern_2? || heredoc_pattern_3?
-      end
-
-      def heredoc_pattern_3?
-        children.each_cons(3).any? do |group|
-          PATTERNS_3.include?(group.map(&method(:classify)))
-        end
-      end
-
-      def heredoc_pattern_2?
-        children.each_cons(2).any? do |group|
-          PATTERNS_2.include?(group.map(&method(:classify)))
-        end
-      end
-
-      def nl_last_child?
-        last = children.last
-        n_str?(last) && last.children.first[-1].eql?("\n")
-      end
-
-      def emit_normal_heredoc_body
-        buffer.root_indent do
+        def emit_heredoc_body
           children.each do |child|
             if n_str?(child)
               write(escape_dynamic(child.children.first))
@@ -123,86 +130,72 @@ module Unparser
             end
           end
         end
-      end
 
-      def escape_dynamic(string)
-        string.gsub('#', '\#')
-      end
+        def escape_dynamic(string)
+          string.gsub('#', '\#')
+        end
 
-      def emit_dynamic(child)
-        if FLAT_INTERPOLATION.include?(child.type)
-          write('#')
-          visit(child)
-        elsif n_dstr?(child)
-          emit_body(child.children)
-        else
+        def emit_dynamic(child)
           write('#{')
           emit_dynamic_component(child.children.first)
           write('}')
         end
-      end
 
-      def emit_dynamic_component(node)
-        visit(node) if node
-      end
+        def emit_dynamic_component(node)
+          visit(node) if node
+        end
+      end # Heredoc
 
-      def emit_dstr
-        if children.empty?
-          write('%()')
-        else
-          segments.each_with_index do |children, index|
-            emit_segment(children, index)
+      class Segmented
+        include Writer, Adamantium
+
+        include anima.add(:segments)
+
+        def dispatch
+          if children.empty?
+            write('%()')
+          else
+            segments.each_with_index { |segment, index| emit_segment(segment, index) }
           end
         end
-      end
 
-      def breakpoint?(child, current)
-        last_type = current.last&.type
+      private
 
-        [
-          n_str?(child) && last_type.equal?(:str) && current.none?(&method(:n_begin?)),
-          last_type.equal?(:dstr),
-          n_dstr?(child) && last_type
-        ].any?
-      end
+        def emit_segment(children, index)
+          write(' ') unless index.zero?
 
-      def segments
-        segments = []
-
-        segments << current = []
-
-        children.each do |child|
-          if breakpoint?(child, current)
-            segments << current = []
-          end
-
-          current << child
+          write('"')
+          emit_segment_body(children)
+          write('"')
         end
 
-        segments
-      end
-
-      def emit_segment(children, index)
-        write(' ') unless index.zero?
-
-        write('"')
-        emit_body(children)
-        write('"')
-      end
-
-      def emit_body(children)
-        buffer.root_indent do
+        def emit_segment_body(children)
           children.each_with_index do |child, index|
-            if n_str?(child)
-              string = child.children.first
-              if string.eql?("\n") && children.fetch(index.pred).type.equal?(:begin)
-                write("\n")
-              else
-                write(string.inspect[1..-2])
-              end
-            else
-              emit_dynamic(child)
+            case child.type
+            when :begin
+              write('#{')
+              visit(child.children.first) if child.children.first
+              write('}')
+            when FLAT_INTERPOLATION
+              write('#')
+              visit(child)
+            when :str
+              visit_str(children, child, index)
+            when :dstr
+              emit_segment_body(child.children)
             end
+          end
+        end
+
+        def visit_str(children, child, index)
+          string = child.children.first
+
+          next_child = children.at(index.succ)
+
+          if next_child && next_child.type.equal?(:str)
+            write(string.gsub('"', '\\"'))
+          else
+            write(child.children.first.inspect[1..-2])
           end
         end
       end

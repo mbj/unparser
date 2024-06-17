@@ -134,13 +134,24 @@ module Unparser
     # @param [Class, Module] scope
     #
     # @return [undefined]
+    #
+    # mutant:disable
     def included(descendant)
       descendant.instance_exec(self, attribute_names) do |anima, names|
         # Define anima method
+
+        class << self
+          undef_method(:anima) if method_defined?(:anima)
+        end
+
         define_singleton_method(:anima) { anima }
 
         # Define instance methods
         include InstanceMethods
+
+        names.each do |name|
+          undef_method(name) if method_defined?(name)
+        end
 
         # Define attribute readers
         attr_reader(*names)

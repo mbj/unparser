@@ -20,13 +20,9 @@ module Unparser
         end
       end
 
-      def emit_heredoc_reminders
-        emitter(body).emit_heredoc_reminders
-      end
-
       def emit_postcontrol
         visit(body)
-        writer_with(Resbody, rescue_body).emit_postcontrol
+        writer_with(Resbody, node: rescue_body).emit_postcontrol
       end
 
     private
@@ -36,7 +32,7 @@ module Unparser
       end
 
       def emit_rescue_body(node)
-        writer_with(Resbody, node).emit_regular
+        writer_with(Resbody, node:).emit_regular
       end
     end # Rescue
   end # Writer

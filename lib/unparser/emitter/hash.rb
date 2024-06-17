@@ -6,10 +6,6 @@ module Unparser
     class Hash < self
       handle :hash
 
-      def emit_heredoc_reminders
-        children.each(&method(:emit_heredoc_reminder_member))
-      end
-
     private
 
       def dispatch
@@ -22,10 +18,6 @@ module Unparser
             write(' ')
           end
         end
-      end
-
-      def emit_heredoc_reminder_member(node)
-        emitter(node.children.last).emit_heredoc_reminders if n_pair?(node)
       end
 
       def emit_hash_body

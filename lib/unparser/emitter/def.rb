@@ -26,7 +26,7 @@ module Unparser
         return if arguments.children.empty?
 
         parentheses do
-          writer_with(Args, arguments).emit_def_arguments
+          writer_with(Args, node: arguments).emit_def_arguments
         end
       end
 

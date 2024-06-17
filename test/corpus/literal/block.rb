@@ -91,6 +91,10 @@ m do
 rescue
 ensure
 end
+
+begin
+rescue => self&.a
+end
 bar {
   _1 + _2
 }

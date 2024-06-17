@@ -1,9 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'etc'
 require 'mutant'
 require 'optparse'
+require 'pathname'
 require 'unparser'
+
+Thread.abort_on_exception = true
 
 module Unparser
   module Corpus
@@ -16,16 +20,92 @@ module Unparser
       # Perform verification via unparser cli
       #
       # @return [Boolean]
+      #
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
       def verify
+        puts("Verifiying: #{name}")
         checkout
-        command = %W[unparser #{repo_path}]
-        exclude.each do |name|
-          command.push('--ignore', repo_path.join(name).to_s)
+
+        paths = Pathname.glob(Pathname.new(repo_path).join('**/*.rb'))
+
+        driver = Mutant::Parallel.async(
+          config: Mutant::Parallel::Config.new(
+            block:            method(:verify_path),
+            jobs:             Etc.nprocessors,
+            on_process_start: ->(*) {},
+            process_name:     'unparser-corpus-test',
+            sink:             Sink.new,
+            source:           Mutant::Parallel::Source::Array.new(jobs: paths),
+            thread_name:      'unparser-corpus-test',
+            timeout:          nil
+          ),
+          world:  Mutant::WORLD
+        )
+
+        loop do
+          status = driver.wait_timeout(1)
+
+          puts("Processed: #{status.payload.total}")
+
+          # rubocop:disable Lint/UnreachableLoop
+          status.payload.errors.each do |report|
+            puts report
+            fail
+          end
+          # rubocop:enable Lint/UnreachableLoop
+
+          break if status.done?
         end
-        Kernel.system(*command)
+
+        true
+      end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
+
+      private
+
+      class Sink
+        include Mutant::Parallel::Sink
+
+        attr_reader :errors, :total
+
+        def initialize
+          @errors = []
+          @total  = 0
+        end
+
+        def stop?
+          !@errors.empty?
+        end
+
+        def status
+          self
+        end
+
+        def response(response)
+          if response.error
+            Mutant::WORLD.stderr.puts(response.log)
+            fail response.error
+          end
+
+          @total += 1
+
+          if response.result
+            @errors << response.result
+          end
+        end
       end
 
-    private
+      def verify_path(path)
+        validation = Validation.from_path(path)
+
+        if original_syntax_error?(validation) || generated_encoding_error?(validation) || validation.success?
+          return
+        end
+
+        validation.report
+      end
 
       def checkout
         TMP.mkdir unless TMP.directory?
@@ -48,6 +128,20 @@ module Unparser
 
       def repo_path
         TMP.join(name)
+      end
+
+      # This happens if the original source contained a non UTF charset meta comment.
+      # These are not exposed to the AST in a way unparser could know about to generate a non UTF-8
+      # target and emit that meta comment itself.
+      # For the purpose of corpus testing these cases are ignored.
+      def generated_encoding_error?(validation)
+        exception = validation.generated_node.from_left { return false }
+        exception.instance_of?(Parser::SyntaxError) &&
+          exception.message.eql?('literal contains escape sequences incompatible with UTF-8')
+      end
+
+      def original_syntax_error?(validation)
+        validation.original_node.from_left { return false }.instance_of?(Parser::SyntaxError)
       end
 
       def system(arguments)

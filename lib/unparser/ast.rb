@@ -2,9 +2,10 @@
 
 module Unparser
   # Namespace for AST processing tools
-  module AST
+  class AST
+    include Anima.new(:comments, :explicit_encoding, :node, :static_local_variables)
+
     FIRST_CHILD = ->(node) { node.children.first }.freeze
-    TAUTOLOGY   = ->(_node) { true }.freeze
 
     RESET_NODES   = %i[module class sclass def defs].freeze
     INHERIT_NODES = [:block].freeze
@@ -16,11 +17,21 @@ module Unparser
         arg
         kwarg
         kwoptarg
+        kwrestarg
         lvasgn
         optarg
-        procarg0
         restarg
       ].to_set.freeze
+
+    # mutant:disable
+    def self.from_node(node:)
+      new(
+        comments:               EMPTY_ARRAY,
+        explicit_encoding:      nil,
+        node:,
+        static_local_variables: Set.new
+      )
+    end
 
     # Test for local variable inherited scope reset
     #
@@ -69,6 +80,7 @@ module Unparser
     #
     # @api private
     #
+    # mutant:disable
     def self.local_variable_reads(node)
       Enumerator.new(
         node,
@@ -80,19 +92,6 @@ module Unparser
     class Enumerator
       include Adamantium, Concord.new(:node, :controller), Enumerable
 
-      # Return new instance
-      #
-      # @param [Parser::AST::Node] node
-      # @param [#call(node)] controller
-      #
-      # @return [Enumerator]
-      #
-      # @api private
-      #
-      def self.new(node, controller = TAUTOLOGY)
-        super
-      end
-
       # Return each node
       #
       # @return [Enumerator<Parser::AST::Node>]
@@ -103,8 +102,8 @@ module Unparser
       #
       # @api private
       #
-      def each(&block)
-        Walker.call(node, controller, &block)
+      def each(&)
+        Walker.call(node, controller, &)
       end
 
       # Return nodes selected by types
@@ -168,13 +167,10 @@ module Unparser
       #
       # @param [Parser::AST::Node] node
       #
-      # @return [self]
-      #
       # @api private
       #
-      def self.call(node, controller = TAUTOLOGY, &block)
+      def self.call(node, controller, &block)
         new(block, controller).call(node)
-        self
       end
 
       # Call walker with node

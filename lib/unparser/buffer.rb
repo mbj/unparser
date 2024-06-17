@@ -14,8 +14,10 @@ module Unparser
     # @api private
     #
     def initialize
-      @content = +''
-      @indent = 0
+      @content  = +''
+      @heredocs = []
+      @indent   = 0
+      @no_nl    = true
     end
 
     # Append string
@@ -32,6 +34,13 @@ module Unparser
       end
       write(string)
       self
+    end
+
+    # Push to heredoc stack
+    #
+    # @param [String] heredoc
+    def push_heredoc(heredoc)
+      @heredocs << heredoc
     end
 
     # Append a string without an indentation prefix
@@ -68,6 +77,10 @@ module Unparser
       self
     end
 
+    def ensure_nl
+      nl unless fresh_line?
+    end
+
     # Write newline
     #
     # @return [self]
@@ -75,7 +88,27 @@ module Unparser
     # @api private
     #
     def nl
+      @no_nl = false
       write(NL)
+      flush_heredocs
+      self
+    end
+
+    # Write final newline
+    def final_newline
+      return if fresh_line? || @no_nl
+
+      write(NL)
+    end
+
+    def nl_flush_heredocs
+      return if @heredocs.empty?
+
+      if fresh_line?
+        flush_heredocs
+      else
+        nl
+      end
     end
 
     def root_indent
@@ -117,12 +150,21 @@ module Unparser
       self
     end
 
+    def write_encoding(encoding)
+      write("# -*- encoding: #{encoding} -*-\n")
+    end
+
   private
 
     INDENT_SPACE = '  '.freeze
 
     def prefix
       write(INDENT_SPACE * @indent)
+    end
+
+    def flush_heredocs
+      @heredocs.each(&public_method(:write))
+      @heredocs = []
     end
 
   end # Buffer
