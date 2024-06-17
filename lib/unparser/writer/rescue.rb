@@ -20,8 +20,8 @@ module Unparser
         end
       end
 
-      def emit_heredoc_reminders
-        emitter(body).emit_heredoc_reminders
+      def emit_heredoc_remainders
+        emitter(body).emit_heredoc_remainders
       end
 
       def emit_postcontrol

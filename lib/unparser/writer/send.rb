@@ -30,8 +30,8 @@ module Unparser
         write(details.string_selector)
       end
 
-      def emit_heredoc_reminders
-        emitter(receiver).emit_heredoc_reminders if receiver
+      def emit_heredoc_remainders
+        emitter(receiver).emit_heredoc_remainders if receiver
         arguments.each(&method(:emit_heredoc_reminder))
       end
 
@@ -79,7 +79,7 @@ module Unparser
       end
 
       def emit_heredoc_reminder(argument)
-        emitter(argument).emit_heredoc_reminders
+        emitter(argument).emit_heredoc_remainders
       end
 
       def avoid_clash?

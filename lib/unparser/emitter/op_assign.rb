@@ -14,9 +14,9 @@ module Unparser
 
       handle(*MAP.keys)
 
-      def emit_heredoc_reminders
-        emitter(target).emit_heredoc_reminders
-        emitter(expression).emit_heredoc_reminders
+      def emit_heredoc_remainders
+        emitter(target).emit_heredoc_remainders
+        emitter(expression).emit_heredoc_remainders
       end
 
     private
@@ -35,9 +35,9 @@ module Unparser
 
       children :target, :operator, :value
 
-      def emit_heredoc_reminders
-        emitter(target).emit_heredoc_reminders
-        emitter(value).emit_heredoc_reminders
+      def emit_heredoc_remainders
+        emitter(target).emit_heredoc_remainders
+        emitter(value).emit_heredoc_remainders
       end
 
     private

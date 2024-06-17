@@ -7,7 +7,7 @@ module Unparser
 
     private_constant(*constants(false))
 
-    def emit_heredoc_reminders; end
+    def emit_heredoc_remainders; end
 
     def symbol_name; end
 
@@ -210,7 +210,7 @@ module Unparser
     def emit_rescue_postcontrol(node)
       writer = writer_with(Writer::Rescue, node)
       writer.emit_postcontrol
-      writer.emit_heredoc_reminders
+      writer.emit_heredoc_remainders
     end
 
     def emit_rescue_regular(node)
@@ -232,7 +232,7 @@ module Unparser
     def visit_deep(node)
       emitter(node).tap do |emitter|
         emitter.write_to_buffer
-        emitter.emit_heredoc_reminders
+        emitter.emit_heredoc_remainders
       end
     end
 

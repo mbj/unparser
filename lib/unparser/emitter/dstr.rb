@@ -7,7 +7,7 @@ module Unparser
 
       handle :dstr
 
-      def emit_heredoc_reminders
+      def emit_heredoc_remainders
         writer_with(Writer::DynamicString, node).emit_heredoc_reminder
       end
 
