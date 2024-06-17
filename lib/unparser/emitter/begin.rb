@@ -8,9 +8,9 @@ module Unparser
       handle :begin
       children :body
 
-      def emit_heredoc_reminders
+      def emit_heredoc_remainders
         children.each do |child|
-          emitter(child).emit_heredoc_reminders
+          emitter(child).emit_heredoc_remainders
         end
       end
 

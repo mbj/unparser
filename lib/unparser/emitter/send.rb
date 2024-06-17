@@ -10,8 +10,8 @@ module Unparser
         writer.emit_mlhs
       end
 
-      def emit_heredoc_reminders
-        writer.emit_heredoc_reminders
+      def emit_heredoc_remainders
+        writer.emit_heredoc_remainders
       end
 
     private

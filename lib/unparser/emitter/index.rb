@@ -40,8 +40,8 @@ module Unparser
 
         private_constant(*constants(false))
 
-        def emit_heredoc_reminders
-          emitter(children.last).emit_heredoc_reminders
+        def emit_heredoc_remainders
+          emitter(children.last).emit_heredoc_remainders
         end
 
         def dispatch

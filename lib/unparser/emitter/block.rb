@@ -16,7 +16,7 @@ module Unparser
         ws
         write_open
         emit_block_arguments unless n_lambda?(target)
-        target_writer.emit_heredoc_reminders if n_send?(target)
+        target_writer.emit_heredoc_remainders if n_send?(target)
         emit_optional_body_ensure_rescue(body)
         write_close
       end

@@ -11,10 +11,10 @@ module Unparser
         true
       end
 
-      def emit_heredoc_reminders
+      def emit_heredoc_remainders
         return unless right
 
-        emitter(right).emit_heredoc_reminders
+        emitter(right).emit_heredoc_remainders
       end
 
     private
