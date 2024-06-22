@@ -18,7 +18,6 @@ module Unparser
         kwoptarg
         lvasgn
         optarg
-        procarg0
         restarg
       ].to_set.freeze
 

@@ -11,10 +11,8 @@ module Unparser
         true
       end
 
-      def emit_heredoc_reminders
-        return unless right
-
-        emitter(right).emit_heredoc_reminders
+      def emit_heredoc_remainders
+        right_emitter.emit_heredoc_remainders if right
       end
 
     private
@@ -30,11 +28,16 @@ module Unparser
         write(' = ')
 
         if BINARY_OPERATOR.include?(right.type)
-          writer_with(Writer::Binary, right).emit_operator
+          writer_with(Writer::Binary, node: right).emit_operator
         else
-          visit(right)
+          right_emitter.write_to_buffer
         end
       end
+
+      def right_emitter
+        emitter(right)
+      end
+      memoize :right_emitter
 
       abstract_method :emit_left
 

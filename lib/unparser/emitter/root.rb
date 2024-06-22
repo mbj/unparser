@@ -2,10 +2,8 @@
 
 module Unparser
   class Emitter
-    # Root emitter a special case
     class Root < self
-      include Concord::Public.new(:buffer, :node, :comments)
-      include LocalVariableRoot
+      include Anima.new(:buffer, :node, :comments, :local_variable_scope)
 
       END_NL = %i[class sclass module begin].freeze
 

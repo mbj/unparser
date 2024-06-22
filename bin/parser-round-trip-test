@@ -40,7 +40,8 @@ class Test
     :rubies
   )
 
-  EXPECT_FAILURE = {}.freeze
+  STATIC_LOCAL_VARIABLES = %i[foo bar baz].freeze
+  EXPECT_FAILURE         = {}.freeze
 
   def legacy_attributes
     default_builder_attributes.reject do |attribute_name, value|
@@ -77,9 +78,9 @@ class Test
 
   # rubocop:disable Metrics/AbcSize
   def validation
-    identification   = name.to_s
+    identification = name.to_s
 
-    generated_source = Unparser.unparse_either(node)
+    generated_source = Unparser.unparse_either(node, static_local_variables: STATIC_LOCAL_VARIABLES)
       .fmap { |string| string.dup.force_encoding(parser_source.encoding).freeze }
 
     generated_node = generated_source.bind do |source|
@@ -99,7 +100,7 @@ class Test
 
   def parser
     Unparser.parser.tap do |parser|
-      %w[foo bar baz].each(&parser.static_env.method(:declare))
+      STATIC_LOCAL_VARIABLES.each(&parser.static_env.method(:declare))
     end
   end
 

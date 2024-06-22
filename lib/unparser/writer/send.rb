@@ -30,15 +30,15 @@ module Unparser
         write(details.string_selector)
       end
 
-      def emit_heredoc_reminders
-        emitter(receiver).emit_heredoc_reminders if receiver
-        arguments.each(&method(:emit_heredoc_reminder))
+      def emit_heredoc_remainders
+        emitter(receiver).emit_heredoc_remainders if receiver
+        arguments.each(&method(:emit_heredoc_remainder))
       end
 
     private
 
       def effective_writer
-        writer_with(effective_writer_class, node)
+        writer_with(effective_writer_class, node:)
       end
       memoize :effective_writer
 
@@ -78,8 +78,8 @@ module Unparser
         parentheses { delimited(arguments) }
       end
 
-      def emit_heredoc_reminder(argument)
-        emitter(argument).emit_heredoc_reminders
+      def emit_heredoc_remainder(argument)
+        emitter(argument).emit_heredoc_remainders
       end
 
       def avoid_clash?
@@ -105,7 +105,7 @@ module Unparser
 
       def emit_send_regular(node)
         if n_send?(node)
-          writer_with(Regular, node).dispatch
+          writer_with(Regular, node:).dispatch
         else
           visit(node)
         end

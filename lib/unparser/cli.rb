@@ -141,6 +141,7 @@ module Unparser
   private
 
     def process_target(target)
+      p target
       validation = target.public_send(@validation)
       if validation.success?
         puts validation.report if @verbose

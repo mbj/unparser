@@ -4,32 +4,24 @@ module Unparser
   class Emitter
     # Emitter for regexp literals
     class Regexp < self
+
       handle :regexp
 
-      define_group(:body, 0..-2)
+      def emit_heredoc_remainders
+        writer.emit_heredoc_remainders
+      end
 
     private
 
       def dispatch
-        parentheses('/', '/') do
-          body.each(&method(:emit_body))
-        end
-        emit_options
+        writer.dispatch
       end
 
-      def emit_options
-        write(children.last.children.join)
+      def writer
+        writer_with(Writer::Regexp, node:)
       end
+      memoize :writer
 
-      def emit_body(node)
-        if n_begin?(node)
-          write('#{')
-          node.children.each(&method(:visit))
-          write('}')
-        else
-          buffer.append_without_prefix(node.children.first.gsub('/', '\/'))
-        end
-      end
     end # Regexp
   end # Emitter
 end # Unparser
