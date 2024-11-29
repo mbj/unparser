@@ -12,7 +12,7 @@ module Unparser
     private
 
       def dispatch
-        write(name.to_s)
+        write_loc(name.to_s, node.location.name.to_range)
       end
 
     end # Access
@@ -27,14 +27,14 @@ module Unparser
 
       def dispatch
         emit_scope
-        write(name.to_s)
+        write_loc(name.to_s, node.location.name.to_range)
       end
 
       def emit_scope
         return unless scope
 
         visit(scope)
-        write('::') unless n_cbase?(scope)
+        write_loc('::', node.location.double_colon.to_range) unless n_cbase?(scope)
       end
     end
 
@@ -48,8 +48,7 @@ module Unparser
     private
 
       def dispatch
-        write(PREFIX)
-        write(name.to_s)
+        write_loc([PREFIX, name.to_s], node.location.expression.to_range)
       end
 
     end # NthRef

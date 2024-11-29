@@ -6,7 +6,7 @@ module Unparser
 
     def self.included(descendant)
       descendant.class_eval do
-        include Anima.new(:buffer, :comments, :node, :local_variable_scope)
+        include Anima.new(:buffer, :comments, :node, :local_variable_scope, :callback)
 
         extend DSL
       end

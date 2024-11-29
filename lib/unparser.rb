@@ -57,14 +57,15 @@ module Unparser
   #   if the node passed is invalid
   #
   # @api public
-  def self.unparse(node, comment_array = [])
+  def self.unparse(node, comment_array = [], &callback)
     return '' if node.nil?
 
     Buffer.new.tap do |buffer|
       Emitter::Root.new(
         buffer,
         node,
-        Comments.new(comment_array)
+        Comments.new(comment_array),
+        callback
       ).write_to_buffer
     end.content
   end
