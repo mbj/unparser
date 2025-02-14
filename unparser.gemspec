@@ -26,7 +26,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 3.1'
 
-  gem.add_dependency('diff-lcs', '~> 1.3')
+  gem.add_dependency('diff-lcs', '~> 1.6')
   gem.add_dependency('parser',   '>= 3.3.0')
 
   gem.add_development_dependency('mutant',            '~> 0.12.2')
