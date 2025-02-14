@@ -217,7 +217,7 @@ describe Unparser::Validation do
         (send
           (int 1) :bar)
         Node-Diff:
-        @@ -1,3 +1,3 @@
+        @@ -1,2 +1,2 @@
       REPORT
     end
   end

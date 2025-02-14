@@ -25,9 +25,10 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         [
-          "@@ -1 +1 @@\n",
+          "@@ -1,2 +1,2 @@\n",
           Unparser::Color::RED.format("-foo\n"),
           Unparser::Color::GREEN.format("+baz\n"),
+          " bar\n"
         ].join
       end
 
@@ -57,7 +58,7 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         <<~STR
-          @@ -1,4 +1,4 @@
+          @@ -1,3 +1,3 @@
           -foo
           +baz
            bar
@@ -77,9 +78,10 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         <<~STR
-          @@ -1 +1 @@
+          @@ -1,2 +1,2 @@
           -foo
           +baz
+           bar
         STR
       end
 
@@ -112,7 +114,7 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         <<~STR
-          @@ -1,8 +1,9 @@
+          @@ -1,7 +1,8 @@
            foo
            bar
            baz
@@ -135,9 +137,15 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         <<~STR
-          @@ -1,2 +1 @@
+          @@ -1,8 +1,7 @@
           -other
            foo
+           bar
+           baz
+           boz
+           a
+           b
+           c
         STR
       end
 
@@ -152,9 +160,15 @@ RSpec.describe Unparser::Diff do
 
       let(:expectation) do
         <<~STR
-          @@ -1 +1,2 @@
+          @@ -1,7 +1,8 @@
           +other
            foo
+           bar
+           baz
+           boz
+           a
+           b
+           c
         STR
       end
 
