@@ -222,7 +222,7 @@ module Unparser
     end
 
     def emitter(node)
-      Emitter.emitter(**to_h.merge(node: node))
+      Emitter.emitter(**to_h, node: node)
     end
 
     def visit(node)
