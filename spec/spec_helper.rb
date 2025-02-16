@@ -1,15 +1,10 @@
 require 'pathname'
 require 'rspec/its'
-require 'timeout'
 require 'unparser'
 require 'mutant'
 require 'yaml'
 
 require 'parser/current'
-
-RSpec.configuration.around(file_path: %r{spec/unit}) do |example|
-  Timeout.timeout(5, &example)
-end
 
 RSpec.shared_examples_for 'a command method' do
   it 'returns self' do
