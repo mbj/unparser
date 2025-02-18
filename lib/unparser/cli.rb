@@ -75,11 +75,12 @@ module Unparser
       @ignore  = Set.new
       @targets = []
 
-      @fail_fast  = false
-      @start_with = nil
-      @success    = true
-      @validation = :validation
-      @verbose    = false
+      @fail_fast                    = false
+      @start_with                   = nil
+      @success                      = true
+      @validation                   = :validation
+      @verbose                      = false
+      @ignore_original_syntax_error = false
 
       opts = OptionParser.new do |builder|
         add_options(builder)
@@ -114,6 +115,9 @@ module Unparser
       builder.on('-l', '--literal') do
         @validation = :literal_validation
       end
+      builder.on('--ignore-original-syntax-error') do
+        @ignore_original_syntax_error = true
+      end
       builder.on('--ignore FILE') do |file|
         @ignore.merge(targets(file))
       end
@@ -145,11 +149,18 @@ module Unparser
       if validation.success?
         puts validation.report if @verbose
         puts "Success: #{validation.identification}"
+      elsif ignore_original_syntax_error?(validation)
+        exception = validation.original_node.from_left
+        puts "#{exception.class}: #{validation.identification} #{exception}"
       else
         puts validation.report
         puts "Error: #{validation.identification}"
         @success = false
       end
+    end
+
+    def ignore_original_syntax_error?(validation)
+      @ignore_original_syntax_error && validation.original_node.from_left { nil }.instance_of?(Parser::SyntaxError)
     end
 
     def effective_targets

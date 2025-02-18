@@ -14,12 +14,6 @@ module Unparser
 
       handle(*MAP.keys)
 
-      def emit_heredoc_reminders
-        children.each do |node|
-          emitter(node).emit_heredoc_reminders
-        end
-      end
-
     private
 
       def dispatch

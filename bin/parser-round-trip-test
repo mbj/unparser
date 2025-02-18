@@ -40,7 +40,14 @@ class Test
     :rubies
   )
 
-  EXPECT_FAILURE = {}.freeze
+  EXPECT_FAILURE         = {}.freeze
+  STATIC_LOCAL_VARIABLES = %w[foo bar baz].to_set.freeze
+
+  NO_ROUND_TRIP = %i[
+    test_int___LINE__
+    test_pattern_matching__FILE__LINE_literals
+    test_string___FILE__
+  ].freeze
 
   def legacy_attributes
     default_builder_attributes.reject do |attribute_name, value|
@@ -56,6 +63,8 @@ class Test
       "Non targeted rubies: #{rubies.join(',')}"
     elsif validation.original_node.left?
       'Test specifies a syntax error'
+    elsif NO_ROUND_TRIP.include?(name)
+      'Test not round trippable'
     end
   end
 
@@ -77,20 +86,25 @@ class Test
 
   # rubocop:disable Metrics/AbcSize
   def validation
-    identification   = name.to_s
+    identification = name.to_s
 
-    generated_source = Unparser.unparse_either(node)
+    ast = Unparser::AST.new(
+      comments:               [],
+      explicit_encoding:      nil,
+      node:                   node,
+      static_local_variables: STATIC_LOCAL_VARIABLES
+    )
+
+    generated_source = Unparser.unparse_ast_either(ast)
       .fmap { |string| string.dup.force_encoding(parser_source.encoding).freeze }
 
-    generated_node = generated_source.bind do |source|
-      parse_either(source, identification)
-    end
+    generated_node = generated_source.bind { |source| parse_either(source, identification) }
 
     Unparser::Validation.new(
       generated_node:   generated_node,
       generated_source: generated_source,
       identification:   identification,
-      original_node:    parse_either(parser_source, identification).fmap { node },
+      original_ast:     parse_either_ast(parser_source, identification),
       original_source:  right(parser_source)
     )
   end
@@ -99,13 +113,24 @@ class Test
 
   def parser
     Unparser.parser.tap do |parser|
-      %w[foo bar baz].each(&parser.static_env.method(:declare))
+      STATIC_LOCAL_VARIABLES.each(&parser.static_env.method(:declare))
     end
   end
 
   def parse_either(source, identification)
     Unparser::Either.wrap_error(Parser::SyntaxError) do
       parser.parse(Unparser.buffer(source, identification))
+    end
+  end
+
+  def parse_either_ast(source, identification)
+    parse_either(source, identification).fmap do |node|
+      Unparser::AST.new(
+        comments:               [],
+        explicit_encoding:      nil,
+        node:                   node,
+        static_local_variables: Set.new
+      )
     end
   end
 end

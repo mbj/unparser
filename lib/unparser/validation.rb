@@ -7,9 +7,13 @@ module Unparser
       :generated_node,
       :generated_source,
       :identification,
-      :original_node,
+      :original_ast,
       :original_source
     )
+
+    class PhaseException
+      include Anima.new(:exception, :phase)
+    end
 
     # Test if source could be unparsed successfully
     #
@@ -21,7 +25,7 @@ module Unparser
     def success?
       [
         original_source,
-        original_node,
+        original_ast,
         generated_source,
         generated_node
       ].all?(&:right?) && generated_node.from_right.==(original_node.from_right)
@@ -47,48 +51,55 @@ module Unparser
     end
     memoize :report
 
+    def original_node
+      original_ast.fmap(&:node)
+    end
+
     # Create validator from string
     #
     # @param [String] original_source
     #
     # @return [Validator]
     def self.from_string(original_source)
-      original_node = Unparser
-        .parse_either(original_source)
+      original_ast = parse_ast_either(original_source)
 
-      generated_source = original_node
+      generated_source = original_ast
         .lmap(&method(:const_unit))
-        .bind(&Unparser.method(:unparse_either))
+        .bind(&method(:unparse_ast_either))
 
       generated_node = generated_source
         .lmap(&method(:const_unit))
-        .bind(&Unparser.method(:parse_either))
+        .bind(&method(:parse_ast_either))
+        .fmap(&:node)
 
       new(
-        identification:   '(string)',
-        original_source:  Either::Right.new(original_source),
-        original_node:    original_node,
+        generated_node:   generated_node,
         generated_source: generated_source,
-        generated_node:   generated_node
+        identification:   '(string)',
+        original_ast:     original_ast,
+        original_source:  Either::Right.new(original_source)
       )
     end
 
-    # Create validator from node
+    # Create validator from ast
     #
-    # @param [Parser::AST::Node] original_node
+    # @param [Unparser::AST] ast
     #
     # @return [Validator]
-    def self.from_node(original_node)
-      generated_source = Unparser.unparse_either(original_node)
+    #
+    # mutant:disable
+    def self.from_ast(ast:)
+      generated_source = Unparser.unparse_ast_either(ast)
 
       generated_node = generated_source
         .lmap(&method(:const_unit))
-        .bind(&Unparser.public_method(:parse_either))
+        .bind(&method(:parse_ast_either))
+        .fmap(&:node)
 
       new(
         identification:   '(string)',
         original_source:  generated_source,
-        original_node:    Either::Right.new(original_node),
+        original_ast:     Either::Right.new(ast),
         generated_source: generated_source,
         generated_node:   generated_node
       )
@@ -100,20 +111,34 @@ module Unparser
     #
     # @return [Validator]
     def self.from_path(path)
-      from_string(path.read).with(identification: path.to_s)
+      from_string(path.read.freeze).with(identification: path.to_s)
     end
+
+    def self.unparse_ast_either(ast)
+      Unparser.unparse_ast_either(ast)
+    end
+    private_class_method :unparse_ast_either
+
+    def self.parse_ast_either(source)
+      Unparser.parse_ast_either(source)
+    end
+    private_class_method :parse_ast_either
+
+    # mutant:disable
+    def self.const_unit(_); end
+    private_class_method :const_unit
 
   private
 
     def make_report(label, attribute_name)
-      ["#{label}:"].concat(public_send(attribute_name).either(method(:report_exception), ->(value) { [value] }))
+      ["#{label}:"].concat(public_send(attribute_name).either(method(:report_exception), ->(value) { [value.to_s] }))
     end
 
-    def report_exception(exception)
-      if exception
-        [exception.inspect].concat(exception.backtrace.take(20))
+    def report_exception(phase_exception)
+      if phase_exception
+        [phase_exception.inspect].concat(phase_exception.backtrace.take(20))
       else
-        ['undefined']
+        %w[undefined]
       end
     end
 
@@ -131,9 +156,6 @@ module Unparser
 
       diff ? ['Node-Diff:', diff] : []
     end
-
-    def self.const_unit(_value); end
-    private_class_method :const_unit
 
     class Literal < self
       def success?
@@ -161,13 +183,17 @@ module Unparser
         original_source.fmap do |original|
           generated_source.fmap do |generated|
             diff = Diff.new(
-              original.split("\n", -1),
-              generated.split("\n", -1)
+              encode(original).split("\n", -1),
+              encode(generated).split("\n", -1)
             ).colorized_diff
           end
         end
 
         diff ? ['Source-Diff:', diff] : []
+      end
+
+      def encode(string)
+        string.encode('UTF-8', invalid: :replace, undef: :replace)
       end
     end # Literal
   end # Validation

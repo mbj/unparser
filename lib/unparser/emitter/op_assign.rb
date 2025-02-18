@@ -14,11 +14,6 @@ module Unparser
 
       handle(*MAP.keys)
 
-      def emit_heredoc_reminders
-        emitter(target).emit_heredoc_reminders
-        emitter(expression).emit_heredoc_reminders
-      end
-
     private
 
       def dispatch
@@ -34,11 +29,6 @@ module Unparser
       handle :op_asgn
 
       children :target, :operator, :value
-
-      def emit_heredoc_reminders
-        emitter(target).emit_heredoc_reminders
-        emitter(value).emit_heredoc_reminders
-      end
 
     private
 

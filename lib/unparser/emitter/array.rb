@@ -6,10 +6,6 @@ module Unparser
     class Array < self
       handle :array
 
-      def emit_heredoc_reminders
-        emitters.each(&:emit_heredoc_reminders)
-      end
-
     private
 
       def dispatch

@@ -18,7 +18,7 @@ module Unparser
       end
 
       def emit_condition
-        visit(condition)
+        emitter(condition).emit_mlhs
         write(' in ')
         visit(assignment)
         write(' do')

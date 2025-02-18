@@ -1,0 +1,2 @@
+# -*- encoding: binary -*-
+"\xC0#{}"

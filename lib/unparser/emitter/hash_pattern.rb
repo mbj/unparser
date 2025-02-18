@@ -32,7 +32,7 @@ module Unparser
         when :match_var
           emit_match_var(node)
         when :match_rest
-          writer_with(MatchRest, node).emit_hash_pattern
+          writer_with(MatchRest, node:).emit_hash_pattern
         else
           visit(node)
         end

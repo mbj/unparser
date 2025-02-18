@@ -132,6 +132,21 @@ describe Unparser::Buffer do
       expect(object.content).to eql("foo\nbar")
     end
 
+    it 'keeps track to allow to write final' do
+      object.append('foo')
+      subject
+      object.append('bar')
+      object.final_newline
+      expect(object.content).to eql("foo\nbar\n")
+    end
+
+    it 'flushes heredocs' do
+      object.push_heredoc('HEREDOC')
+      subject
+      object.nl
+      expect(object.content).to eql("\nHEREDOC\n")
+    end
+
     it_should_behave_like 'a command method'
   end
 
@@ -152,5 +167,121 @@ describe Unparser::Buffer do
     end
 
     it_should_behave_like 'a command method'
+  end
+
+  describe '#write_encoding' do
+    let(:object) { described_class.new }
+
+    subject { object.write_encoding(Encoding::ASCII) }
+
+    it 'unindents two chars' do
+      subject
+      expect(object.content).to eql("# -*- encoding: US-ASCII -*-\n")
+    end
+
+    it_should_behave_like 'a command method'
+  end
+
+  describe '#nl_flush_heredocs' do
+    let(:object) { described_class.new }
+
+    subject { object.nl_flush_heredocs }
+
+    context 'on unbuffered heredoc' do
+      context 'on fresh line' do
+        it 'does nothing' do
+          subject
+          expect(object.content).to eql('')
+        end
+      end
+
+      context 'outside fresh line' do
+        it 'does nothing' do
+          object.write('foo')
+          subject
+          expect(object.content).to eql('foo')
+        end
+      end
+    end
+
+    context 'on buffered heredocs' do
+      context 'on fresh line' do
+        it 'flushes heredoc' do
+          object.push_heredoc('HEREDOC')
+          subject
+          expect(object.content).to eql('HEREDOC')
+        end
+      end
+
+      context 'outside fresh line' do
+        it 'flushes heredoc, with new line' do
+          object.write('foo')
+          object.push_heredoc('HEREDOC')
+          subject
+          expect(object.content).to eql("foo\nHEREDOC")
+        end
+      end
+    end
+  end
+
+  describe '#final_newline' do
+    let(:object) { described_class.new }
+
+    subject { object.final_newline }
+
+    context 'when empty' do
+      it 'does nothing' do
+        subject
+        expect(object.content).to eql('')
+      end
+    end
+
+    context 'on one line without newline' do
+      it 'does not create a new line' do
+        object.write('foo')
+        subject
+        expect(object.content).to eql('foo')
+      end
+    end
+
+    context 'on one line with newline' do
+      it 'does not create a new line' do
+        object.write('foo')
+        object.nl
+        subject
+        expect(object.content).to eql("foo\n")
+      end
+    end
+
+    context 'more than one line, without terminating newline' do
+      it 'does terminate with newline' do
+        object.write('foo')
+        object.nl
+        object.write('bar')
+        subject
+        expect(object.content).to eql("foo\nbar\n")
+      end
+    end
+  end
+
+  describe '#ensure_nl' do
+    let(:object) { described_class.new }
+
+    subject { object.ensure_nl }
+
+    context 'when on a new line' do
+      it 'crates a new line' do
+        subject
+        expect(object.content).to eql('')
+      end
+    end
+
+    context 'when not on a new line' do
+      it 'crates a new line' do
+        object.write('foo')
+        subject
+        expect(object.content).to eql("foo\n")
+      end
+    end
   end
 end
