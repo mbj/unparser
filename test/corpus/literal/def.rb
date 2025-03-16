@@ -124,9 +124,7 @@ def foo(bar:, baz: "value")
 end
 
 def f
-  <<-HEREDOC
-    #{}
-  HEREDOC
+  "    #{}\n"
 end
 
 def f

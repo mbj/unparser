@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.6.15'
+  gem.version     = '0.7.0'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -22,7 +22,6 @@ Gem::Specification.new do |gem|
   gem.require_paths    = %w[lib]
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
-
 
   gem.required_ruby_version = '>= 3.1'
 

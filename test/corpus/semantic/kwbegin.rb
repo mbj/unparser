@@ -40,3 +40,19 @@ rescue B
 ensure
   d
 end
+
+begin
+rescue => self.foo
+end
+
+begin
+rescue => A.foo
+end
+
+begin
+rescue => A[i]
+end
+
+begin
+rescue => A[]
+end

@@ -40,10 +40,6 @@ module Unparser
 
         private_constant(*constants(false))
 
-        def emit_heredoc_reminders
-          emitter(children.last).emit_heredoc_reminders
-        end
-
         def dispatch
           emit_receiver
           emit_operation(children[VALUE_RANGE])

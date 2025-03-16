@@ -54,15 +54,15 @@ module Unparser
       # Evaluate functor block
       #
       # @return [Either::Left<Object>]
-      def fmap(&block)
-        require_block(&block)
+      def fmap(&)
+        require_block(&)
       end
 
       # Evaluate applicative block
       #
       # @return [Either::Left<Object>]
-      def bind(&block)
-        require_block(&block)
+      def bind(&)
+        require_block(&)
       end
 
       # Unwrap value from left
@@ -137,8 +137,8 @@ module Unparser
       # Map over left value
       #
       # @return [Either::Right<Object>]
-      def lmap(&block)
-        require_block(&block)
+      def lmap(&)
+        require_block(&)
       end
 
       # Evaluate right side of branch

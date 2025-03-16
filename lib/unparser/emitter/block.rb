@@ -16,7 +16,6 @@ module Unparser
         ws
         write_open
         emit_block_arguments unless n_lambda?(target)
-        target_writer.emit_heredoc_reminders if n_send?(target)
         emit_optional_body_ensure_rescue(body)
         write_close
       end
@@ -42,7 +41,7 @@ module Unparser
       end
 
       def target_writer
-        writer_with(Writer::Send::Regular, target)
+        writer_with(Writer::Send::Regular, node: target)
       end
       memoize :target_writer
 
@@ -65,7 +64,7 @@ module Unparser
       end
 
       def emit_lambda_arguments
-        parentheses { writer_with(Args, arguments).emit_lambda_arguments }
+        parentheses { writer_with(Args, node: arguments).emit_lambda_arguments }
       end
 
       def numblock?
@@ -78,7 +77,7 @@ module Unparser
         ws
 
         parentheses('|', '|') do
-          writer_with(Args, arguments).emit_block_arguments
+          writer_with(Args, node: arguments).emit_block_arguments
         end
       end
 

@@ -1,0 +1,10 @@
+<<-HEREDOC
+line_1
+line_2
+line_3
+line_4
+line_5
+line_6
+line_7
+line_8
+HEREDOC

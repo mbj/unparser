@@ -1,15 +1,9 @@
-{ "foo" => <<-HEREDOC, "bar" => :baz }
-  #{}
-HEREDOC
+{ "foo" => "  #{}\n", "bar" => :baz }
 { "foo" => %(), "bar" => :baz }
 ["foo", %()]
-a(<<-HEREDOC).a
-  #{}
-HEREDOC
+a("  #{}\n").a
 a(%()).a
-{ "foo" => <<-HEREDOC, **baz }
-  #{}
-HEREDOC
+{ "foo" => "  #{}\n", **baz }
 { "foo" => %(), **baz }
 "#@a #@@a #$a"
 0
@@ -46,15 +40,6 @@ HEREDOC
 :"A B"
 :"A\"B"
 :""
-/foo/
-/[^-+',.\/:@[:alnum:]\[\]]+/
-/foo#{@bar}/
-/foo#{@bar}/imx
-/#{"\u0000"}/
-/\n/
-/\n/
-/\n/x
-/\/\//x
 :"foo#{bar}baz"
 :"#{"foo"}"
 (0.0 / 0.0)..1
@@ -78,11 +63,9 @@ HEREDOC
 { a: :a }
 { :"a b" => 1 }
 { :-@ => 1 }
-"#{}
-#{}\na"
+"#{}\n#{}\na"
 foo {
-  "#{}
-#{}\na"
+  "#{}\n#{}\na"
 }
 :"a\\
 b"

@@ -78,16 +78,16 @@ describe Unparser, mutant_expression: 'Unparser*' do
     end
   end
 
-  describe '.parse_either' do
+  context '.parse_ast_either' do
     def apply
-      described_class.parse_either(source)
+      described_class.parse_ast_either(source)
     end
 
     context 'on present source' do
       let(:source) { 'self[1]=2' }
 
       it 'returns right value with expected AST' do
-        expect(apply).to eql(right(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2))))
+        expect(apply.fmap(&:node)).to eql(right(s(:indexasgn, s(:self), s(:int, 1), s(:int, 2))))
       end
     end
 
@@ -95,7 +95,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
       let(:source) { '' }
 
       it 'returns right value with nil' do
-        expect(apply).to eql(right(nil))
+        expect(apply.fmap(&:node)).to eql(right(nil))
       end
     end
 
@@ -120,9 +120,8 @@ describe Unparser, mutant_expression: 'Unparser*' do
     context 'on successful validation' do
       context 'with comments' do
         def apply
-          Unparser.unparse_validate(
-            *Unparser.parser.parse_with_comments(Unparser.buffer('true # foo'))
-          )
+          node, comments = Unparser.parser.parse_with_comments(Unparser.buffer('true # foo'))
+          Unparser.unparse_validate(node, comments:)
         end
 
         it 'returns right value with generated source' do
@@ -152,6 +151,44 @@ describe Unparser, mutant_expression: 'Unparser*' do
     end
   end
 
+  describe '.unparse_ast_either' do
+    def apply
+      described_class.unparse_ast_either(ast)
+    end
+
+    let(:ast) do
+      described_class::AST.new(
+        node:                   node,
+        comments:               [],
+        explicit_encoding:      nil,
+        static_local_variables: Set.new
+      )
+    end
+
+    context 'on valid node' do
+      let(:node) { s(:true) }
+
+      it 'returns expected source' do
+        expect(apply).to eql(right('true'))
+      end
+    end
+
+    context 'on invalid node' do
+      let(:node) { s(:unsupported) }
+
+      it 'returns expected error' do
+        expect(apply.lmap { |value| [value.class, value.message] }).to eql(
+          left(
+            [
+              described_class::UnknownNodeError,
+              'Unknown node type: :unsupported'
+            ]
+          )
+        )
+      end
+    end
+  end
+
   describe '.unparse' do
     context 'on unknown node type' do
       def apply
@@ -167,9 +204,18 @@ describe Unparser, mutant_expression: 'Unparser*' do
         )
       end
     end
-  end
 
-  describe '.unparse' do
+    context 'with comments' do
+      def apply
+        node, comments = Unparser.parser.parse_with_comments(Unparser.buffer('true # foo'))
+        Unparser.unparse(node, comments:)
+      end
+
+      it 'returns right value with generated source' do
+        expect(apply).to eql('true # foo')
+      end
+    end
+
     def parser
       Unparser.parser
     end
@@ -183,16 +229,16 @@ describe Unparser, mutant_expression: 'Unparser*' do
     end
 
     def assert_generates_from_string(parser, string, expected)
-      ast_with_comments = parse_with_comments(string)
-      assert_generates_from_ast(parser, ast_with_comments, expected.chomp)
+      node, comments = parse_with_comments(string)
+      assert_generates_from_ast(parser, node, comments, expected.chomp)
     end
 
-    def assert_generates_from_ast(parser, ast_with_comments, expected)
-      generated = Unparser.unparse(*ast_with_comments).chomp
+    def assert_generates_from_ast(parser, node, comments, expected)
+      generated = Unparser.unparse(node, comments: comments).chomp
       expect(generated).to eql(expected)
       ast, comments = parse_with_comments(generated)
-      expect(ast).to eql(ast_with_comments.first)
-      expect(Unparser.unparse(ast, comments).chomp).to eql(expected)
+      expect(ast).to eql(ast)
+      expect(Unparser.unparse(ast, comments:).chomp).to eql(expected)
     end
 
     def self.assert_generates(input, expected)
@@ -208,7 +254,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
     def self.assert_source(string)
       it 'round trips' do
         ast, comments = parse_with_comments(string)
-        generated = Unparser.unparse(ast, comments).chomp
+        generated = Unparser.unparse(ast, comments:).chomp
         expect(generated).to eql(string.chomp)
         generated_ast, _comments = parse_with_comments(generated)
         expect(ast == generated_ast).to be(true)
@@ -389,6 +435,18 @@ describe Unparser, mutant_expression: 'Unparser*' do
       else
         "false"
       end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      def foo(bar)
+        bar()
+      end
+    RUBY
+
+    assert_source(<<~'RUBY')
+      foo { |bar|
+        bar()
+      }
     RUBY
 
     # Test Symbol#inspect Ruby bug: https://bugs.ruby-lang.org/issues/18905

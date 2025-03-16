@@ -36,18 +36,8 @@ x.x=%()
 x[%()] = bar
 a[%()] ||= bar
 @a ||= %()
-x = <<-HEREDOC
-  #{}
-HEREDOC
-x.x=<<-HEREDOC
-  #{}
-HEREDOC
-x[] = <<-HEREDOC
-  #{}
-HEREDOC
-a[<<-HEREDOC] ||= bar
-  #{}
-HEREDOC
-@a ||= <<-HEREDOC
-  #{}
-HEREDOC
+x = "  #{}\n"
+x.x="  #{}\n"
+x[] = "  #{}\n"
+a["  #{}\n"] ||= bar
+@a ||= "  #{}\n"

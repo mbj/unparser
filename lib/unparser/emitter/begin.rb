@@ -8,12 +8,6 @@ module Unparser
       handle :begin
       children :body
 
-      def emit_heredoc_reminders
-        children.each do |child|
-          emitter(child).emit_heredoc_reminders
-        end
-      end
-
     private
 
       def dispatch

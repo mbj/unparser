@@ -60,6 +60,7 @@ module Unparser
     #
     # @api private
     #
+    # mutant:disable
     def self.run(*arguments)
       new(*arguments).exit_status
     end
@@ -71,15 +72,17 @@ module Unparser
     # @return [undefined]
     #
     # @api private
+    # mutant:disable
     def initialize(arguments)
       @ignore  = Set.new
       @targets = []
 
-      @fail_fast  = false
-      @start_with = nil
-      @success    = true
-      @validation = :validation
-      @verbose    = false
+      @fail_fast                    = false
+      @start_with                   = nil
+      @success                      = true
+      @validation                   = :validation
+      @verbose                      = false
+      @ignore_original_syntax_error = false
 
       opts = OptionParser.new do |builder|
         add_options(builder)
@@ -98,6 +101,7 @@ module Unparser
     #
     # @api private
     #
+    # mutant:disable
     # rubocop:disable Metrics/MethodLength
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
@@ -114,6 +118,9 @@ module Unparser
       builder.on('-l', '--literal') do
         @validation = :literal_validation
       end
+      builder.on('--ignore-original-syntax-error') do
+        @ignore_original_syntax_error = true
+      end
       builder.on('--ignore FILE') do |file|
         @ignore.merge(targets(file))
       end
@@ -129,6 +136,7 @@ module Unparser
     #
     # @api private
     #
+    # mutant:disable
     def exit_status
       effective_targets.each do |target|
         process_target(target)
@@ -140,11 +148,15 @@ module Unparser
 
   private
 
+    # mutant:disable
     def process_target(target)
       validation = target.public_send(@validation)
       if validation.success?
         puts validation.report if @verbose
         puts "Success: #{validation.identification}"
+      elsif ignore_original_syntax_error?(validation)
+        exception = validation.original_node.from_left
+        puts "#{exception.class}: #{validation.identification} #{exception}"
       else
         puts validation.report
         puts "Error: #{validation.identification}"
@@ -152,6 +164,14 @@ module Unparser
       end
     end
 
+    # mutant:disable
+    def ignore_original_syntax_error?(validation)
+      @ignore_original_syntax_error && validation.original_node.from_left do
+        nil
+      end.instance_of?(Parser::SyntaxError)
+    end
+
+    # mutant:disable
     def effective_targets
       if @start_with
         reject = true
@@ -167,6 +187,7 @@ module Unparser
       end.reject(&@ignore.method(:include?))
     end
 
+    # mutant:disable
     def targets(file_name)
       if File.directory?(file_name)
         Dir.glob(File.join(file_name, '**/*.rb'))

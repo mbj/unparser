@@ -44,12 +44,18 @@ module Unparser
       @node = node
       freeze
     end
-  end
+  end # InvalidNodeError
+
+  # Error raised when unparser encounders AST it cannot generate source for that would parse to the same AST.
+  class UnsupportedNodeError < RuntimeError
+  end # UnsupportedNodeError
 
   # Unparse an AST (and, optionally, comments) into a string
   #
   # @param [Parser::AST::Node, nil] node
-  # @param [Array] comment_array
+  # @param [Array] comments
+  # @param [Encoding, nil] explicit_encoding
+  # @param [Set<Symbol>] static_local_variables
   #
   # @return [String]
   #
@@ -57,26 +63,92 @@ module Unparser
   #   if the node passed is invalid
   #
   # @api public
-  def self.unparse(node, comment_array = [])
-    return '' if node.nil?
+  #
+  # mutant:disable
+  # rubocop:disable Metrics/ParameterLists
+  def self.unparse(
+    node,
+    comments:               EMPTY_ARRAY,
+    explicit_encoding:      nil,
+    static_local_variables: Set.new
+  )
+    unparse_ast(
+      AST.new(
+        comments:               comments,
+        explicit_encoding:      explicit_encoding,
+        node:                   node,
+        static_local_variables: static_local_variables
+      )
+    )
+  end
+  # rubocop:enable Metrics/ParameterLists
+
+  # Unparse an AST
+  #
+  # @param [AST] ast
+  #
+  # @return [String]
+  #
+  # @raise InvalidNodeError
+  #   if the node passed is invalid
+  #
+  # @raise UnsupportedNodeError
+  #   if the node passed is valid but unparser cannot unparse it
+  #
+  # @api public
+  def self.unparse_ast(ast)
+    return EMPTY_STRING if ast.node.nil?
+
+    local_variable_scope = AST::LocalVariableScope.new(
+      node:                   ast.node,
+      static_local_variables: ast.static_local_variables
+    )
 
     Buffer.new.tap do |buffer|
       Emitter::Root.new(
-        buffer,
-        node,
-        Comments.new(comment_array)
+        buffer:               buffer,
+        comments:             Comments.new(ast.comments),
+        explicit_encoding:    ast.explicit_encoding,
+        local_variable_scope: local_variable_scope,
+        node:                 ast.node
       ).write_to_buffer
     end.content
+  end
+
+  # Unparse AST either
+  #
+  # @param [AST] ast
+  #
+  # @return [Either<Exception,String>]
+  def self.unparse_ast_either(ast)
+    Either.wrap_error(Exception) { unparse_ast(ast) }
+  end
+
+  # Unparse AST either
+  #
+  # @param [AST] ast
+  #
+  # @return [Either<Exception,String>]
+  #
+  # mutant:disable
+  def self.unparse_validate_ast_either(ast:)
+    validation = Validation.from_ast(ast:)
+
+    if validation.success?
+      Either::Right.new(validation.generated_source.from_right)
+    else
+      Either::Left.new(validation)
+    end
   end
 
   # Unparse with validation
   #
   # @param [Parser::AST::Node, nil] node
-  # @param [Array] comment_array
+  # @param [Array] comments
   #
   # @return [Either<Validation,String>]
-  def self.unparse_validate(node, comment_array = [])
-    generated = unparse(node, comment_array)
+  def self.unparse_validate(node, comments: EMPTY_ARRAY)
+    generated = unparse(node, comments:)
     validation = Validation.from_string(generated)
 
     if validation.success?
@@ -86,44 +158,43 @@ module Unparser
     end
   end
 
-  # Unparse capturing errors
-  #
-  # This is mostly useful for writing testing tools against unparser.
-  #
-  # @param [Parser::AST::Node, nil] node
-  #
-  # @return [Either<Exception, String>]
-  def self.unparse_either(node)
-    Either.wrap_error(Exception) { unparse(node) }
-  end
-
   # Parse string into AST
   #
   # @param [String] source
   #
   # @return [Parser::AST::Node, nil]
   def self.parse(source)
-    parser.parse(buffer(source))
+    parse_ast(source).node
   end
 
   # Parse string into either syntax error or AST
   #
   # @param [String] source
   #
-  # @return [Either<Parser::SyntaxError, (Parser::ASTNode, nil)>]
-  def self.parse_either(source)
-    Either.wrap_error(Parser::SyntaxError) do
-      parser.parse(buffer(source))
+  # @return [Either<Exception, (Parser::ASTNode, nil)>]
+  def self.parse_ast_either(source)
+    Either.wrap_error(Exception) do
+      parse_ast(source)
     end
   end
 
-  # Parse string into AST, with comments
+  # Parse source with ast details
   #
   # @param [String] source
   #
-  # @return [Parser::AST::Node]
-  def self.parse_with_comments(source)
-    parser.parse_with_comments(buffer(source))
+  # @return [AST]
+  #
+  # mutant:disable
+  def self.parse_ast(source, static_local_variables: Set.new)
+    explicit_encoding = Parser::Source::Buffer.recognize_encoding(source.dup.force_encoding(Encoding::BINARY))
+    node, comments = parser.parse_with_comments(buffer(source))
+
+    AST.new(
+      comments:               comments,
+      explicit_encoding:      explicit_encoding,
+      node:                   node,
+      static_local_variables: static_local_variables
+    )
   end
 
   # Parser instance that produces AST unparser understands
@@ -210,6 +281,7 @@ require 'unparser/emitter/rescue'
 require 'unparser/emitter/root'
 require 'unparser/emitter/send'
 require 'unparser/emitter/simple'
+require 'unparser/emitter/string'
 require 'unparser/emitter/splat'
 require 'unparser/emitter/super'
 require 'unparser/emitter/undef'
@@ -224,6 +296,7 @@ require 'unparser/emitter/match_pattern_p'
 require 'unparser/writer'
 require 'unparser/writer/binary'
 require 'unparser/writer/dynamic_string'
+require 'unparser/writer/regexp'
 require 'unparser/writer/resbody'
 require 'unparser/writer/rescue'
 require 'unparser/writer/send'
