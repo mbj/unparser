@@ -10,6 +10,7 @@ AllCops:
     - tmp/**/*
     - vendor/**/*
   NewCops: enable
+  SuggestExtensions: false
 
 # Avoid parameter lists longer than five parameters.
 Metrics/ParameterLists:
