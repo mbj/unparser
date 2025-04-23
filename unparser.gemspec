@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
 
   gem.metadata = {
     'bug_tracker_uri'       => 'https://github.com/mbj/unparser/issues',
-    'changelog_uri'         => 'https://github.com/mbj/unparser/blob/master/Changelog.md',
+    'changelog_uri'         => 'https://github.com/mbj/unparser/blob/main/Changelog.md',
     'funding_uri'           => 'https://github.com/sponsors/mbj',
     'source_code_uri'       => 'https://github.com/mbj/unparser',
     'rubygems_mfa_required' => 'true'
