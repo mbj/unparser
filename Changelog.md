@@ -1,3 +1,9 @@
+# Unreleased
+
+[#387](https://github.com/mbj/unparser/pull/387)
+
+* Add `prism` parser support for Ruby 3.4. ([viralpraxis](https://github.com/viralpraxis))
+
 # v0.7.0 2025-03-16
 
 [#366](https://github.com/mbj/unparser/pull/366)

@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'unparser'
+require 'prism'
+require 'fileutils'
+require 'pathname'
+
+module PrismParser
+  PARSER = 'ruby/prism'
+  PARSER_VERSION = Prism::VERSION
+  PARSER_PATH = Pathname('tmp/parser-prism')
+
+  PRISM_INVALID = Set[
+    'def __ENCODING__.a',
+    'def __FILE__.a',
+    'def __LINE__.a',
+    '\777',
+    'ち\xE3\x81\xFF',
+    '\x8E\x01',
+    'a\xE9b',
+    'a\247b',
+    '\xE3\xD3\x8B\xE3\x83\xBC\x83\xE3\x83\xE3\x82\xB3\xA3\x82\x99',
+    'hello \u{fc}',
+    '# encoding: sjis'
+  ].freeze
+
+  PRISM_TODO = Set[
+    'def a(...); "foo#{b(...)}"; end',
+    '`
+foo\
+b\nar
+`',
+  ].freeze
+
+  PRISM_NO_ROUND_TRIP = (PRISM_INVALID + PRISM_TODO).to_set.freeze
+
+  private_constant :PRISM_INVALID, :PRISM_TODO
+
+  class << self
+    def prepare
+      FileUtils.rm_rf("#{PARSER_PATH}/test/prism/fixtures-tmp")
+      Dir.mkdir("#{PARSER_PATH}/test/prism/fixtures-tmp")
+
+      Dir.glob("#{PARSER_PATH}/test/prism/fixtures/**/*.txt")
+       .then(&method(:select_fixtures))
+       .each do |path|
+          examples = File.read(path).split(/(?<=\n\n)/).then(&method(:reject_no_round_trip_examples))
+          output_path = path.gsub('prism/fixtures', 'prism/fixtures-tmp')
+          dirname = File.dirname(output_path)
+          FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
+          File.write(output_path, examples.join("\n\n"))
+      end
+    end
+
+    def target_glob
+      "#{PARSER_PATH}/test/prism/fixtures-tmp/**/*.txt"
+    end
+
+    def excludes
+      %w[
+        spanning_heredoc
+        heredocs_with_fake_newlines
+        heredocs_nested
+      ].to_set { |file| "#{PARSER_PATH}/test/prism/fixtures-tmp/#{file}.txt" }
+    end
+
+    private
+
+    def select_fixtures(paths)
+      paths.reject { _1.include?('fixtures/unparser/') }
+    end
+
+    def reject_no_round_trip_examples(examples)
+      examples.reject do |example|
+        PRISM_NO_ROUND_TRIP.any? { |snippet| example.include?(snippet) }
+      end
+    end
+  end
+end
+
+unless PrismParser::PARSER_PATH.exist?
+  Kernel.system(
+    *%W[
+      git
+      clone
+      https://github.com/#{PrismParser::PARSER}
+      #{PrismParser::PARSER_PATH}
+    ],
+    exception: true
+  )
+end
+
+Dir.chdir(PrismParser::PARSER_PATH) do
+  Kernel.system(
+    *%W[
+      git
+      checkout
+      v#{PrismParser::PARSER_VERSION}
+    ],
+    exception: true
+  )
+  Kernel.system(*%w[git clean --force -d -X], exception: true)
+end
+
+ignores_cli_option = PrismParser.excludes.flat_map { |file| ['--ignore', file] }
+
+PrismParser.prepare
+exit Unparser::CLI.run([PrismParser.target_glob, *ignores_cli_option])

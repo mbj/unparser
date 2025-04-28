@@ -3,7 +3,6 @@
 require 'diff/lcs'
 require 'diff/lcs/hunk'
 require 'optparse'
-require 'parser/current'
 require 'set'
 
 require 'unparser/equalizer'
@@ -18,17 +17,52 @@ require 'unparser/anima/attribute'
 require 'unparser/anima/error'
 
 # Library namespace
-module Unparser
+module Unparser # rubocop:disable Metrics/ModuleLength
   # Unparser specific AST builder defaulting to modern AST format
-  class Builder < Parser::Builders::Default
-    modernize
+  if Gem::Version.new(RUBY_VERSION) <= '3.4'
+    require 'parser/current'
+    class Builder < Parser::Builders::Default
+      modernize
 
-    def initialize
-      super
+      # mutant:disable
+      def initialize
+        super
 
-      self.emit_file_line_as_literals = false
+        self.emit_file_line_as_literals = false
+      end
+    end
+  else
+    require 'prism'
+    class Builder < Prism::Translation::Parser::Builder
+      modernize
+
+      # mutant:disable
+      def initialize
+        super
+
+        self.emit_file_line_as_literals = false
+      end
     end
   end
+
+  PARSER_CLASS =
+    if Gem::Version.new(RUBY_VERSION) <= '3.4'
+      Class.new(Parser::CurrentRuby) do
+        def declare_local_variable(local_variable)
+          static_env.declare(local_variable)
+        end
+      end
+    else
+      Class.new(Prism::Translation::Parser34) do
+        def declare_local_variable(local_variable)
+          (@local_variables ||= Set.new) << local_variable
+        end
+
+        def prism_options
+          super.merge(scopes: [@local_variables.to_a])
+        end
+      end
+    end
 
   EMPTY_STRING = ''.freeze
   EMPTY_ARRAY  = [].freeze
@@ -202,8 +236,9 @@ module Unparser
   # @return [Parser::Base]
   #
   # @api private
+  # mutant:disable
   def self.parser
-    Parser::CurrentRuby.new(Builder.new).tap do |parser|
+    PARSER_CLASS.new(Builder.new).tap do |parser|
       parser.diagnostics.tap do |diagnostics|
         diagnostics.all_errors_are_fatal = true
       end

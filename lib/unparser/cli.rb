@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pathname'
+
 module Unparser
   # Unparser CLI implementation
   class CLI

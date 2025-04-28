@@ -52,7 +52,3 @@ end
 begin
 rescue => A[i]
 end
-
-begin
-rescue => A[]
-end
