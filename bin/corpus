@@ -24,7 +24,7 @@ module Unparser
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
       def verify
-        puts("Verifiying: #{name}")
+        puts("Verifying: #{name}")
         checkout
 
         paths = Pathname.glob(Pathname.new(repo_path).join('**/*.rb'))

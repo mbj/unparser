@@ -14,8 +14,12 @@ module Unparser
       children :exception, :assignment, :body
 
       def emit_postcontrol
-        write(' rescue ')
-        visit(body) if body
+        if body
+          write(' rescue ')
+          visit(body)
+        else
+          write('; rescue; ')
+        end
       end
 
       def emit_regular

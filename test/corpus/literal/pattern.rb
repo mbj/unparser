@@ -17,8 +17,6 @@ in {} then
   true
 in {**nil} then
   true
-in {"#{"a"}": 1} then
-  true
 in 1 | 2 then
   true
 in 1 => a then

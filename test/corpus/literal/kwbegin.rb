@@ -65,6 +65,12 @@ end
 
 begin
   foo
+rescue => A[i, j]
+  bar
+end
+
+begin
+  foo
 rescue Exception, Other => bar
   bar
 end

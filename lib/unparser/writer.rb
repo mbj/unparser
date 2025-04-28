@@ -28,11 +28,11 @@ module Unparser
 
     # mutant:disable
     def round_trips?(source:)
-      parser = Unparser.parser
-
-      local_variable_scope
+      node_local_variables = local_variable_scope
         .local_variables_for_node(node)
-        .each(&parser.static_env.public_method(:declare))
+
+      parser = Unparser.parser
+      parser.declare_local_variables(node_local_variables)
 
       buffer = Buffer.new
       buffer.write_encoding(explicit_encoding) if explicit_encoding
