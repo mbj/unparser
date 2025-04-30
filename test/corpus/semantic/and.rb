@@ -6,3 +6,13 @@ end
 
 if a...b and c...d
 end
+
+a and b and c
+(a and b) and c
+a and (b and c)
+a and b or c
+(a and b) or c
+a and (b or c)
+a or b and c
+(a or b) and c
+a or (b and c)

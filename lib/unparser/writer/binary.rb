@@ -52,9 +52,13 @@ module Unparser
       end
 
       def dispatch
-        left_emitter.write_to_buffer
-        write(' ', MAP.fetch(effective_symbol), ' ')
-        visit(right)
+        if node.type.eql?(:and) && left.type.equal?(:or)
+          emit_with(KEYWORD_TOKENS)
+        else
+          left_emitter.write_to_buffer
+          write(' ', MAP.fetch(effective_symbol), ' ')
+          visit(right)
+        end
       end
 
     private
