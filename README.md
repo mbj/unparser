@@ -44,9 +44,9 @@ To preserve the comments from the source:
 require 'parser/current'
 require 'unparser'
 
-ast, comments = Unparser.parse_with_comments('your(ruby(code)) # with comments')
+ast, comments = Unparser.parser.parse_with_comments(Unparser.buffer('your(ruby(code)) # with comments'))
 
-Unparser.unparse(ast, comments) # => 'your(ruby(code)) # with comments'
+Unparser.unparse(ast, comments: comments) # => 'your(ruby(code)) # with comments'
 ```
 
 Passing in manually constructed AST:
