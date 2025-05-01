@@ -3,3 +3,11 @@ module M
 rescue => e
   e
 end
+class A
+  class << self
+  rescue
+    else
+  ensure
+  end
+end
+
