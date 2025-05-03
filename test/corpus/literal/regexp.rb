@@ -30,3 +30,5 @@ HEREDOC
 /
 a
 /
+/aaa #{$bbb}/
+/aaa #$bbb/
