@@ -55,6 +55,9 @@ module Unparser
             write('#{')
             node.children.each(&method(:visit))
             write('}')
+          elsif n_gvar?(node)
+            write('#')
+            write_regular(node.children.first.to_s)
           else
             write_regular(node.children.first)
           end

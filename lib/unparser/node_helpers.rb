@@ -43,6 +43,7 @@ module Unparser
       dstr
       empty_else
       ensure
+      gvar
       hash
       hash_pattern
       if
