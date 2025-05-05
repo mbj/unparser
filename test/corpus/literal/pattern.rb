@@ -43,3 +43,40 @@ end
 1 => [*]
 1 in [*, 42, *]
 1 in [*, a, *foo]
+a => %i[a b]
+a => %w[a b]
+a => ["a", "b"]
+a => [:a, :b]
+a => [:a, "b"]
+a => [true, false, nil]
+a => {a: 1, b: 2}
+a in %i[a b]
+a in %w[a b]
+a in ["a", "b"]
+a in [:a, :b]
+a in [:a, "b"]
+a in [true, false, nil]
+a in {a: 1, b: 2}
+case foo
+in %i[a b]
+end
+case foo
+in %w[a b]
+end
+case foo
+in [:a, "b"]
+end
+case foo
+in [1, 2]
+end
+case foo
+in [true, false, nil]
+end
+a => %I[a b #{foo(1)}]
+a => %W[a b #{foo(1)}]
+case a
+in %I[#{1 + 1}]
+end
+case foo
+in %i[a b c $FILE]
+end

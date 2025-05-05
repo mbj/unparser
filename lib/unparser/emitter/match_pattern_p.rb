@@ -13,7 +13,12 @@ module Unparser
       def dispatch
         visit(target)
         write(' in ')
-        visit(pattern)
+
+        if n_array?(pattern)
+          writer_with(Writer::Array, node: pattern).emit_compact
+        else
+          visit(pattern)
+        end
       end
     end # MatchPatternP
   end # Emitter

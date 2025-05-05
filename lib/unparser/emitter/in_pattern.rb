@@ -16,7 +16,7 @@ module Unparser
 
         ws
 
-        visit(target)
+        dispatch_target(target)
 
         if unless_guard
           ws
@@ -29,6 +29,14 @@ module Unparser
           emit_body(branch)
         else
           nl
+        end
+      end
+
+      def dispatch_target(target)
+        if n_array?(target)
+          writer_with(Writer::Array, node: target).emit_compact
+        else
+          visit(target)
         end
       end
     end # InPattern
