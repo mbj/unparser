@@ -31,6 +31,10 @@ module Unparser
       node.type.equal?(type)
     end
 
+    def n_flipflop?(node)
+      n_iflipflop?(node) || n_eflipflop?(node)
+    end
+
     %i[
       arg
       args
@@ -41,12 +45,14 @@ module Unparser
       cbase
       const
       dstr
+      eflipflop
       empty_else
       ensure
       gvar
       hash
       hash_pattern
       if
+      iflipflop
       in_pattern
       int
       kwarg
