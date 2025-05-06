@@ -58,10 +58,10 @@ module Unparser
       end
 
       def write_index_assignment
-        receiver, index = assignment.children
+        receiver, *indexes = assignment.children
         visit(receiver)
         write('[')
-        visit(index) if index
+        delimited(indexes)
         write(']')
       end
     end # Resbody
