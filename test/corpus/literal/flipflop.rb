@@ -8,3 +8,7 @@ if ..foo
 end
 if foo..;
 end
+not foo..bar
+not foo...bar
+!(foo..bar)
+!(foo...bar)

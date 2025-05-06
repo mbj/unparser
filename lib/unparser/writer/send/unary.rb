@@ -14,11 +14,16 @@ module Unparser
 
         def dispatch
           name = selector
+          first_child = children.fetch(0)
 
-          write(MAP.fetch(name, name).to_s)
+          if n_flipflop?(first_child)
+            write 'not '
+          else
+            write(MAP.fetch(name, name).to_s)
 
-          if n_int?(receiver) && selector.equal?(:+@)
-            write('+')
+            if n_int?(receiver) && selector.equal?(:+@)
+              write('+')
+            end
           end
 
           visit(receiver)
