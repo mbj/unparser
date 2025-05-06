@@ -10,6 +10,9 @@ class A
   ensure
   end
 end
+module A
+rescue
+end
 begin; rescue => A[1]; end
 begin; rescue => A[1, 2]; end
 begin; rescue => A[1, 2, 3]; end

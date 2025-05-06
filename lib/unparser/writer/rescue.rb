@@ -21,7 +21,7 @@ module Unparser
       end
 
       def emit_postcontrol
-        visit(body)
+        visit(body) if body
         writer_with(Resbody, node: rescue_body).emit_postcontrol
       end
 
