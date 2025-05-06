@@ -15,7 +15,7 @@ module Unparser
 
       def emit_postcontrol
         write(' rescue ')
-        visit(body)
+        visit(body) if body
       end
 
       def emit_regular
