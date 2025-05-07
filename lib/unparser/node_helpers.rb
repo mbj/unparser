@@ -35,6 +35,10 @@ module Unparser
       n_iflipflop?(node) || n_eflipflop?(node)
     end
 
+    def n_range?(node)
+      n_irange?(node) || n_erange?(node)
+    end
+
     %i[
       arg
       args
@@ -47,6 +51,7 @@ module Unparser
       dstr
       eflipflop
       empty_else
+      erange
       ensure
       gvar
       hash
@@ -55,6 +60,7 @@ module Unparser
       iflipflop
       in_pattern
       int
+      irange
       kwarg
       kwargs
       kwsplat
