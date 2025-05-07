@@ -36,6 +36,7 @@ module Unparser
     end
 
     %i[
+      and
       arg
       args
       array
@@ -61,6 +62,7 @@ module Unparser
       lambda
       lvar
       match_rest
+      or
       pair
       rescue
       send

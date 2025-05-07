@@ -12,11 +12,11 @@ module Unparser
 
         private_constant(*constants(false))
 
-        def dispatch
+        def dispatch # rubocop:disable Metrics/AbcSize
           name = selector
           first_child = children.fetch(0)
 
-          if n_flipflop?(first_child)
+          if n_flipflop?(first_child) || n_and?(first_child) || n_or?(first_child)
             write 'not '
           else
             write(MAP.fetch(name, name).to_s)
