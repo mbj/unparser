@@ -25,9 +25,30 @@ module Unparser
     private
 
       def dispatch
-        visit(begin_node) if begin_node
+        visit_begin_node(begin_node)
         write(TOKENS.fetch(node.type))
-        visit(end_node) if end_node
+        visit_end_node(end_node)
+      end
+
+      def visit_begin_node(node)
+        return unless node
+
+        if n_array?(begin_node)
+          writer_with(Writer::Array, node: begin_node).emit_compact
+        else
+          visit(begin_node)
+        end
+      end
+
+      def visit_end_node(node)
+        return unless node
+
+        write(' ') if n_range?(node)
+        if n_array?(node)
+          writer_with(Writer::Array, node: node).emit_compact
+        else
+          visit(node)
+        end
       end
 
     end # Range
