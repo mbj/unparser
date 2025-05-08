@@ -54,6 +54,8 @@ module Unparser
       empty_else
       erange
       ensure
+      erange
+      float
       gvar
       hash
       hash_pattern
@@ -67,6 +69,7 @@ module Unparser
       kwsplat
       lambda
       lvar
+      lvasgn
       match_rest
       or
       pair
@@ -76,6 +79,7 @@ module Unparser
       splat
       str
       sym
+      xstr
     ].each do |type|
       name = "n_#{type}?"
       define_method(name) do |node|

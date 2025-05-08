@@ -54,5 +54,5 @@ rescue => A[i]
 end
 
 begin
-rescue => A[]
+rescue => A[i, 1]
 end

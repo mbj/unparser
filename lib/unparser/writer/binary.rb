@@ -39,16 +39,16 @@ module Unparser
           tANDOP: '&&'
         }.freeze
 
-      NEED_KEYWORD = %i[return break next].freeze
+      NEED_PARANS_RELATIONSHIP = {
+        kAND: :kOR
+      }.freeze
+
+      NEED_KEYWORD = %i[return break next match_pattern_p].freeze
 
       private_constant(*constants(false))
 
       def emit_operator
         emit_with(OPERATOR_TOKENS)
-      end
-
-      def symbol_name
-        true
       end
 
       def dispatch

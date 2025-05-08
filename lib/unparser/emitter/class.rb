@@ -16,7 +16,7 @@ module Unparser
         write('class ')
         visit(name)
         emit_superclass
-        emit_optional_body(body)
+        emit_optional_body_ensure_rescue(body)
         k_end
       end
 

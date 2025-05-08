@@ -22,6 +22,7 @@ module Unparser
 
       def emit_one_child_mlhs
         child = children.first
+
         parentheses do
           emitter(child).emit_mlhs
           write(',') unless NO_COMMA.include?(child.type)
