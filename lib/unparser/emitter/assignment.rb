@@ -25,6 +25,16 @@ module Unparser
 
         if BINARY_OPERATOR.include?(right.type)
           writer_with(Writer::Binary, node: right).emit_operator
+        elsif n_array?(right)
+          emit_array
+        else
+          right_emitter.write_to_buffer
+        end
+      end
+
+      def emit_array
+        if right.children.size > 1
+          delimited(right.children)
         else
           right_emitter.write_to_buffer
         end
