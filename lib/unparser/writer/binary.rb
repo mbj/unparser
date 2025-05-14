@@ -39,7 +39,7 @@ module Unparser
           tANDOP: '&&'
         }.freeze
 
-      NEED_KEYWORD = %i[return break next].freeze
+      NEED_KEYWORD = %i[return break next match_pattern_p].freeze
 
       private_constant(*constants(false))
 
