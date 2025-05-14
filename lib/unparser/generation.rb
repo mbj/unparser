@@ -147,6 +147,7 @@ module Unparser
     def emit_body_inner(node)
       head, *tail = node.children
       emit_body_member(head)
+      write(';') if requires_explicit_statement_terminator?(head, tail)
 
       tail.each do |child|
         buffer.ensure_nl
@@ -154,7 +155,12 @@ module Unparser
         nl if EXTRA_NL.include?(child.type)
 
         emit_body_member(child)
+        write(';') if requires_explicit_statement_terminator?(child, tail)
       end
+    end
+
+    def requires_explicit_statement_terminator?(node, nodes_group)
+      n_range?(node) && node.children.fetch(1).nil? && !node.eql?(nodes_group.fetch(-1))
     end
 
     def emit_body_member(node)
