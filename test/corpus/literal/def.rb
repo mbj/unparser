@@ -120,6 +120,12 @@ end
 def f(((a)))
 end
 
+def f((a, b))
+end
+
+def f(((a, b)))
+end
+
 def foo(bar:, baz: "value")
 end
 
