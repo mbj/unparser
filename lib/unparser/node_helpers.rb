@@ -77,7 +77,8 @@ module Unparser
       splat
       str
       sym
-    ].each do |type|
+      xstr
+    ].to_set.each do |type|
       name = "n_#{type}?"
       define_method(name) do |node|
         n?(type, node)

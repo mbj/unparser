@@ -5,7 +5,7 @@ module Unparser
 
     # Block emitter
     class Block < self
-      handle :block, :numblock
+      handle :block, :numblock, :itblock
 
       children :target, :arguments, :body
 
@@ -71,8 +71,16 @@ module Unparser
         node.type.equal?(:numblock)
       end
 
+      # NOTE: mutant fails on Ruby < 3.4
+      # mutant:disable
+      def itblock?
+        node.type.equal?(:itblock)
+      end
+
+      # NOTE: mutant fails on Ruby < 3.4
+      # mutant:disable
       def emit_block_arguments
-        return if numblock? || arguments.children.empty?
+        return if numblock? || itblock? || arguments.children.empty?
 
         ws
 
