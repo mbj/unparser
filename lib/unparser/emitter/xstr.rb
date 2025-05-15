@@ -64,7 +64,7 @@ module Unparser
 
       def emit_begin(component)
         write('#{')
-        visit(unwrap_single_begin(component))
+        visit(Util.one(component.children)) if component.children.any?
         write('}')
       end
     end # XStr

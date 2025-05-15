@@ -84,13 +84,5 @@ module Unparser
       end
       private(name)
     end
-
-    def unwrap_single_begin(node)
-      if n_begin?(node) && node.children.one?
-        node.children.first
-      else
-        node
-      end
-    end
   end # NodeHelpers
 end # Unparser

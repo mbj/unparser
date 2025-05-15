@@ -21,7 +21,7 @@ module Unparser
 
         if children.one? && n_if?(children.first)
           ws
-          emitter(children.first).emit_ternary
+          emitter(Util.one(children)).emit_ternary
         else
           emit_arguments unless children.empty?
         end
