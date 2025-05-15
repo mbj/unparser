@@ -68,6 +68,7 @@ module Unparser
       lambda
       lvar
       match_rest
+      mlhs
       or
       pair
       rescue

@@ -6,9 +6,15 @@ module Unparser
     class MLHS < self
       handle :mlhs
 
-      NO_COMMA = %i[arg splat mlhs restarg].freeze
+      NO_COMMA = %i[arg splat restarg].freeze
 
       private_constant(*constants(false))
+
+      def dispatch_def
+        parentheses do
+          delimited(children)
+        end
+      end
 
     private
 

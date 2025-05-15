@@ -13,7 +13,11 @@ module Unparser
       end
 
       def emit_def_arguments
-        delimited(normal_arguments)
+        if children.one? && n_mlhs?(Util.one(children))
+          emitter(Util.one(children)).dispatch_def
+        else
+          delimited(normal_arguments)
+        end
       end
 
       def emit_lambda_arguments
