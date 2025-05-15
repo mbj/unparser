@@ -85,8 +85,8 @@ module Unparser
     end
 
     def unwrap_single_begin(node)
-      if n_begin?(node) && node.children.one?
-        node.children.first
+      if n_begin?(node) && node.children
+        Util.one(node.children)
       else
         node
       end
