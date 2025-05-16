@@ -12,7 +12,7 @@ module Unparser
         write('begin')
 
         if children.one?
-          emit_body_ensure_rescue(children.first)
+          emit_body_ensure_rescue(Util.one(children))
         else
           indented do
             emit_multiple_body
