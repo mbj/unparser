@@ -30,7 +30,7 @@ module PrismParser
     '`
 foo\
 b\nar
-`',
+`'
   ].freeze
 
   PRISM_NO_ROUND_TRIP = (PRISM_INVALID + PRISM_TODO).to_set.freeze
