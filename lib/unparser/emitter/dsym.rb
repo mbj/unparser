@@ -33,7 +33,7 @@ module Unparser
 
       def emit_begin_child(component)
         write('#{')
-        visit(unwrap_single_begin(component)) if component.children.any?
+        visit(Util.one(component.children)) if component.children.any?
         write('}')
       end
     end # DSym

@@ -24,7 +24,7 @@ module Unparser
               write(Util.one(child.children).to_s)
             else
               write('#{')
-              emitter(unwrap_single_begin(Util.one(child.children))).write_to_buffer
+              emitter(Util.one(Util.one(child.children).children)).write_to_buffer
               write('}')
             end
           end
