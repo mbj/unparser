@@ -29,10 +29,9 @@ module Unparser
     # mutant:disable
     def round_trips?(source:)
       parser = Unparser.parser
-
-      local_variable_scope
-        .local_variables_for_node(node)
-        .each(&parser.static_env.public_method(:declare))
+      local_variable_scope.local_variables_for_node(node).each do |local_variable|
+        parser.declare_local_variable(local_variable)
+      end
 
       buffer = Buffer.new
       buffer.write_encoding(explicit_encoding) if explicit_encoding
