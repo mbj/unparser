@@ -41,6 +41,8 @@ module Unparser
         children.each do |child|
           if n_begin?(child)
             emit_begin(child)
+          elsif n_gvar?(child)
+            emit_gvar(child)
           else
             emit_string(child)
           end
@@ -66,6 +68,11 @@ module Unparser
         write('#{')
         visit(Util.one(component.children)) if component.children.any?
         write('}')
+      end
+
+      def emit_gvar(component)
+        write('#')
+        write(Util.one(component.children).to_s)
       end
     end # XStr
   end # Emitter
