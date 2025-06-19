@@ -29,7 +29,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('parser',   '>= 3.3.0')
   gem.add_dependency('prism',    '>= 1.4')
 
-  gem.add_development_dependency('mutant',            '~> 0.13.0')
+  gem.add_development_dependency('mutant',            '~> 0.13.2')
   gem.add_development_dependency('mutant-rspec',      '~> 0.13.0')
   gem.add_development_dependency('rspec',             '~> 3.13')
   gem.add_development_dependency('rspec-core',        '~> 3.13')

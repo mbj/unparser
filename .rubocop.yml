@@ -111,3 +111,7 @@ Layout/MultilineMethodCallIndentation:
 # Useful for code structure
 Lint/UselessConstantScoping:
   Enabled: false
+
+# Lots of false positives, trying to do static analysis on a dynlang is not going to work
+Naming/PredicateMethod:
+  Enabled: false
