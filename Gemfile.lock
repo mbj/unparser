@@ -4,7 +4,7 @@ PATH
     unparser (0.8.0)
       diff-lcs (~> 1.6)
       parser (>= 3.3.0)
-      prism (>= 1.4)
+      prism (>= 1.5.1)
 
 GEM
   remote: https://rubygems.org/
@@ -38,7 +38,7 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.4.0)
+    prism (1.5.1)
     psych (5.2.6)
       date
       stringio
@@ -104,4 +104,4 @@ DEPENDENCIES
   unparser!
 
 BUNDLED WITH
-   2.6.2
+   2.7.0

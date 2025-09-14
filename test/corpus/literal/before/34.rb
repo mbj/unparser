@@ -16,10 +16,6 @@ b or next
 break or b
 next or b
 return or a
-
-begin
-rescue => A[]
-end
 for foo[] in m do
 end
 for (a, b) in bar do
