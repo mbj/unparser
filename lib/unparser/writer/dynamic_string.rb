@@ -27,7 +27,7 @@ module Unparser
       # mutant:disable
       def dispatch
         if heredoc?
-          write(HEREDOC_HEADER)
+          write(heredoc_header)
           buffer.push_heredoc(heredoc_body)
         elsif round_tripping_segmented_source
           write(round_tripping_segmented_source)
@@ -106,8 +106,34 @@ module Unparser
       end
       memoize :heredoc_body
 
+      def heredoc_header
+        needs_chomp? ? "#{HEREDOC_HEADER}.chomp" : HEREDOC_HEADER
+      end
+      memoize :heredoc_header
+
+      def needs_chomp?
+        # Check if the content naturally ends with a newline
+        # If not, we need .chomp to maintain semantic equivalence
+        !content_ends_with_newline?
+      end
+      memoize :needs_chomp?
+
+      def content_ends_with_newline?
+        # The last child determines if the content ends with a newline
+        return false if children.empty?
+
+        last_child = children.last
+        case last_child.type
+        when :str
+          last_child.children.first.end_with?("\n")
+        else
+          false # Interpolations don't add newlines
+        end
+      end
+      memoize :content_ends_with_newline?
+
       def heredoc_source
-        "#{HEREDOC_HEADER}\n#{heredoc_body}"
+        "#{heredoc_header}\n#{heredoc_body}"
       end
       memoize :heredoc_source
 
@@ -116,6 +142,7 @@ module Unparser
 
         def emit
           emit_heredoc_body
+          write("\n") unless buffer.content.end_with?("\n")
           write(HEREDOC_FOOTER)
         end
 
