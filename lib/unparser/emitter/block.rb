@@ -51,7 +51,7 @@ module Unparser
           emit_send_target
         when :lambda
           visit(target)
-          emit_lambda_arguments unless node.type.equal?(:numblock)
+          emit_lambda_arguments
         else
           visit(target)
         end
@@ -63,7 +63,11 @@ module Unparser
         target_writer.emit_arguments_without_heredoc_body
       end
 
+      # NOTE: mutant fails on Ruby < 3.4
+      # mutant:disable
       def emit_lambda_arguments
+        return if node.type.equal?(:numblock) || itblock?
+
         parentheses { writer_with(Args, node: arguments).emit_lambda_arguments }
       end
 

@@ -62,7 +62,9 @@ b\nar
         spanning_heredoc
         heredocs_with_fake_newlines
         heredocs_nested
-      ].to_set { |file| "#{PARSER_PATH}/test/prism/fixtures-tmp/#{file}.txt" }
+      ].tap { _1 << 'endless_methods_command_call' unless Gem::Version.new(RUBY_VERSION) >= '3.5' } # https://github.com/ruby/prism/pull/3639
+       .tap { _1 << 'leading_logical' unless Gem::Version.new(RUBY_VERSION) >= '3.5' } # https://github.com/ruby/prism/pull/3337
+       .to_set { |file| "#{PARSER_PATH}/test/prism/fixtures-tmp/#{file}.txt" }
     end
 
     private
