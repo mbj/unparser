@@ -1,4 +1,9 @@
-# v0.8.0 unreleased
+# v0.8.1 2025-11-02
+
+* Fix multiline dynamic strings without trailing newline (#412)
+* Fix exponential performance degradation with repeated interpolations (#415)
+
+# v0.8.0 2025-05-29
 
 [#387](https://github.com/mbj/unparser/pull/387)
 
