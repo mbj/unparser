@@ -125,3 +125,15 @@ b"
 "a#@a" "b"
 "a#$a" "b"
 "a#@@a" "b"
+
+# Issue #412: Multiline dynamic strings without trailing newline
+"\n\n #{x}"
+"\n#{x}"
+"#{x}\n"
+"foo\n#{x}"
+
+# Issue #415: Performance with repeated interpolations
+"foo: #{a}\n\nfoo: #{a}\n\n"
+"foo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\n"
+"foo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\n"
+"foo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\nfoo: #{a}\n\n"

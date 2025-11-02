@@ -26,42 +26,41 @@ module Unparser
       #
       # mutant:disable
       def dispatch
-        if heredoc?
-          write(HEREDOC_HEADER)
-          buffer.push_heredoc(heredoc_body)
-        elsif round_tripping_segmented_source
-          write(round_tripping_segmented_source)
-        else
-          fail UnsupportedNodeError, "Unparser cannot round trip this node: #{node.inspect}"
-        end
+        # Try predictable patterns first before exhaustive search
+
+        # Pattern 1: HEREDOC for large dstr (>= 8 children, preserve readability)
+        return write_heredoc if children.length >= HEREDOC_THRESHOLD && round_trips_heredoc?
+
+        # Pattern 2: Limited search (prevent exponential blowup)
+        source = limited_search_segmented_source
+        return write(source) if source
+
+        # Pattern 3: HEREDOC fallback (last resort if segmentation fails)
+        return write_heredoc if round_trips_heredoc?
+
+        fail UnsupportedNodeError, "Unparser cannot round trip this node: #{node.inspect}"
       end
 
     private
 
-      def heredoc?
-        if children.length >= HEREDOC_THRESHOLD
-          round_trips_heredoc?
-        else
-          round_tripping_segmented_source.nil? # && round_trips_heredoc?
-        end
+      def write_heredoc
+        write(HEREDOC_HEADER)
+        buffer.push_heredoc(heredoc_body)
       end
-      memoize :heredoc?
 
       def round_trips_heredoc?
         round_trips?(source: heredoc_source)
       end
       memoize :round_trips_heredoc?
 
-      def round_tripping_segmented_source
+      def limited_search_segmented_source
         each_segments(children) do |segments|
-
           source = segmented_source(segments: segments)
-
           return source if round_trips?(source: source)
         end
+
         nil
       end
-      memoize :round_tripping_segmented_source
 
       def each_segments(array)
         yield [array]
