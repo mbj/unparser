@@ -63,8 +63,8 @@ module Unparser
     # @api private
     #
     # mutant:disable
-    def self.run(*arguments)
-      new(*arguments).exit_status
+    def self.run(*)
+      new(*).exit_status
     end
 
     # Initialize object

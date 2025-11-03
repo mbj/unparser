@@ -107,8 +107,8 @@ module Unparser
       end
 
       # Enumerate each node with its local variable scope
-      def self.each(node:, stack:, &block)
-        new(stack: stack).each(node: node, &block)
+      def self.each(node:, stack:, &)
+        new(stack: stack).each(node: node, &)
       end
 
       # Enumerate local variable scope scope
@@ -121,8 +121,8 @@ module Unparser
       #
       # @api private
       #
-      def each(node:, &block)
-        visit(node, &block)
+      def each(node:, &)
+        visit(node, &)
       end
 
     private

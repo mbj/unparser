@@ -3,7 +3,6 @@
 require 'diff/lcs'
 require 'diff/lcs/hunk'
 require 'optparse'
-require 'set'
 
 require 'unparser/equalizer'
 require 'unparser/adamantium'

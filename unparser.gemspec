@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
 
-  gem.required_ruby_version = '>= 3.1'
+  gem.required_ruby_version = '>= 3.2'
 
   gem.add_dependency('diff-lcs', '~> 1.6')
   gem.add_dependency('parser',   '>= 3.3.0')
