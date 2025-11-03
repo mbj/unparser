@@ -475,7 +475,7 @@ describe Unparser, mutant_expression: 'Unparser*' do
         )
       end
 
-      if RUBY_VERSION < '3.1.'
+      if RUBY_VERSION < '3.2.'
         excludes.concat(
           %w[
             test/corpus/literal/since/31.rb

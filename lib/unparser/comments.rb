@@ -15,8 +15,8 @@ module Unparser
     #
     # @api private
     #
-    def source_range(*arguments)
-      self.class.source_range(*arguments)
+    def source_range(*)
+      self.class.source_range(*)
     end
 
     # Initialize object

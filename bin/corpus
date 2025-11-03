@@ -197,8 +197,8 @@ module Unparser
 
     # Unparser corpus CLI implementation
     class CLI
-      def self.run(*arguments)
-        new(*arguments).exit_status
+      def self.run(*)
+        new(*).exit_status
       end
 
       def initialize(arguments)
