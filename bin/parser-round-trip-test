@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-if Gem::Version.new(RUBY_VERSION) <= '3.4'
-  load 'bin/parser-whitequark-round-trip-test'
-else
-  load 'bin/parser-prism-round-trip-test'
-end
+# Unparser now uses Prism translation layer for all Ruby 3.3+ versions
+load 'bin/parser-prism-round-trip-test'

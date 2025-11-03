@@ -4,8 +4,6 @@ require 'unparser'
 require 'mutant'
 require 'yaml'
 
-require 'parser/current'
-
 RSpec.shared_examples_for 'a command method' do
   it 'returns self' do
     should equal(object)
