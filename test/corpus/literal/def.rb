@@ -140,3 +140,11 @@ end
 def foo(return:)
   { return: }
 end
+
+def foo(&)
+  bar(&)
+end
+
+def foo(a, &)
+  bar(&)
+end
