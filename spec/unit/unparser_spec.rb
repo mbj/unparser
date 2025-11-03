@@ -459,13 +459,13 @@ describe Unparser, mutant_expression: 'Unparser*' do
     let(:version_excludes) do
       excludes = []
 
-      if RUBY_VERSION >= '3.4.'
-        excludes.concat(
-          %w[
-            test/corpus/literal/before/34.rb
-          ]
-        )
-      end
+      # "before/34.rb" contains syntax valid before Ruby 3.4 but invalid in 3.4+
+      # So we need to exclude it on ALL versions (3.3 can't parse it, 3.4+ rejects it)
+      excludes.concat(
+        %w[
+          test/corpus/literal/before/34.rb
+        ]
+      )
 
       excludes.flat_map { |file| ['--ignore', file] }
     end

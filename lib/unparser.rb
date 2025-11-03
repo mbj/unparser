@@ -18,51 +18,40 @@ require 'unparser/anima/error'
 
 # Library namespace
 module Unparser # rubocop:disable Metrics/ModuleLength
+  require 'prism'
+
   # Unparser specific AST builder defaulting to modern AST format
-  if Gem::Version.new(RUBY_VERSION) <= '3.4'
-    require 'parser/current'
-    class Builder < Parser::Builders::Default
-      modernize
+  class Builder < Prism::Translation::Parser::Builder
+    modernize
 
-      # mutant:disable
-      def initialize
-        super
+    # mutant:disable
+    def initialize
+      super
 
-        self.emit_file_line_as_literals = false
-      end
-    end
-  else
-    require 'prism'
-    class Builder < Prism::Translation::Parser::Builder
-      modernize
-
-      # mutant:disable
-      def initialize
-        super
-
-        self.emit_file_line_as_literals = false
-      end
+      self.emit_file_line_as_literals = false
     end
   end
 
+  # Select appropriate Prism translation parser based on Ruby version
   PARSER_CLASS =
-    if Gem::Version.new(RUBY_VERSION) <= '3.4'
-      Class.new(Parser::CurrentRuby) do
-        def declare_local_variable(local_variable)
-          static_env.declare(local_variable)
-        end
-      end
+    if RUBY_VERSION >= '3.5'
+      Prism::Translation::Parser35
+    elsif RUBY_VERSION >= '3.4'
+      Prism::Translation::Parser34
     else
-      Class.new(Prism::Translation::Parser34) do
-        def declare_local_variable(local_variable)
-          (@local_variables ||= Set.new) << local_variable
-        end
-
-        def prism_options
-          super.merge(scopes: [@local_variables.to_a])
-        end
-      end
+      Prism::Translation::Parser33
     end
+
+  # Create parser instance with local variable declaration support
+  PARSER_INSTANCE_CLASS = Class.new(PARSER_CLASS) do
+    def declare_local_variable(local_variable)
+      (@local_variables ||= Set.new) << local_variable
+    end
+
+    def prism_options
+      super.merge(scopes: [@local_variables.to_a])
+    end
+  end
 
   EMPTY_STRING = ''.freeze
   EMPTY_ARRAY  = [].freeze
@@ -238,7 +227,7 @@ module Unparser # rubocop:disable Metrics/ModuleLength
   # @api private
   # mutant:disable
   def self.parser
-    PARSER_CLASS.new(Builder.new).tap do |parser|
+    PARSER_INSTANCE_CLASS.new(Builder.new).tap do |parser|
       parser.diagnostics.tap do |diagnostics|
         diagnostics.all_errors_are_fatal = true
       end

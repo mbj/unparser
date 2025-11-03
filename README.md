@@ -4,7 +4,9 @@ unparser
 ![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
 
-Generate equivalent source for ASTs from [parser](https://github.com/whitequark/parser).
+Generate equivalent source for ASTs from [prism](https://github.com/ruby/prism) via its parser translation layer.
+
+**Parser Backend**: Unparser uses [Prism](https://github.com/ruby/prism) (Ruby's official parser) with its [parser translation layer](https://github.com/ruby/prism/blob/main/docs/parser_translation.md) to produce `Parser::AST::Node` compatible ASTs. This requires both the `prism` and `parser` gems as dependencies.
 
 The following constraints apply:
 
@@ -30,7 +32,6 @@ Usage
 -----
 
 ```ruby
-require 'parser/current'
 require 'unparser'
 
 ast = Unparser.parse('your(ruby(code))')
@@ -41,7 +42,6 @@ Unparser.unparse(ast) # => 'your(ruby(code))'
 To preserve the comments from the source:
 
 ```ruby
-require 'parser/current'
 require 'unparser'
 
 ast, comments = Unparser.parser.parse_with_comments(Unparser.buffer('your(ruby(code)) # with comments'))
