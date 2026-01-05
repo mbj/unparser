@@ -19,6 +19,7 @@ module Unparser
         kwoptarg
         kwrestarg
         lvasgn
+        match_var
         optarg
         restarg
       ].to_set.freeze

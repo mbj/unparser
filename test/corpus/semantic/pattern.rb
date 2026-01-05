@@ -26,3 +26,7 @@ case foo
 in %q[a b c $FILE]
 end
 a in b, and c
+begin
+  foo => e
+  e()
+end
