@@ -4,8 +4,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'mutant',            '~> 0.13.2'
-gem 'mutant-rspec',      '~> 0.13.0'
+gem 'mutant',            '~> 0.14.2'
+gem 'mutant-rspec',      '~> 0.14.2'
 gem 'rspec',             '~> 3.13'
 gem 'rspec-core',        '~> 3.13'
 gem 'rspec-its',         '~> 1.3.0'
