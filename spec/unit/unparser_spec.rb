@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser, mutant_expression: 'Unparser*' do
+RSpec.describe Unparser, mutant_expression: 'Unparser*' do
   describe '.buffer' do
     let(:source) { 'a + b' }
 

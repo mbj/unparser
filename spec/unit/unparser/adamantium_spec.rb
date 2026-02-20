@@ -76,7 +76,7 @@ RSpec.describe Unparser::Adamantium do
       end
     end
 
-    it { should be_frozen }
+    it { is_expected.to be_frozen }
 
     its(:argument) { should be(argument) }
   end
@@ -90,7 +90,7 @@ RSpec.describe Unparser::Adamantium do
       end.new
     end
 
-    it { should equal(object) }
+    it { is_expected.to equal(object) }
   end
 
   describe '#freeze' do
@@ -108,7 +108,7 @@ RSpec.describe Unparser::Adamantium do
     context 'with an unfrozen object' do
       let(:object) { class_under_test.allocate }
 
-      it_should_behave_like 'a command method'
+      it_behaves_like 'a command method'
 
       it 'freezes the object' do
         expect { subject }.to change(object, :frozen?)
@@ -120,7 +120,7 @@ RSpec.describe Unparser::Adamantium do
     context 'with a frozen object' do
       let(:object) { class_under_test.new }
 
-      it_should_behave_like 'a command method'
+      it_behaves_like 'a command method'
 
       it 'does not change the frozen state of the object' do
         expect { subject }.to_not change(object, :frozen?)
@@ -147,13 +147,13 @@ RSpec.describe Unparser::Adamantium do
     context 'when method is not memoized' do
       let(:method) { :some_method }
 
-      it { should be(false) }
+      it { is_expected.to be(false) }
     end
 
     context 'when method is memoized' do
       let(:method) { :some_memoized_method }
 
-      it { should be(true) }
+      it { is_expected.to be(true) }
     end
   end
 
@@ -291,7 +291,7 @@ RSpec.describe Unparser::Adamantium do
       end
 
       context 'when the initializer calls the memoized method' do
-        it_should_behave_like 'memoizes method'
+        it_behaves_like 'memoizes method'
 
         before do
           method = self.method
@@ -318,9 +318,9 @@ RSpec.describe Unparser::Adamantium do
     context 'memoized method that returns generated values' do
       let(:method) { :some_state }
 
-      it_should_behave_like 'a command method'
-      it_should_behave_like 'memoizes method'
-      it_should_behave_like 'wraps original method'
+      it_behaves_like 'a command method'
+      it_behaves_like 'memoizes method'
+      it_behaves_like 'wraps original method'
 
       it 'creates a method that returns a frozen value' do
         subject
@@ -365,12 +365,12 @@ RSpec.describe Unparser::Adamantium do
     context 'public method' do
       let(:method) { :public_method }
 
-      it_should_behave_like 'a command method'
-      it_should_behave_like 'memoizes method'
-      it_should_behave_like 'wraps original method'
+      it_behaves_like 'a command method'
+      it_behaves_like 'memoizes method'
+      it_behaves_like 'wraps original method'
 
       it 'is still a public method' do
-        should be_public_method_defined(method)
+        is_expected.to be_public_method_defined(method)
       end
 
       it 'creates a method that returns a frozen value' do
@@ -382,11 +382,11 @@ RSpec.describe Unparser::Adamantium do
     context 'protected method' do
       let(:method) { :protected_method }
 
-      it_should_behave_like 'a command method'
-      it_should_behave_like 'memoizes method'
+      it_behaves_like 'a command method'
+      it_behaves_like 'memoizes method'
 
       it 'is still a protected method' do
-        should be_protected_method_defined(method)
+        is_expected.to be_protected_method_defined(method)
       end
 
       it 'creates a method that returns a frozen value' do
@@ -398,11 +398,11 @@ RSpec.describe Unparser::Adamantium do
     context 'private method' do
       let(:method) { :private_method }
 
-      it_should_behave_like 'a command method'
-      it_should_behave_like 'memoizes method'
+      it_behaves_like 'a command method'
+      it_behaves_like 'memoizes method'
 
       it 'is still a private method' do
-        should be_private_method_defined(method)
+        is_expected.to be_private_method_defined(method)
       end
 
       it 'creates a method that returns a frozen value' do
