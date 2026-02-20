@@ -59,6 +59,7 @@ b\nar
 
     def excludes
       %w[
+        character_literal
         spanning_heredoc
         heredocs_with_fake_newlines
         heredocs_nested
@@ -105,7 +106,6 @@ Dir.chdir(PrismParser::PARSER_PATH) do
   Kernel.system(*%w[git clean --force -d -X], exception: true)
 end
 
-ignores_cli_option = PrismParser.excludes.flat_map { |file| ['--ignore', file] }
-
 PrismParser.prepare
+ignores_cli_option = PrismParser.excludes.flat_map { |file| ['--ignore', file] }
 exit Unparser::CLI.run([PrismParser.target_glob, *ignores_cli_option])

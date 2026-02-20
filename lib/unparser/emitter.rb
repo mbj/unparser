@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Unparser
-  UnknownNodeError = Class.new(ArgumentError)
+  class UnknownNodeError < ArgumentError
+  end
 
   # Emitter base class
   class Emitter
