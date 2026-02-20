@@ -1,4 +1,4 @@
-describe Unparser::Equalizer, '.new' do
+RSpec.describe Unparser::Equalizer, '.new' do
   let(:object) { described_class }
   let(:name)   { 'User'          }
   let(:klass)  { ::Class.new     }
@@ -14,9 +14,9 @@ describe Unparser::Equalizer, '.new' do
 
     let(:instance) { klass.new }
 
-    it { should be_instance_of(object) }
+    it { is_expected.to be_instance_of(object) }
 
-    it { should be_frozen }
+    it { is_expected.to be_frozen }
 
     it 'defines #hash and #inspect methods dynamically' do
       expect(subject.public_instance_methods(false).map(&:to_s).sort)
@@ -94,9 +94,9 @@ describe Unparser::Equalizer, '.new' do
       klass.send(:include, subject)
     end
 
-    it { should be_instance_of(object) }
+    it { is_expected.to be_instance_of(object) }
 
-    it { should be_frozen }
+    it { is_expected.to be_frozen }
 
     it 'defines #hash and #inspect methods dynamically' do
       expect(subject.public_instance_methods(false).map(&:to_s).sort)

@@ -100,8 +100,8 @@ PLATFORMS
 DEPENDENCIES
   mutant (~> 0.14.2)
   mutant-rspec (~> 0.14.2)
-  rspec (~> 3.13)
-  rspec-core (~> 3.13)
+  rspec (>= 3.13, < 5)
+  rspec-core (>= 3.13, < 5)
   rspec-its (~> 2.0)
   rubocop (~> 1.7)
   rubocop-packaging (~> 0.5)

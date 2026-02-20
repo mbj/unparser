@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Comments, '#consume' do
+RSpec.describe Unparser::Comments, '#consume' do
 
   let(:ast) do
     Unparser.parse_ast(<<~'RUBY')

@@ -1,4 +1,4 @@
-describe Unparser::Anima::Attribute do
+RSpec.describe Unparser::Anima::Attribute do
   let(:object) { described_class.new(:foo) }
 
   describe '#get' do
@@ -18,7 +18,7 @@ describe Unparser::Anima::Attribute do
     let(:value) { double('Value') }
 
     it 'should return value' do
-      should be(value)
+      is_expected.to be(value)
     end
   end
 
@@ -34,15 +34,15 @@ describe Unparser::Anima::Attribute do
       expect(target.instance_variable_get(:@foo)).to be(value)
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#instance_variable_name' do
     subject { object.instance_variable_name }
 
-    it { should be(:@foo) }
+    it { is_expected.to be(:@foo) }
 
-    it_should_behave_like 'an idempotent method'
+    it_behaves_like 'an idempotent method'
   end
 
   describe '#set' do
@@ -52,7 +52,7 @@ describe Unparser::Anima::Attribute do
 
     let(:value) { double('Value') }
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
 
     it 'should set value as instance variable' do
       subject

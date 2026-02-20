@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Comments, '#take_before' do
+RSpec.describe Unparser::Comments, '#take_before' do
   let(:object) { described_class.new(ast.comments) }
 
   context 'usual case' do
