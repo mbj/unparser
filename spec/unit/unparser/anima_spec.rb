@@ -1,4 +1,4 @@
-describe Unparser::Anima do
+RSpec.describe Unparser::Anima do
   let(:object) { described_class.new(:foo) }
 
   describe '#attributes_hash' do
@@ -7,7 +7,7 @@ describe Unparser::Anima do
 
     subject { object.attributes_hash(instance) }
 
-    it { should eql(foo: value) }
+    it { is_expected.to eql(foo: value) }
   end
 
   describe '#remove' do
@@ -16,19 +16,19 @@ describe Unparser::Anima do
     context 'with single attribute' do
       subject { object.remove(:bar) }
 
-      it { should eql(described_class.new(:foo)) }
+      it { is_expected.to eql(described_class.new(:foo)) }
     end
 
     context 'with multiple attributes' do
       subject { object.remove(:foo, :bar) }
 
-      it { should eql(described_class.new) }
+      it { is_expected.to eql(described_class.new) }
     end
 
     context 'with inexisting attribute' do
       subject { object.remove(:baz) }
 
-      it { should eql(object) }
+      it { is_expected.to eql(object) }
     end
   end
 
@@ -36,27 +36,27 @@ describe Unparser::Anima do
     context 'with single attribute' do
       subject { object.add(:bar) }
 
-      it { should eql(described_class.new(:foo, :bar)) }
+      it { is_expected.to eql(described_class.new(:foo, :bar)) }
     end
 
     context 'with multiple attributes' do
       subject { object.add(:bar, :baz) }
 
-      it { should eql(described_class.new(:foo, :bar, :baz)) }
+      it { is_expected.to eql(described_class.new(:foo, :bar, :baz)) }
     end
 
     context 'with duplicate attribute ' do
       subject { object.add(:foo) }
 
-      it { should eql(object) }
+      it { is_expected.to eql(object) }
     end
   end
 
   describe '#attributes' do
     subject { object.attributes }
 
-    it { should eql([Unparser::Anima::Attribute.new(:foo)]) }
-    it { should be_frozen                                   }
+    it { is_expected.to eql([Unparser::Anima::Attribute.new(:foo)]) }
+    it { is_expected.to be_frozen                                   }
   end
 
   describe '#included' do
@@ -75,8 +75,8 @@ describe Unparser::Anima do
     context 'on instance' do
       subject { instance }
 
-      it { should eql(instance_b) }
-      it { should_not eql(instance_c) }
+      it { is_expected.to eql(instance_b) }
+      it { is_expected.not_to eql(instance_c) }
 
       it 'returns expected value' do 
         expect(instance.foo).to be(value)
@@ -119,7 +119,7 @@ describe Unparser::Anima do
         expect(target.instance_variable_get(:@bar)).to be(bar)
       end
 
-      it_should_behave_like 'a command method'
+      it_behaves_like 'a command method'
     end
 
     context 'when an extra key is present in attribute hash' do
@@ -181,7 +181,7 @@ describe Unparser::Anima do
       end
     end
 
-    it { should eql(params) }
+    it { is_expected.to eql(params) }
   end
 
   describe '#with' do
@@ -198,13 +198,13 @@ describe Unparser::Anima do
     context 'with empty attributes' do
       let(:attributes) { {} }
 
-      it { should eql(object) }
+      it { is_expected.to eql(object) }
     end
 
     context 'with updated attribute' do
       let(:attributes) { { foo: 3 } }
 
-      it { should eql(klass.new(foo: 3, bar: 2)) }
+      it { is_expected.to eql(klass.new(foo: 3, bar: 2)) }
     end
   end
 end

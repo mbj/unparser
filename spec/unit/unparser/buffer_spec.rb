@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Buffer do
+RSpec.describe Unparser::Buffer do
   describe '#append' do
     subject { object.append(string) }
 
@@ -20,7 +20,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("foo\n  barbaz")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#append_without_prefix' do
@@ -42,7 +42,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("foo\nbarbaz")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#content' do
@@ -52,10 +52,10 @@ describe Unparser::Buffer do
 
     shared_examples_for 'buffer content' do
       it 'contains expected content' do
-        should eql(expected_content)
+        is_expected.to eql(expected_content)
       end
 
-      it { should be_frozen }
+      it { is_expected.to be_frozen }
 
       it 'returns fresh string copies' do
         first  = object.content
@@ -68,7 +68,7 @@ describe Unparser::Buffer do
     context 'with empty buffer' do
       let(:expected_content) { '' }
 
-      it_should_behave_like 'buffer content'
+      it_behaves_like 'buffer content'
     end
 
     context 'with filled buffer' do
@@ -117,7 +117,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("foo\n  bar\n    baz")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#nl' do
@@ -147,7 +147,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("\nHEREDOC\n")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#unindent' do
@@ -166,7 +166,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("foo\n  bar\nbaz")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#write_encoding' do
@@ -179,7 +179,7 @@ describe Unparser::Buffer do
       expect(object.content).to eql("# -*- encoding: US-ASCII -*-\n")
     end
 
-    it_should_behave_like 'a command method'
+    it_behaves_like 'a command method'
   end
 
   describe '#nl_flush_heredocs' do

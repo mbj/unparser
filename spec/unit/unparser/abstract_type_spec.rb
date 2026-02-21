@@ -2,7 +2,7 @@ RSpec.shared_examples 'AbstractType.create_new_method' do
   context 'called on a subclass' do
     let(:object) { Class.new(abstract_type) }
 
-    it { should be_instance_of(object) }
+    it { is_expected.to be_instance_of(object) }
   end
 
   context 'called on the class' do
@@ -31,7 +31,7 @@ RSpec.describe Unparser::AbstractType::AbstractMethodDeclarations, '#abstract_me
     Object.class_eval { remove_const(:Subclass) }
   end
 
-  it { should equal(object) }
+  it { is_expected.to equal(object) }
 
   it 'creates an abstract method' do
     expect { subject }.to change { subclass.method_defined?(:some_method) }
@@ -70,7 +70,7 @@ RSpec.describe(
     Object.class_eval { remove_const(:Subclass) }
   end
 
-  it { should equal(object) }
+  it { is_expected.to equal(object) }
 
   it 'creates an abstract method' do
     expect { subject }.to change { subclass.respond_to?(:some_method) }

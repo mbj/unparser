@@ -10,7 +10,7 @@ RSpec.describe Unparser::Diff do
     let(:old_string) { "foo\nbar" }
     let(:new_string) { "bar\nbaz" }
 
-    it { should eql(described_class.new(%w[foo bar], %w[bar baz])) }
+    it { is_expected.to eql(described_class.new(%w[foo bar], %w[bar baz])) }
 
   end
 
@@ -32,18 +32,18 @@ RSpec.describe Unparser::Diff do
         ].join
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when there is no diff' do
       let(:old) { '' }
       let(:new) { '' }
 
-      it { should be(nil) }
+      it { is_expected.to be(nil) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
   end
 
@@ -67,9 +67,9 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when there is a diff at begin of hunk' do
@@ -85,9 +85,9 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when there is a diff NOT at begin of hunk' do
@@ -103,9 +103,9 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when the diff has a long context at begin' do
@@ -126,9 +126,9 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when the diff has a long context at end, deleting' do
@@ -149,9 +149,9 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when the diff has a long context at end, inserting' do
@@ -172,18 +172,18 @@ RSpec.describe Unparser::Diff do
         STR
       end
 
-      it { should eql(expectation) }
+      it { is_expected.to eql(expectation) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
 
     context 'when there is no diff' do
       let(:old) { '' }
       let(:new) { '' }
 
-      it { should be(nil) }
+      it { is_expected.to be(nil) }
 
-      it_should_behave_like 'an idempotent method'
+      it_behaves_like 'an idempotent method'
     end
   end
 end
