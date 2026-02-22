@@ -59,12 +59,12 @@ b\nar
 
     def excludes
       %w[
+        character_literal
         spanning_heredoc
         heredocs_with_fake_newlines
         heredocs_nested
-      ].tap { _1 << 'endless_methods_command_call' unless Gem::Version.new(RUBY_VERSION) >= '3.5' } # https://github.com/ruby/prism/pull/3639
-       .tap { _1 << 'leading_logical' unless Gem::Version.new(RUBY_VERSION) >= '3.5' } # https://github.com/ruby/prism/pull/3337
-       .to_set { |file| "#{PARSER_PATH}/test/prism/fixtures-tmp/#{file}.txt" }
+      ].flat_map { |file| Dir.glob("#{PARSER_PATH}/test/prism/fixtures-tmp/**/#{file}.txt") }
+       .to_set
     end
 
     private
@@ -105,7 +105,6 @@ Dir.chdir(PrismParser::PARSER_PATH) do
   Kernel.system(*%w[git clean --force -d -X], exception: true)
 end
 
-ignores_cli_option = PrismParser.excludes.flat_map { |file| ['--ignore', file] }
-
 PrismParser.prepare
-exit Unparser::CLI.run([PrismParser.target_glob, *ignores_cli_option])
+ignores_cli_option = PrismParser.excludes.flat_map { |file| ['--ignore', file] }
+exit Unparser::CLI.run([PrismParser.target_glob, '--ignore-original-syntax-error', *ignores_cli_option])

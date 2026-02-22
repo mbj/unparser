@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Comments, '#take_eol_comments' do
+RSpec.describe Unparser::Comments, '#take_eol_comments' do
   let(:ast) do
     Unparser.parse_ast(<<~'RUBY')
       def hi # EOL 1

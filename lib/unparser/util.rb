@@ -4,7 +4,8 @@ module Unparser
   # Original code before vendoring and reduction from: https://github.com/mbj/mutant/blob/main/lib/mutant/util.rb
   module Util
     # Error raised by `Util.one` if size is not exactly one
-    SizeError = Class.new(IndexError)
+    class SizeError < IndexError
+    end
 
     # Return only element in array if it contains exactly one member
     #

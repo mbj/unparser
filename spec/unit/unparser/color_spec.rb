@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Unparser::Color do
+RSpec.describe Unparser::Color do
   shared_examples 'actual color' do |code|
     describe '#format' do
 
