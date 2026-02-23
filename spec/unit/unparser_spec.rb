@@ -475,6 +475,14 @@ RSpec.describe Unparser, mutant_expression: 'Unparser*' do
         )
       end
 
+      if RUBY_VERSION < '4.0.'
+        excludes.concat(
+          %w[
+            test/corpus/semantic/since/40.rb
+          ]
+        )
+      end
+
       excludes.flat_map { |file| ['--ignore', file] }
     end
 

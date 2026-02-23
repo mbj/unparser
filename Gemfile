@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'benchmark'
 gem 'mutant',            '~> 0.14.2'
 gem 'mutant-rspec',      '~> 0.14.2'
 gem 'rspec',             '>= 3.13', '< 5'
