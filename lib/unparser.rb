@@ -52,7 +52,14 @@ module Unparser # rubocop:disable Metrics/ModuleLength
         end
       end
     else
-      Class.new(Prism::Translation::Parser34) do
+      prism_translation_parser =
+        if Gem::Version.new(RUBY_VERSION) >= '4.0'
+          Prism::Translation::Parser40
+        else
+          Prism::Translation::Parser34
+        end
+
+      Class.new(prism_translation_parser) do
         def declare_local_variable(local_variable)
           (@local_variables ||= Set.new) << local_variable
         end
