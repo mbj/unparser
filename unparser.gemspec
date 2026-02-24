@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'unparser'
-  gem.version     = '0.8.1'
+  gem.version     = '0.8.2'
 
   gem.authors     = ['Markus Schirp']
   gem.email       = 'mbj@schirp-dso.com'
@@ -29,4 +29,12 @@ Gem::Specification.new do |gem|
   gem.add_dependency('parser',   '>= 3.3.0')
   gem.add_dependency('prism',    '>= 1.5.1')
 
+  gem.add_development_dependency('benchmark',         '~> 0.5.0')
+  gem.add_development_dependency('mutant',            '~> 0.14.2')
+  gem.add_development_dependency('mutant-rspec',      '~> 0.14.2')
+  gem.add_development_dependency('rspec',             '>= 3.13', '< 5')
+  gem.add_development_dependency('rspec-core',        '>= 3.13', '< 5')
+  gem.add_development_dependency('rspec-its',         '~> 2.0')
+  gem.add_development_dependency('rubocop',           '~> 1.7')
+  gem.add_development_dependency('rubocop-packaging', '~> 0.5')
 end
