@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    unparser (0.8.1)
+    unparser (0.8.2)
       diff-lcs (>= 1.6, < 3)
       parser (>= 3.3.0)
       prism (>= 1.5.1)
@@ -99,7 +99,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  benchmark
+  benchmark (~> 0.5.0)
   mutant (~> 0.14.2)
   mutant-rspec (~> 0.14.2)
   rspec (>= 3.13, < 5)
@@ -148,7 +148,7 @@ CHECKSUMS
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   unicode-display_width (3.2.0) sha256=0cdd96b5681a5949cdbc2c55e7b420facae74c4aaf9a9815eee1087cb1853c42
   unicode-emoji (4.2.0) sha256=519e69150f75652e40bf736106cfbc8f0f73aa3fb6a65afe62fefa7f80b0f80f
-  unparser (0.8.1)
+  unparser (0.8.2)
 
 BUNDLED WITH
   4.0.6

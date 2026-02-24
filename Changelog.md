@@ -1,3 +1,10 @@
+# v0.8.2 2026-02-24
+
+* Fix `NoMethodError` when exception backtrace is nil (#424)
+* Add Ruby 4.0 specs and CI support (#423)
+* Drop Ruby 3.1 leftovers (#420)
+* Update to RSpec 4 (#422)
+
 # v0.8.1 2025-11-02
 
 * Fix multiline dynamic strings without trailing newline (#412)
