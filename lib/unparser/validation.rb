@@ -145,7 +145,7 @@ module Unparser
     # mutant:disable
     def report_exception(phase_exception)
       if phase_exception
-        [phase_exception.inspect].concat(phase_exception.backtrace.take(20))
+        [phase_exception.inspect].concat(phase_exception.backtrace&.take(20) || [])
       else
         %w[undefined]
       end
