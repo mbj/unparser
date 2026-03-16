@@ -1,3 +1,7 @@
+# v0.8.3 2026-03-16
+
+* Drop Ruby 3.2 support
+
 # v0.8.2 2026-02-24
 
 * Fix `NoMethodError` when exception backtrace is nil (#424)
