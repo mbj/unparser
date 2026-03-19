@@ -173,12 +173,12 @@ Included Libraries
 
 For dependency reduction reasons unparser ships vendored (and reduced) versions of:
 
-* [abstract_type](https://github.com/mbj/concord) -> Unparser::AbstractType
+* [abstract_type](https://github.com/dkubb/abstract_type) -> Unparser::AbstractType
 * [adamantium](https://github.com/dkubb/adamantium) -> Unparser::Adamantium
-* [anima](https://github.com/mbj/concord) -> Unparser::Anima
-* [concord](https://github.com/mbj/concord) -> Unparser::Concord
-* [memoizable](https://github.com/dkubb/memoizable) -> Unparser::Adamantium
-* [mprelude](https://github.com/dkubb/memoizable) -> Unparser::Either
+* [anima](https://github.com/mbj/anima) -> Unparser::Anima
+* [equalizer](https://github.com/dkubb/equalizer) -> Unparser::Equalizer
+* [memoizable](https://github.com/dkubb/memoizable) -> Unparser::Memoizable
+* [mprelude](http://prelude.rubyforge.org/) -> Unparser::Either
 
 Contributing
 -------------
