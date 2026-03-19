@@ -50,9 +50,7 @@ module Unparser
     #
     # @return [Hash]
     def attributes_hash(object)
-      attributes.each_with_object({}) do |attribute, attributes_hash|
-        attributes_hash[attribute.name] = attribute.get(object)
-      end
+      attributes.to_h { |attribute| [attribute.name, attribute.get(object)] }
     end
 
     # Return attribute names

@@ -33,5 +33,8 @@ measurements
 ## BUNDLER
 .bundle
 
+## MUTANT
+.mutant
+
 ## PROJECT::SPECIFIC
 /vendor

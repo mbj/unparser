@@ -3,7 +3,13 @@
 module Unparser
   # Class to colorize strings
   class Color
-    include Adamantium, Concord.new(:code)
+    include Adamantium, Equalizer.new(:code)
+
+    attr_reader :code
+
+    def initialize(code)
+      @code = code
+    end
 
     # Format text with color
     #

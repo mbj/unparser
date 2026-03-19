@@ -136,6 +136,12 @@ RSpec.describe Unparser::Either::Left do
 
   let(:block_result) { instance_double(Object, 'block result') }
   let(:value)        { instance_double(Object, 'value')        }
+
+  describe '#value' do
+    it 'returns the initialized value' do
+      expect(subject.value).to be(value)
+    end
+  end
   let(:yields)       { []                                      }
 
   let(:block) do

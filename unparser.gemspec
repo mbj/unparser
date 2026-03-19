@@ -23,15 +23,15 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[README.md]
   gem.executables      = %w[unparser]
 
-  gem.required_ruby_version = '>= 3.2'
+  gem.required_ruby_version = '>= 3.3'
 
   gem.add_dependency('diff-lcs', '>= 1.6', '< 3')
   gem.add_dependency('parser',   '>= 3.3.0')
   gem.add_dependency('prism',    '>= 1.5.1')
 
   gem.add_development_dependency('benchmark',         '~> 0.5.0')
-  gem.add_development_dependency('mutant',            '~> 0.14.2')
-  gem.add_development_dependency('mutant-rspec',      '~> 0.14.2')
+  gem.add_development_dependency('mutant',            '>= 0.14.2')
+  gem.add_development_dependency('mutant-rspec',      '>= 0.14.2')
   gem.add_development_dependency('rspec',             '>= 3.13', '< 5')
   gem.add_development_dependency('rspec-core',        '>= 3.13', '< 5')
   gem.add_development_dependency('rspec-its',         '~> 2.0')

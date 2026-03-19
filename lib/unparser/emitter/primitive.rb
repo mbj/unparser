@@ -13,23 +13,8 @@ module Unparser
 
         private
 
-        # mutant:disable
         def dispatch
-          if inspect_breaks_parsing?
-            write(":#{value.name.inspect}")
-          else
-            write(value.inspect)
-          end
-        end
-
-        # mutant:disable
-        def inspect_breaks_parsing?
-          return false unless RUBY_VERSION < '3.2.'
-
-          Unparser.parse(value.inspect)
-          false
-        rescue Parser::SyntaxError
-          true
+          write(value.inspect)
         end
       end # Symbol
 

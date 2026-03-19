@@ -467,14 +467,6 @@ RSpec.describe Unparser, mutant_expression: 'Unparser*' do
         )
       end
 
-      if RUBY_VERSION < '3.2.'
-        excludes.concat(
-          %w[
-            test/corpus/literal/since/32.rb
-          ]
-        )
-      end
-
       if RUBY_VERSION < '4.0.'
         excludes.concat(
           %w[

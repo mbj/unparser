@@ -10,7 +10,7 @@ The following constraints apply:
 
 * No support for macruby extensions
 * Only support for the [modern AST](https://github.com/whitequark/parser/#usage) format
-* Only support for Ruby >= 3.2
+* Only support for Ruby >= 3.3
 
 Notable Users:
 
@@ -173,12 +173,12 @@ Included Libraries
 
 For dependency reduction reasons unparser ships vendored (and reduced) versions of:
 
-* [abstract_type](https://github.com/mbj/concord) -> Unparser::AbstractType
+* [abstract_type](https://github.com/dkubb/abstract_type) -> Unparser::AbstractType
 * [adamantium](https://github.com/dkubb/adamantium) -> Unparser::Adamantium
-* [anima](https://github.com/mbj/concord) -> Unparser::Anima
-* [concord](https://github.com/mbj/concord) -> Unparser::Concord
-* [memoizable](https://github.com/dkubb/memoizable) -> Unparser::Adamantium
-* [mprelude](https://github.com/dkubb/memoizable) -> Unparser::Either
+* [anima](https://github.com/mbj/anima) -> Unparser::Anima
+* [equalizer](https://github.com/dkubb/equalizer) -> Unparser::Equalizer
+* [memoizable](https://github.com/dkubb/memoizable) -> Unparser::Memoizable
+* [mprelude](http://prelude.rubyforge.org/) -> Unparser::Either
 
 Contributing
 -------------

@@ -19,11 +19,13 @@ module Unparser
   end # RequireBLock
 
   class Either
-    include(
-      Adamantium,
-      Concord.new(:value),
-      RequireBlock
-    )
+    include Adamantium, Equalizer.new(:value), RequireBlock
+
+    attr_reader :value
+
+    def initialize(value)
+      @value = value
+    end
 
     # Execute block and wrap error in left
     #

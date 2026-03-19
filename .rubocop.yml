@@ -5,7 +5,7 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.3
   Exclude:
     - tmp/**/*
     - vendor/**/*
@@ -115,3 +115,7 @@ Lint/UselessConstantScoping:
 # Lots of false positives, trying to do static analysis on a dynlang is not going to work
 Naming/PredicateMethod:
   Enabled: false
+
+Style/OneClassPerFile:
+  Exclude:
+  - bin/**/*
