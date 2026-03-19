@@ -9,7 +9,6 @@ require 'unparser/adamantium'
 require 'unparser/adamantium/method_builder'
 require 'unparser/abstract_type'
 
-require 'unparser/concord'
 require 'unparser/either'
 require 'unparser/anima'
 require 'unparser/anima/attribute'
@@ -73,7 +72,7 @@ module Unparser # rubocop:disable Metrics/ModuleLength
   EMPTY_STRING = ''.freeze
   EMPTY_ARRAY  = [].freeze
 
-  private_constant(*constants(false) - %i[Adamantium AbstractType Anima Concord Either Equalizer Memoizable])
+  private_constant(*constants(false) - %i[Adamantium AbstractType Anima Either Equalizer Memoizable])
 
   # Error raised when unparser encounters an invalid AST
   class InvalidNodeError < RuntimeError

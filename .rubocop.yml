@@ -115,3 +115,7 @@ Lint/UselessConstantScoping:
 # Lots of false positives, trying to do static analysis on a dynlang is not going to work
 Naming/PredicateMethod:
   Enabled: false
+
+Style/OneClassPerFile:
+  Exclude:
+  - bin/**/*

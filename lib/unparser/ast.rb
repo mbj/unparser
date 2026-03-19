@@ -90,7 +90,14 @@ module Unparser
 
     # AST enumerator
     class Enumerator
-      include Adamantium, Concord.new(:node, :controller), Enumerable
+      include Adamantium, Equalizer.new(:node, :controller), Enumerable
+
+      attr_reader :node, :controller
+
+      def initialize(node, controller)
+        @node = node
+        @controller = controller
+      end
 
       # Return each node
       #
@@ -130,38 +137,18 @@ module Unparser
         select { |node| node.type.equal?(type) }
       end
 
-      # Return frozne set of objects
-      #
-      # @param [Enumerable] enumerable
-      #
-      # @return [Set]
-      #
-      # @api private
-      #
-      def self.set(enumerable)
-        enumerable.to_set.freeze
-      end
-      private_class_method :set
-
-      # Return nodes of type
-      #
-      # @param [Parser::AST::Node] node
-      # @param [Symbol] type
-      #
-      # @return [Enumerable<Parser::AST::Node]
-      #
-      # @api private
-      #
-      def self.type(node, type)
-        new(node).type(type)
-      end
-      private_class_method :type
-
     end # Enumerator
 
     # Controlled AST walker walking the AST in deeth first search with pre order
     class Walker
-      include Concord.new(:block, :controller)
+      include Equalizer.new(:block, :controller)
+
+      attr_reader :block, :controller
+
+      def initialize(block, controller)
+        @block = block
+        @controller = controller
+      end
 
       # Call ast walker
       #

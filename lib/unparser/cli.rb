@@ -14,7 +14,15 @@ module Unparser
 
       # Path target
       class Path < self
-        include Concord.new(:path)
+        include Equalizer.new(:path)
+
+        attr_reader :path
+
+        # rubocop:disable Lint/MissingSuper
+        def initialize(path)
+          @path = path
+        end
+        # rubocop:enable Lint/MissingSuper
 
         # Validation for this target
         #
@@ -33,7 +41,13 @@ module Unparser
 
       # String target
       class String
-        include Concord.new(:string)
+        include Equalizer.new(:string)
+
+        attr_reader :string
+
+        def initialize(string)
+          @string = string
+        end
 
         # Validation for this target
         #

@@ -1,7 +1,7 @@
+require 'mutant'
 require 'pathname'
 require 'rspec/its'
 require 'unparser'
-require 'mutant'
 require 'yaml'
 
 require 'parser/current'

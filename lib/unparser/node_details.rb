@@ -7,7 +7,13 @@ module Unparser
     # mutant:disable
     def self.included(descendant)
       descendant.class_eval do
-        include Adamantium, Concord.new(:node)
+        include Adamantium, Equalizer.new(:node)
+
+        attr_reader :node
+
+        def initialize(node)
+          @node = node
+        end
 
         extend DSL
       end

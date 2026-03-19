@@ -3,7 +3,14 @@
 module Unparser
   # Class to create diffs from source code
   class Diff
-    include Adamantium, Concord.new(:old, :new)
+    include Adamantium, Equalizer.new(:old, :new)
+
+    attr_reader :old, :new
+
+    def initialize(old, new)
+      @old = old
+      @new = new
+    end
 
     ADDITION = '+'
     DELETION = '-'
