@@ -1,354 +1,567 @@
-# v0.8.2 2026-02-24
+# Changelog
 
-* Fix `NoMethodError` when exception backtrace is nil (#424)
-* Add Ruby 4.0 specs and CI support (#423)
-* Drop Ruby 3.1 leftovers (#420)
-* Update to RSpec 4 (#422)
+All notable changes to this project will be documented in this file.
 
-# v0.8.1 2025-11-02
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Fix multiline dynamic strings without trailing newline (#412)
-* Fix exponential performance degradation with repeated interpolations (#415)
+## [Unreleased]
 
-# v0.8.0 2025-05-29
+## [0.9.0] - 2026-03-19
 
-[#387](https://github.com/mbj/unparser/pull/387)
+### Changed
 
-* Add `prism` parser support for Ruby 3.4. ([viralpraxis](https://github.com/viralpraxis))
+- Remove Concord and vendor updated Equalizer ([#426](https://github.com/mbj/unparser/pull/426))
 
-# v0.7.0 2025-03-16
+### Fixed
 
-[#366](https://github.com/mbj/unparser/pull/366)
+- All links in Included Libraries section
 
-* Fix all known dstring issues.
-* Interface changes.
+### Removed
 
-# v0.6.15 2024-06-10
+- Support for Ruby 3.2
 
-[#373](https://github.com/mbj/unparser/pull/373)
+## [0.8.2] - 2026-02-24
 
-* Fix additonal keyword dispatch
+### Added
 
-# v0.6.14 2024-06-10
+- Ruby 4.0 specs and CI support ([#423](https://github.com/mbj/unparser/pull/423))
 
-[#369](https://github.com/mbj/unparser/pull/369)
+### Changed
 
-* Remove support for ruby-3.0, its EOL.
+- Update to RSpec 4 ([#422](https://github.com/mbj/unparser/pull/422))
 
-# v0.6.13 2024-02-01
+### Fixed
 
-[#361](https://github.com/mbj/unparser/pull/361)
+- `NoMethodError` when exception backtrace is nil ([#424](https://github.com/mbj/unparser/pull/424))
 
-* Fix unparsing of symbols that do not round trip under `#inspect`
+### Removed
 
-# v0.6.12 2024-01-10
+- Ruby 3.1 leftovers ([#420](https://github.com/mbj/unparser/pull/420))
 
-[#355](https://github.com/mbj/unparser/pull/355)
+## [0.8.1] - 2025-11-02
 
-* Fix conditionals with empty bodies.
+### Fixed
 
-# v0.6.11 2023-10-31
+- Multiline dynamic strings without trailing newline ([#412](https://github.com/mbj/unparser/pull/412))
+- Exponential performance degradation with repeated interpolations ([#415](https://github.com/mbj/unparser/pull/415))
 
-[#354](https://github.com/mbj/unparser/pull/354)
+## [0.8.0] - 2025-05-29
 
-* Remove support for ruby 2.7
+### Added
 
-# v0.6.10 2023-10-31
+- `prism` parser support for Ruby 3.4 ([#387](https://github.com/mbj/unparser/pull/387), [viralpraxis](https://github.com/viralpraxis))
 
-[#351](https://github.com/mbj/unparser/pull/351)
+## [0.7.0] - 2025-03-16
 
-* Fix missing heredocs on op-assign rhs
+### Changed
 
-# v0.6.9 2023-10-08
+- Interface changes ([#366](https://github.com/mbj/unparser/pull/366))
 
-[#348](https://github.com/mbj/unparser/pull/348)
+### Fixed
 
-* Fix crash on kwrestarg hash member
+- All known dstring issues ([#366](https://github.com/mbj/unparser/pull/366))
 
-[#349](https://github.com/mbj/unparser/pull/349)
+## [0.6.15] - 2024-06-10
 
-* Fix {begin,end}less {i,e}range flipflops
+### Fixed
 
-# v0.6.8 2023-06-14
+- Additional keyword dispatch ([#373](https://github.com/mbj/unparser/pull/373))
 
-[#347](https://github.com/mbj/unparser/pull/347)
+## [0.6.14] - 2024-06-10
 
-* Fix binary operator with csend receiver. [Fix #345]
+### Removed
 
-# v0.6.7 2023-01-08
+- Support for Ruby 3.0, its EOL ([#369](https://github.com/mbj/unparser/pull/369))
 
-[#338](https://github.com/mbj/unparser/pull/338)
+## [0.6.13] - 2024-02-01
 
-* Add required MFA for rubygems pushes.
+### Fixed
 
-# v0.6.6 2023-01-06
+- Unparsing of symbols that do not round trip under `#inspect` ([#361](https://github.com/mbj/unparser/pull/361))
 
-[#336](https://github.com/mbj/unparser/pull/336)
+## [0.6.12] - 2024-01-10
 
-* Add support for ruby-3.2 syntax.
+### Fixed
 
-# v0.6.5 2022-04-17
+- Conditionals with empty bodies ([#355](https://github.com/mbj/unparser/pull/355))
 
-[#312](https://github.com/mbj/unparser/pull/312)
+## [0.6.11] - 2023-10-31
 
-* Fix #311, emitting of heredocs within block that has arguments.
+### Removed
 
-[#313](https://github.com/mbj/unparser/pull/313)
+- Support for Ruby 2.7 ([#354](https://github.com/mbj/unparser/pull/354))
 
-* Remove Ruby-2.6 support as its EOL
+## [0.6.10] - 2023-10-31
 
-# v0.6.4 2022-02-12
+### Fixed
 
-[#299](https://github.com/mbj/unparser/pull/299)
+- Missing heredocs on op-assign rhs ([#351](https://github.com/mbj/unparser/pull/351))
 
-* Add 3.1+ syntax support.
+## [0.6.9] - 2023-10-08
 
-[#300](https://github.com/mbj/unparser/pull/300)
+### Fixed
 
-* Add 3.0+ node support for `find_pattern` and `match_rest`
+- Crash on kwrestarg hash member ([#348](https://github.com/mbj/unparser/pull/348))
+- {begin,end}less {i,e}range flipflops ([#349](https://github.com/mbj/unparser/pull/349))
 
-[#298](https://github.com/mbj/unparser/pull/298)
+## [0.6.8] - 2023-06-14
 
-* Add `parser` gem derived round trip tests.
+### Fixed
 
-[#297](https://github.com/mbj/unparser/pull/297)
+- Binary operator with csend receiver ([#347](https://github.com/mbj/unparser/pull/347), [#345](https://github.com/mbj/unparser/issues/345))
 
-* Fix emit of of `match_pattern` vs `match_pattern_p`
+## [0.6.7] - 2023-01-08
 
-[#298](https://github.com/mbj/unparser/pull/298)
+### Security
 
-* Add round trip tests dynamically derived from the `parser` gems test suite to CI
+- Add required MFA for rubygems pushes ([#338](https://github.com/mbj/unparser/pull/338))
 
-# v0.6.3 2022-01-16
+## [0.6.6] - 2023-01-06
 
-[#290](https://github.com/mbj/unparser/pull/290)
+### Added
 
-* Depend on parser-3.1.0.
-* This is not yet Ruby 3.1 syntax support, only
-  supporting the existing feature set on an updated `parser` gem.
+- Support for Ruby 3.2 syntax ([#336](https://github.com/mbj/unparser/pull/336))
 
-# v0.6.2 2021-11-09
+## [0.6.5] - 2022-04-17
 
-[#281](https://github.com/mbj/unparser/pull/268)
+### Fixed
 
-* Fix unary operator with argument.
+- Emitting of heredocs within block that has arguments ([#312](https://github.com/mbj/unparser/pull/312), [#311](https://github.com/mbj/unparser/issues/311))
 
-# v0.6.1 2021-11-08
+### Removed
 
-[#279](https://github.com/mbj/unparser/pull/279)
+- Ruby 2.6 support as its EOL ([#313](https://github.com/mbj/unparser/pull/313))
 
-* Fix binary operator with kwargs argument.
+## [0.6.4] - 2022-02-12
 
-[#268](https://github.com/mbj/unparser/pull/268)
+### Added
 
-* Remove ruby 2.5 support since its EOL.
+- 3.1+ syntax support ([#299](https://github.com/mbj/unparser/pull/299))
+- 3.0+ node support for `find_pattern` and `match_rest` ([#300](https://github.com/mbj/unparser/pull/300))
+- `parser` gem derived round trip tests ([#298](https://github.com/mbj/unparser/pull/298))
+- Round trip tests dynamically derived from the `parser` gems test suite to CI ([#298](https://github.com/mbj/unparser/pull/298))
 
-# v0.6.0 2021-01-06
+### Fixed
 
-[#245](https://github.com/mbj/unparser/pull/245)
+- Emit of `match_pattern` vs `match_pattern_p` ([#297](https://github.com/mbj/unparser/pull/297))
 
-* Change to raise Unparser::InvalidNode error in some cases when unparsing invalid AST.
-* Change `Unparser.unparse` into an official public API.
-* Remove lots of dependencies.
+## [0.6.3] - 2022-01-16
 
-# v0.5.7 2020-12-25
+### Changed
 
-* Fix heredocs in return arguments [#244](https://github.com/mbj/unparser/pull/244)
+- Depend on parser-3.1.0. This is not yet Ruby 3.1 syntax support, only supporting the existing feature set on an updated `parser` gem ([#290](https://github.com/mbj/unparser/pull/290))
 
-# v0.5.6 2020-12-25
+## [0.6.2] - 2021-11-09
 
-* Add full Ruby 3.0 Syntax support [#233](https://github.com/mbj/unparser/pull/233)
+### Fixed
 
-# v0.5.5 2020-12-24
+- Unary operator with argument ([#281](https://github.com/mbj/unparser/pull/268))
 
-* Fix in-pattern without body [#231](https://github.com/mbj/unparser/pull/231)
+## [0.6.1] - 2021-11-08
 
-# v0.5.4 2020-11-04
+### Fixed
 
-* Fix forced ternary on control keyword [#191](https://github.com/mbj/unparser/pull/191)
+- Binary operator with kwargs argument ([#279](https://github.com/mbj/unparser/pull/279))
 
-# v0.5.3 2020-10-18
+### Removed
 
-* Add required ruby version '>= 2.5' to gemspec.
+- Ruby 2.5 support since its EOL ([#268](https://github.com/mbj/unparser/pull/268))
 
-# v0.5.2 2020-10-16
+## [0.6.0] - 2021-01-06
 
-* Fix unary csends to emit correctly.
-* Add `Unparser.unparse_validate` interface
+### Changed
 
-# v0.5.1 2020-10-09
+- Raise `Unparser::InvalidNode` error in some cases when unparsing invalid AST ([#245](https://github.com/mbj/unparser/pull/245))
+- `Unparser.unparse` into an official public API ([#245](https://github.com/mbj/unparser/pull/245))
 
-* Change to emit empty `dstr` as `%()`
+### Removed
 
-# v0.5.0 2020-10-08
+- Lots of dependencies ([#245](https://github.com/mbj/unparser/pull/245))
 
-* Add 2.7 syntax support
-* Fix lots of edge cases via leveraging parser specs
-* Add `--literal` mode for CLI
+## [0.5.7] - 2020-12-25
 
-# v0.4.9 2020-09-10
+### Fixed
 
-* Change packaging to avoid git in gemspec.
+- Heredocs in return arguments ([#244](https://github.com/mbj/unparser/pull/244))
 
-# v0.4.8 2020-05-25
+## [0.5.6] - 2020-12-25
 
-* Change to specific node type when unparser fails on an unknown node type: [#150](https://github.com/mbj/unparser/pull/150)
-* Significantly improve verifier (only useful for debugging)
-* Add `Unparser::Color` module for colorized source diffs
+### Added
 
-# v0.4.7 2020-01-03
+- Full Ruby 3.0 syntax support ([#233](https://github.com/mbj/unparser/pull/233))
 
-* Add support for endless ranges
-* Change to allow parser 2.7, even while syntax is not yet supported.
-  This reduces downstream complexity.
+## [0.5.5] - 2020-12-24
 
-# v0.4.6 2020-01-02
+### Fixed
 
-* Upgrades to allow parser dependency to ~> 2.6.5
+- in-pattern without body ([#231](https://github.com/mbj/unparser/pull/231))
 
-# v0.4.5 2019-05-10
+## [0.5.4] - 2020-11-04
 
-* Bump parser dependency to ~> 2.6.3
+### Fixed
 
-# v0.4.4 2019-03-27
+- Forced ternary on control keyword ([#191](https://github.com/mbj/unparser/pull/191))
 
-* Bump parser dependency to ~> 2.6.2
+## [0.5.3] - 2020-10-18
 
-# v0.4.3 2019-02-24
+### Changed
 
-* Bump parser dependency to ~> 2.6.0
+- Add required ruby version `>= 2.5` to gemspec
 
-# v0.4.2 2018-12-04
+## [0.5.2] - 2020-10-16
 
-* Drop hard ruby version requirement. Still officially I'll only support 2.5.
+### Added
 
-# v0.4.1 2018-12-03
+- `Unparser.unparse_validate` interface
 
-* Fix unparsing of `def foo(bar: bar())`
+### Fixed
 
-# v0.4.0 2018-12-03
+- Unary csends to emit correctly
 
-* Change to modern AST format.
-* Add experimental `Unparser.{parser,parse,parse_with_comments}`
+## [0.5.1] - 2020-10-09
 
-# v0.3.0 2018-11-16
+### Changed
 
-* Drop support for Ruby < 2.5
+- Emit empty `dstr` as `%()`
 
-# v0.2.7 2018-07-18
+## [0.5.0] - 2020-10-08
 
-* Add emitters for `__FILE__` and `__LINE__`
-  https://github.com/mbj/unparser/pull/70
+### Added
 
-# v0.2.7 2018-02-09
+- 2.7 syntax support
+- `--literal` mode for CLI
 
-* Allow ruby_parser 2.5
+### Fixed
 
-# v0.2.6 2017-05-30
+- Lots of edge cases via leveraging parser specs
 
-* Reduce memory consumption via not requirering all possible parsers
-* Allow ruby 2.4
-* Update parser dependency
+## [0.4.9] - 2020-09-10
 
-# v0.2.5 2016-01-24
+### Changed
 
-* Add support for ruby 2.3
-* Bump parser dependency to ~>2.3.0
-* Trade uglier for more correct dstring / dsyms
-* Drop support for ruby < 2.1
+- Packaging to avoid git in gemspec
 
-# v0.2.4 2015-05-30
+## [0.4.8] - 2020-05-25
 
-* Relax parser dependency to ~>2.2.2
+### Added
 
-# v0.2.3 2015-04-28
+- `Unparser::Color` module for colorized source diffs
 
-* Compatibility with parser ~>2.2.2, >2.2.2.2
+### Changed
 
-# v0.2.2 2015-01-14
+- Specific node type when unparser fails on an unknown node type ([#150](https://github.com/mbj/unparser/pull/150))
+- Significantly improve verifier (only useful for debugging)
 
-* Really add back unofficial support for 1.9.3
+## [0.4.7] - 2020-01-03
 
-# v0.2.1 2015-01-14
+### Added
 
-* Add back unofficial support for 1.9.3
+- Support for endless ranges
 
-# v0.2.0 2015-01-12
+### Changed
 
-* Bump required ruby version to 2.0.0
+- Allow parser 2.7, even while syntax is not yet supported. This reduces downstream complexity
 
-# v0.1.17 2015-01-10
+## [0.4.6] - 2020-01-02
 
-* Fix jruby complex / rational generation edge case
-* Support generation under MRI 2.2
+### Changed
 
-# v0.1.16 2014-11-07
+- Allow parser dependency to ~> 2.6.5
 
-* Add emitter for complex and rational literals
-* Fix edge cases for MLHS
-* Fix differencies from 2.2.pre7 series of parser
+## [0.4.5] - 2019-05-10
 
-# v0.1.15 2014-09-24
+### Changed
 
-* Handle syntax edge case for MRI 2.1.3 parser.
+- Bump parser dependency to ~> 2.6.3
 
-# v0.1.14 2014-06-15
+## [0.4.4] - 2019-03-27
 
-* Fix emitter to correctly unparse foo[] = 1
+### Changed
 
-# v0.1.13 2014-06-08
+- Bump parser dependency to ~> 2.6.2
 
-* Add support for rubinius.
+## [0.4.3] - 2019-02-24
 
-# v0.1.12 2014-04-13
+### Changed
 
-* Add support for 2.1 kwsplat
+- Bump parser dependency to ~> 2.6.0
 
-# v0.1.11 2014-04-11
+## [0.4.2] - 2018-12-04
 
-* Fix performance on local variable scope inspection
+### Changed
 
-# v0.1.10 2014-04-06
+- Drop hard ruby version requirement. Still officially only supporting 2.5
 
-* Fix emit of inline rescues in combination with control flow keywords.
-* Begin corpus testing on rake ci against rubyspec
+## [0.4.1] - 2018-12-03
 
-# v0.1.9 2014-01-14
+### Fixed
 
-* Fix emit of proc { |(a)| }
+- Unparsing of `def foo(bar: bar())`
 
-# v0.1.8 2014-01-11
+## [0.4.0] - 2018-12-03
 
-* Fix all bugs found while round tripping rubyspec.
+### Added
 
-# v0.1.7 2014-01-03
+- Experimental `Unparser.{parser,parse,parse_with_comments}`
 
-* Add back support for root nodes of type resbody https://github.com/mbj/unparser/issues/24
+### Changed
 
-# v0.1.6 2013-12-31
+- Modern AST format
 
-* Emit 1.9 style hashes where possible: https://github.com/mbj/unparser/pull/23
-* Fix invalid quoting of hash keys: https://github.com/mbj/unparser/issues/22
-* Fix crash on take before introduced by code refactorings: https://github.com/mbj/unparser/issues/20
-* Fix crash on comment reproduction https://github.com/mbj/unparser/issues/17
+## [0.3.0] - 2018-11-16
 
-# v0.1.5 2013-11-01
+### Removed
 
-* Fix crash with comment reproduction.
+- Support for Ruby < 2.5
 
-# v0.1.4 2013-11-01
+## [0.2.8] - 2018-07-18
 
-* Code cleanups.
-* Remove warnings.
+### Added
 
-# v0.0.3 2013-06-17
+- Emitters for `__FILE__` and `__LINE__` ([#70](https://github.com/mbj/unparser/pull/70))
 
-* Adjust to changes in parser 2.0.0.beta5 => beta6
+## [0.2.7] - 2018-02-09
 
-# v0.0.2 2013-06-17
+### Changed
 
-Crappy release
+- Allow ruby_parser 2.5
 
-# v0.0.1 2013-06-15
+## [0.2.6] - 2017-05-30
 
-Initial release
+### Changed
+
+- Reduce memory consumption via not requiring all possible parsers
+- Allow Ruby 2.4
+- Update parser dependency
+
+## [0.2.5] - 2016-01-24
+
+### Added
+
+- Support for Ruby 2.3
+
+### Changed
+
+- Bump parser dependency to ~> 2.3.0
+- Trade uglier for more correct dstring / dsyms
+
+### Removed
+
+- Support for Ruby < 2.1
+
+## [0.2.4] - 2015-05-30
+
+### Changed
+
+- Relax parser dependency to ~> 2.2.2
+
+## [0.2.3] - 2015-04-28
+
+### Changed
+
+- Compatibility with parser ~> 2.2.2, > 2.2.2.2
+
+## [0.2.2] - 2015-01-14
+
+### Added
+
+- Really add back unofficial support for 1.9.3
+
+## [0.2.1] - 2015-01-14
+
+### Added
+
+- Unofficial support for 1.9.3
+
+## [0.2.0] - 2015-01-12
+
+### Changed
+
+- Bump required ruby version to 2.0.0
+
+## [0.1.17] - 2015-01-10
+
+### Added
+
+- Support generation under MRI 2.2
+
+### Fixed
+
+- jruby complex / rational generation edge case
+
+## [0.1.16] - 2014-11-07
+
+### Added
+
+- Emitter for complex and rational literals
+
+### Fixed
+
+- Edge cases for MLHS
+- Differences from 2.2.pre7 series of parser
+
+## [0.1.15] - 2014-09-24
+
+### Fixed
+
+- Syntax edge case for MRI 2.1.3 parser
+
+## [0.1.14] - 2014-06-15
+
+### Fixed
+
+- Emitter to correctly unparse `foo[] = 1`
+
+## [0.1.13] - 2014-06-08
+
+### Added
+
+- Support for Rubinius
+
+## [0.1.12] - 2014-04-13
+
+### Added
+
+- Support for 2.1 kwsplat
+
+## [0.1.11] - 2014-04-11
+
+### Fixed
+
+- Performance on local variable scope inspection
+
+## [0.1.10] - 2014-04-06
+
+### Added
+
+- Corpus testing on `rake ci` against rubyspec
+
+### Fixed
+
+- Emit of inline rescues in combination with control flow keywords
+
+## [0.1.9] - 2014-01-14
+
+### Fixed
+
+- Emit of `proc { |(a)| }`
+
+## [0.1.8] - 2014-01-11
+
+### Fixed
+
+- All bugs found while round tripping rubyspec
+
+## [0.1.7] - 2014-01-03
+
+### Added
+
+- Support for root nodes of type resbody ([#24](https://github.com/mbj/unparser/issues/24))
+
+## [0.1.6] - 2013-12-31
+
+### Changed
+
+- Emit 1.9 style hashes where possible ([#23](https://github.com/mbj/unparser/pull/23))
+
+### Fixed
+
+- Invalid quoting of hash keys ([#22](https://github.com/mbj/unparser/issues/22))
+- Crash on take before introduced by code refactorings ([#20](https://github.com/mbj/unparser/issues/20))
+- Crash on comment reproduction ([#17](https://github.com/mbj/unparser/issues/17))
+
+## [0.1.5] - 2013-11-01
+
+### Fixed
+
+- Crash with comment reproduction
+
+## [0.1.4] - 2013-11-01
+
+### Changed
+
+- Code cleanups
+- Remove warnings
+
+## [0.0.3] - 2013-06-17
+
+### Changed
+
+- Adjust to changes in parser 2.0.0.beta5 => beta6
+
+## [0.0.2] - 2013-06-17
+
+Initial (broken) release.
+
+## [0.0.1] - 2013-06-15
+
+Initial release.
+
+[Unreleased]: https://github.com/mbj/unparser/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/mbj/unparser/compare/v0.8.2...v0.9.0
+[0.8.2]: https://github.com/mbj/unparser/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/mbj/unparser/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/mbj/unparser/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/mbj/unparser/compare/v0.6.15...v0.7.0
+[0.6.15]: https://github.com/mbj/unparser/compare/v0.6.14...v0.6.15
+[0.6.14]: https://github.com/mbj/unparser/compare/v0.6.13...v0.6.14
+[0.6.13]: https://github.com/mbj/unparser/compare/v0.6.12...v0.6.13
+[0.6.12]: https://github.com/mbj/unparser/compare/v0.6.11...v0.6.12
+[0.6.11]: https://github.com/mbj/unparser/compare/v0.6.10...v0.6.11
+[0.6.10]: https://github.com/mbj/unparser/compare/v0.6.9...v0.6.10
+[0.6.9]: https://github.com/mbj/unparser/compare/v0.6.8...v0.6.9
+[0.6.8]: https://github.com/mbj/unparser/compare/v0.6.7...v0.6.8
+[0.6.7]: https://github.com/mbj/unparser/compare/v0.6.6...v0.6.7
+[0.6.6]: https://github.com/mbj/unparser/compare/v0.6.5...v0.6.6
+[0.6.5]: https://github.com/mbj/unparser/compare/v0.6.4...v0.6.5
+[0.6.4]: https://github.com/mbj/unparser/compare/v0.6.3...v0.6.4
+[0.6.3]: https://github.com/mbj/unparser/compare/v0.6.2...v0.6.3
+[0.6.2]: https://github.com/mbj/unparser/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/mbj/unparser/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/mbj/unparser/compare/v0.5.7...v0.6.0
+[0.5.7]: https://github.com/mbj/unparser/compare/v0.5.6...v0.5.7
+[0.5.6]: https://github.com/mbj/unparser/compare/v0.5.5...v0.5.6
+[0.5.5]: https://github.com/mbj/unparser/compare/v0.5.4...v0.5.5
+[0.5.4]: https://github.com/mbj/unparser/compare/v0.5.3...v0.5.4
+[0.5.3]: https://github.com/mbj/unparser/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/mbj/unparser/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/mbj/unparser/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/mbj/unparser/compare/v0.4.9...v0.5.0
+[0.4.9]: https://github.com/mbj/unparser/compare/v0.4.8...v0.4.9
+[0.4.8]: https://github.com/mbj/unparser/compare/v0.4.7...v0.4.8
+[0.4.7]: https://github.com/mbj/unparser/compare/v0.4.6...v0.4.7
+[0.4.6]: https://github.com/mbj/unparser/compare/v0.4.5...v0.4.6
+[0.4.5]: https://github.com/mbj/unparser/compare/v0.4.4...v0.4.5
+[0.4.4]: https://github.com/mbj/unparser/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/mbj/unparser/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/mbj/unparser/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/mbj/unparser/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/mbj/unparser/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/mbj/unparser/compare/v0.2.8...v0.3.0
+[0.2.8]: https://github.com/mbj/unparser/compare/v0.2.7...v0.2.8
+[0.2.7]: https://github.com/mbj/unparser/compare/v0.2.6...v0.2.7
+[0.2.6]: https://github.com/mbj/unparser/compare/v0.2.5...v0.2.6
+[0.2.5]: https://github.com/mbj/unparser/compare/v0.2.4...v0.2.5
+[0.2.4]: https://github.com/mbj/unparser/compare/v0.2.3...v0.2.4
+[0.2.3]: https://github.com/mbj/unparser/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/mbj/unparser/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/mbj/unparser/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/mbj/unparser/compare/v0.1.17...v0.2.0
+[0.1.17]: https://github.com/mbj/unparser/compare/v0.1.16...v0.1.17
+[0.1.16]: https://github.com/mbj/unparser/compare/v0.1.15...v0.1.16
+[0.1.15]: https://github.com/mbj/unparser/compare/v0.1.14...v0.1.15
+[0.1.14]: https://github.com/mbj/unparser/compare/v0.1.13...v0.1.14
+[0.1.13]: https://github.com/mbj/unparser/compare/v0.1.12...v0.1.13
+[0.1.12]: https://github.com/mbj/unparser/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/mbj/unparser/compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com/mbj/unparser/compare/v0.1.9...v0.1.10
+[0.1.9]: https://github.com/mbj/unparser/compare/v0.1.8...v0.1.9
+[0.1.8]: https://github.com/mbj/unparser/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/mbj/unparser/compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com/mbj/unparser/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/mbj/unparser/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/mbj/unparser/compare/v0.0.3...v0.1.4
+[0.0.3]: https://github.com/mbj/unparser/compare/v0.0.2...v0.0.3
+[0.0.2]: https://github.com/mbj/unparser/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/mbj/unparser/releases/tag/v0.0.1

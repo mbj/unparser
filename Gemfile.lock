@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mbj/mutant.git
-  revision: 3ee987356eeda39efc5488af8a8c782bbcaa0419
+  revision: 13ee59a1272daf0bdcfb219d44e1dea673614b8a
   branch: main
   glob: ruby/*.gemspec
   specs:
@@ -11,7 +11,7 @@ GIT
       regexp_parser (~> 2.10)
       securerandom (>= 0.3)
       sorbet-runtime (~> 0.6.0)
-      unparser (~> 0.8.2)
+      unparser (>= 0.8.2, < 0.10)
     mutant-rspec (1.0.0)
       mutant (= 1.0.0)
       rspec-core (>= 3.8.0, < 5.0.0)
@@ -19,7 +19,7 @@ GIT
 PATH
   remote: .
   specs:
-    unparser (0.8.2)
+    unparser (0.9.0)
       diff-lcs (>= 1.6, < 3)
       parser (>= 3.3.0)
       prism (>= 1.5.1)
@@ -47,7 +47,7 @@ GEM
       bigdecimal (>= 3.1, < 5)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    mcp (0.8.0)
+    mcp (0.9.0)
       json-schema (>= 4.1)
     parallel (1.27.0)
     parser (3.3.10.2)
@@ -106,7 +106,7 @@ GEM
       rubocop (>= 1.72.1, < 2.0)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sorbet-runtime (0.6.13048)
+    sorbet-runtime (0.6.13051)
     stringio (3.2.0)
     tsort (0.2.0)
     unicode-display_width (3.2.0)
@@ -116,6 +116,7 @@ GEM
 PLATFORMS
   arm64-darwin-25
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   benchmark (~> 0.5.0)
@@ -142,7 +143,7 @@ CHECKSUMS
   json-schema (6.2.0) sha256=e8bff46ed845a22c1ab2bd0d7eccf831c01fe23bb3920caa4c74db4306813666
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
-  mcp (0.8.0) sha256=ae8bd146bb8e168852866fd26f805f52744f6326afb3211e073f78a95e0c34fb
+  mcp (0.9.0) sha256=a0a3737b0ac9df0772f4ef7e2b013c260ddbcf217a5d50a66bff0baeddf03e47
   mutant (1.0.0)
   mutant-rspec (1.0.0)
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
@@ -168,12 +169,12 @@ CHECKSUMS
   rubocop-packaging (0.6.0) sha256=fb92bd0fb48e6f8cdb1648d2249b0cd51c2497dcc87340132d22f01edbf558a7
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  sorbet-runtime (0.6.13048) sha256=938a72675eddfdc1184902c6f425d94d033286a4eb374eae999cee3aec431730
+  sorbet-runtime (0.6.13051) sha256=ae5495bf229c5e3e5e3a2e17ac4853798d993437f5b5f12b763d462183852452
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   unicode-display_width (3.2.0) sha256=0cdd96b5681a5949cdbc2c55e7b420facae74c4aaf9a9815eee1087cb1853c42
   unicode-emoji (4.2.0) sha256=519e69150f75652e40bf736106cfbc8f0f73aa3fb6a65afe62fefa7f80b0f80f
-  unparser (0.8.2)
+  unparser (0.9.0)
 
 BUNDLED WITH
   4.0.6
