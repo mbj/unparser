@@ -7,14 +7,15 @@ Gem::Specification.new do |gem|
   gem.summary     = 'Generate equivalent source for parser gem AST nodes'
 
   gem.description = gem.summary
-  gem.homepage    = 'http://github.com/mbj/unparser'
+  gem.homepage    = 'https://github.com/mbj/unparser'
   gem.license     = 'MIT'
 
   gem.metadata = {
-    'bug_tracker_uri'       => 'https://github.com/mbj/unparser/issues',
-    'changelog_uri'         => 'https://github.com/mbj/unparser/blob/main/Changelog.md',
+    'homepage_uri'          => gem.homepage,
+    'bug_tracker_uri'       => "#{gem.homepage}/issues",
+    'changelog_uri'         => "#{gem.homepage}/blob/main/Changelog.md",
     'funding_uri'           => 'https://github.com/sponsors/mbj',
-    'source_code_uri'       => 'https://github.com/mbj/unparser',
+    'source_code_uri'       => gem.homepage,
     'rubygems_mfa_required' => 'true'
   }
 
