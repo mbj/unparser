@@ -279,8 +279,6 @@ RSpec.describe Unparser::Equalizer, '.new' do
 
     before { klass.send(:include, subject) }
 
-    let(:instance) { klass.new('John') }
-
     it 'does not include InspectMethods' do
       expect(subject.ancestors).not_to include(Unparser::Equalizer::InspectMethods)
     end
