@@ -36,6 +36,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rspec',             '>= 3.13', '< 5')
   gem.add_development_dependency('rspec-core',        '>= 3.13', '< 5')
   gem.add_development_dependency('rspec-its',         '~> 2.0')
+  gem.add_development_dependency('rspectre',          '~> 0.2.0')
   gem.add_development_dependency('rubocop',           '~> 1.7')
   gem.add_development_dependency('rubocop-packaging', '~> 0.5')
 end

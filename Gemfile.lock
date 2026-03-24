@@ -86,6 +86,10 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.7)
+    rspectre (0.2.0)
+      parser (>= 3.3.7.1)
+      prism (~> 1.3)
+      rspec (~> 3.10)
     rubocop (1.85.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -125,6 +129,7 @@ DEPENDENCIES
   rspec (>= 3.13, < 5)
   rspec-core (>= 3.13, < 5)
   rspec-its (~> 2.0)
+  rspectre (~> 0.2.0)
   rubocop (~> 1.7)
   rubocop-packaging (~> 0.5)
   unparser!
@@ -164,6 +169,7 @@ CHECKSUMS
   rspec-its (2.0.0) sha256=a88e8bc38149f2835e93533591ec4f5c829aacbfd41269a2e6f9f5b82f5260df
   rspec-mocks (3.13.8) sha256=086ad3d3d17533f4237643de0b5c42f04b66348c28bf6b9c2d3f4a3b01af1d47
   rspec-support (3.13.7) sha256=0640e5570872aafefd79867901deeeeb40b0c9875a36b983d85f54fb7381c47c
+  rspectre (0.2.0) sha256=8d78da3a75cf9c7abfec4de89cdf51686c15ac40cae5345632cfd995466214da
   rubocop (1.85.1) sha256=3dbcf9e961baa4c376eeeb2a03913dca5e3987033b04d38fa538aa1e7406cc77
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   rubocop-packaging (0.6.0) sha256=fb92bd0fb48e6f8cdb1648d2249b0cd51c2497dcc87340132d22f01edbf558a7
