@@ -13,11 +13,28 @@ module Unparser
     #
     # @api private
     #
-    def initialize
-      @content  = +''
-      @heredocs = []
-      @indent   = 0
-      @no_nl    = true
+    def initialize(source_map: nil)
+      @content    = +''
+      @heredocs   = []
+      @indent     = 0
+      @no_nl      = true
+      @source_map = source_map
+    end
+
+    # Return the source map, if any
+    #
+    # @return [SourceMap, nil]
+    #
+    # @api private
+    attr_reader :source_map
+
+    # Return the current write position
+    #
+    # @return [Integer]
+    #
+    # @api private
+    def position
+      @content.length
     end
 
     # Append string
@@ -152,6 +169,22 @@ module Unparser
 
     def write_encoding(encoding)
       write("# -*- encoding: #{encoding} -*-\n")
+    end
+
+    # Record a node's output range in the source map
+    #
+    # @param node [Parser::AST::Node]
+    #
+    # @return [Object] the block's return value
+    def record_node(node)
+      unless @source_map
+        return yield
+      end
+
+      start_pos = position
+      result    = yield
+      @source_map.record(node: node, generated_range: start_pos...position)
+      result
     end
 
   private
