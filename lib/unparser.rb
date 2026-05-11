@@ -122,6 +122,41 @@ module Unparser # rubocop:disable Metrics/ModuleLength
   end
   # rubocop:enable Metrics/ParameterLists
 
+  # Unparse an AST node into a string with a source map
+  #
+  # The source map records the mapping from each AST node to its
+  # character range in the generated output string.
+  #
+  # @param [Parser::AST::Node, nil] node
+  # @param [Array] comments
+  # @param [Encoding, nil] explicit_encoding
+  # @param [Set<Symbol>] static_local_variables
+  #
+  # @return [Array(String, SourceMap)]
+  #
+  # @raise InvalidNodeError
+  #   if the node passed is invalid
+  #
+  # @api public
+  #
+  # rubocop:disable Metrics/ParameterLists
+  def self.unparse_with_source_map(
+    node,
+    comments:               EMPTY_ARRAY,
+    explicit_encoding:      nil,
+    static_local_variables: Set.new
+  )
+    unparse_ast_with_source_map(
+      AST.new(
+        comments:               comments,
+        explicit_encoding:      explicit_encoding,
+        node:                   node,
+        static_local_variables: static_local_variables
+      )
+    )
+  end
+  # rubocop:enable Metrics/ParameterLists
+
   # Unparse an AST
   #
   # @param [AST] ast
@@ -136,14 +171,47 @@ module Unparser # rubocop:disable Metrics/ModuleLength
   #
   # @api public
   def self.unparse_ast(ast)
-    return EMPTY_STRING if ast.node.nil?
+    emit_ast(ast).content
+  end
+
+  # Unparse an AST with source map
+  #
+  # @param [AST] ast
+  #
+  # @return [Array(String, SourceMap)]
+  #
+  # @raise InvalidNodeError
+  #   if the node passed is invalid
+  #
+  # @api public
+  #
+  def self.unparse_ast_with_source_map(ast)
+    source_map = SourceMap.new
+    source     = emit_ast(ast, source_map: source_map).content
+    source_map.freeze
+
+    [source, source_map]
+  end
+
+  # Emit AST into a buffer
+  #
+  # @param [AST] ast
+  # @param [SourceMap, nil] source_map
+  #
+  # @return [Buffer]
+  #
+  # @api private
+  #
+  def self.emit_ast(ast, source_map: nil)
+    buffer = Buffer.new(source_map: source_map)
+    return buffer if ast.node.nil?
 
     local_variable_scope = AST::LocalVariableScope.new(
       node:                   ast.node,
       static_local_variables: ast.static_local_variables
     )
 
-    Buffer.new.tap do |buffer|
+    buffer.record_node(ast.node) do
       Emitter::Root.new(
         buffer:               buffer,
         comments:             Comments.new(ast.comments),
@@ -151,8 +219,11 @@ module Unparser # rubocop:disable Metrics/ModuleLength
         local_variable_scope: local_variable_scope,
         node:                 ast.node
       ).write_to_buffer
-    end.content
+    end
+
+    buffer
   end
+  private_class_method :emit_ast
 
   # Unparse AST either
   #
@@ -263,6 +334,7 @@ end # Unparser
 require 'unparser/node_helpers'
 require 'unparser/ast'
 require 'unparser/ast/local_variable_scope'
+require 'unparser/source_map'
 require 'unparser/buffer'
 require 'unparser/generation'
 require 'unparser/color'
