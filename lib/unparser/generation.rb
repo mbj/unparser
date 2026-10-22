@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Unparser
-  # rubocop:disable Metrics/ModuleLength
+  # rubocop:disable-next Metrics/ModuleLength
   module Generation
     EXTRA_NL = %i[kwbegin def defs module class sclass].freeze
 
@@ -252,5 +252,4 @@ module Unparser
       node.children
     end
   end # Generation
-  # rubocop:enable Metrics/ModuleLength
 end # Unparser

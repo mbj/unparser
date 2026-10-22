@@ -48,12 +48,11 @@ module Unparser
 
           puts("Processed: #{status.payload.total}")
 
-          # rubocop:disable Lint/UnreachableLoop
+          # rubocop:disable-next Lint/UnreachableLoop
           status.payload.errors.each do |report|
             puts report
             fail
           end
-          # rubocop:enable Lint/UnreachableLoop
 
           break if status.done?
         end

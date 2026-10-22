@@ -84,7 +84,7 @@ class Test
     Unparser::Either::Right.new(value)
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def validation
     identification = name.to_s
 
@@ -108,7 +108,6 @@ class Test
       original_source:  right(parser_source)
     )
   end
-  # rubocop:enable Metrics/AbcSize
   memoize :validation
 
   def parser
@@ -190,9 +189,8 @@ end
 
 module Minitest
   # Stub parent class
-  # rubocop:disable Lint/EmptyClass
+  # rubocop:disable-next Lint/EmptyClass
   class Test; end # Test
-  # rubocop:enable Lint/EmptyClass
 end # Minitest
 
 class Extractor
@@ -272,7 +270,7 @@ module ParseHelper
     Parser::AST::Node.new(type, children)
   end
 
-  # rubocop:disable Metrics/ParameterLists
+  # rubocop:disable-next Metrics/ParameterLists
   def assert_parses(node, parser_source, _diagnostics = nil, rubies = [])
   EXTRACTOR.capture(
     default_builder_attributes: default_builder_attributes,
@@ -281,7 +279,6 @@ module ParseHelper
     rubies:                     rubies
   )
   end
-  # rubocop:enable Metrics/ParameterLists
 
   def test_clrf_line_endings(*arguments); end
 
