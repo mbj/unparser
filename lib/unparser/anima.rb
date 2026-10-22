@@ -14,11 +14,10 @@ module Unparser
     #
     # @return [undefined]
     #
-    # rubocop:disable Lint/MissingSuper
+    # rubocop:disable-next Lint/MissingSuper
     def initialize(*names)
       @attributes = names.uniq.map(&Attribute.public_method(:new)).freeze
     end
-    # rubocop:enable Lint/MissingSuper
 
     # Return new anima with attributes added
     #
@@ -85,11 +84,10 @@ module Unparser
       #
       # @return [undefined]
       #
-      # rubocop:disable Lint/MissingSuper
+      # rubocop:disable-next Lint/MissingSuper
       def initialize(attributes)
         self.class.anima.initialize_instance(self, attributes)
       end
-      # rubocop:enable Lint/MissingSuper
 
       # Return a hash representation of an anima infected object
       #

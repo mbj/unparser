@@ -104,7 +104,7 @@ module Unparser # rubocop:disable Metrics/ModuleLength
   # @api public
   #
   # mutant:disable
-  # rubocop:disable Metrics/ParameterLists
+  # rubocop:disable-next Metrics/ParameterLists
   def self.unparse(
     node,
     comments:               EMPTY_ARRAY,
@@ -120,7 +120,6 @@ module Unparser # rubocop:disable Metrics/ModuleLength
       )
     )
   end
-  # rubocop:enable Metrics/ParameterLists
 
   # Unparse an AST
   #

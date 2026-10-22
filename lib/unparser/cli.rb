@@ -18,11 +18,10 @@ module Unparser
 
         attr_reader :path
 
-        # rubocop:disable Lint/MissingSuper
+        # rubocop:disable-next Lint/MissingSuper
         def initialize(path)
           @path = path
         end
-        # rubocop:enable Lint/MissingSuper
 
         # Validation for this target
         #
@@ -118,7 +117,7 @@ module Unparser
     # @api private
     #
     # mutant:disable
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def add_options(builder)
       builder.banner = 'usage: unparse [options] FILE [FILE]'
       builder.separator('')
@@ -144,7 +143,6 @@ module Unparser
         @fail_fast = true
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     # Return exit status
     #

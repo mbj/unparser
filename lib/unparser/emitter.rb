@@ -66,7 +66,7 @@ module Unparser
     #
     # @api private
     #
-    # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable-next Metrics/ParameterLists
     def self.emitter(buffer:, explicit_encoding:, comments:, node:, local_variable_scope:)
       type = node.type
 
@@ -82,7 +82,6 @@ module Unparser
         node:
       )
     end
-    # rubocop:enable Metrics/ParameterLists
 
     # Dispatch node write as statement
     #
