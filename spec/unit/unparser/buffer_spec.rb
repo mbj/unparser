@@ -224,6 +224,31 @@ RSpec.describe Unparser::Buffer do
     end
   end
 
+  describe '#heredoc_pending?' do
+    let(:object) { described_class.new }
+
+    subject { object.heredoc_pending? }
+
+    context 'without heredocs' do
+      it { should be(false) }
+    end
+
+    context 'with buffered heredoc' do
+      before { object.push_heredoc('HEREDOC') }
+
+      it { should be(true) }
+    end
+
+    context 'after heredocs were flushed' do
+      before do
+        object.push_heredoc('HEREDOC')
+        object.nl
+      end
+
+      it { should be(false) }
+    end
+  end
+
   describe '#final_newline' do
     let(:object) { described_class.new }
 
