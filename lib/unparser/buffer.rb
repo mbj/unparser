@@ -43,6 +43,13 @@ module Unparser
       @heredocs << heredoc
     end
 
+    # Test for heredocs whose body is not written yet
+    #
+    # @return [Boolean]
+    def heredoc_pending?
+      !@heredocs.empty?
+    end
+
     # Append a string without an indentation prefix
     #
     # @param [String] string

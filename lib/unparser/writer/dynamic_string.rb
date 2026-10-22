@@ -56,6 +56,7 @@ module Unparser
       def limited_search_segmented_source
         each_segments(children) do |segments|
           source = segmented_source(segments: segments)
+          next if buffer.heredoc_pending? && source.include?("\n")
           return source if round_trips?(source: source)
         end
 
