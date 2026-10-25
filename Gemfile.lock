@@ -31,7 +31,10 @@ GEM
     benchmark (0.5.0)
     date (3.5.1)
     diff-lcs (1.6.2)
+    duel (0.1.0)
+      fiddle (~> 1.1)
     erb (6.0.4)
+    fiddle (1.1.8)
     io-console (0.8.2)
     irb (1.17.0)
       pp (>= 0.6.0)
@@ -101,6 +104,7 @@ GEM
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     sorbet-runtime (0.6.13051)
+    stackprof (0.2.28)
     stringio (3.2.0)
     tsort (0.2.0)
     unicode-display_width (3.3.0)
@@ -114,6 +118,7 @@ PLATFORMS
 
 DEPENDENCIES
   benchmark (~> 0.5.0)
+  duel
   mutant (>= 0.14.2, >= 0)!
   mutant-rspec (>= 0.14.2, >= 0)!
   rspec (>= 3.13, < 5)
@@ -122,6 +127,7 @@ DEPENDENCIES
   rspectre (~> 0.2.0)
   rubocop (~> 1.7)
   rubocop-packaging (~> 0.5)
+  stackprof
   unparser!
 
 CHECKSUMS
@@ -129,7 +135,9 @@ CHECKSUMS
   benchmark (0.5.0) sha256=465df122341aedcb81a2a24b4d3bd19b6c67c1530713fd533f3ff034e419236c
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
+  duel (0.1.0) sha256=cfb6b1bd93258758e62dc4de81f2a6c8a57b784acf41b54564d51c83f07fcf8c
   erb (6.0.4) sha256=38e3803694be357fe2bfe312487c74beaf9fb4e5beb3e22498952fe1645b95d9
+  fiddle (1.1.8) sha256=7fa8ee3627271497f3add5503acdbc3f40b32f610fc1cf49634f083ef3f32eee
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
   irb (1.17.0) sha256=168c4ddb93d8a361a045c41d92b2952c7a118fa73f23fe14e55609eb7a863aae
   json (3.1.0) sha256=3ce7ccf8fde58960177a3a756c31f292a4c1e1dedee884547096a5b0604e3bd8
@@ -161,6 +169,7 @@ CHECKSUMS
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   sorbet-runtime (0.6.13051) sha256=ae5495bf229c5e3e5e3a2e17ac4853798d993437f5b5f12b763d462183852452
+  stackprof (0.2.28) sha256=4ec2ace02f386012b40ca20ef80c030ad711831f59511da12e83b34efb0f9a04
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   unicode-display_width (3.3.0) sha256=4b7aa66a4b11db50f6f7e98411215cd0dd10eaecb665d36eec5bcacb3fa0b613

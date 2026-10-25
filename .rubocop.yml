@@ -5,6 +5,8 @@ AllCops:
     - '**/*.rake'
     - 'Gemfile'
     - 'Gemfile.triage'
+    - '.duel.rb'
+    - 'duel/*.rb'
   TargetRubyVersion: 3.3
   Exclude:
     - tmp/**/*

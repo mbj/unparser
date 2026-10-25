@@ -3,6 +3,7 @@ unparser
 
 ![CI](https://github.com/mbj/unparser/workflows/CI/badge.svg)
 [![Gem Version](https://img.shields.io/gem/v/unparser.svg)](https://rubygems.org/gems/unparser)
+[![Duel](https://raw.githubusercontent.com/sferik/duel-ruby/main/assets/badge.svg)](https://github.com/sferik/duel-ruby)
 
 Generate equivalent source for ASTs from [parser](https://github.com/whitequark/parser).
 
