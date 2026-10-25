@@ -228,12 +228,13 @@ module Unparser
       klass.new(to_h.merge(node: node, **attributes))
     end
 
+    # mutant:disable
     def visit(node)
-      emitter(node).write_to_buffer
+      buffer.record_node(node) { emitter(node).write_to_buffer }
     end
 
     def visit_deep(node)
-      emitter(node).tap(&:write_to_buffer)
+      buffer.record_node(node) { emitter(node).tap(&:write_to_buffer) }
     end
 
     def first_child
