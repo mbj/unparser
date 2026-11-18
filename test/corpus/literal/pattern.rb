@@ -78,3 +78,11 @@ end
 case foo
 in %i[a b c $FILE]
 end
+foo => {a:}
+"#{a}"
+foo => b
+/#{b}/
+(foo in c) if c
+(foo => d) while d
+foo in [e]
+e()

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Round trip code that reads a local variable bound by pattern matching. `h => {a:}; "#{a}"` raised `UnsupportedNodeError`, and `(x in a) if a` unparsed as a different program
+
 ## [0.9.0] - 2026-03-19
 
 ### Changed
