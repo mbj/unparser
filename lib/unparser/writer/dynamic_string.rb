@@ -114,6 +114,12 @@ module Unparser
       class Heredoc
         include Writer, Adamantium
 
+        ESCAPES = {
+          '\\' => '\\\\',
+          '#'  => '\#',
+          "\n" => '\n'
+        }.freeze
+
         def emit
           emit_heredoc_body
           write(HEREDOC_FOOTER)
@@ -132,7 +138,7 @@ module Unparser
         end
 
         def escape_dynamic(string)
-          string.gsub('#', '\#')
+          string.gsub(/[\\#]|\n(?!\z)/, ESCAPES)
         end
 
         def emit_dynamic(child)

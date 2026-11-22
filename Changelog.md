@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Unparsing of heredocs with a backslash or `\n` escape after an interpolation ([#472](https://github.com/mbj/unparser/pull/472))
+
 ## [0.9.0] - 2026-03-19
 
 ### Changed
