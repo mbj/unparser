@@ -34,6 +34,19 @@ DOC
   b
 DOC
 
+# Heredoc escapes: a backslash line between an interpolation and a following line
+<<~DOC
+  #{}
+  \n
+  b
+DOC
+
+<<~DOC
+  #{}
+  \\d
+  b
+DOC
+
 <<~DOC
   a
     b
